@@ -44,8 +44,9 @@ export function cardsForNote(note: Note): Card[] {
 
   if (note.verb) {
     if (note.verb.irregular || note.verb.separable) types.push('participle')
-    // "hebben" is the default; only "zijn" verbs are worth a card.
-    if (note.verb.auxiliary !== 'hebben') types.push('auxiliary')
+    // "hebben" is the default, so only "zijn" verbs are worth a card — and
+    // only when the auxiliary was actually verified rather than assumed.
+    if (!note.verb.auxiliaryUnknown && note.verb.auxiliary !== 'hebben') types.push('auxiliary')
   }
 
   return types.map((type) => ({ id: cardId(note.id, type), noteId: note.id, type }))

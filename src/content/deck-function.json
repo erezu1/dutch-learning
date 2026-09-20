@@ -1,0 +1,1404 @@
+{
+ "id": "function-words",
+ "name": "Function words",
+ "level": "A1",
+ "note": "Hand-written. These are the most frequent words in Dutch, and exactly the ones an automated import handles worst: dictionaries describe them grammatically rather than translating them. Written and checked by hand instead.",
+ "notes": [
+  {
+   "id": "nl-ik",
+   "nl": "ik",
+   "en": [
+    "I"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ik kom morgen.",
+     "en": "I am coming tomorrow."
+    }
+   ]
+  },
+  {
+   "id": "nl-jij",
+   "nl": "jij",
+   "en": [
+    "you"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Jij weet het wel.",
+     "en": "You do know."
+    }
+   ]
+  },
+  {
+   "id": "nl-je",
+   "nl": "je",
+   "en": [
+    "you (unstressed)"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Waar ga je heen?",
+     "en": "Where are you going?"
+    }
+   ]
+  },
+  {
+   "id": "nl-u",
+   "nl": "u",
+   "en": [
+    "you (formal)"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Kunt u mij helpen?",
+     "en": "Can you help me?"
+    }
+   ]
+  },
+  {
+   "id": "nl-hij",
+   "nl": "hij",
+   "en": [
+    "he"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Hij werkt in Utrecht.",
+     "en": "He works in Utrecht."
+    }
+   ]
+  },
+  {
+   "id": "nl-zij",
+   "nl": "zij",
+   "en": [
+    "she",
+    "they"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Zij komt later.",
+     "en": "She is coming later."
+    }
+   ]
+  },
+  {
+   "id": "nl-wij",
+   "nl": "wij",
+   "en": [
+    "we"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Wij wonen hier.",
+     "en": "We live here."
+    }
+   ]
+  },
+  {
+   "id": "nl-jullie",
+   "nl": "jullie",
+   "en": [
+    "you (plural)"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Waar zijn jullie?",
+     "en": "Where are you all?"
+    }
+   ]
+  },
+  {
+   "id": "nl-mij",
+   "nl": "mij",
+   "en": [
+    "me"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Geef het aan mij.",
+     "en": "Give it to me."
+    }
+   ]
+  },
+  {
+   "id": "nl-hem",
+   "nl": "hem",
+   "en": [
+    "him"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ik ken hem niet.",
+     "en": "I don't know him."
+    }
+   ]
+  },
+  {
+   "id": "nl-haar-pron",
+   "nl": "haar",
+   "en": [
+    "her"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ik zie haar morgen.",
+     "en": "I am seeing her tomorrow."
+    }
+   ]
+  },
+  {
+   "id": "nl-ons-pron",
+   "nl": "ons",
+   "en": [
+    "us"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Kom met ons mee.",
+     "en": "Come along with us."
+    }
+   ]
+  },
+  {
+   "id": "nl-hen",
+   "nl": "hen",
+   "en": [
+    "them"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ik heb hen gezien.",
+     "en": "I have seen them."
+    }
+   ]
+  },
+  {
+   "id": "nl-mijn-det",
+   "nl": "mijn",
+   "en": [
+    "my"
+   ],
+   "pos": "det",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Dat is mijn fiets.",
+     "en": "That is my bicycle."
+    }
+   ]
+  },
+  {
+   "id": "nl-jouw",
+   "nl": "jouw",
+   "en": [
+    "your"
+   ],
+   "pos": "det",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Is dit jouw jas?",
+     "en": "Is this your coat?"
+    }
+   ]
+  },
+  {
+   "id": "nl-uw",
+   "nl": "uw",
+   "en": [
+    "your (formal)"
+   ],
+   "pos": "det",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Mag ik uw naam?",
+     "en": "May I have your name?"
+    }
+   ]
+  },
+  {
+   "id": "nl-zijn-det",
+   "nl": "zijn",
+   "en": [
+    "his",
+    "its"
+   ],
+   "pos": "det",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Zijn broer woont hier.",
+     "en": "His brother lives here."
+    }
+   ]
+  },
+  {
+   "id": "nl-onze",
+   "nl": "onze",
+   "en": [
+    "our"
+   ],
+   "pos": "det",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Onze buren zijn aardig.",
+     "en": "Our neighbours are nice."
+    }
+   ]
+  },
+  {
+   "id": "nl-hun",
+   "nl": "hun",
+   "en": [
+    "their"
+   ],
+   "pos": "det",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Hun huis is groot.",
+     "en": "Their house is big."
+    }
+   ]
+  },
+  {
+   "id": "nl-dit",
+   "nl": "dit",
+   "en": [
+    "this (het-word)"
+   ],
+   "pos": "det",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Dit boek is van mij.",
+     "en": "This book is mine."
+    }
+   ]
+  },
+  {
+   "id": "nl-dat-det",
+   "nl": "dat",
+   "en": [
+    "that (het-word)"
+   ],
+   "pos": "det",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Dat huis is te duur.",
+     "en": "That house is too expensive."
+    }
+   ]
+  },
+  {
+   "id": "nl-deze",
+   "nl": "deze",
+   "en": [
+    "this",
+    "these (de-word)"
+   ],
+   "pos": "det",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Deze stoel is kapot.",
+     "en": "This chair is broken."
+    }
+   ]
+  },
+  {
+   "id": "nl-die",
+   "nl": "die",
+   "en": [
+    "that",
+    "those (de-word)"
+   ],
+   "pos": "det",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Die man ken ik.",
+     "en": "I know that man."
+    }
+   ]
+  },
+  {
+   "id": "nl-geen",
+   "nl": "geen",
+   "en": [
+    "no",
+    "not any"
+   ],
+   "pos": "det",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ik heb geen tijd.",
+     "en": "I have no time."
+    }
+   ]
+  },
+  {
+   "id": "nl-elk",
+   "nl": "elk",
+   "en": [
+    "each",
+    "every"
+   ],
+   "pos": "det",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Elk kind krijgt er een.",
+     "en": "Each child gets one."
+    }
+   ]
+  },
+  {
+   "id": "nl-wie",
+   "nl": "wie",
+   "en": [
+    "who"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Wie is daar?",
+     "en": "Who is there?"
+    }
+   ]
+  },
+  {
+   "id": "nl-wat-pron",
+   "nl": "wat",
+   "en": [
+    "what"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Wat doe je?",
+     "en": "What are you doing?"
+    }
+   ]
+  },
+  {
+   "id": "nl-waar-adv",
+   "nl": "waar",
+   "en": [
+    "where"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Waar woon je?",
+     "en": "Where do you live?"
+    }
+   ]
+  },
+  {
+   "id": "nl-wanneer",
+   "nl": "wanneer",
+   "en": [
+    "when"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Wanneer begint het?",
+     "en": "When does it start?"
+    }
+   ]
+  },
+  {
+   "id": "nl-hoe",
+   "nl": "hoe",
+   "en": [
+    "how"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Hoe gaat het?",
+     "en": "How are you?"
+    }
+   ]
+  },
+  {
+   "id": "nl-waarom",
+   "nl": "waarom",
+   "en": [
+    "why"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Waarom lach je?",
+     "en": "Why are you laughing?"
+    }
+   ]
+  },
+  {
+   "id": "nl-welke",
+   "nl": "welke",
+   "en": [
+    "which"
+   ],
+   "pos": "det",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Welke wil je?",
+     "en": "Which one do you want?"
+    }
+   ]
+  },
+  {
+   "id": "nl-en-conj",
+   "nl": "en",
+   "en": [
+    "and"
+   ],
+   "pos": "conj",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Brood en kaas.",
+     "en": "Bread and cheese."
+    }
+   ]
+  },
+  {
+   "id": "nl-of",
+   "nl": "of",
+   "en": [
+    "or",
+    "whether"
+   ],
+   "pos": "conj",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Koffie of thee?",
+     "en": "Coffee or tea?"
+    }
+   ]
+  },
+  {
+   "id": "nl-maar-conj",
+   "nl": "maar",
+   "en": [
+    "but"
+   ],
+   "pos": "conj",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Klein maar fijn.",
+     "en": "Small but good."
+    }
+   ]
+  },
+  {
+   "id": "nl-want",
+   "nl": "want",
+   "en": [
+    "because",
+    "for"
+   ],
+   "pos": "conj",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ik blijf thuis, want ik ben ziek.",
+     "en": "I am staying home, because I am ill."
+    }
+   ]
+  },
+  {
+   "id": "nl-omdat",
+   "nl": "omdat",
+   "en": [
+    "because"
+   ],
+   "pos": "conj",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Omdat het regent.",
+     "en": "Because it is raining."
+    }
+   ]
+  },
+  {
+   "id": "nl-dus",
+   "nl": "dus",
+   "en": [
+    "so",
+    "therefore"
+   ],
+   "pos": "conj",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Het regent, dus we blijven thuis.",
+     "en": "It's raining, so we're staying home."
+    }
+   ]
+  },
+  {
+   "id": "nl-als-conj",
+   "nl": "als",
+   "en": [
+    "if",
+    "when"
+   ],
+   "pos": "conj",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Als je wilt, ga ik mee.",
+     "en": "If you want, I'll come along."
+    }
+   ]
+  },
+  {
+   "id": "nl-toen",
+   "nl": "toen",
+   "en": [
+    "when (in the past)",
+    "then"
+   ],
+   "pos": "conj",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Toen ik klein was...",
+     "en": "When I was little..."
+    }
+   ]
+  },
+  {
+   "id": "nl-terwijl",
+   "nl": "terwijl",
+   "en": [
+    "while"
+   ],
+   "pos": "conj",
+   "level": "A2",
+   "examples": [
+    {
+     "nl": "Hij las terwijl ik kookte.",
+     "en": "He read while I cooked."
+    }
+   ]
+  },
+  {
+   "id": "nl-niet-adv",
+   "nl": "niet",
+   "en": [
+    "not"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ik weet het niet.",
+     "en": "I don't know."
+    }
+   ]
+  },
+  {
+   "id": "nl-wel",
+   "nl": "wel",
+   "en": [
+    "indeed",
+    "certainly (opposite of niet)"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ik wel!",
+     "en": "I do!"
+    }
+   ]
+  },
+  {
+   "id": "nl-ook",
+   "nl": "ook",
+   "en": [
+    "also",
+    "too"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ik ga ook mee.",
+     "en": "I'm coming along too."
+    }
+   ]
+  },
+  {
+   "id": "nl-nog-adv",
+   "nl": "nog",
+   "en": [
+    "still",
+    "yet"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ben je er nog?",
+     "en": "Are you still there?"
+    }
+   ]
+  },
+  {
+   "id": "nl-al-adv",
+   "nl": "al",
+   "en": [
+    "already"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ben je er al?",
+     "en": "Are you there already?"
+    }
+   ]
+  },
+  {
+   "id": "nl-altijd",
+   "nl": "altijd",
+   "en": [
+    "always"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Hij is altijd te laat.",
+     "en": "He is always late."
+    }
+   ]
+  },
+  {
+   "id": "nl-nooit",
+   "nl": "nooit",
+   "en": [
+    "never"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ik ga er nooit heen.",
+     "en": "I never go there."
+    }
+   ]
+  },
+  {
+   "id": "nl-soms",
+   "nl": "soms",
+   "en": [
+    "sometimes"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Soms werk ik thuis.",
+     "en": "Sometimes I work at home."
+    }
+   ]
+  },
+  {
+   "id": "nl-vaak",
+   "nl": "vaak",
+   "en": [
+    "often"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "We gaan er vaak heen.",
+     "en": "We often go there."
+    }
+   ]
+  },
+  {
+   "id": "nl-misschien",
+   "nl": "misschien",
+   "en": [
+    "maybe",
+    "perhaps"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Misschien komt hij nog.",
+     "en": "Maybe he'll still come."
+    }
+   ]
+  },
+  {
+   "id": "nl-natuurlijk",
+   "nl": "natuurlijk",
+   "en": [
+    "of course"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Natuurlijk mag dat.",
+     "en": "Of course that's allowed."
+    }
+   ]
+  },
+  {
+   "id": "nl-hier-adv",
+   "nl": "hier",
+   "en": [
+    "here"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Kom eens hier.",
+     "en": "Come here."
+    }
+   ]
+  },
+  {
+   "id": "nl-daar-adv",
+   "nl": "daar",
+   "en": [
+    "there"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Daar is het station.",
+     "en": "There is the station."
+    }
+   ]
+  },
+  {
+   "id": "nl-nu",
+   "nl": "nu",
+   "en": [
+    "now"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ik kan nu niet.",
+     "en": "I can't right now."
+    }
+   ]
+  },
+  {
+   "id": "nl-straks",
+   "nl": "straks",
+   "en": [
+    "later",
+    "in a while"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Tot straks!",
+     "en": "See you later!"
+    }
+   ]
+  },
+  {
+   "id": "nl-gisteren",
+   "nl": "gisteren",
+   "en": [
+    "yesterday"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Gisteren regende het.",
+     "en": "It rained yesterday."
+    }
+   ]
+  },
+  {
+   "id": "nl-vandaag",
+   "nl": "vandaag",
+   "en": [
+    "today"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Vandaag is het warm.",
+     "en": "Today it is warm."
+    }
+   ]
+  },
+  {
+   "id": "nl-morgen-adv",
+   "nl": "morgen",
+   "en": [
+    "tomorrow"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Morgen ga ik werken.",
+     "en": "Tomorrow I am going to work."
+    }
+   ]
+  },
+  {
+   "id": "nl-samen",
+   "nl": "samen",
+   "en": [
+    "together"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "We gaan samen.",
+     "en": "We are going together."
+    }
+   ]
+  },
+  {
+   "id": "nl-heel",
+   "nl": "heel",
+   "en": [
+    "very",
+    "whole"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Het is heel mooi.",
+     "en": "It is very beautiful."
+    }
+   ]
+  },
+  {
+   "id": "nl-erg",
+   "nl": "erg",
+   "en": [
+    "very",
+    "badly"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Dat is erg jammer.",
+     "en": "That is a great pity."
+    }
+   ]
+  },
+  {
+   "id": "nl-veel",
+   "nl": "veel",
+   "en": [
+    "much",
+    "many"
+   ],
+   "pos": "det",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Er zijn veel mensen.",
+     "en": "There are many people."
+    }
+   ]
+  },
+  {
+   "id": "nl-weinig",
+   "nl": "weinig",
+   "en": [
+    "little",
+    "few"
+   ],
+   "pos": "det",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ik heb weinig tijd.",
+     "en": "I have little time."
+    }
+   ]
+  },
+  {
+   "id": "nl-genoeg",
+   "nl": "genoeg",
+   "en": [
+    "enough"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Dat is genoeg.",
+     "en": "That is enough."
+    }
+   ]
+  },
+  {
+   "id": "nl-meer-adv",
+   "nl": "meer",
+   "en": [
+    "more"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ik wil meer weten.",
+     "en": "I want to know more."
+    }
+   ]
+  },
+  {
+   "id": "nl-ja",
+   "nl": "ja",
+   "en": [
+    "yes"
+   ],
+   "pos": "phrase",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ja, graag.",
+     "en": "Yes, please."
+    }
+   ]
+  },
+  {
+   "id": "nl-nee",
+   "nl": "nee",
+   "en": [
+    "no"
+   ],
+   "pos": "phrase",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Nee, dank je.",
+     "en": "No, thank you."
+    }
+   ]
+  },
+  {
+   "id": "nl-graag",
+   "nl": "graag",
+   "en": [
+    "gladly",
+    "please"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ik wil graag koffie.",
+     "en": "I would like coffee."
+    }
+   ]
+  },
+  {
+   "id": "nl-alsjeblieft",
+   "nl": "alsjeblieft",
+   "en": [
+    "please",
+    "here you go"
+   ],
+   "pos": "phrase",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Twee koffie, alsjeblieft.",
+     "en": "Two coffees, please."
+    }
+   ]
+  },
+  {
+   "id": "nl-dankjewel",
+   "nl": "dank je wel",
+   "en": [
+    "thank you"
+   ],
+   "pos": "phrase",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Dank je wel voor de hulp.",
+     "en": "Thank you for the help."
+    }
+   ]
+  },
+  {
+   "id": "nl-sorry",
+   "nl": "sorry",
+   "en": [
+    "sorry"
+   ],
+   "pos": "phrase",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Sorry, dat wist ik niet.",
+     "en": "Sorry, I didn't know that."
+    }
+   ]
+  },
+  {
+   "id": "nl-dan-adv",
+   "nl": "dan",
+   "en": [
+    "then"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Eerst eten, dan werken.",
+     "en": "First eat, then work."
+    }
+   ]
+  },
+  {
+   "id": "nl-er-adv",
+   "nl": "er",
+   "en": [
+    "there"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Er is niemand thuis.",
+     "en": "There is nobody home."
+    }
+   ]
+  },
+  {
+   "id": "nl-toch",
+   "nl": "toch",
+   "en": [
+    "still",
+    "anyway",
+    "surely"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Het lukte toch.",
+     "en": "It worked out anyway."
+    }
+   ]
+  },
+  {
+   "id": "nl-weer-adv",
+   "nl": "weer",
+   "en": [
+    "again"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Hij is weer te laat.",
+     "en": "He is late again."
+    }
+   ]
+  },
+  {
+   "id": "nl-even",
+   "nl": "even",
+   "en": [
+    "a moment",
+    "just"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Wacht even.",
+     "en": "Wait a moment."
+    }
+   ]
+  },
+  {
+   "id": "nl-iets",
+   "nl": "iets",
+   "en": [
+    "something"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ik wil iets vragen.",
+     "en": "I want to ask something."
+    }
+   ]
+  },
+  {
+   "id": "nl-niets",
+   "nl": "niets",
+   "en": [
+    "nothing"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Er is niets gebeurd.",
+     "en": "Nothing happened."
+    }
+   ]
+  },
+  {
+   "id": "nl-iemand",
+   "nl": "iemand",
+   "en": [
+    "someone"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Is daar iemand?",
+     "en": "Is someone there?"
+    }
+   ]
+  },
+  {
+   "id": "nl-niemand",
+   "nl": "niemand",
+   "en": [
+    "nobody"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Niemand weet het.",
+     "en": "Nobody knows."
+    }
+   ]
+  },
+  {
+   "id": "nl-alles",
+   "nl": "alles",
+   "en": [
+    "everything"
+   ],
+   "pos": "pron",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Alles is klaar.",
+     "en": "Everything is ready."
+    }
+   ]
+  },
+  {
+   "id": "nl-allemaal",
+   "nl": "allemaal",
+   "en": [
+    "all",
+    "all of them"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "We gaan allemaal mee.",
+     "en": "We are all coming along."
+    }
+   ]
+  },
+  {
+   "id": "nl-echt",
+   "nl": "echt",
+   "en": [
+    "really",
+    "real"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Dat is echt mooi.",
+     "en": "That is really beautiful."
+    }
+   ]
+  },
+  {
+   "id": "nl-zeker",
+   "nl": "zeker",
+   "en": [
+    "certainly",
+    "sure"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Dat weet ik zeker.",
+     "en": "I am sure of that."
+    }
+   ]
+  },
+  {
+   "id": "nl-pas",
+   "nl": "pas",
+   "en": [
+    "only just",
+    "not until"
+   ],
+   "pos": "adv",
+   "level": "A2",
+   "examples": [
+    {
+     "nl": "Hij komt pas morgen.",
+     "en": "He isn't coming until tomorrow."
+    }
+   ]
+  },
+  {
+   "id": "nl-bijna",
+   "nl": "bijna",
+   "en": [
+    "almost"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "We zijn er bijna.",
+     "en": "We are almost there."
+    }
+   ]
+  },
+  {
+   "id": "nl-snel-adv",
+   "nl": "meteen",
+   "en": [
+    "immediately",
+    "right away"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Ik kom meteen.",
+     "en": "I'm coming right away."
+    }
+   ]
+  },
+  {
+   "id": "nl-hallo",
+   "nl": "hallo",
+   "en": [
+    "hello"
+   ],
+   "pos": "phrase",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Hallo, hoe gaat het?",
+     "en": "Hello, how are you?"
+    }
+   ]
+  },
+  {
+   "id": "nl-doei",
+   "nl": "doei",
+   "en": [
+    "bye"
+   ],
+   "pos": "phrase",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Doei, tot morgen!",
+     "en": "Bye, see you tomorrow!"
+    }
+   ]
+  },
+  {
+   "id": "nl-gelijk-adj",
+   "nl": "gelijk",
+   "en": [
+    "equal",
+    "right (correct)"
+   ],
+   "pos": "adj",
+   "level": "A2",
+   "examples": [
+    {
+     "nl": "Je hebt gelijk.",
+     "en": "You are right."
+    }
+   ]
+  }
+ ]
+}

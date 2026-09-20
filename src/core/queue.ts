@@ -13,6 +13,13 @@ export interface QueueOptions {
   newPerDay: number
   maxSession: number
   now: Date
+  /**
+   * Frequency rank of each note, 1 = most common. New words are introduced in
+   * this order, so you learn useful words before obscure ones.
+   */
+  rankOf: Map<string, number>
+  /** Words rarer than your level's starting point are held back. */
+  startRank: number
 }
 
 export const DEFAULTS: Pick<QueueOptions, 'newPerDay' | 'maxSession'> = {
@@ -48,17 +55,23 @@ export function buildQueue(
 ): Queue {
   const nowMs = opts.now.getTime()
   const eligible = cards.filter((c) => isUnlocked(c, states))
+  const rank = (c: Card) => opts.rankOf.get(c.noteId) ?? Number.MAX_SAFE_INTEGER
 
   const due: Card[] = []
   const fresh: Card[] = []
 
   for (const card of eligible) {
     const state = states.get(card.id)
-    if (isNew(state)) fresh.push(card)
-    else if (state!.due <= nowMs) due.push(card)
+    if (isNew(state)) {
+      // A word below your level's starting rank is still reachable — you just
+      // aren't given it as a new word unless you lower your level.
+      if (rank(card) >= opts.startRank) fresh.push(card)
+    } else if (state!.due <= nowMs) due.push(card)
   }
 
   due.sort((a, b) => states.get(a.id)!.due - states.get(b.id)!.due)
+  // Most common words first, so the daily eight are the eight most useful.
+  fresh.sort((a, b) => rank(a) - rank(b))
 
   const newToday = fresh.slice(0, opts.newPerDay)
   const picked = [...due, ...newToday].slice(0, opts.maxSession)

@@ -124,7 +124,7 @@ This is where the app earns its existence versus just using Anki. Build these in
 
 *Goal: start actually studying daily. Everything after this is improvement on a working thing.*
 
-### Phase 2 — Content
+### Phase 2 — Content ✅ done
 - Import script for `.apkg` or CSV/frequency lists → your JSON format
 - **Add a frequency rank per word.** We track how hard a word is *for you*
   (FSRS difficulty + lapses), but nothing about how common or hard it is in
@@ -134,6 +134,12 @@ This is where the app earns its existence versus just using Anki. Build these in
 - Auto-generate cards from notes (one note → 2–4 cards)
 - Grow to 1000+ words with gender and plural filled in
 - Deck/level organisation (A1, A2, …, thematic)
+- Level is now chosen in the app and sets where new words start in the
+  frequency list. Automatic progression between levels is still to do.
+
+**Still outstanding from this phase:** sentences exist as one example per word,
+but there are no standalone sentence notes yet, so the word-order and
+fill-in-the-blank card types are still not built.
 
 ### Phase 3 — The UI pass (the fun one)
 - Full-bleed vertical cards, one per screen, TikTok-style

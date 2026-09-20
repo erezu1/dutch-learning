@@ -49,6 +49,9 @@ const posLabel: Record<string, string> = {
   prep: 'preposition',
   phrase: 'phrase',
   num: 'numeral',
+  pron: 'pronoun',
+  det: 'determiner',
+  conj: 'conjunction',
 }
 
 function example(note: Note) {
@@ -188,7 +191,10 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         question: note.nl,
         questionLang: 'nl',
         subtitle: note.verb?.separable ? 'separable verb' : undefined,
-        answer: `${note.verb!.auxiliary} ${note.verb!.participle}`,
+        // Only claim the auxiliary when we actually know it.
+        answer: note.verb!.auxiliaryUnknown
+          ? note.verb!.participle
+          : `${note.verb!.auxiliary} ${note.verb!.participle}`,
         answerLang: 'nl',
         speak: note.verb!.participle,
         ...example(note),

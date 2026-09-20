@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react'
 import { onVoicesReady, speak, voiceReport, type VoiceReport } from '../core/speech'
+import type { LevelOption } from '../core/levels'
 import type { SessionStats } from '../session/useSession'
 
 interface Props {
   stats: SessionStats
+  level: LevelOption
   onStart: () => void
+  onChangeLevel: () => void
 }
 
-export function Home({ stats, onStart }: Props) {
+export function Home({ stats, level, onStart, onChangeLevel }: Props) {
   const [voice, setVoice] = useState<VoiceReport>(voiceReport)
 
   useEffect(() => onVoicesReady(() => setVoice(voiceReport())), [])
@@ -17,9 +20,17 @@ export function Home({ stats, onStart }: Props) {
 
   return (
     <div className="flex h-full flex-col justify-between px-6 py-10">
-      <div>
-        <h1 className="text-3xl font-semibold">Nederlands</h1>
-        <p className="mt-1 text-on-surface-dim">A few minutes a day.</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-semibold">Nederlands</h1>
+          <p className="mt-1 text-on-surface-dim">A few minutes a day.</p>
+        </div>
+        <button
+          onClick={onChangeLevel}
+          className="rounded-full bg-surface-1 px-3 py-1.5 text-xs text-on-surface-dim active:scale-95"
+        >
+          {level.name}
+        </button>
       </div>
 
       <div className="flex flex-col items-center gap-8">
@@ -64,6 +75,7 @@ export function Home({ stats, onStart }: Props) {
         </div>
       </div>
 
+      <div className="flex flex-col items-center gap-2">
       {/* Phase 0 diagnostic: does this phone actually have a Dutch voice? */}
       <button
         onClick={() => speak('Goedemorgen, hoe gaat het met je?')}
@@ -76,6 +88,14 @@ export function Home({ stats, onStart }: Props) {
             ? 'No Dutch voice on this device'
             : 'Speech not supported here'}
       </button>
+
+      {/* The word data is openly licensed and asks to be credited. */}
+      <p className="text-center text-[0.65rem] leading-relaxed text-on-surface-dim/50">
+        Word data from Wiktionary (CC BY-SA) and Tatoeba (CC BY),
+        <br />
+        ordered by OpenSubtitles frequency.
+      </p>
+      </div>
     </div>
   )
 }

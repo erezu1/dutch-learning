@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { allCards, type Card } from '../core/cards'
-import { db, type CardStateRow } from '../core/db'
+import { db, getMeta, setMeta, type CardStateRow } from '../core/db'
 import { buildQueue, DEFAULTS, type QueueOptions } from '../core/queue'
 import { applyGrade, emptyState, isNew, Rating, State, type Grade } from '../core/scheduler'
+import { DEFAULT_LEVEL, levelById, type LevelOption } from '../core/levels'
 import type { Deck, Note } from '../core/types'
 import { buildPrompt, type Prompt } from './prompts'
 
@@ -35,6 +36,10 @@ export interface Session {
   stats: SessionStats
   /** Set for a choice prompt once answered: the grade the app will apply. */
   autoGrade: Grade | null
+  level: LevelOption
+  /** False until the level has been picked, so we can ask on first run. */
+  levelChosen: boolean
+  setLevel: (option: LevelOption) => void
 
   start: () => void
   reveal: () => void
@@ -54,8 +59,15 @@ interface UndoEntry {
 export function useSession(deck: Deck): Session {
   const notes = useMemo(() => new Map(deck.notes.map((n) => [n.id, n] as const)), [deck])
   const cards = useMemo(() => allCards(deck.notes), [deck])
+  // Hand-written notes have no frequency rank; fall back to deck order.
+  const rankOf = useMemo(
+    () => new Map(deck.notes.map((n, i) => [n.id, n.rank ?? i] as const)),
+    [deck],
+  )
 
   const [states, setStates] = useState<Map<string, CardStateRow>>(new Map())
+  const [level, setLevelState] = useState<LevelOption>(DEFAULT_LEVEL)
+  const [levelChosen, setLevelChosen] = useState(false)
   const [status, setStatus] = useState<SessionStatus>('loading')
   const [queue, setQueue] = useState<Card[]>([])
   const [index, setIndex] = useState(0)
@@ -67,23 +79,33 @@ export function useSession(deck: Deck): Session {
   const shownAt = useRef<number>(Date.now())
   const undoStack = useRef<UndoEntry[]>([])
 
-  // Load saved progress once.
+  // Load saved progress and the chosen level once.
   useEffect(() => {
     let cancelled = false
-    db.states.toArray().then((rows) => {
-      if (cancelled) return
-      setStates(new Map(rows.map((r) => [r.cardId, r] as const)))
-      setStatus('idle')
-    })
+    Promise.all([db.states.toArray(), getMeta<string | null>('level', null)]).then(
+      ([rows, savedLevel]) => {
+        if (cancelled) return
+        setStates(new Map(rows.map((r) => [r.cardId, r] as const)))
+        setLevelState(levelById(savedLevel))
+        setLevelChosen(savedLevel !== null)
+        setStatus('idle')
+      },
+    )
     return () => {
       cancelled = true
     }
   }, [])
 
+  const setLevel = useCallback(async (option: LevelOption) => {
+    await setMeta('level', option.id)
+    setLevelState(option)
+    setLevelChosen(true)
+  }, [])
+
   const options: QueueOptions = useMemo(
-    () => ({ ...DEFAULTS, now: new Date() }),
-    // Rebuilt whenever progress changes, which is what we want.
-    [states],
+    () => ({ ...DEFAULTS, now: new Date(), rankOf, startRank: level.startRank }),
+    // Rebuilt whenever progress or level changes, which is what we want.
+    [states, rankOf, level],
   )
 
   const preview = useMemo(
@@ -108,7 +130,12 @@ export function useSession(deck: Deck): Session {
   }, [deck, states, preview, reviewed, correctCount])
 
   const start = useCallback(() => {
-    const q = buildQueue(cards, states, { ...DEFAULTS, now: new Date() })
+    const q = buildQueue(cards, states, {
+      ...DEFAULTS,
+      now: new Date(),
+      rankOf,
+      startRank: level.startRank,
+    })
     undoStack.current = []
     setQueue(q.cards)
     setIndex(0)
@@ -118,7 +145,7 @@ export function useSession(deck: Deck): Session {
     setPicked(null)
     shownAt.current = Date.now()
     setStatus(q.cards.length ? 'reviewing' : 'done')
-  }, [cards, states])
+  }, [cards, states, rankOf, level])
 
   const card = queue[index] ?? null
   const note: Note | null = card ? notes.get(card.noteId) ?? null : null
@@ -227,6 +254,9 @@ export function useSession(deck: Deck): Session {
     length: queue.length,
     stats,
     autoGrade,
+    level,
+    levelChosen,
+    setLevel,
     start,
     reveal,
     choose,

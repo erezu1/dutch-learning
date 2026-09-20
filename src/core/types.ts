@@ -6,7 +6,7 @@
 
 export type Gender = 'de' | 'het'
 export type Level = 'A1' | 'A2' | 'B1' | 'B2'
-export type Pos = 'noun' | 'verb' | 'adj' | 'adv' | 'prep' | 'phrase' | 'num'
+export type Pos = 'noun' | 'verb' | 'adj' | 'adv' | 'prep' | 'phrase' | 'num' | 'pron' | 'det' | 'conj'
 export type Auxiliary = 'hebben' | 'zijn' | 'both'
 
 export interface Example {
@@ -25,6 +25,12 @@ export interface VerbInfo {
   participle: string
   /** which helper verb the perfect tense takes */
   auxiliary: Auxiliary
+  /**
+   * True when `auxiliary` is a default rather than a checked fact. The
+   * imported data has no hebben/zijn information, so those notes must not
+   * generate an auxiliary card — drilling a guess is worse than not asking.
+   */
+  auxiliaryUnknown?: boolean
   /** strong/irregular verbs are worth drilling; regular ones are predictable */
   irregular?: boolean
 }
@@ -36,6 +42,12 @@ export interface Note {
   en: string[]
   pos: Pos
   level: Level
+  /**
+   * Frequency rank in Dutch, 1 = most common. This is what decides the order
+   * new words are introduced, and where each level starts. Absent for
+   * hand-written notes, which fall back to their position in the deck.
+   */
+  rank?: number
   tags?: string[]
 
   // nouns
