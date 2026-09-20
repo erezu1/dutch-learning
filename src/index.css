@@ -223,11 +223,25 @@
    the ground lives in the middle, where it can be seen, and the edges of the
    screen are the plain surface, which is what the system is painting.
 --------------------------------------------------------------------------- */
+/* Covers the window exactly, and paints the surface itself. Drawing edge to
+   edge means the system bars are transparent and whatever the page puts there
+   is what you see — and if the page puts nothing there, what you see is the
+   black the window is made of. The document's own background depends on how
+   tall the document happens to be; this does not. */
 #ground {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  background: var(--color-surface);
+}
+
+/* The lights, masked away before they reach the top and bottom of the screen
+   so those edges are the plain surface — which is the one fixed colour the
+   system is painting around the app. */
+#ground > div {
+  position: absolute;
+  inset: 0;
   overflow: hidden;
   --edge-fade: 120px;
   -webkit-mask-image: linear-gradient(
@@ -321,15 +335,10 @@
     height: 100%;
   }
 
-  /* The page draws edge to edge, but `100%` is the layout viewport — which on
-     a phone with gesture navigation can stop short of the physical display.
-     What is left over is a strip along the bottom the app never paints, and
-     the rounded corners are in it. The dynamic viewport unit measures the
-     screen rather than the layout, so this reaches the bottom of the glass. */
-  html,
-  body {
-    min-height: 100dvh;
-  }
+  /* No `min-height: 100dvh` here. The dynamic viewport is the *largest* one —
+     the screen with the system bars hidden — while what you can see is the
+     small one, so asking for it makes the document taller than the window and
+     the whole app scrolls for no reason. `100%` is the right measure.  */
 
   /* Above the ground, which sits at z-index 0 on the body itself. */
   #root {
