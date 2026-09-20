@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useState, type ReactNode } from 'react'
 import type { Session } from '../session/useSession'
 import { ContinueBar, GradeBar } from './GradeBar'
-import { cardVariants, glide, quiet, tap, turn } from './motion'
+import { cardVariants, glide, quiet, swapVariants, tap, turn } from './motion'
 import { PromptCard } from './PromptCard'
 import { ScorePop } from './ScorePop'
 
@@ -113,15 +113,30 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
 
       <ScorePop award={session.award} />
 
+      {/* The bar rises into place the way the answer above it does, rather
+          than appearing fully formed the instant the card is answered. */}
       <div className="flex min-h-[7.5rem] items-end">
-        {revealed &&
-          (session.autoGrade !== null ? (
-            // Multiple choice: already graded, just move on.
-            // Already recorded when the option was chosen; this only moves on.
-            <ContinueBar onContinue={session.advance} countdown={session.autoContinue} />
-          ) : (
-            <GradeBar onGrade={session.grade} />
-          ))}
+        <AnimatePresence initial={false}>
+          {revealed && (
+            <motion.div
+              key="bar"
+              variants={swapVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={glide}
+              className="w-full"
+            >
+              {session.autoGrade !== null ? (
+                // Multiple choice: already graded, just move on.
+                // Already recorded when the option was chosen; this only moves on.
+                <ContinueBar onContinue={session.advance} countdown={session.autoContinue} />
+              ) : (
+                <GradeBar onGrade={session.grade} />
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   )

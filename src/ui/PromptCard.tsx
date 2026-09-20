@@ -213,15 +213,27 @@ function WithSpeaker({
         className={`relative ${phrase ? 'cursor-pointer' : ''}`}
       >
         {children}
-        {phrase && (
-          <SpeakButton
-            text={phrase}
-            small={small}
-            speaking={speaking}
-            onActivate={trigger}
-            className={`absolute top-1/2 -translate-y-1/2 ${small ? 'left-full ml-1.5' : 'left-full ml-2.5'}`}
-          />
-        )}
+        {/* Fades rather than appearing: it hangs off the right edge of whatever
+            it belongs to, so it arrives at a different place on a question that
+            has just been completed. */}
+        <AnimatePresence initial={false}>
+          {phrase && (
+            <motion.span
+              key="speaker"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { duration: 0.3, delay: 0.24 } }}
+              exit={{ opacity: 0, transition: { duration: 0.22 } }}
+              className={`absolute top-1/2 -translate-y-1/2 ${small ? 'left-full ml-1.5' : 'left-full ml-2.5'}`}
+            >
+              <SpeakButton
+                text={phrase}
+                small={small}
+                speaking={speaking}
+                onActivate={trigger}
+              />
+            </motion.span>
+          )}
+        </AnimatePresence>
       </motion.div>
     </div>
   )
@@ -271,6 +283,9 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
   const completes = !!prompt.completion
   const headline = completes && revealed ? prompt.completion! : prompt.question
   // Sized from the completed form throughout, so nothing resizes mid-card.
+  const headlineClass = `notranslate text-balance ${FOCUS} ${
+    isSentence ? 'max-w-[17rem] leading-snug' : 'leading-none'
+  }`
   const headlineSize = isSentence
     ? fitSize(prompt.completion ?? prompt.question, '2.05rem', '1.35rem')
     : fitSize(prompt.completion ?? prompt.question, '4rem', '1.6rem', true)
@@ -302,38 +317,34 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                 : undefined
           }
         >
-          {/* The two sentences share one grid cell and dissolve into each
-              other. They are the same line of text apart from one word, so
-              sliding one out and the other in reads as a jolt; and because
-              both are present throughout, nothing collapses underneath them.
-              The cell itself animates its width, so the line settling into
-              its new centre is a move rather than a jump. */}
-          <motion.div
-            layout
-            transition={glide}
-            className="grid place-items-center [&>*]:col-start-1 [&>*]:row-start-1"
-          >
+          {/* One fades out, then the other fades in — nothing slides, and
+              nothing changes size underneath. The three elements share a
+              single grid cell, and the hidden one holds that cell at the size
+              of the finished question for the whole card, so neither version
+              has to move to make room for the other. */}
+          <div className="grid place-items-center [&>*]:col-start-1 [&>*]:row-start-1">
+            {prompt.completion && (
+              <span
+                aria-hidden="true"
+                style={{ fontSize: headlineSize }}
+                className={`invisible ${headlineClass}`}
+              >
+                {prompt.completion}
+              </span>
+            )}
             <AnimatePresence initial={false}>
               <motion.h1
-                // Keyed on the words it shows: a question that changes
-                // dissolves into the new one, and a question that doesn't
-                // keeps its key and stays exactly where it is.
+                // Keyed on the words it shows: a question that changes is
+                // replaced by the new one, and a question that doesn't keeps
+                // its key and never animates at all.
                 key={headline}
-                // Position only. The cell around them animates its width, and
-                // a plain layout animation does that by scaling — which
-                // stretches the letters. This cancels the parent's scale and
-                // leaves each line simply sliding to its new centre.
-                layout="position"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                animate={{ opacity: 1, transition: { duration: 0.3, delay: 0.24 } }}
+                exit={{ opacity: 0, transition: { duration: 0.22 } }}
                 lang={prompt.questionLang}
                 translate="no"
                 style={{ fontSize: headlineSize }}
-                className={`notranslate text-balance ${FOCUS} ${
-                  isSentence ? 'max-w-[17rem] leading-snug' : 'leading-none'
-                }`}
+                className={headlineClass}
               >
                 {completes && revealed ? (
                   // Only the part that was missing is coloured: the article,
@@ -351,7 +362,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                 )}
               </motion.h1>
             </AnimatePresence>
-          </motion.div>
+          </div>
         </WithSpeaker>
 
         {prompt.subtitle && <p className="text-base text-on-surface-dim">{prompt.subtitle}</p>}
@@ -371,7 +382,11 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
               animate="center"
               exit="exit"
               transition={glide}
-              className="pt-4 text-base text-on-surface-dim/70"
+              // Standing exactly where the answer will: the same box, so the
+              // line doesn't shift when one replaces the other. Set in the
+              // body face — it is an instruction, not something to learn.
+              style={{ height: fitSize(prompt.answer, '2.6rem', '1.4rem') }}
+              className="flex items-center text-xl text-on-surface-dim/70"
             >
               tap to reveal
             </motion.p>
