@@ -118,15 +118,17 @@ function Choices({
         // moves on.
         const isPicked = picked === choice
         const isAnswer = picked !== null && choice === prompt.answer
-        // Green and red are the verdict on what you pressed. The right answer
-        // you *didn't* press isn't a verdict on anything — it is the answer,
-        // so it wears the scheme's colour like every other answer does.
+        // The options are a right-and-wrong readout, so they are green and red
+        // in every scheme — that is what those colours mean, and a green that
+        // changed hue with the decoration would stop meaning it. The stated
+        // answer below is a different job: it is the thing being taught, so it
+        // takes the scheme's colour.
         const resultTone = isPicked
           ? correct
             ? 'bg-good text-good-ink'
             : 'bg-bad text-bad-ink'
           : isAnswer
-            ? 'bg-primary-container text-primary'
+            ? 'bg-good text-good-ink'
             : ''
 
         return (
