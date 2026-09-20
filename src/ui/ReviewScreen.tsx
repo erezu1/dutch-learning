@@ -31,7 +31,7 @@ function Icon({ children }: { children: ReactNode }) {
 }
 
 const headerButton =
-  'grid h-10 w-10 shrink-0 place-items-center rounded-full text-on-surface-dim transition-colors'
+  'grid h-10 w-10 shrink-0 place-items-center rounded-full text-on-surface-dim transition-[color,background-color,opacity]'
 
 export function ReviewScreen({ session, onExit }: { session: Session; onExit: () => void }) {
   const { prompt, revealed, picked, correct, position, length } = session
@@ -69,7 +69,11 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
           aria-label="Undo"
           whileTap={{ scale: 0.82 }}
           transition={tap}
-          className={`${headerButton} active:bg-surface-2 disabled:text-on-surface-dim/25`}
+          // Faded by the element's own opacity rather than by a translucent
+          // ink. The icon is two strokes that meet at the top left, and a
+          // translucent stroke composites twice where they overlap — a dark
+          // notch on the corner of an otherwise even icon.
+          className={`${headerButton} active:bg-surface-2 disabled:opacity-25`}
         >
           {/* The icon turns a full circle each time, so the button visibly
               does something rather than just recolouring. */}
