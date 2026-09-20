@@ -257,7 +257,7 @@ export function useSession(deck: Deck): Session {
         return total
       })
       setSessionPoints((p) => p + earned.amount)
-      setAward({ ...earned, key: Date.now() })
+      if (earned.amount > 0) setAward({ ...earned, key: Date.now() })
       setReviewed((n) => n + 1)
       if (g !== Rating.Again) setCorrectCount((n) => n + 1)
 

@@ -23,6 +23,13 @@ export function GradeBar({ onGrade }: { onGrade: (grade: Grade) => void }) {
   )
 }
 
+/** The countdown's wash, faint at the start and stronger at the leading edge. */
+function fillGradient(correct: boolean): string {
+  const tint = correct ? 'var(--color-good-ink)' : 'var(--color-primary)'
+  const at = (pct: number) => `color-mix(in srgb, ${tint} ${pct}%, transparent)`
+  return `linear-gradient(to right, ${at(6)}, ${at(26)})`
+}
+
 /** Long enough to read the answer before anything starts moving. */
 const READ_PAUSE = 3
 /** Then the button fills, and carries on by itself when it is full. */
@@ -47,24 +54,20 @@ export function ContinueBar({ onContinue, correct }: { onContinue: () => void; c
         onClick={onContinue}
         className="relative w-full overflow-hidden"
       >
-        {/* Width rather than a scaled block, so the leading edge can stay a
-            fixed softness instead of stretching with it — a hard grey bar
-            sweeping across reads like a loading screen. */}
+        {/* A crisp leading edge, with the fill itself graded from faint at the
+            start to stronger at the edge. Because the gradient spans the
+            element it stretches as the fill grows, so the strongest point
+            always sits right where the progress has reached. */}
         <motion.span
           aria-hidden="true"
           initial={{ width: 0 }}
           animate={{ width: '100%' }}
           transition={{ duration: COUNTDOWN, delay: READ_PAUSE, ease: 'linear' }}
           onAnimationComplete={onContinue}
-          className="absolute inset-y-0 left-0 opacity-[0.16]"
-          style={{
-            background: `linear-gradient(to right, ${
-              correct ? 'var(--color-good-ink)' : 'var(--color-primary)'
-            } 0, ${
-              correct ? 'var(--color-good-ink)' : 'var(--color-primary)'
-            } calc(100% - 30px), transparent 100%)`,
-          }}
+          className="absolute inset-y-0 left-0"
+          style={{ background: fillGradient(correct) }}
         />
+
         <span className="relative">Continue</span>
       </Button>
     </div>

@@ -36,13 +36,44 @@ const choiceColor: Record<string, string> = {
 }
 
 /**
- * Renders "you (formal)" with the clarifying part played down and hung off the
- * right, so it doesn't count towards centring — the word is what should sit in
- * the middle, not the word plus its footnote.
+ * The largest size a word can be set at and still fit across the screen.
+ *
+ * A Dutch word can be very long — ziekenhuis, achteruitgaan, tevoorschijn —
+ * and a single word cannot wrap, so a fixed size overflows silently. This
+ * scales with the longest unbreakable run: roughly, a character is half an em
+ * wide, so the run fits when the size is about twice the width available per
+ * character. Clamped so short words don't become enormous and long ones stay
+ * readable.
  */
-function Gloss({ text }: { text: string }) {
+function fitSize(text: string, max: string, min = '1.6rem'): string {
+  const longest = Math.max(...text.split(/\s+/).map((w) => w.length), 1)
+  // 80vw, not the full width: the speaker hangs off the word's right edge
+  // and needs somewhere to be.
+  return `clamp(${min}, calc(80vw / ${longest} * 1.85), ${max})`
+}
+
+/**
+ * Renders "you (formal)" with the clarifying part played down, so the word
+ * itself is what sits in the middle rather than the word plus its footnote.
+ *
+ * On a button the note hangs off the right at a fraction of the size. At the
+ * question's size that same note is large enough to run off the screen, so
+ * there it drops underneath instead — still out of the way of centring, but
+ * with somewhere to go.
+ */
+function Gloss({ text, stacked = false }: { text: string; stacked?: boolean }) {
   const m = /^(.*?)\s*\(([^)]*)\)\s*$/.exec(text)
   if (!m) return <>{text}</>
+
+  if (stacked) {
+    return (
+      <span className="inline-flex flex-col items-center leading-tight">
+        <span>{m[1]}</span>
+        <span className="mt-1 font-sans text-base font-normal text-on-surface-dim">({m[2]})</span>
+      </span>
+    )
+  }
+
   return (
     <span className="relative inline-block">
       {m[1]}
@@ -228,11 +259,22 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
               translate="no"
               // Serif only when the question is Dutch. An English prompt is
               // interface, not material.
+              style={{
+                fontSize: isSentence
+                  ? fitSize(prompt.question, '2.05rem', '1.35rem')
+                  : fitSize(prompt.question, '4rem'),
+              }}
               className={`notranslate text-balance ${
-                prompt.questionLang === 'nl' ? 'font-display font-semibold' : 'font-bold tracking-tight'
-              } ${isSentence ? 'text-[2.05rem] leading-snug' : 'text-[4rem] leading-none'}`}
+                prompt.questionLang === 'nl'
+                  ? 'font-display font-semibold'
+                  : 'font-bold tracking-tight'
+              } ${isSentence ? 'leading-snug' : 'leading-none'}`}
             >
-              {prompt.questionLang === 'en' ? <Gloss text={prompt.question} /> : prompt.question}
+              {prompt.questionLang === 'en' ? (
+                <Gloss text={prompt.question} stacked />
+              ) : (
+                prompt.question
+              )}
             </h1>
           </WithSpeaker>
         )}
@@ -304,7 +346,11 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                       correct === false ? 'text-bad-ink' : correct === true ? 'text-good-ink' : ''
                     }`}
                   >
-                    {prompt.answerLang === 'en' ? <Gloss text={prompt.answer} /> : prompt.answer}
+                    {prompt.answerLang === 'en' ? (
+                    <Gloss text={prompt.answer} stacked />
+                  ) : (
+                    prompt.answer
+                  )}
                   </p>
                 </WithSpeaker>
               )}

@@ -16,8 +16,8 @@ import type { CardStateRow } from './db'
 export const POINTS = {
   /** Recalled it. */
   correct: 10,
-  /** Missed it, but showed up. */
-  attempt: 3,
+  /** Missed it. Nothing — the score says what you know, not what you tried. */
+  attempt: 0,
   /** The word left the learning stage and is now genuinely known. */
   graduated: 50,
 } as const
