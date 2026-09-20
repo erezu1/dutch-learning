@@ -106,6 +106,10 @@ warns on disagreement.
 ### Known limits of the imported data
 - **First gloss wins.** A word with several senses shows the most prominent
   one. Occasionally that isn't the sense you'd meet first.
+- **A gloss identical to the Dutch word is kept.** Dutch and English share a
+  lot of vocabulary — week, land, hotel, ring, test, partner, camera. Filtering
+  those out removed 137 real words. For nouns the identical gloss also carries
+  the de/het card, which is the part you actually have to learn.
 - **Glosses are one term per sense.** Dictionaries pile up near-synonyms
   ("to lead, to take the lead, to guide"), which turns a flashcard answer into
   a list. Commas are only split on when the parts are alternatives — all verbs

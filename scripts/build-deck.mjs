@@ -152,7 +152,6 @@ function distinctSense(a, b) {
 
 function pickGlosses(entry) {
   const out = []
-  const word = norm(entry.word ?? '')
   for (const sense of entry.senses ?? []) {
     if (!sense.glosses?.length) continue
     if (sense.form_of || sense.alt_of) continue
@@ -162,8 +161,11 @@ function pickGlosses(entry) {
     // Two-letter glosses are almost always junk ("or" for goud, from heraldry).
     if (!g || g.length < 3) continue
     if (BAD_GLOSS.some((re) => re.test(g))) continue
-    // "info -> info" is not a flashcard.
-    if (norm(g) === word) continue
+    // A gloss identical to the Dutch word is kept on purpose. Dutch and
+    // English share a lot of vocabulary — week, land, hotel, ring, test,
+    // partner, camera — and knowing you can simply use the English word is
+    // real knowledge. For nouns it also carries the de/het card, which is the
+    // part you actually have to learn (het land, de week).
     if (out.some((existing) => !distinctSense(existing, g))) continue
     // A second sense earns its place only if it is short. Wiktionary's second
     // gloss for burgemeester is "one of two species of gull".

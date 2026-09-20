@@ -129,7 +129,7 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         question: note.nl,
         questionLang: 'nl',
         subtitle: posLabel[note.pos],
-        answer: choice ? firstGloss(note) : note.en.join(', '),
+        answer: choice ? firstGloss(note) : note.en.join(' · '),
         answerLang: 'en',
         choices: choice
           ? shuffle([firstGloss(note), ...distractors(note, ctx, firstGloss)])
@@ -145,7 +145,7 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         ...base,
         shape: choice ? 'choice' : 'reveal',
         instruction: 'How do you say this in Dutch?',
-        question: note.en.join(', '),
+        question: note.en.join(' · '),
         questionLang: 'en',
         subtitle: posLabel[note.pos],
         // Free recall shows the article too; multiple choice must not, or the

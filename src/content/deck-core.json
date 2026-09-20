@@ -698,6 +698,7 @@
    "id": "nl-over-p",
    "nl": "over",
    "en": [
+    "over",
     "about"
    ],
    "pos": "prep",
@@ -2533,6 +2534,24 @@
    "rank": 208
   },
   {
+   "id": "nl-god-n",
+   "nl": "god",
+   "en": [
+    "god"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "rank": 210,
+   "gender": "de",
+   "plural": "goden",
+   "examples": [
+    {
+     "nl": "Alleen God weet het.",
+     "en": "Only God knows."
+    }
+   ]
+  },
+  {
    "id": "nl-lang-adv",
    "nl": "lang",
    "en": [
@@ -4212,7 +4231,7 @@
    "id": "nl-moment-n",
    "nl": "moment",
    "en": [
-    "moment of force, moment"
+    "moment"
    ],
    "pos": "noun",
    "level": "A2",
@@ -4752,6 +4771,7 @@
    "id": "nl-later-adv",
    "nl": "later",
    "en": [
+    "later",
     "in the future"
    ],
    "pos": "adv",
@@ -4936,6 +4956,24 @@
     }
    ],
    "rank": 424
+  },
+  {
+   "id": "nl-baby-n",
+   "nl": "baby",
+   "en": [
+    "baby"
+   ],
+   "pos": "noun",
+   "level": "A2",
+   "rank": 425,
+   "gender": "de",
+   "plural": "baby's",
+   "examples": [
+    {
+     "nl": "We krijgen een baby.",
+     "en": "We're about to have a baby."
+    }
+   ]
   },
   {
    "id": "nl-boven-p",
@@ -5401,6 +5439,24 @@
     {
      "nl": "Zorg goed voor jezelf.",
      "en": "Take care."
+    }
+   ]
+  },
+  {
+   "id": "nl-dollar-n",
+   "nl": "dollar",
+   "en": [
+    "dollar"
+   ],
+   "pos": "noun",
+   "level": "A2",
+   "rank": 474,
+   "gender": "de",
+   "plural": "dollars",
+   "examples": [
+    {
+     "nl": "Ik geef je vijf dollar.",
+     "en": "I'll give you five dollars."
     }
    ]
   },
@@ -5963,6 +6019,24 @@
    ]
   },
   {
+   "id": "nl-mama-n",
+   "nl": "mama",
+   "en": [
+    "mama"
+   ],
+   "pos": "noun",
+   "level": "A2",
+   "rank": 517,
+   "gender": "de",
+   "plural": "mama's",
+   "examples": [
+    {
+     "nl": "Ben jij mijn mama?",
+     "en": "Are you my mommy?"
+    }
+   ]
+  },
+  {
    "id": "nl-nummer-n",
    "nl": "nummer",
    "en": [
@@ -6286,6 +6360,24 @@
    ]
   },
   {
+   "id": "nl-rest-n",
+   "nl": "rest",
+   "en": [
+    "rest"
+   ],
+   "pos": "noun",
+   "level": "A2",
+   "rank": 539,
+   "gender": "de",
+   "plural": "resten",
+   "examples": [
+    {
+     "nl": "Hou de rest maar.",
+     "en": "Keep the change."
+    }
+   ]
+  },
+  {
    "id": "nl-drinken",
    "nl": "drinken",
    "en": [
@@ -6306,6 +6398,24 @@
     }
    ],
    "rank": 543
+  },
+  {
+   "id": "nl-team-n",
+   "nl": "team",
+   "en": [
+    "team"
+   ],
+   "pos": "noun",
+   "level": "A2",
+   "rank": 544,
+   "gender": "het",
+   "plural": "teams",
+   "examples": [
+    {
+     "nl": "Ons team is klaar.",
+     "en": "Our team is ready."
+    }
+   ]
   },
   {
    "id": "nl-beneden-adv",
@@ -6734,7 +6844,7 @@
    "id": "nl-hard-a",
    "nl": "hard",
    "en": [
-    "strong, not easily devalued",
+    "hard",
     "unquestionable"
    ],
    "pos": "adj",
@@ -7694,6 +7804,24 @@
    "rank": 661
   },
   {
+   "id": "nl-president-n",
+   "nl": "president",
+   "en": [
+    "president"
+   ],
+   "pos": "noun",
+   "level": "A2",
+   "rank": 662,
+   "gender": "de",
+   "plural": "presidenten",
+   "examples": [
+    {
+     "nl": "Waar is de president?",
+     "en": "Where's the president?"
+    }
+   ]
+  },
+  {
    "id": "nl-nogal-adv",
    "nl": "nogal",
    "en": [
@@ -7830,7 +7958,8 @@
    "id": "nl-contact-n",
    "nl": "contact",
    "en": [
-    "physical contact, touching"
+    "physical contact, touching",
+    "contact"
    ],
    "pos": "noun",
    "level": "A2",
@@ -8068,6 +8197,24 @@
    ]
   },
   {
+   "id": "nl-pardon-n",
+   "nl": "pardon",
+   "en": [
+    "pardon"
+   ],
+   "pos": "noun",
+   "level": "A2",
+   "rank": 697,
+   "gender": "het",
+   "plural": "pardons",
+   "examples": [
+    {
+     "nl": "Pardon, ik heb een vraag.",
+     "en": "Excuse me, I have a question."
+    }
+   ]
+  },
+  {
    "id": "nl-controle-n",
    "nl": "controle",
    "en": [
@@ -8103,6 +8250,24 @@
     {
      "nl": "Hoe was het spel?",
      "en": "How was the game?"
+    }
+   ]
+  },
+  {
+   "id": "nl-perfect-a",
+   "nl": "perfect",
+   "en": [
+    "perfect"
+   ],
+   "pos": "adj",
+   "level": "A2",
+   "rank": 704,
+   "comparative": "perfecter",
+   "superlative": "perfectst",
+   "examples": [
+    {
+     "nl": "Het is perfect.",
+     "en": "It's perfect."
     }
    ]
   },
@@ -8447,7 +8612,7 @@
    "id": "nl-half-a",
    "nl": "half",
    "en": [
-    "half before the next whole",
+    "half",
     "the middle of that month"
    ],
    "pos": "adj",
@@ -8614,6 +8779,24 @@
     {
      "nl": "Hij had een ongeluk.",
      "en": "He had an accident."
+    }
+   ]
+  },
+  {
+   "id": "nl-frank-a",
+   "nl": "frank",
+   "en": [
+    "frank"
+   ],
+   "pos": "adj",
+   "level": "A2",
+   "rank": 763,
+   "comparative": "franker",
+   "superlative": "frankst",
+   "examples": [
+    {
+     "nl": "De Zwitserse frank is aan de euro gekoppeld.",
+     "en": "The Swiss franc is pegged to the euro."
     }
    ]
   },
@@ -9425,6 +9608,24 @@
    ]
   },
   {
+   "id": "nl-camera-n",
+   "nl": "camera",
+   "en": [
+    "camera"
+   ],
+   "pos": "noun",
+   "level": "A2",
+   "rank": 847,
+   "gender": "de",
+   "plural": "camera's",
+   "examples": [
+    {
+     "nl": "Pak de camera.",
+     "en": "Get the camera."
+    }
+   ]
+  },
+  {
    "id": "nl-blijkbaar-a",
    "nl": "blijkbaar",
    "en": [
@@ -9529,6 +9730,24 @@
    "rank": 858,
    "gender": "de",
    "plural": "peters"
+  },
+  {
+   "id": "nl-hotel-n",
+   "nl": "hotel",
+   "en": [
+    "hotel"
+   ],
+   "pos": "noun",
+   "level": "A2",
+   "rank": 867,
+   "gender": "het",
+   "plural": "hotels",
+   "examples": [
+    {
+     "nl": "Dat is een hotel.",
+     "en": "That's a hotel."
+    }
+   ]
   },
   {
    "id": "nl-droom-n",
@@ -9690,6 +9909,7 @@
    "id": "nl-meter-n",
    "nl": "meter",
    "en": [
+    "meter",
     "measurer"
    ],
    "pos": "noun",
@@ -10124,14 +10344,16 @@
    ]
   },
   {
-   "id": "nl-direct-adv",
+   "id": "nl-direct-a",
    "nl": "direct",
    "en": [
-    "immediately"
+    "direct"
    ],
-   "pos": "adv",
+   "pos": "adj",
    "level": "B1",
    "rank": 930,
+   "comparative": "directer",
+   "superlative": "directst",
    "examples": [
     {
      "nl": "Tom stierf direct.",
@@ -10275,7 +10497,7 @@
    "nl": "band",
    "en": [
     "bond",
-    "bank"
+    "band"
    ],
    "pos": "noun",
    "level": "B1",
@@ -10325,6 +10547,24 @@
     {
      "nl": "Ik reis veel.",
      "en": "I travel a lot."
+    }
+   ]
+  },
+  {
+   "id": "nl-partner-n",
+   "nl": "partner",
+   "en": [
+    "partner"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 945,
+   "gender": "de",
+   "plural": "partners",
+   "examples": [
+    {
+     "nl": "Tom is een partner.",
+     "en": "Tom is a partner."
     }
    ]
   },
@@ -10810,6 +11050,7 @@
    "id": "nl-arm-n",
    "nl": "arm",
    "en": [
+    "arm",
     "branch"
    ],
    "pos": "noun",
@@ -11306,6 +11547,7 @@
    "id": "nl-club-n",
    "nl": "club",
    "en": [
+    "club",
     "nightclub"
    ],
    "pos": "noun",
@@ -11317,6 +11559,23 @@
     {
      "nl": "Welkom bij de club.",
      "en": "Welcome to the club."
+    }
+   ]
+  },
+  {
+   "id": "nl-respect-n",
+   "nl": "respect",
+   "en": [
+    "respect"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1041,
+   "gender": "het",
+   "examples": [
+    {
+     "nl": "Ik wil respect.",
+     "en": "I want respect."
     }
    ]
   },
@@ -11371,6 +11630,24 @@
     {
      "nl": "Deze missie is topgeheim en levensgevaarlijk.",
      "en": "This mission is highly secret and extremely dangerous."
+    }
+   ]
+  },
+  {
+   "id": "nl-cool-a",
+   "nl": "cool",
+   "en": [
+    "cool"
+   ],
+   "pos": "adj",
+   "level": "B1",
+   "rank": 1045,
+   "comparative": "cooler",
+   "superlative": "coolst",
+   "examples": [
+    {
+     "nl": "Ik ben cool.",
+     "en": "I'm cool."
     }
    ]
   },
@@ -11946,7 +12223,7 @@
    "id": "nl-rot-n",
    "nl": "rot",
    "en": [
-    "a file"
+    "rot"
    ],
    "pos": "noun",
    "level": "B1",
@@ -12052,6 +12329,24 @@
     {
      "nl": "Het is een zelfmoord.",
      "en": "It's suicide."
+    }
+   ]
+  },
+  {
+   "id": "nl-computer-n",
+   "nl": "computer",
+   "en": [
+    "computer"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1100,
+   "gender": "de",
+   "plural": "computers",
+   "examples": [
+    {
+     "nl": "Ik heb een computer.",
+     "en": "I have a computer."
     }
    ]
   },
@@ -12226,6 +12521,18 @@
    ]
   },
   {
+   "id": "nl-sheriff-n",
+   "nl": "sheriff",
+   "en": [
+    "sheriff"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1120,
+   "gender": "de",
+   "plural": "sheriffs"
+  },
+  {
    "id": "nl-bekijken-v",
    "nl": "bekijken",
    "en": [
@@ -12302,6 +12609,24 @@
    ]
   },
   {
+   "id": "nl-park-n",
+   "nl": "park",
+   "en": [
+    "park"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1127,
+   "gender": "het",
+   "plural": "parken",
+   "examples": [
+    {
+     "nl": "Ga naar het park.",
+     "en": "Go to the park."
+    }
+   ]
+  },
+  {
    "id": "nl-heerlijk-a",
    "nl": "heerlijk",
    "en": [
@@ -12341,6 +12666,18 @@
      "en": "I must run."
     }
    ]
+  },
+  {
+   "id": "nl-sergeant-n",
+   "nl": "sergeant",
+   "en": [
+    "sergeant"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1135,
+   "gender": "de",
+   "plural": "sergeants"
   },
   {
    "id": "nl-volk-n",
@@ -12811,6 +13148,24 @@
    ]
   },
   {
+   "id": "nl-weekend-n",
+   "nl": "weekend",
+   "en": [
+    "weekend"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1190,
+   "gender": "het",
+   "plural": "weekenden",
+   "examples": [
+    {
+     "nl": "Ben je vrij dit weekend?",
+     "en": "Are you free this weekend?"
+    }
+   ]
+  },
+  {
    "id": "nl-bom-n",
    "nl": "bom",
    "en": [
@@ -13137,6 +13492,24 @@
    ]
   },
   {
+   "id": "nl-professor-n",
+   "nl": "professor",
+   "en": [
+    "professor"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1223,
+   "gender": "de",
+   "plural": "professoren",
+   "examples": [
+    {
+     "nl": "Ik ben professor.",
+     "en": "I am a professor."
+    }
+   ]
+  },
+  {
    "id": "nl-verschil-n",
    "nl": "verschil",
    "en": [
@@ -13322,6 +13695,24 @@
     {
      "nl": "Geef me een lift.",
      "en": "Give me a ride."
+    }
+   ]
+  },
+  {
+   "id": "nl-bob-n",
+   "nl": "bob",
+   "en": [
+    "bob"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1239,
+   "gender": "de",
+   "plural": "bobs",
+   "examples": [
+    {
+     "nl": "Tom is Bob.",
+     "en": "Tom is the designated driver."
     }
    ]
   },
@@ -13972,6 +14363,7 @@
    "id": "nl-basis-n",
    "nl": "basis",
    "en": [
+    "basis",
     "base"
    ],
    "pos": "noun",
@@ -14511,8 +14903,7 @@
    "id": "nl-test-n",
    "nl": "test",
    "en": [
-    "a test, an earthen bowl or pot",
-    "a test, a cupel"
+    "test"
    ],
    "pos": "noun",
    "level": "B1",
@@ -15064,7 +15455,7 @@
    "id": "nl-dossier-n",
    "nl": "dossier",
    "en": [
-    "file, physical collection of documentation"
+    "dossier"
    ],
    "pos": "noun",
    "level": "B1",
@@ -15076,7 +15467,8 @@
    "id": "nl-code-n",
    "nl": "code",
    "en": [
-    "book or body of laws, code of laws, lawbook"
+    "book or body of laws, code of laws, lawbook",
+    "code"
    ],
    "pos": "noun",
    "level": "B1",
@@ -15335,6 +15727,24 @@
    ]
   },
   {
+   "id": "nl-restaurant-n",
+   "nl": "restaurant",
+   "en": [
+    "restaurant"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1429,
+   "gender": "het",
+   "plural": "restaurants",
+   "examples": [
+    {
+     "nl": "Het restaurant is vol.",
+     "en": "The restaurant is full."
+    }
+   ]
+  },
+  {
    "id": "nl-toegang-n",
    "nl": "toegang",
    "en": [
@@ -15391,6 +15801,24 @@
     {
      "nl": "Mijn taak zit erop.",
      "en": "My work is done."
+    }
+   ]
+  },
+  {
+   "id": "nl-lab-n",
+   "nl": "lab",
+   "en": [
+    "lab"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1439,
+   "gender": "het",
+   "plural": "labs",
+   "examples": [
+    {
+     "nl": "Ga terug naar het lab.",
+     "en": "Go back to the lab."
     }
    ]
   },
@@ -15454,8 +15882,7 @@
    "id": "nl-video-n",
    "nl": "video",
    "en": [
-    "videotape",
-    "video recorder"
+    "video"
    ],
    "pos": "noun",
    "level": "B1",
@@ -15745,6 +16172,24 @@
     {
      "nl": "Een majoor staat boven een kapitein.",
      "en": "A major is above a captain."
+    }
+   ]
+  },
+  {
+   "id": "nl-radio-n",
+   "nl": "radio",
+   "en": [
+    "radio"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1480,
+   "gender": "de",
+   "plural": "radio's",
+   "examples": [
+    {
+     "nl": "Doe de radio aan.",
+     "en": "Turn on the radio."
     }
    ]
   },
@@ -16268,8 +16713,8 @@
    "id": "nl-top-n",
    "nl": "top",
    "en": [
-    "apex",
-    "summit"
+    "top",
+    "apex"
    ],
    "pos": "noun",
    "level": "B1",
@@ -16281,6 +16726,24 @@
     {
      "nl": "Het uitzicht vanaf de top is erg mooi.",
      "en": "The view from the summit is very nice."
+    }
+   ]
+  },
+  {
+   "id": "nl-wonder-n",
+   "nl": "wonder",
+   "en": [
+    "wonder"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1522,
+   "gender": "het",
+   "plural": "wonderen",
+   "examples": [
+    {
+     "nl": "Ik heb een wonder nodig.",
+     "en": "I need a miracle."
     }
    ]
   },
@@ -16312,6 +16775,7 @@
    "id": "nl-wind-n",
    "nl": "wind",
    "en": [
+    "wind",
     "flatulence"
    ],
    "pos": "noun",
@@ -16985,6 +17449,42 @@
     {
      "nl": "Hij spreekt Engels.",
      "en": "He speaks English."
+    }
+   ]
+  },
+  {
+   "id": "nl-start-n",
+   "nl": "start",
+   "en": [
+    "start"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1605,
+   "gender": "de",
+   "plural": "starts",
+   "examples": [
+    {
+     "nl": "Laten we van start gaan.",
+     "en": "Let's start."
+    }
+   ]
+  },
+  {
+   "id": "nl-sexy-a",
+   "nl": "sexy",
+   "en": [
+    "sexy"
+   ],
+   "pos": "adj",
+   "level": "B1",
+   "rank": 1613,
+   "comparative": "sexyer",
+   "superlative": "sexyst",
+   "examples": [
+    {
+     "nl": "Hij is sexy.",
+     "en": "He's sexy."
     }
    ]
   },
@@ -17848,6 +18348,7 @@
    "id": "nl-toilet-n",
    "nl": "toilet",
    "en": [
+    "toilet",
     "personal grooming"
    ],
    "pos": "noun",
@@ -17898,29 +18399,6 @@
     {
      "nl": "Het was logisch.",
      "en": "It made sense."
-    }
-   ]
-  },
-  {
-   "id": "nl-landen-v",
-   "nl": "landen",
-   "en": [
-    "to land from the air",
-    "to land by ship"
-   ],
-   "pos": "verb",
-   "level": "B1",
-   "rank": 1722,
-   "verb": {
-    "past": "landde",
-    "participle": "geland",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Ik ben in veel landen geweest.",
-     "en": "I've been to many countries."
     }
    ]
   },
@@ -17978,6 +18456,24 @@
     {
      "nl": "Ik heb nog duizend dingen te doen.",
      "en": "I still have a thousand things to do."
+    }
+   ]
+  },
+  {
+   "id": "nl-jury-n",
+   "nl": "jury",
+   "en": [
+    "jury"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1733,
+   "gender": "de",
+   "plural": "jury's",
+   "examples": [
+    {
+     "nl": "Ik denk niet dat de jury Tom geloofde.",
+     "en": "I don't think the jury believed Tom."
     }
    ]
   },
@@ -18240,6 +18736,24 @@
     {
      "nl": "Hij kwam, ondanks het slechte weer.",
      "en": "He came in spite of bad weather."
+    }
+   ]
+  },
+  {
+   "id": "nl-machine-n",
+   "nl": "machine",
+   "en": [
+    "machine"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1761,
+   "gender": "de",
+   "plural": "machines",
+   "examples": [
+    {
+     "nl": "Deze machine is kapot.",
+     "en": "This machine is broken."
     }
    ]
   },
@@ -18595,8 +19109,8 @@
    "id": "nl-flat-n",
    "nl": "flat",
    "en": [
-    "tower block",
-    "bungalow"
+    "flat",
+    "tower block"
    ],
    "pos": "noun",
    "level": "B1",
@@ -18664,6 +19178,24 @@
    "rank": 1805,
    "gender": "de",
    "plural": "persen"
+  },
+  {
+   "id": "nl-project-n",
+   "nl": "project",
+   "en": [
+    "project"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1806,
+   "gender": "het",
+   "plural": "projecten",
+   "examples": [
+    {
+     "nl": "Dit is mijn project.",
+     "en": "That's my plan."
+    }
+   ]
   },
   {
    "id": "nl-belang-n",
@@ -18959,6 +19491,24 @@
     {
      "nl": "Hij nam niet eens afscheid.",
      "en": "He didn't even say goodbye."
+    }
+   ]
+  },
+  {
+   "id": "nl-minister-n",
+   "nl": "minister",
+   "en": [
+    "minister"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1839,
+   "gender": "de",
+   "plural": "ministers",
+   "examples": [
+    {
+     "nl": "Is de minister van buitenlandse zaken al aangekomen?",
+     "en": "Has the Foreign Secretary arrived yet?"
     }
    ]
   },
@@ -19397,6 +19947,24 @@
    ]
   },
   {
+   "id": "nl-truck-n",
+   "nl": "truck",
+   "en": [
+    "truck"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1888,
+   "gender": "de",
+   "plural": "trucks",
+   "examples": [
+    {
+     "nl": "Tom klom in de truck.",
+     "en": "Tom climbed in the truck."
+    }
+   ]
+  },
+  {
    "id": "nl-gaaf-a",
    "nl": "gaaf",
    "en": [
@@ -19596,6 +20164,24 @@
    ]
   },
   {
+   "id": "nl-contract-n",
+   "nl": "contract",
+   "en": [
+    "contract"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1907,
+   "gender": "het",
+   "plural": "contracten",
+   "examples": [
+    {
+     "nl": "Het contract loopt gauw af.",
+     "en": "The contract will expire soon."
+    }
+   ]
+  },
+  {
    "id": "nl-flink-a",
    "nl": "flink",
    "en": [
@@ -19642,6 +20228,35 @@
     {
      "nl": "Het is ons een genoegen.",
      "en": "It's our pleasure."
+    }
+   ]
+  },
+  {
+   "id": "nl-senator-n",
+   "nl": "senator",
+   "en": [
+    "senator"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1919,
+   "gender": "de",
+   "plural": "senatoren"
+  },
+  {
+   "id": "nl-internet-n",
+   "nl": "internet",
+   "en": [
+    "Internet"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1922,
+   "gender": "het",
+   "examples": [
+    {
+     "nl": "Ik heb internet nodig.",
+     "en": "I need Internet."
     }
    ]
   },
@@ -19931,6 +20546,7 @@
    "id": "nl-tent-n",
    "nl": "tent",
    "en": [
+    "tent",
     "pavillion"
    ],
    "pos": "noun",
@@ -20002,6 +20618,24 @@
    ]
   },
   {
+   "id": "nl-alarm-n",
+   "nl": "alarm",
+   "en": [
+    "alarm"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1966,
+   "gender": "het",
+   "plural": "alarmen",
+   "examples": [
+    {
+     "nl": "Tom heeft het alarm gerepareerd.",
+     "en": "Tom fixed the alarm."
+    }
+   ]
+  },
+  {
    "id": "nl-interesse-n",
    "nl": "interesse",
    "en": [
@@ -20016,6 +20650,24 @@
     {
      "nl": "Heb je interesse?",
      "en": "Are you interested?"
+    }
+   ]
+  },
+  {
+   "id": "nl-talent-n",
+   "nl": "talent",
+   "en": [
+    "talent"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1968,
+   "gender": "het",
+   "plural": "talenten",
+   "examples": [
+    {
+     "nl": "Ik heb respect voor je talent.",
+     "en": "I respect your talent."
     }
    ]
   },
@@ -20268,7 +20920,7 @@
    "id": "nl-west-adv",
    "nl": "west",
    "en": [
-    "westwards"
+    "west"
    ],
    "pos": "adv",
    "level": "B1",
@@ -20457,6 +21109,42 @@
    ]
   },
   {
+   "id": "nl-ambulance-n",
+   "nl": "ambulance",
+   "en": [
+    "ambulance"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2014,
+   "gender": "de",
+   "plural": "ambulances",
+   "examples": [
+    {
+     "nl": "Bel een ambulance.",
+     "en": "Call an ambulance."
+    }
+   ]
+  },
+  {
+   "id": "nl-pizza-n",
+   "nl": "pizza",
+   "en": [
+    "pizza"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2017,
+   "gender": "de",
+   "plural": "pizza's",
+   "examples": [
+    {
+     "nl": "Het was pizza.",
+     "en": "It was pizza."
+    }
+   ]
+  },
+  {
    "id": "nl-ontdekken-v",
    "nl": "ontdekken",
    "en": [
@@ -20559,6 +21247,24 @@
     {
      "nl": "Tom wilde zijn fout niet toegeven.",
      "en": "Tom wouldn't admit his mistake."
+    }
+   ]
+  },
+  {
+   "id": "nl-high-a",
+   "nl": "high",
+   "en": [
+    "high"
+   ],
+   "pos": "adj",
+   "level": "B2",
+   "rank": 2028,
+   "comparative": "meer high",
+   "superlative": "meest high",
+   "examples": [
+    {
+     "nl": "Tom was duidelijk high.",
+     "en": "Tom was obviously high."
     }
    ]
   },
@@ -21325,6 +22031,24 @@
    ]
   },
   {
+   "id": "nl-job-n",
+   "nl": "job",
+   "en": [
+    "job"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2107,
+   "gender": "de",
+   "plural": "jobs",
+   "examples": [
+    {
+     "nl": "Dat is mijn job, weet je?",
+     "en": "It's my job, you know."
+    }
+   ]
+  },
+  {
    "id": "nl-niveau-n",
    "nl": "niveau",
    "en": [
@@ -21744,6 +22468,25 @@
     {
      "nl": "Tom mist een vinger.",
      "en": "Tom is missing a finger."
+    }
+   ]
+  },
+  {
+   "id": "nl-virus-n",
+   "nl": "virus",
+   "en": [
+    "virus"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2157,
+   "gender": "het",
+   "plural": "virussen",
+   "irregularPlural": true,
+   "examples": [
+    {
+     "nl": "Het is geen virus.",
+     "en": "It isn't a virus."
     }
    ]
   },
@@ -22215,6 +22958,7 @@
    "id": "nl-gas-n",
    "nl": "gas",
    "en": [
+    "gas",
     "liquefied petroleum gas"
    ],
    "pos": "noun",
@@ -23424,6 +24168,24 @@
    ]
   },
   {
+   "id": "nl-alibi-n",
+   "nl": "alibi",
+   "en": [
+    "alibi"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2335,
+   "gender": "het",
+   "plural": "alibi's",
+   "examples": [
+    {
+     "nl": "Tom heeft een alibi.",
+     "en": "Tom has an alibi."
+    }
+   ]
+  },
+  {
    "id": "nl-minstens-adv",
    "nl": "minstens",
    "en": [
@@ -23436,6 +24198,24 @@
     {
      "nl": "Minstens 100 mensen waren aanwezig.",
      "en": "At least 100 people attended."
+    }
+   ]
+  },
+  {
+   "id": "nl-whisky-n",
+   "nl": "whisky",
+   "en": [
+    "whisky"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2339,
+   "gender": "de",
+   "plural": "whisky's",
+   "examples": [
+    {
+     "nl": "Ik heb een fles whisky.",
+     "en": "I have a bottle of whiskey."
     }
    ]
   },
@@ -23605,6 +24385,24 @@
    ]
   },
   {
+   "id": "nl-fan-n",
+   "nl": "fan",
+   "en": [
+    "fan"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2356,
+   "gender": "de",
+   "plural": "fans",
+   "examples": [
+    {
+     "nl": "Ik ben een grote fan.",
+     "en": "I'm a big fan."
+    }
+   ]
+  },
+  {
    "id": "nl-materiaal-n",
    "nl": "materiaal",
    "en": [
@@ -23639,6 +24437,22 @@
     {
      "nl": "Heel hartelijk bedankt.",
      "en": "Thanks very much."
+    }
+   ]
+  },
+  {
+   "id": "nl-online-a",
+   "nl": "online",
+   "en": [
+    "online"
+   ],
+   "pos": "adj",
+   "level": "B2",
+   "rank": 2362,
+   "examples": [
+    {
+     "nl": "Ik ben online.",
+     "en": "I am online."
     }
    ]
   },
@@ -24113,6 +24927,25 @@
     {
      "nl": "Ik wil me op de toekomst richten.",
      "en": "I want to focus on the future."
+    }
+   ]
+  },
+  {
+   "id": "nl-wolf-n",
+   "nl": "wolf",
+   "en": [
+    "wolf"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2422,
+   "gender": "de",
+   "plural": "wolven",
+   "irregularPlural": true,
+   "examples": [
+    {
+     "nl": "Is het een wolf?",
+     "en": "Is it a wolf?"
     }
    ]
   },
@@ -24920,7 +25753,7 @@
    "id": "nl-training-n",
    "nl": "training",
    "en": [
-    "a training session"
+    "training"
    ],
    "pos": "noun",
    "level": "B2",
@@ -25066,7 +25899,7 @@
    "id": "nl-alcohol-n",
    "nl": "alcohol",
    "en": [
-    "alcoholic beverages, collectively"
+    "alcohol"
    ],
    "pos": "noun",
    "level": "B2",
@@ -25098,7 +25931,7 @@
    "id": "nl-model-n",
    "nl": "model",
    "en": [
-    "shape, the proper arrangement of something"
+    "model"
    ],
    "pos": "noun",
    "level": "B2",
@@ -25420,7 +26253,8 @@
    "id": "nl-fort-n",
    "nl": "fort",
    "en": [
-    "castle"
+    "castle",
+    "fort"
    ],
    "pos": "noun",
    "level": "B2",
@@ -25827,6 +26661,7 @@
    "id": "nl-route-n",
    "nl": "route",
    "en": [
+    "route",
     "road"
    ],
    "pos": "noun",
@@ -26770,6 +27605,24 @@
    ]
   },
   {
+   "id": "nl-constant-a",
+   "nl": "constant",
+   "en": [
+    "constant"
+   ],
+   "pos": "adj",
+   "level": "B2",
+   "rank": 2715,
+   "comparative": "constanter",
+   "superlative": "constantst",
+   "examples": [
+    {
+     "nl": "Tom liegt constant.",
+     "en": "Tom is always lying."
+    }
+   ]
+  },
+  {
    "id": "nl-wanhopig-a",
    "nl": "wanhopig",
    "en": [
@@ -26822,6 +27675,18 @@
      "en": "You're worthless."
     }
    ]
+  },
+  {
+   "id": "nl-doctor-n",
+   "nl": "doctor",
+   "en": [
+    "doctor"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2726,
+   "gender": "de",
+   "plural": "doctoren"
   },
   {
    "id": "nl-ongerust-a",
@@ -27156,6 +28021,18 @@
      "en": "Is the snake alive?"
     }
    ]
+  },
+  {
+   "id": "nl-amen-n",
+   "nl": "amen",
+   "en": [
+    "amen"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2761,
+   "gender": "het",
+   "plural": "amens"
   },
   {
    "id": "nl-opdagen-v",
@@ -28006,7 +28883,7 @@
    "nl": "pen",
    "en": [
     "a long feather of a bird",
-    "pin"
+    "pen"
    ],
    "pos": "noun",
    "level": "B2",
@@ -28428,6 +29305,41 @@
    ]
   },
   {
+   "id": "nl-tunnel-n",
+   "nl": "tunnel",
+   "en": [
+    "tunnel"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2898,
+   "gender": "de",
+   "plural": "tunnels",
+   "examples": [
+    {
+     "nl": "Tom ging door de tunnel.",
+     "en": "Tom went through the tunnel."
+    }
+   ]
+  },
+  {
+   "id": "nl-rock-n",
+   "nl": "rock",
+   "en": [
+    "rock"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2899,
+   "gender": "de",
+   "examples": [
+    {
+     "nl": "Ik hou van rock.",
+     "en": "I like rock."
+    }
+   ]
+  },
+  {
    "id": "nl-verstandig-a",
    "nl": "verstandig",
    "en": [
@@ -28612,6 +29524,24 @@
    "gender": "het"
   },
   {
+   "id": "nl-interview-n",
+   "nl": "interview",
+   "en": [
+    "interview"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2920,
+   "gender": "het",
+   "plural": "interviews",
+   "examples": [
+    {
+     "nl": "Hoe was uw interview?",
+     "en": "How was your interview?"
+    }
+   ]
+  },
+  {
    "id": "nl-middel-n",
    "nl": "middel",
    "en": [
@@ -28653,7 +29583,8 @@
    "id": "nl-podium-n",
    "nl": "podium",
    "en": [
-    "stage"
+    "stage",
+    "podium"
    ],
    "pos": "noun",
    "level": "B2",
@@ -28672,7 +29603,7 @@
    "id": "nl-effect-n",
    "nl": "effect",
    "en": [
-    "security, notably bond or stock",
+    "effect",
     "spin"
    ],
    "pos": "noun",
@@ -29293,6 +30224,25 @@
    ]
   },
   {
+   "id": "nl-museum-n",
+   "nl": "museum",
+   "en": [
+    "museum"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2992,
+   "gender": "het",
+   "plural": "musea",
+   "irregularPlural": true,
+   "examples": [
+    {
+     "nl": "Waar is het museum?",
+     "en": "Where's the museum?"
+    }
+   ]
+  },
+  {
    "id": "nl-handtekening-n",
    "nl": "handtekening",
    "en": [
@@ -29375,6 +30325,24 @@
    "rank": 3002,
    "gender": "de",
    "plural": "vampiers"
+  },
+  {
+   "id": "nl-expert-n",
+   "nl": "expert",
+   "en": [
+    "expert"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3005,
+   "gender": "de",
+   "plural": "experts",
+   "examples": [
+    {
+     "nl": "Ik ben geen expert.",
+     "en": "I'm no expert."
+    }
+   ]
   },
   {
    "id": "nl-zegen-n",
@@ -29527,6 +30495,18 @@
      "en": "Tom is my grandfather."
     }
    ]
+  },
+  {
+   "id": "nl-junior-n",
+   "nl": "junior",
+   "en": [
+    "junior"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3028,
+   "gender": "de",
+   "plural": "junioren"
   },
   {
    "id": "nl-voorzitter-n",
@@ -30215,6 +31195,23 @@
    ]
   },
   {
+   "id": "nl-stress-n",
+   "nl": "stress",
+   "en": [
+    "stress"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3104,
+   "gender": "de",
+   "examples": [
+    {
+     "nl": "Tom kan niet met stress omgaan.",
+     "en": "Tom is unable to cope with stress."
+    }
+   ]
+  },
+  {
    "id": "nl-bijbel-n",
    "nl": "bijbel",
    "en": [
@@ -30472,7 +31469,8 @@
    "id": "nl-demon-n",
    "nl": "demon",
    "en": [
-    "genius"
+    "genius",
+    "demon"
    ],
    "pos": "noun",
    "level": "B2",
@@ -30766,6 +31764,7 @@
    "id": "nl-chaos-n",
    "nl": "chaos",
    "en": [
+    "chaos",
     "primordial disorder"
    ],
    "pos": "noun",
@@ -31349,7 +32348,7 @@
    "id": "nl-tank-n",
    "nl": "tank",
    "en": [
-    "a muscular, physically imposing man"
+    "tank"
    ],
    "pos": "noun",
    "level": "B2",
@@ -31610,6 +32609,24 @@
    ]
   },
   {
+   "id": "nl-correct-a",
+   "nl": "correct",
+   "en": [
+    "correct"
+   ],
+   "pos": "adj",
+   "level": "B2",
+   "rank": 3269,
+   "comparative": "correcter",
+   "superlative": "correctst",
+   "examples": [
+    {
+     "nl": "Ja, dat is correct.",
+     "en": "Yes. That's right."
+    }
+   ]
+  },
+  {
    "id": "nl-nood-n",
    "nl": "nood",
    "en": [
@@ -31676,6 +32693,17 @@
      "en": "How do I connect to your Wi-Fi?"
     }
    ]
+  },
+  {
+   "id": "nl-info-n",
+   "nl": "info",
+   "en": [
+    "info"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3283,
+   "gender": "de"
   },
   {
    "id": "nl-periode-n",
@@ -31970,6 +32998,24 @@
     {
      "nl": "Tom zal niet langskomen.",
      "en": "Tom won't come by."
+    }
+   ]
+  },
+  {
+   "id": "nl-coma-n",
+   "nl": "coma",
+   "en": [
+    "coma"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3319,
+   "gender": "het",
+   "plural": "coma's",
+   "examples": [
+    {
+     "nl": "Tom is net uit zijn coma geraakt.",
+     "en": "Tom just came out of his coma."
     }
    ]
   },
@@ -32412,6 +33458,25 @@
    ]
   },
   {
+   "id": "nl-zone-n",
+   "nl": "zone",
+   "en": [
+    "zone"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3362,
+   "gender": "de",
+   "plural": "zonen",
+   "irregularPlural": true,
+   "examples": [
+    {
+     "nl": "Roken is verboden in deze zone.",
+     "en": "Smoking is forbidden in this area."
+    }
+   ]
+  },
+  {
    "id": "nl-loslaten-v",
    "nl": "loslaten",
    "en": [
@@ -32590,6 +33655,7 @@
    "id": "nl-status-n",
    "nl": "status",
    "en": [
+    "status",
     "medical file"
    ],
    "pos": "noun",
@@ -32851,7 +33917,7 @@
    "id": "nl-euro-n",
    "nl": "euro",
    "en": [
-    "a euro"
+    "euro"
    ],
    "pos": "noun",
    "level": "B2",
@@ -32974,6 +34040,24 @@
    ]
   },
   {
+   "id": "nl-check-n",
+   "nl": "check",
+   "en": [
+    "check"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3442,
+   "gender": "de",
+   "plural": "checks",
+   "examples": [
+    {
+     "nl": "Check je woordenboek.",
+     "en": "Check your dictionary."
+    }
+   ]
+  },
+  {
    "id": "nl-titel-n",
    "nl": "titel",
    "en": [
@@ -32988,6 +34072,23 @@
     {
      "nl": "Geef een titel aan deze foto.",
      "en": "Caption this photo."
+    }
+   ]
+  },
+  {
+   "id": "nl-privacy-n",
+   "nl": "privacy",
+   "en": [
+    "privacy"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3444,
+   "gender": "de",
+   "examples": [
+    {
+     "nl": "Ik stel mijn privacy op prijs.",
+     "en": "I value my privacy."
     }
    ]
   },
@@ -33064,6 +34165,24 @@
     {
      "nl": "Waar is mijn dagboek?",
      "en": "Where's my diary?"
+    }
+   ]
+  },
+  {
+   "id": "nl-tape-n",
+   "nl": "tape",
+   "en": [
+    "tape"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3453,
+   "gender": "de",
+   "plural": "tapes",
+   "examples": [
+    {
+     "nl": "We moeten deze tape vernietigen.",
+     "en": "We need to destroy this tape."
     }
    ]
   },
@@ -33156,6 +34275,7 @@
    "id": "nl-crisis-n",
    "nl": "crisis",
    "en": [
+    "crisis",
     "financial crisis"
    ],
    "pos": "noun",
@@ -33288,8 +34408,8 @@
    "id": "nl-lust-n",
    "nl": "lust",
    "en": [
-    "object of desire",
-    "pleasure"
+    "lust",
+    "object of desire"
    ],
    "pos": "noun",
    "level": "B2",
@@ -33702,6 +34822,24 @@
    "plural": "voertuigen"
   },
   {
+   "id": "nl-september-n",
+   "nl": "september",
+   "en": [
+    "September"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3514,
+   "gender": "de",
+   "plural": "septembers",
+   "examples": [
+    {
+     "nl": "In Europa beginnen de scholen in september.",
+     "en": "School starts in September in Europe."
+    }
+   ]
+  },
+  {
    "id": "nl-link-n",
    "nl": "link",
    "en": [
@@ -33804,6 +34942,42 @@
     {
      "nl": "Is dat een bekentenis?",
      "en": "Is that a confession?"
+    }
+   ]
+  },
+  {
+   "id": "nl-laptop-n",
+   "nl": "laptop",
+   "en": [
+    "laptop"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3530,
+   "gender": "de",
+   "plural": "laptops",
+   "examples": [
+    {
+     "nl": "Ik heb een laptop.",
+     "en": "I have a laptop."
+    }
+   ]
+  },
+  {
+   "id": "nl-robot-n",
+   "nl": "robot",
+   "en": [
+    "robot"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3534,
+   "gender": "de",
+   "plural": "robots",
+   "examples": [
+    {
+     "nl": "Hij heeft een robot gemaakt.",
+     "en": "He made a robot."
     }
    ]
   },
@@ -34236,6 +35410,41 @@
    ]
   },
   {
+   "id": "nl-plastic-n",
+   "nl": "plastic",
+   "en": [
+    "plastic"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3594,
+   "gender": "het",
+   "examples": [
+    {
+     "nl": "Dat is plastic.",
+     "en": "That's plastic."
+    }
+   ]
+  },
+  {
+   "id": "nl-experiment-n",
+   "nl": "experiment",
+   "en": [
+    "experiment"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3595,
+   "gender": "het",
+   "plural": "experimenten",
+   "examples": [
+    {
+     "nl": "Het experiment moet beginnen.",
+     "en": "The experiment has to begin."
+    }
+   ]
+  },
+  {
    "id": "nl-morgenvroeg-adv",
    "nl": "morgenvroeg",
    "en": [
@@ -34244,6 +35453,16 @@
    "pos": "adv",
    "level": "B2",
    "rank": 3597
+  },
+  {
+   "id": "nl-undercover-a",
+   "nl": "undercover",
+   "en": [
+    "undercover"
+   ],
+   "pos": "adj",
+   "level": "B2",
+   "rank": 3598
   },
   {
    "id": "nl-commando-n",
@@ -34455,6 +35674,24 @@
    ]
   },
   {
+   "id": "nl-concert-n",
+   "nl": "concert",
+   "en": [
+    "concert"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3624,
+   "gender": "het",
+   "plural": "concerten",
+   "examples": [
+    {
+     "nl": "Hoe was het concert?",
+     "en": "How was the concert?"
+    }
+   ]
+  },
+  {
    "id": "nl-vermijden-v",
    "nl": "vermijden",
    "en": [
@@ -34580,6 +35817,24 @@
     {
      "nl": "Ik betaalde contant.",
      "en": "I paid in cash."
+    }
+   ]
+  },
+  {
+   "id": "nl-testament-n",
+   "nl": "testament",
+   "en": [
+    "testament"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3645,
+   "gender": "het",
+   "plural": "testamenten",
+   "examples": [
+    {
+     "nl": "Hij stierf zonder een testament opgesteld te hebben.",
+     "en": "He died without having made a will."
     }
    ]
   },
@@ -34844,6 +36099,37 @@
    ]
   },
   {
+   "id": "nl-timing-n",
+   "nl": "timing",
+   "en": [
+    "timing"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3681,
+   "gender": "de",
+   "plural": "timings",
+   "examples": [
+    {
+     "nl": "De timing is perfect.",
+     "en": "The timing is perfect."
+    }
+   ]
+  },
+  {
+   "id": "nl-penis-n",
+   "nl": "penis",
+   "en": [
+    "penis"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3684,
+   "gender": "de",
+   "plural": "penissen",
+   "irregularPlural": true
+  },
+  {
    "id": "nl-benieuwd-a",
    "nl": "benieuwd",
    "en": [
@@ -34959,7 +36245,7 @@
    "nl": "ton",
    "en": [
     "barrel",
-    "a large amount"
+    "ton"
    ],
    "pos": "noun",
    "level": "B2",
@@ -35516,7 +36802,7 @@
    "id": "nl-drama-n",
    "nl": "drama",
    "en": [
-    "something tragic, a tragedy"
+    "drama"
    ],
    "pos": "noun",
    "level": "B2",
@@ -35624,1362 +36910,6 @@
     {
      "nl": "Kan ik deze plant eten?",
      "en": "Can I eat this plant?"
-    }
-   ]
-  },
-  {
-   "id": "nl-staren-v",
-   "nl": "staren",
-   "en": [
-    "to gaze, stare"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3772,
-   "verb": {
-    "past": "staarde",
-    "participle": "gestaard",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Stop met staren.",
-     "en": "Stop gawking."
-    }
-   ]
-  },
-  {
-   "id": "nl-huren-v",
-   "nl": "huren",
-   "en": [
-    "to rent, hire"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3777,
-   "verb": {
-    "past": "huurde",
-    "participle": "gehuurd",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Ik moest een auto huren.",
-     "en": "I had to rent a car."
-    }
-   ]
-  },
-  {
-   "id": "nl-misdrijf-n",
-   "nl": "misdrijf",
-   "en": [
-    "felony",
-    "crime"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3778,
-   "gender": "het",
-   "plural": "misdrijven",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Ik ging naar de plaats van het misdrijf.",
-     "en": "I went to the scene of the crime."
-    }
-   ]
-  },
-  {
-   "id": "nl-overlijden-v",
-   "nl": "overlijden",
-   "en": [
-    "to die"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3780,
-   "verb": {
-    "past": "overleed",
-    "participle": "overleden",
-    "irregular": true,
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Tien jaar zijn voorbijgegaan sinds zijn overlijden.",
-     "en": "Ten years have passed since he died."
-    }
-   ]
-  },
-  {
-   "id": "nl-douchen-v",
-   "nl": "douchen",
-   "en": [
-    "to shower"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3785,
-   "verb": {
-    "past": "douchte",
-    "participle": "gedoucht",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Ik ga douchen.",
-     "en": "I'll take a shower."
-    }
-   ]
-  },
-  {
-   "id": "nl-vloot-n",
-   "nl": "vloot",
-   "en": [
-    "fleet"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3802,
-   "gender": "de",
-   "plural": "vloten",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "De Romeinen bouwden een vloot van driehonderd schepen.",
-     "en": "The Romans built a fleet of three hundred ships."
-    }
-   ]
-  },
-  {
-   "id": "nl-uiterlijk-n",
-   "nl": "uiterlijk",
-   "en": [
-    "appearance"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3803,
-   "gender": "het",
-   "plural": "uiterlijken",
-   "examples": [
-    {
-     "nl": "Dat meisje heeft haar uiterlijk veranderd.",
-     "en": "This girl changed her look."
-    }
-   ]
-  },
-  {
-   "id": "nl-doof-a",
-   "nl": "doof",
-   "en": [
-    "deaf"
-   ],
-   "pos": "adj",
-   "level": "B2",
-   "rank": 3808,
-   "comparative": "dover",
-   "superlative": "doofst",
-   "examples": [
-    {
-     "nl": "Tom is doof.",
-     "en": "Tom's deaf."
-    }
-   ]
-  },
-  {
-   "id": "nl-terugbrengen-v",
-   "nl": "terugbrengen",
-   "en": [
-    "to bring back, return",
-    "to reduce"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3811,
-   "verb": {
-    "separable": true,
-    "past": "bracht terug",
-    "participle": "teruggebracht",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Ik moet dit boek vandaag terugbrengen.",
-     "en": "I have to return this book today."
-    }
-   ]
-  },
-  {
-   "id": "nl-schamen-v",
-   "nl": "schamen",
-   "en": [
-    "to be ashamed"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3812,
-   "verb": {
-    "past": "schaamde",
-    "participle": "geschaamd",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Tom zou zich moeten schamen.",
-     "en": "Tom should be ashamed."
-    }
-   ]
-  },
-  {
-   "id": "nl-wetenschapper-n",
-   "nl": "wetenschapper",
-   "en": [
-    "scientist",
-    "scholar"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3819,
-   "gender": "de",
-   "plural": "wetenschappers",
-   "examples": [
-    {
-     "nl": "Hij is wetenschapper.",
-     "en": "He is a scientist."
-    }
-   ]
-  },
-  {
-   "id": "nl-weduwe-n",
-   "nl": "weduwe",
-   "en": [
-    "widow, surviving wife"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3820,
-   "gender": "de",
-   "plural": "weduwen",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Maria is weduwe.",
-     "en": "Mary is a widow."
-    }
-   ]
-  },
-  {
-   "id": "nl-kanaal-n",
-   "nl": "kanaal",
-   "en": [
-    "canal",
-    "channel"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3821,
-   "gender": "het",
-   "plural": "kanalen",
-   "irregularPlural": true
-  },
-  {
-   "id": "nl-watje-n",
-   "nl": "watje",
-   "en": [
-    "a piece of cotton wool"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3823,
-   "gender": "het",
-   "plural": "watjes",
-   "examples": [
-    {
-     "nl": "Wees niet zo'n watje.",
-     "en": "Don't be such a wimp."
-    }
-   ]
-  },
-  {
-   "id": "nl-versterking-n",
-   "nl": "versterking",
-   "en": [
-    "strengthening",
-    "amplification"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3827,
-   "gender": "de",
-   "plural": "versterkingen",
-   "examples": [
-    {
-     "nl": "Laat ons versterking vragen.",
-     "en": "Let's call for backup."
-    }
-   ]
-  },
-  {
-   "id": "nl-voorraad-n",
-   "nl": "voorraad",
-   "en": [
-    "stock"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3828,
-   "gender": "de",
-   "plural": "voorraden",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Hoeveel heb je er op voorraad?",
-     "en": "How many do you have in stock?"
-    }
-   ]
-  },
-  {
-   "id": "nl-legaal-a",
-   "nl": "legaal",
-   "en": [
-    "legal"
-   ],
-   "pos": "adj",
-   "level": "B2",
-   "rank": 3829,
-   "comparative": "legaler",
-   "superlative": "legaalst",
-   "examples": [
-    {
-     "nl": "Is dit eigenlijk legaal?",
-     "en": "Is this even legal?"
-    }
-   ]
-  },
-  {
-   "id": "nl-vee-n",
-   "nl": "vee",
-   "en": [
-    "livestock"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3834,
-   "gender": "het",
-   "examples": [
-    {
-     "nl": "Al hun vee is vet.",
-     "en": "Their cattle are all fat."
-    }
-   ]
-  },
-  {
-   "id": "nl-metro-n",
-   "nl": "metro",
-   "en": [
-    "an underground-railway train"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3835,
-   "gender": "de",
-   "plural": "metro's",
-   "examples": [
-    {
-     "nl": "Laten we met de metro gaan.",
-     "en": "Let's take the subway."
-    }
-   ]
-  },
-  {
-   "id": "nl-afhankelijk-a",
-   "nl": "afhankelijk",
-   "en": [
-    "dependent",
-    "depending"
-   ],
-   "pos": "adj",
-   "level": "B2",
-   "rank": 3836,
-   "comparative": "afhankelijker",
-   "superlative": "afhankelijkst",
-   "examples": [
-    {
-     "nl": "Tom is een afhankelijk persoon.",
-     "en": "Tom is a dependable person."
-    }
-   ]
-  },
-  {
-   "id": "nl-speler-n",
-   "nl": "speler",
-   "en": [
-    "a player, someone who plays a game",
-    "a device to play music"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3839,
-   "gender": "de",
-   "plural": "spelers",
-   "examples": [
-    {
-     "nl": "Tom is de beste speler van het team.",
-     "en": "Tom is the best player on the team."
-    }
-   ]
-  },
-  {
-   "id": "nl-gereedschap-n",
-   "nl": "gereedschap",
-   "en": [
-    "tool"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3840,
-   "gender": "het",
-   "plural": "gereedschappen",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "We maken gereedschap.",
-     "en": "We make tools."
-    }
-   ]
-  },
-  {
-   "id": "nl-misbruik-n",
-   "nl": "misbruik",
-   "en": [
-    "abuse"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3842,
-   "gender": "het",
-   "examples": [
-    {
-     "nl": "Tom maakt misbruik van je.",
-     "en": "Tom is taking advantage of you."
-    }
-   ]
-  },
-  {
-   "id": "nl-aflevering-n",
-   "nl": "aflevering",
-   "en": [
-    "delivery",
-    "issue"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3844,
-   "gender": "de",
-   "plural": "afleveringen",
-   "examples": [
-    {
-     "nl": "Wil je nog een aflevering kijken?",
-     "en": "Do you want to watch another episode?"
-    }
-   ]
-  },
-  {
-   "id": "nl-chip-n",
-   "nl": "chip",
-   "en": [
-    "a chip"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3845,
-   "gender": "de",
-   "plural": "chips"
-  },
-  {
-   "id": "nl-japanse-n",
-   "nl": "japanse",
-   "en": [
-    "a Japanese woman"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3850,
-   "gender": "de",
-   "plural": "Japansen",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Japanse huizen zijn klein.",
-     "en": "Japanese houses are small."
-    }
-   ]
-  },
-  {
-   "id": "nl-reclame-n",
-   "nl": "reclame",
-   "en": [
-    "publicity",
-    "advertisement or ads"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3851,
-   "gender": "de",
-   "plural": "reclames",
-   "examples": [
-    {
-     "nl": "Ik hou van die reclame.",
-     "en": "I love that commercial."
-    }
-   ]
-  },
-  {
-   "id": "nl-combinatie-n",
-   "nl": "combinatie",
-   "en": [
-    "combination"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3852,
-   "gender": "de",
-   "plural": "combinaties",
-   "examples": [
-    {
-     "nl": "Dat is geen goede combinatie.",
-     "en": "That isn't a good combination."
-    }
-   ]
-  },
-  {
-   "id": "nl-durven-v",
-   "nl": "durven",
-   "en": [
-    "to dare"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3854,
-   "verb": {
-    "past": "durfde",
-    "participle": "gedurfd",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   }
-  },
-  {
-   "id": "nl-goedmaken-v",
-   "nl": "goedmaken",
-   "en": [
-    "expiate, to redress",
-    "atone, to make good"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3856,
-   "verb": {
-    "separable": true,
-    "past": "maakte goed",
-    "participle": "goedgemaakt",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   }
-  },
-  {
-   "id": "nl-verkrachting-n",
-   "nl": "verkrachting",
-   "en": [
-    "rape"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3858,
-   "gender": "de",
-   "plural": "verkrachtingen"
-  },
-  {
-   "id": "nl-website-n",
-   "nl": "website",
-   "en": [
-    "web site"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3865,
-   "gender": "de",
-   "plural": "websites",
-   "examples": [
-    {
-     "nl": "Ik heb een website.",
-     "en": "I have a website."
-    }
-   ]
-  },
-  {
-   "id": "nl-firma-n",
-   "nl": "firma",
-   "en": [
-    "a large-scale company, a firm"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3866,
-   "gender": "de",
-   "plural": "firma's",
-   "examples": [
-    {
-     "nl": "Tom werkt voor een grote firma.",
-     "en": "Tom works for a large company."
-    }
-   ]
-  },
-  {
-   "id": "nl-bloeden-v",
-   "nl": "bloeden",
-   "en": [
-    "to bleed"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3867,
-   "verb": {
-    "past": "bloedde",
-    "participle": "gebloed",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Ik ben aan het bloeden.",
-     "en": "I'm bleeding."
-    }
-   ]
-  },
-  {
-   "id": "nl-schop-n",
-   "nl": "schop",
-   "en": [
-    "a shovel, a spade, a digging tool"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3868,
-   "gender": "de",
-   "plural": "schoppen",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Schop de bal.",
-     "en": "Kick the ball."
-    }
-   ]
-  },
-  {
-   "id": "nl-wiskunde-n",
-   "nl": "wiskunde",
-   "en": [
-    "mathematics"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3869,
-   "gender": "de",
-   "examples": [
-    {
-     "nl": "Ik haat wiskunde.",
-     "en": "I hate math."
-    }
-   ]
-  },
-  {
-   "id": "nl-nest-n",
-   "nl": "nest",
-   "en": [
-    "a nest",
-    "one's bed"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3873,
-   "gender": "het",
-   "plural": "nesten",
-   "examples": [
-    {
-     "nl": "Vogels keren altijd terug naar hun nest.",
-     "en": "Birds always return to their nests."
-    }
-   ]
-  },
-  {
-   "id": "nl-kostuum-n",
-   "nl": "kostuum",
-   "en": [
-    "a costume, especially"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3874,
-   "gender": "het",
-   "plural": "kostuums",
-   "examples": [
-    {
-     "nl": "Tom droeg een kostuum.",
-     "en": "Tom was wearing a costume."
-    }
-   ]
-  },
-  {
-   "id": "nl-hoofdinspecteur-n",
-   "nl": "hoofdinspecteur",
-   "en": [
-    "chief inspector"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3875,
-   "gender": "de",
-   "plural": "hoofdinspecteurs"
-  },
-  {
-   "id": "nl-standaard-n",
-   "nl": "standaard",
-   "en": [
-    "standard",
-    "a banner, a standard"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3877,
-   "gender": "de",
-   "plural": "standaarden",
-   "examples": [
-    {
-     "nl": "Ik wil standaard Engels leren.",
-     "en": "I want to learn standard English."
-    }
-   ]
-  },
-  {
-   "id": "nl-stok-n",
-   "nl": "stok",
-   "en": [
-    "stick, natural or artificial",
-    "cane"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3879,
-   "gender": "de",
-   "plural": "stokken",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Wat doe je met die stok?",
-     "en": "What are you doing with that stick?"
-    }
-   ]
-  },
-  {
-   "id": "nl-blaas-n",
-   "nl": "blaas",
-   "en": [
-    "bladder"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3880,
-   "gender": "de",
-   "plural": "blazen",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Ik heb een zwakke blaas.",
-     "en": "I have a weak bladder."
-    }
-   ]
-  },
-  {
-   "id": "nl-afspreken-v",
-   "nl": "afspreken",
-   "en": [
-    "to agree",
-    "to make an appointment"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3885,
-   "verb": {
-    "separable": true,
-    "past": "sprak af",
-    "participle": "afgesproken",
-    "irregular": true,
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Laten we gewoon hier afspreken.",
-     "en": "Let's just meet here."
-    }
-   ]
-  },
-  {
-   "id": "nl-hoofdkwartier-n",
-   "nl": "hoofdkwartier",
-   "en": [
-    "headquarters"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3886,
-   "gender": "het",
-   "plural": "hoofdkwartieren",
-   "examples": [
-    {
-     "nl": "Ons nieuw hoofdkwartier is in Tokio.",
-     "en": "Our new head office is in Tokyo."
-    }
-   ]
-  },
-  {
-   "id": "nl-herone-n",
-   "nl": "heroïne",
-   "en": [
-    "heroin"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3887,
-   "gender": "de",
-   "examples": [
-    {
-     "nl": "Tom stierf door een overdosis heroïne.",
-     "en": "Tom died of a heroin overdose."
-    }
-   ]
-  },
-  {
-   "id": "nl-vermoeden-v",
-   "nl": "vermoeden",
-   "en": [
-    "to suppose",
-    "to suspect"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3894,
-   "verb": {
-    "past": "vermoedde",
-    "participle": "vermoed",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Ik had geen enkel vermoeden.",
-     "en": "I didn't suspect a thing."
-    }
-   ]
-  },
-  {
-   "id": "nl-hoofdstuk-n",
-   "nl": "hoofdstuk",
-   "en": [
-    "chapter"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3897,
-   "gender": "het",
-   "plural": "hoofdstukken",
-   "irregularPlural": true
-  },
-  {
-   "id": "nl-bemoeien-v",
-   "nl": "bemoeien",
-   "en": [
-    "to interfere"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3901,
-   "verb": {
-    "past": "bemoeide",
-    "participle": "bemoeid",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Daarmee zal ik me niet bemoeien.",
-     "en": "I won't interfere."
-    }
-   ]
-  },
-  {
-   "id": "nl-kern-n",
-   "nl": "kern",
-   "en": [
-    "nucleus, physical core",
-    "nuclear -"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3902,
-   "gender": "de",
-   "plural": "kernen",
-   "examples": [
-    {
-     "nl": "Daar zit een kern van waarheid in.",
-     "en": "There's some truth in that."
-    }
-   ]
-  },
-  {
-   "id": "nl-bagage-n",
-   "nl": "bagage",
-   "en": [
-    "baggage"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3905,
-   "gender": "de",
-   "examples": [
-    {
-     "nl": "Waar is mijn bagage?",
-     "en": "Where is my luggage?"
-    }
-   ]
-  },
-  {
-   "id": "nl-begrip-n",
-   "nl": "begrip",
-   "en": [
-    "understanding",
-    "notion"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3911,
-   "gender": "het",
-   "plural": "begrippen",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Bedankt voor uw begrip.",
-     "en": "Thank you for understanding."
-    }
-   ]
-  },
-  {
-   "id": "nl-sowieso-adv",
-   "nl": "sowieso",
-   "en": [
-    "anyhow, in any case, anyway"
-   ],
-   "pos": "adv",
-   "level": "B2",
-   "rank": 3912,
-   "examples": [
-    {
-     "nl": "Ze weten het sowieso.",
-     "en": "They definitely know."
-    }
-   ]
-  },
-  {
-   "id": "nl-braaf-a",
-   "nl": "braaf",
-   "en": [
-    "well-behaved"
-   ],
-   "pos": "adj",
-   "level": "B2",
-   "rank": 3913,
-   "comparative": "braver",
-   "superlative": "braafst",
-   "examples": [
-    {
-     "nl": "Ik zal een braaf meisje zijn.",
-     "en": "I'll be a good girl."
-    }
-   ]
-  },
-  {
-   "id": "nl-opsluiten-v",
-   "nl": "opsluiten",
-   "en": [
-    "to lock in"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3914,
-   "verb": {
-    "separable": true,
-    "past": "sloot op",
-    "participle": "opgesloten",
-    "irregular": true,
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   }
-  },
-  {
-   "id": "nl-misverstand-n",
-   "nl": "misverstand",
-   "en": [
-    "misunderstanding"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3916,
-   "gender": "het",
-   "plural": "misverstanden",
-   "examples": [
-    {
-     "nl": "Het is een misverstand.",
-     "en": "It's a misunderstanding."
-    }
-   ]
-  },
-  {
-   "id": "nl-doodsoorzaak-n",
-   "nl": "doodsoorzaak",
-   "en": [
-    "cause of death"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3922,
-   "gender": "de",
-   "plural": "doodsoorzaken",
-   "irregularPlural": true
-  },
-  {
-   "id": "nl-gewoonte-n",
-   "nl": "gewoonte",
-   "en": [
-    "wont",
-    "custom"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3925,
-   "gender": "de",
-   "plural": "gewoonten",
-   "irregularPlural": true
-  },
-  {
-   "id": "nl-nederlandse-n",
-   "nl": "nederlandse",
-   "en": [
-    "Dutchwoman, Dutch female"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3926,
-   "gender": "de"
-  },
-  {
-   "id": "nl-cirkel-n",
-   "nl": "cirkel",
-   "en": [
-    "circle"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3927,
-   "gender": "de",
-   "plural": "cirkels",
-   "examples": [
-    {
-     "nl": "Teken een cirkel.",
-     "en": "Draw a circle."
-    }
-   ]
-  },
-  {
-   "id": "nl-moordwapen-n",
-   "nl": "moordwapen",
-   "en": [
-    "a murder weapon"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3928,
-   "gender": "het",
-   "plural": "moordwapens",
-   "examples": [
-    {
-     "nl": "Het moordwapen is niet gevonden.",
-     "en": "The murder weapon wasn't found."
-    }
-   ]
-  },
-  {
-   "id": "nl-gerucht-n",
-   "nl": "gerucht",
-   "en": [
-    "rumor",
-    "sound"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3931,
-   "gender": "het",
-   "plural": "geruchten",
-   "examples": [
-    {
-     "nl": "Dat gerucht was waar.",
-     "en": "That rumor was true."
-    }
-   ]
-  },
-  {
-   "id": "nl-trekker-n",
-   "nl": "trekker",
-   "en": [
-    "puller,",
-    "trigger"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3939,
-   "gender": "de",
-   "plural": "trekkers",
-   "examples": [
-    {
-     "nl": "Haal de trekker over.",
-     "en": "Pull the trigger."
-    }
-   ]
-  },
-  {
-   "id": "nl-wegkomen-v",
-   "nl": "wegkomen",
-   "en": [
-    "to get away, make oneself scarce"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3945,
-   "verb": {
-    "separable": true,
-    "past": "kwam weg",
-    "participle": "weggekomen",
-    "irregular": true,
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Je kan niet wegkomen.",
-     "en": "You can't get away."
-    }
-   ]
-  },
-  {
-   "id": "nl-flikker-n",
-   "nl": "flikker",
-   "en": [
-    "a mender, fixer, someone who mends or fixes",
-    "a whit or jot"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3946,
-   "gender": "de",
-   "plural": "flikkers"
-  },
-  {
-   "id": "nl-lager-n",
-   "nl": "lager",
-   "en": [
-    "bearing"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3949,
-   "gender": "het",
-   "plural": "lagers",
-   "examples": [
-    {
-     "nl": "Kun je het lager zetten?",
-     "en": "Could you turn it down?"
-    }
-   ]
-  },
-  {
-   "id": "nl-opereren-v",
-   "nl": "opereren",
-   "en": [
-    "to operate"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3952,
-   "verb": {
-    "past": "opereerde",
-    "participle": "geopereerd",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   }
-  },
-  {
-   "id": "nl-kok-n",
-   "nl": "kok",
-   "en": [
-    "cook"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3957,
-   "gender": "de",
-   "plural": "koks",
-   "examples": [
-    {
-     "nl": "Ik ben een kok.",
-     "en": "I am a cook."
-    }
-   ]
-  },
-  {
-   "id": "nl-broodje-n",
-   "nl": "broodje",
-   "en": [
-    "sandwich or roll"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3960,
-   "gender": "het",
-   "plural": "broodjes",
-   "examples": [
-    {
-     "nl": "Tom maakte een broodje.",
-     "en": "Tom made a sandwich."
-    }
-   ]
-  },
-  {
-   "id": "nl-toestel-n",
-   "nl": "toestel",
-   "en": [
-    "device",
-    "apparatus"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3965,
-   "gender": "het",
-   "plural": "toestellen",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Het tv-toestel is heel zwaar.",
-     "en": "The TV is really heavy."
-    }
-   ]
-  },
-  {
-   "id": "nl-stevig-a",
-   "nl": "stevig",
-   "en": [
-    "firm",
-    "sizeable"
-   ],
-   "pos": "adj",
-   "level": "B2",
-   "rank": 3969,
-   "comparative": "steviger",
-   "superlative": "stevigst",
-   "examples": [
-    {
-     "nl": "Dat bed lijkt stevig.",
-     "en": "This bed looks solid."
-    }
-   ]
-  },
-  {
-   "id": "nl-hoeveelheid-n",
-   "nl": "hoeveelheid",
-   "en": [
-    "quantity"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3970,
-   "gender": "de",
-   "plural": "hoeveelheden",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Tom heeft een enorme hoeveelheid werk te doen.",
-     "en": "Tom's got a tremendous amount of work to do."
-    }
-   ]
-  },
-  {
-   "id": "nl-rots-n",
-   "nl": "rots",
-   "en": [
-    "a rock"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3976,
-   "gender": "de",
-   "plural": "rotsen",
-   "examples": [
-    {
-     "nl": "De rots voelt vochtig aan.",
-     "en": "The rock feels wet."
-    }
-   ]
-  },
-  {
-   "id": "nl-boer-n",
-   "nl": "boer",
-   "en": [
-    "a farmer, peasant",
-    "a jack"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3977,
-   "gender": "de",
-   "plural": "boeren",
-   "examples": [
-    {
-     "nl": "Tom is een boer.",
-     "en": "Tom is a farmer."
-    }
-   ]
-  },
-  {
-   "id": "nl-buurman-n",
-   "nl": "buurman",
-   "en": [
-    "neighbour"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3978,
-   "gender": "de",
-   "plural": "buurmannen",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Tom is mijn buurman.",
-     "en": "Tom is my neighbor."
     }
    ]
   },
