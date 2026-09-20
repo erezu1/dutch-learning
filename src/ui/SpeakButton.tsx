@@ -19,9 +19,14 @@ const CONE = 'M4 9v6h4l5 4V5L8 9H4Z'
 const WAVE_INNER = 'M15.27 9.47A3.4 3.4 0 0 1 15.27 14.53'
 const WAVE_OUTER = 'M17.42 7.1A6.6 6.6 0 0 1 17.42 16.9'
 
-/** A wave's lifetime, matching the CSS. One departs every CYCLE / WAVES. */
-const CYCLE = 1.1
+/**
+ * A wave's whole life, matching the CSS. It passes the outer arc at the
+ * halfway mark, so the icon returns to exactly its resting shape every STEP
+ * seconds — which is when the animation can be stopped without a jump.
+ */
+const LIFETIME = 2.2
 const WAVES = 2
+export const STEP = LIFETIME / WAVES
 
 const wave = {
   fill: 'none',
@@ -72,9 +77,9 @@ export function SpeakButton({
                 d={WAVE_INNER}
                 {...wave}
                 className="speaker-wave"
-                // Negative, so each wave is already under way on the first
-                // frame rather than piling up at the inner arc while it waits.
-                style={{ animationDelay: `${(-i * CYCLE) / WAVES}s` }}
+                // Negative, so the second wave is already at the outer arc on
+                // the first frame rather than waiting its turn at the mouth.
+                style={{ animationDelay: `${-i * STEP}s` }}
               />
             ))}
           </g>

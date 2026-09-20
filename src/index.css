@@ -105,16 +105,19 @@
 
 /* The speaker's waves, propagating.
 
-   Two waves half a cycle apart. A wave starts exactly at the inner arc and
-   grows; halfway through its life it is at 1.9, which is where the outer arc
-   is drawn. The second wave carries a negative delay, so it begins already
-   halfway along — meaning from the very first frame one wave sits on the inner
-   arc and the other on the outer, and the icon is never anything other than
-   itself.
+   A wave's whole life is two steps: from the inner arc to the outer, then from
+   the outer out of sight. The 50% keyframe is what makes that exact — at the
+   halfway point a wave sits precisely where the outer arc is drawn, rather
+   than passing through some arbitrary size on a straight run outwards.
 
-   vector-effect keeps the stroke at its drawn width as the wave grows. Without
-   it a scale of 2.8 also multiplies the line thickness, and the waves swell
-   into each other instead of staying as distinct arcs.
+   Two waves run one step apart, so every half of the cycle the icon is exactly
+   itself again: one wave on the inner arc, one on the outer. That is also why
+   it can be stopped cleanly — see SpeakButton, which waits for the next of
+   those moments before it lets the animation end.
+
+   vector-effect keeps the stroke at its drawn width as the wave grows; without
+   it a scale of 3.76 multiplies the line thickness too and the waves swell
+   into each other.
 
    Written in CSS because the motion library would not tween these SVG paths at
    all; it jumped them straight to their final scale.
@@ -124,11 +127,12 @@
     transform: scale(1);
     opacity: 1;
   }
-  62% {
+  50% {
+    transform: scale(1.94);
     opacity: 1;
   }
   100% {
-    transform: scale(2.8);
+    transform: scale(3.76);
     opacity: 0;
   }
 }
@@ -137,7 +141,7 @@
   transform-box: view-box;
   transform-origin: 13px 12px;
   vector-effect: non-scaling-stroke;
-  animation: speaker-wave 1.1s linear infinite;
+  animation: speaker-wave 2.2s linear infinite;
 }
 
 @layer base {

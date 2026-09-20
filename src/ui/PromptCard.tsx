@@ -1,11 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useState, type ReactNode } from 'react'
+import { useRef, useState, type ReactNode } from 'react'
 import { splitAroundWord } from '../core/cards'
 import type { Prompt } from '../session/prompts'
 import { speak as say } from '../core/speech'
 import { glide, pressable, swapVariants, tap } from './motion'
 import { FOCUS } from './type'
-import { SpeakButton } from './SpeakButton'
+import { SpeakButton, STEP } from './SpeakButton'
 
 // ---------------------------------------------------------------------------
 // The presentation of one question. Phase 3 replaces this file (full-bleed,
@@ -157,16 +157,26 @@ function WithSpeaker({
   small?: boolean
   children: ReactNode
 }) {
-  // True for exactly as long as the voice is talking, so the waves run for the
-  // length of the word or sentence instead of a fixed beat. Shared, so tapping
-  // the word animates the icon exactly as tapping the icon does.
+  // True while the voice is talking, so the waves run for the length of the
+  // word or sentence instead of a fixed beat. Shared, so tapping the word
+  // animates the icon exactly as tapping the icon does.
   const [speaking, setSpeaking] = useState(false)
+  const startedAt = useRef(0)
 
   if (!phrase) return <>{children}</>
 
   const trigger = () => {
+    startedAt.current = performance.now()
     setSpeaking(true)
-    void say(phrase).finally(() => setSpeaking(false))
+    void say(phrase).finally(() => {
+      // Don't cut a wave off mid-flight. The icon is exactly its resting self
+      // every STEP seconds — one wave on the inner arc, one on the outer — so
+      // let the animation run on to the next of those and stop there.
+      const step = STEP * 1000
+      const elapsed = performance.now() - startedAt.current
+      const remaining = step - (elapsed % step)
+      setTimeout(() => setSpeaking(false), remaining)
+    })
   }
 
   return (
