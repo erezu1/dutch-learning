@@ -26,6 +26,16 @@ interface Props {
   onChoose: (value: string) => void
 }
 
+/**
+ * The only font rule in the app: Dutch is set in the serif, everything else in
+ * the sans. Nothing else decides — not the size, not which slot it sits in,
+ * not whether it is a question or an answer. Every piece of text on a card
+ * passes through here, so the rule cannot drift.
+ */
+function fontFor(lang: 'nl' | 'en'): string {
+  return lang === 'nl' ? 'font-display font-semibold' : 'font-bold tracking-tight'
+}
+
 // The grammar pairs get their own colours so they stay recognisable at a
 // glance; vocabulary options are neutral.
 const choiceColor: Record<string, string> = {
@@ -129,15 +139,13 @@ function Choices({
             transition={{ ...glide, delay: picked === null ? 0.04 * i : 0 }}
             onClick={() => onChoose(choice)}
             translate="no"
-            // The options are Dutch whenever the answer is — on a recall card
-            // they are the words themselves, so they take the serif too.
-            className={`notranslate rounded-3xl shadow-2 transition-shadow active:shadow-press ${
-              pair
-                ? 'flex-1 py-7 font-display text-3xl font-semibold'
-                : prompt.answerLang === 'nl'
-                  ? 'px-5 py-4 font-display text-2xl font-semibold'
-                  : 'px-5 py-4 text-xl'
-            } ${resultTone || choiceColor[choice] || 'bg-surface-1'}`}
+            // Options are written in the answer's language, whichever card
+            // this is, so they follow the same rule as everything else.
+            className={`notranslate rounded-3xl shadow-2 transition-shadow active:shadow-press ${fontFor(
+              prompt.answerLang,
+            )} ${pair ? 'flex-1 py-7 text-3xl' : 'px-5 py-4 text-2xl'} ${
+              resultTone || choiceColor[choice] || 'bg-surface-1'
+            }`}
           >
             <Gloss text={choice} />
           </motion.button>
@@ -162,15 +170,16 @@ function WithSpeaker({
   small?: boolean
   children: ReactNode
 }) {
-  // Counts each utterance so the icon can replay its ripple. Shared, so tapping
+  // True for exactly as long as the voice is talking, so the waves run for the
+  // length of the word or sentence instead of a fixed beat. Shared, so tapping
   // the word animates the icon exactly as tapping the icon does.
-  const [pulse, setPulse] = useState(0)
+  const [speaking, setSpeaking] = useState(false)
 
   if (!phrase) return <>{children}</>
 
   const trigger = () => {
-    say(phrase)
-    setPulse((n) => n + 1)
+    setSpeaking(true)
+    void say(phrase).finally(() => setSpeaking(false))
   }
 
   return (
@@ -199,7 +208,7 @@ function WithSpeaker({
         <SpeakButton
           text={phrase}
           small={small}
-          pulse={pulse}
+          speaking={speaking}
           onActivate={trigger}
           className={`absolute top-1/2 -translate-y-1/2 ${small ? 'left-full ml-1.5' : 'left-full ml-2.5'}`}
         />
@@ -270,11 +279,9 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                   ? fitSize(prompt.question, '2.05rem', '1.35rem')
                   : fitSize(prompt.question, '4rem'),
               }}
-              className={`notranslate text-balance ${
-                prompt.questionLang === 'nl'
-                  ? 'font-display font-semibold'
-                  : 'font-bold tracking-tight'
-              } ${isSentence ? 'leading-snug' : 'leading-none'}`}
+              className={`notranslate text-balance ${fontFor(prompt.questionLang)} ${
+                isSentence ? 'leading-snug' : 'leading-none'
+              }`}
             >
               {prompt.questionLang === 'en' ? (
                 <Gloss text={prompt.question} stacked />
@@ -339,7 +346,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                   <Sentence
                     sentence={prompt.detail ?? ''}
                     word={prompt.answer}
-                    className="max-w-[16rem] font-display text-[1.9rem] leading-snug font-semibold"
+                    className={`max-w-[16rem] text-[1.9rem] leading-snug ${fontFor('nl')}`}
                     highlight="text-good-ink"
                   />
                 </WithSpeaker>
@@ -348,15 +355,16 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                   <p
                     lang={prompt.answerLang}
                     translate="no"
-                    className={`notranslate font-display text-[2.6rem] leading-none font-semibold ${
+                    style={{ fontSize: fitSize(prompt.answer, '2.6rem', '1.4rem') }}
+                    className={`notranslate leading-none ${fontFor(prompt.answerLang)} ${
                       correct === false ? 'text-bad-ink' : correct === true ? 'text-good-ink' : ''
                     }`}
                   >
                     {prompt.answerLang === 'en' ? (
-                    <Gloss text={prompt.answer} stacked />
-                  ) : (
-                    prompt.answer
-                  )}
+                      <Gloss text={prompt.answer} stacked />
+                    ) : (
+                      prompt.answer
+                    )}
                   </p>
                 </WithSpeaker>
               )}
@@ -381,7 +389,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                         <Sentence
                           sentence={prompt.detail}
                           word={prompt.note.nl}
-                          className="text-lg text-on-surface/85"
+                          className={`text-lg text-on-surface/85 ${fontFor('nl')}`}
                         />
                       </WithSpeaker>
                       {prompt.detailTranslation && (

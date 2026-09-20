@@ -113,7 +113,7 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
           (session.autoGrade !== null ? (
             // Multiple choice: already graded, just move on.
             // Already recorded when the option was chosen; this only moves on.
-            <ContinueBar onContinue={session.advance} />
+            <ContinueBar onContinue={session.advance} countdown={session.autoContinue} />
           ) : (
             <GradeBar onGrade={session.grade} />
           ))}

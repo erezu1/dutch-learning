@@ -33,7 +33,7 @@ function fillGradient(): string {
 /** Long enough to read the answer before anything starts moving. */
 const READ_PAUSE = 3
 /** Then the button fills, and carries on by itself when it is full. */
-const COUNTDOWN = 5
+const COUNTDOWN_SECONDS = 5
 /** A beat at the end, so the button is seen full before the card leaves. */
 const SETTLE = 300
 
@@ -52,7 +52,13 @@ const SETTLE = 300
  * Only multiple choice does this. A self-graded card is waiting on a judgement
  * only you can make, so it waits as long as it takes.
  */
-export function ContinueBar({ onContinue }: { onContinue: () => void }) {
+export function ContinueBar({
+  onContinue,
+  countdown,
+}: {
+  onContinue: () => void
+  countdown: boolean
+}) {
   const settle = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(
@@ -65,23 +71,25 @@ export function ContinueBar({ onContinue }: { onContinue: () => void }) {
   return (
     <div className="w-full px-4 pb-4">
       <Button tone="accent" onClick={onContinue} className="relative w-full overflow-hidden">
-        {/* A crisp leading edge, with the fill itself graded from faint at the
-            start to stronger at the edge. Because the gradient spans the
-            element it stretches as the fill grows, so the strongest point
-            always sits right where the progress has reached. */}
-        <motion.span
-          aria-hidden="true"
-          initial={{ width: 0 }}
-          animate={{ width: '100%' }}
-          transition={{ duration: COUNTDOWN, delay: READ_PAUSE, ease: 'linear' }}
-          // Not straight into the next card: the bar reaching the end and the
-          // card leaving at the same instant reads as a jump cut.
-          onAnimationComplete={() => {
-            settle.current = setTimeout(onContinue, SETTLE)
-          }}
-          className="absolute inset-y-0 left-0"
-          style={{ background: fillGradient() }}
-        />
+        {/* Only when asked for. A crisp leading edge, with the fill itself
+            graded from faint at the start to stronger at the edge: because the
+            gradient spans the element it stretches as the fill grows, so the
+            strongest point always sits where the progress has reached. */}
+        {countdown && (
+          <motion.span
+            aria-hidden="true"
+            initial={{ width: 0 }}
+            animate={{ width: '100%' }}
+            transition={{ duration: COUNTDOWN_SECONDS, delay: READ_PAUSE, ease: 'linear' }}
+            // Not straight into the next card: the bar reaching the end and
+            // the card leaving at the same instant reads as a jump cut.
+            onAnimationComplete={() => {
+              settle.current = setTimeout(onContinue, SETTLE)
+            }}
+            className="absolute inset-y-0 left-0"
+            style={{ background: fillGradient() }}
+          />
+        )}
 
         <span className="relative">Continue</span>
       </Button>

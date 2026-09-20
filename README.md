@@ -10,9 +10,15 @@ one is active.
 
 **The serif is reserved for Dutch.** Fraunces carries the words and sentences
 being learned; everything else, including the app's own name and its numbers,
-is Bricolage Grotesque. Keeping the serif to the material means that when you
-see it, it is Dutch — which is why an English prompt on a recall card is set
-in the sans even though it sits in the same slot as the Dutch one: surfaces, the accent, a four-level
+is Bricolage Grotesque. When you see the serif, it is Dutch — which is why an
+English prompt on a recall card is set in the sans even though it sits in the
+same slot as a Dutch one.
+
+The rule lives in one function, `fontFor(lang)` in `src/ui/PromptCard.tsx`, and
+every piece of text on a card goes through it. It was spread across four
+conditionals before and had already drifted: an English answer was being set in
+the serif. If you are adding text to a card, take the font from there rather
+than writing `font-display` again: surfaces, the accent, a four-level
 elevation scale and the motion curves. `src/ui/motion.ts` holds the animation
 vocabulary — components pick from it rather than inventing their own easing,
 since a different curve per component is what makes an interface feel

@@ -4,12 +4,15 @@ import { supported } from '../core/speech'
 // ---------------------------------------------------------------------------
 // The speaker, with its own waves as the animation.
 //
-// The two arcs are concentric about the cone's mouth, and the outer one is
-// exactly 1.94x the inner — so growing the inner by that factor lands it
-// precisely where the outer was. On each utterance the outer wave travels on
-// and fades, the inner takes its place, and a new one appears at the mouth.
-// The icon ends the animation identical to how it started, which is what makes
-// it loop cleanly rather than snap back.
+// The two arcs are concentric about the cone's mouth, and the outer is exactly
+// 1.94x the inner — so growing the inner by that factor lands it precisely
+// where the outer was. Each cycle therefore ends on an icon identical to the
+// one it began with, which is what lets it repeat seamlessly for as long as
+// the voice is talking, rather than pulsing once and snapping back.
+//
+// The strokes keep their width while they grow: scaling a path scales its
+// stroke too, which made a wave thicken as it travelled out. vector-effect
+// holds it, so the waves differ in size and not in weight.
 //
 // No press animation and no ripple: the waves are the feedback.
 // ---------------------------------------------------------------------------
@@ -20,32 +23,35 @@ const WAVE_OUTER = 'M17.42 7.1A6.6 6.6 0 0 1 17.42 16.9'
 
 /** How much bigger the outer wave is than the inner one. */
 const STEP = 1.94
-const DURATION = 0.62
+const CYCLE = 0.72
 
 /** Everything scales about the cone's mouth, so the waves leave from it. */
 const origin = { transformBox: 'view-box', transformOrigin: '13px 12px' } as const
 
+const wave = {
+  fill: 'none',
+  stroke: 'currentColor',
+  strokeWidth: 1.8,
+  strokeLinecap: 'round' as const,
+  vectorEffect: 'non-scaling-stroke' as const,
+}
+
+const loop = { duration: CYCLE, ease: 'linear' as const, repeat: Infinity }
+
 export function SpeakButton({
   text,
-  pulse,
+  speaking,
   onActivate,
   className = '',
   small = false,
 }: {
   text: string
-  pulse: number
+  speaking: boolean
   onActivate: () => void
   className?: string
   small?: boolean
 }) {
   if (!supported()) return null
-
-  const wave = {
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: 1.9,
-    strokeLinecap: 'round' as const,
-  }
 
   return (
     <button
@@ -65,13 +71,8 @@ export function SpeakButton({
       >
         <path d={CONE} />
 
-        {pulse === 0 ? (
-          <>
-            <path d={WAVE_INNER} {...wave} />
-            <path d={WAVE_OUTER} {...wave} />
-          </>
-        ) : (
-          <g key={pulse}>
+        {speaking ? (
+          <g>
             {/* The outer wave carries on outwards and fades. */}
             <motion.path
               d={WAVE_OUTER}
@@ -79,7 +80,7 @@ export function SpeakButton({
               style={origin}
               initial={{ scale: 1, opacity: 1 }}
               animate={{ scale: STEP, opacity: 0 }}
-              transition={{ duration: DURATION, ease: 'easeOut' }}
+              transition={loop}
             />
             {/* The inner one grows into exactly where the outer was. */}
             <motion.path
@@ -88,7 +89,7 @@ export function SpeakButton({
               style={origin}
               initial={{ scale: 1, opacity: 1 }}
               animate={{ scale: STEP, opacity: 1 }}
-              transition={{ duration: DURATION, ease: 'easeOut' }}
+              transition={loop}
             />
             {/* And a new one forms at the mouth to replace it. */}
             <motion.path
@@ -97,9 +98,14 @@ export function SpeakButton({
               style={origin}
               initial={{ scale: 0.45, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: DURATION, ease: 'easeOut' }}
+              transition={loop}
             />
           </g>
+        ) : (
+          <>
+            <path d={WAVE_INNER} {...wave} />
+            <path d={WAVE_OUTER} {...wave} />
+          </>
         )}
       </svg>
     </button>

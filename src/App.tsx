@@ -9,6 +9,7 @@ import { InstallPrompt } from './ui/InstallPrompt'
 import { LevelPicker } from './ui/LevelPicker'
 import { glide, screenVariants } from './ui/motion'
 import { ReviewScreen } from './ui/ReviewScreen'
+import { Settings } from './ui/Settings'
 import { Welcome } from './ui/Welcome'
 
 const deck = deckCore as Deck
@@ -35,7 +36,7 @@ function Screen({ children }: { children: React.ReactNode }) {
   )
 }
 
-type ScreenName = 'home' | 'review' | 'level'
+type ScreenName = 'home' | 'review' | 'level' | 'settings'
 
 /**
  * Screen changes go through the browser history, so the phone's back gesture
@@ -116,6 +117,14 @@ export default function App() {
           <Screen key="review">
             <ReviewScreen session={session} onExit={() => setScreen('home')} />
           </Screen>
+        ) : screen === 'settings' ? (
+          <Screen key="settings">
+            <Settings
+              autoContinue={session.autoContinue}
+              onAutoContinue={session.setAutoContinue}
+              onBack={() => setScreen('home')}
+            />
+          </Screen>
         ) : finished ? (
           <Screen key="done">
             <Done
@@ -133,6 +142,7 @@ export default function App() {
               theme={session.theme}
               onChangeTheme={session.setTheme}
               onChangeLevel={() => setScreen('level')}
+              onOpenSettings={() => setScreen('settings')}
               onStart={() => {
                 session.start()
                 setScreen('review')

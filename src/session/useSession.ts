@@ -51,6 +51,8 @@ export interface Session {
   setLevel: (option: LevelOption) => void
   theme: Theme
   setTheme: (theme: Theme) => void
+  autoContinue: boolean
+  setAutoContinue: (next: boolean) => void
 
   start: () => void
   reveal: () => void
@@ -83,6 +85,8 @@ export function useSession(deck: Deck): Session {
   const [levelChosen, setLevelChosen] = useState(false)
   const [theme, setThemeState] = useState<Theme>(DEFAULT_THEME)
   const [score, setScore] = useState(0)
+  /** Off by default: moving on by itself is a preference, not an assumption. */
+  const [autoContinue, setAutoContinueState] = useState(false)
   /** The most recent award, with a key so the same amount re-animates. */
   const [award, setAward] = useState<(Award & { key: number }) | null>(null)
   const [sessionPoints, setSessionPoints] = useState(0)
@@ -120,12 +124,14 @@ export function useSession(deck: Deck): Session {
       getMeta<string | null>('level', null),
       getMeta<string | null>('theme', null),
       getMeta<number>('score', 0),
-    ]).then(([rows, savedLevel, savedTheme, savedScore]) => {
+      getMeta<boolean>('autoContinue', false),
+    ]).then(([rows, savedLevel, savedTheme, savedScore, savedAuto]) => {
       if (cancelled) return
       setStates(new Map(rows.map((r) => [r.cardId, r] as const)))
       setLevelState(levelById(savedLevel))
       setLevelChosen(savedLevel !== null)
       setScore(savedScore)
+      setAutoContinueState(savedAuto)
       const t = themeById(savedTheme)
       setThemeState(t)
       applyTheme(t)
@@ -134,6 +140,11 @@ export function useSession(deck: Deck): Session {
     return () => {
       cancelled = true
     }
+  }, [])
+
+  const setAutoContinue = useCallback((next: boolean) => {
+    setAutoContinueState(next)
+    void setMeta('autoContinue', next).catch(() => {})
   }, [])
 
   const setTheme = useCallback((next: Theme) => {
@@ -361,6 +372,8 @@ export function useSession(deck: Deck): Session {
     setLevel,
     theme,
     setTheme,
+    autoContinue,
+    setAutoContinue,
     start,
     reveal,
     choose,

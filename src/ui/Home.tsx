@@ -15,13 +15,23 @@ interface Props {
   stats: SessionStats
   score: number
   level: LevelOption
+  onOpenSettings: () => void
   theme: Theme
   onStart: () => void
   onChangeLevel: () => void
   onChangeTheme: (theme: Theme) => void
 }
 
-export function Home({ stats, score, level, theme, onStart, onChangeLevel, onChangeTheme }: Props) {
+export function Home({
+  stats,
+  score,
+  level,
+  theme,
+  onStart,
+  onChangeLevel,
+  onChangeTheme,
+  onOpenSettings,
+}: Props) {
   const [voice, setVoice] = useState<VoiceReport>(voiceReport)
   const canInstall = useCanInstall()
 
@@ -72,6 +82,27 @@ export function Home({ stats, score, level, theme, onStart, onChangeLevel, onCha
               className="rounded-full bg-surface-1 px-3 py-1.5 text-xs font-medium text-on-surface-dim shadow-1"
             >
               {level.name}
+            </motion.button>
+
+            <motion.button
+              {...pressable}
+              onClick={onOpenSettings}
+              aria-label="Settings"
+              className="grid h-8 w-8 place-items-center rounded-full bg-surface-1 text-on-surface-dim shadow-1"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="h-[18px] w-[18px]"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="3" />
+                <path d="M19.4 14.5a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 8.9 19.3a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.7 8.9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9.1a1.7 1.7 0 0 0 1.03-1.56V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.08a1.7 1.7 0 0 0 1.56 1.03H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1.03Z" />
+              </svg>
             </motion.button>
           </div>
         </div>
