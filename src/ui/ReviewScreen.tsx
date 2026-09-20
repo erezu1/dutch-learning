@@ -57,8 +57,8 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
           className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-on-surface-dim disabled:opacity-25"
         >
           <Icon>
-            <path d="M3 7v6h6" />
-            <path d="M3.5 13a9 9 0 1 0 2.1-5.4L3 10" />
+            <path d="M1 4v6h6" />
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
           </Icon>
         </motion.button>
       </header>
