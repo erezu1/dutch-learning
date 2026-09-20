@@ -84,7 +84,12 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
                   2 — scaling a group scales its stroke, which is what made
                   this read heavier and smaller than the cross beside it. */}
               <g transform="translate(3.33 3.33) scale(0.7222)" strokeWidth={2 / 0.7222}>
-                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                {/* The tail starts short of due west, so the ring is visibly
+                    open rather than a circle with a nick in it: about 290
+                    degrees of turn, against the 313 it was drawn with. The
+                    arrowhead end is untouched — it is the end that reads as
+                    the gesture, and moving it would move the whole icon. */}
+                <path d="M3.66 15.37a9 9 0 1 0 8.34-12.37 9.75 9.75 0 0 0-6.74 2.74L3 8" />
                 <path d="M3 3v5h5" />
               </g>
             </Icon>
