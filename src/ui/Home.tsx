@@ -37,8 +37,23 @@ export function Home({
 }: Props) {
   const [voice, setVoice] = useState<VoiceReport>(voiceReport)
   const canInstall = useCanInstall()
+  /**
+   * Flipped one tick after mount, and the ring and the numbers below animate
+   * because it changed rather than because they appeared. The app's screen
+   * switcher suppresses entrance animations on the very first render — which
+   * is exactly the render this is, when the app is opened cold — so an
+   * `initial` here would be ignored precisely when it matters most.
+   */
+  const [arrived, setArrived] = useState(false)
 
   useEffect(() => onVoicesReady(() => setVoice(voiceReport())), [])
+  useEffect(() => {
+    // A timer rather than a frame callback: a frame callback is at the mercy
+    // of how often the page is being painted, and this only has to happen
+    // after the first paint, not on it.
+    const id = setTimeout(() => setArrived(true), 30)
+    return () => clearTimeout(id)
+  }, [])
 
   const waiting = stats.waiting
   // Once the day is done there is always more deck, so there is no reason to
@@ -147,16 +162,16 @@ export function Home({
                 // Drawn in from nothing every time the screen arrives, rather
                 // than being there already. The ring is the day, and watching
                 // it close is the closest the app gets to a reward.
-                initial={{ strokeDasharray: '0 283' }}
-                animate={{ strokeDasharray: `${progress * 283} 283` }}
+                initial={false}
+                animate={{ strokeDasharray: arrived ? `${progress * 283} 283` : '0 283' }}
                 transition={ringGrow}
               />
             </svg>
             {/* The numbers wait for the ring: arriving together, the eye has
                 nowhere to start. */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={false}
+              animate={{ opacity: arrived ? 1 : 0 }}
               transition={afterRing()}
               className="text-center"
             >
@@ -170,8 +185,8 @@ export function Home({
             two look like they ought to agree, and don't. Below rather than
             inside: it doesn't fit across a circle. */}
           <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={false}
+            animate={{ opacity: arrived ? 1 : 0 }}
             transition={afterRing(0.09)}
             className="text-sm text-on-surface-dim"
           >
