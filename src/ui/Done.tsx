@@ -5,10 +5,11 @@ import { glide } from './motion'
 
 interface Props {
   stats: SessionStats
+  points: number
   onHome: () => void
 }
 
-export function Done({ stats, onHome }: Props) {
+export function Done({ stats, points, onHome }: Props) {
   const pct = stats.reviewed ? Math.round((stats.correct / stats.reviewed) * 100) : 0
 
   return (
@@ -20,9 +21,15 @@ export function Done({ stats, onHome }: Props) {
       >
         <p className="text-6xl">🎉</p>
         <h1 className="mt-4 font-display text-4xl font-semibold">Done for today</h1>
-        <p className="mt-2 text-on-surface-dim">
-          {stats.reviewed} cards · {pct}% correct
-        </p>
+        <motion.p
+          initial={{ scale: 0.7, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 240, damping: 18, delay: 0.15 }}
+          className="mt-3 font-display text-5xl font-semibold text-primary"
+        >
+          +{points}
+        </motion.p>
+        <p className="mt-1 text-on-surface-dim">{pct}% correct</p>
       </motion.div>
 
       <Button onClick={onHome} className="px-12">

@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import type { ReactNode } from 'react'
 import { splitAroundWord } from '../core/cards'
 import type { Prompt } from '../session/prompts'
+import { speak as say } from '../core/speech'
 import { glide, pressable, swapVariants } from './motion'
 import { SpeakButton } from './SpeakButton'
 
@@ -34,14 +35,21 @@ const choiceColor: Record<string, string> = {
   zijn: 'bg-het-bg text-het',
 }
 
-/** Renders "you (formal)" with the clarifying part played down. */
+/**
+ * Renders "you (formal)" with the clarifying part played down and hung off the
+ * right, so it doesn't count towards centring — the word is what should sit in
+ * the middle, not the word plus its footnote.
+ */
 function Gloss({ text }: { text: string }) {
   const m = /^(.*?)\s*\(([^)]*)\)\s*$/.exec(text)
   if (!m) return <>{text}</>
   return (
-    <>
-      {m[1]} <span className="font-sans text-[0.5em] font-normal opacity-50">({m[2]})</span>
-    </>
+    <span className="relative inline-block">
+      {m[1]}
+      <span className="absolute top-1/2 left-full ml-1.5 -translate-y-1/2 font-sans text-[0.55em] font-normal whitespace-nowrap opacity-50">
+        ({m[2]})
+      </span>
+    </span>
   )
 }
 
@@ -109,7 +117,7 @@ function Choices({
  * it up against the label above and the buttons below.
  */
 function WithSpeaker({
-  speak,
+  speak: phrase,
   small = false,
   children,
 }: {
@@ -117,15 +125,32 @@ function WithSpeaker({
   small?: boolean
   children: ReactNode
 }) {
-  if (!speak) return <>{children}</>
+  if (!phrase) return <>{children}</>
   return (
     <div className="flex justify-center">
-      <div className="relative">
+      {/* The text itself is the button — tapping the word or the sentence is
+          the obvious way to hear it, and the icon is only a hint that you can.
+          Stops propagation so it doesn't also flip the card. */}
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={(e) => {
+          e.stopPropagation()
+          say(phrase)
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.stopPropagation()
+            say(phrase)
+          }
+        }}
+        className="relative cursor-pointer"
+      >
         {children}
         <SpeakButton
-          text={speak}
+          text={phrase}
           small={small}
-          className={`absolute top-1/2 -translate-y-1/2 ${small ? 'left-full ml-2' : 'left-full ml-3'}`}
+          className={`absolute top-1/2 -translate-y-1/2 ${small ? 'left-full ml-1.5' : 'left-full ml-2.5'}`}
         />
       </div>
     </div>
@@ -202,9 +227,10 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
       </div>
 
       {/* Lower zone: the options, or the answer once it is given. */}
-      {/* The negative margin lets the shadows spill into the card's own
-          padding instead of being cropped by the scroll container. */}
-      <div className="no-scrollbar -mx-3 flex flex-col items-center gap-3 overflow-y-auto px-3">
+      {/* A scroll container clips on every side, so the padding-and-negative-
+          margin pair runs both ways: without the vertical half, the top
+          option's shadow is sliced off along the container's edge. */}
+      <div className="no-scrollbar -mx-3 -my-2 flex flex-col items-center gap-3 overflow-y-auto px-3 py-2">
         <AnimatePresence mode="wait" initial={false}>
           {!revealed && !isChoice && (
             <motion.p

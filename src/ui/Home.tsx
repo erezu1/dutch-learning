@@ -13,6 +13,7 @@ import { pressable, quiet } from './motion'
 
 interface Props {
   stats: SessionStats
+  score: number
   level: LevelOption
   theme: Theme
   onStart: () => void
@@ -20,7 +21,7 @@ interface Props {
   onChangeTheme: (theme: Theme) => void
 }
 
-export function Home({ stats, level, theme, onStart, onChangeLevel, onChangeTheme }: Props) {
+export function Home({ stats, score, level, theme, onStart, onChangeLevel, onChangeTheme }: Props) {
   const [voice, setVoice] = useState<VoiceReport>(voiceReport)
   const canInstall = useCanInstall()
 
@@ -94,8 +95,16 @@ export function Home({ stats, level, theme, onStart, onChangeLevel, onChangeThem
             />
           </svg>
           <div className="text-center">
-            <p className="font-display text-5xl font-semibold">{stats.known}</p>
-            <p className="text-sm text-on-surface-dim">of {stats.total} words</p>
+            <motion.p
+              key={score}
+              initial={{ scale: 0.86, opacity: 0.4 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={quiet}
+              className="font-display text-5xl font-semibold"
+            >
+              {score.toLocaleString()}
+            </motion.p>
+            <p className="text-sm text-on-surface-dim">points</p>
           </div>
         </div>
 

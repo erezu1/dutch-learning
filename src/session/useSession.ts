@@ -3,6 +3,7 @@ import { allCards, type Card } from '../core/cards'
 import { db, getMeta, setMeta, type CardStateRow } from '../core/db'
 import { buildQueue, DEFAULTS, type QueueOptions } from '../core/queue'
 import { applyGrade, emptyState, isNew, Rating, State, type Grade } from '../core/scheduler'
+import { awardFor, type Award } from '../core/score'
 import { DEFAULT_LEVEL, levelById, type LevelOption } from '../core/levels'
 import { applyTheme, DEFAULT_THEME, themeById, type Theme } from '../core/themes'
 import type { Deck, Note } from '../core/types'
@@ -36,6 +37,12 @@ export interface Session {
   position: number
   length: number
   stats: SessionStats
+  /** Lifetime points. Only ever increases. */
+  score: number
+  /** Points earned in this session, for the finishing screen. */
+  sessionPoints: number
+  /** The most recent award, for the animation. Null between sessions. */
+  award: (Award & { key: number }) | null
   /** Set for a choice prompt once answered: the grade the app will apply. */
   autoGrade: Grade | null
   level: LevelOption
@@ -73,6 +80,10 @@ export function useSession(deck: Deck): Session {
   const [level, setLevelState] = useState<LevelOption>(DEFAULT_LEVEL)
   const [levelChosen, setLevelChosen] = useState(false)
   const [theme, setThemeState] = useState<Theme>(DEFAULT_THEME)
+  const [score, setScore] = useState(0)
+  /** The most recent award, with a key so the same amount re-animates. */
+  const [award, setAward] = useState<(Award & { key: number }) | null>(null)
+  const [sessionPoints, setSessionPoints] = useState(0)
   const [status, setStatus] = useState<SessionStatus>('loading')
   const [queue, setQueue] = useState<Card[]>([])
   const [index, setIndex] = useState(0)
@@ -101,11 +112,13 @@ export function useSession(deck: Deck): Session {
       db.states.toArray(),
       getMeta<string | null>('level', null),
       getMeta<string | null>('theme', null),
-    ]).then(([rows, savedLevel, savedTheme]) => {
+      getMeta<number>('score', 0),
+    ]).then(([rows, savedLevel, savedTheme, savedScore]) => {
       if (cancelled) return
       setStates(new Map(rows.map((r) => [r.cardId, r] as const)))
       setLevelState(levelById(savedLevel))
       setLevelChosen(savedLevel !== null)
+      setScore(savedScore)
       const t = themeById(savedTheme)
       setThemeState(t)
       applyTheme(t)
@@ -172,6 +185,8 @@ export function useSession(deck: Deck): Session {
     setIndex(0)
     setReviewed(0)
     setCorrectCount(0)
+    setSessionPoints(0)
+    setAward(null)
     setRevealed(false)
     setPicked(null)
     shownAt.current = Date.now()
@@ -233,6 +248,8 @@ export function useSession(deck: Deck): Session {
       const now = new Date()
       const next = applyGrade(base, g, now)
 
+      const earned = awardFor(g, base, next)
+
       const reviewId = await db.reviews.add({
         cardId: card.id,
         at: now.getTime(),
@@ -245,6 +262,13 @@ export function useSession(deck: Deck): Session {
       undoStack.current.push({ previous, reviewId: reviewId as number, index, wasCorrect: correct })
 
       setStates((prev) => new Map(prev).set(card.id, next))
+      setScore((s) => {
+        const total = s + earned.amount
+        void setMeta('score', total).catch(() => {})
+        return total
+      })
+      setSessionPoints((p) => p + earned.amount)
+      setAward({ ...earned, key: Date.now() })
       setReviewed((n) => n + 1)
       if (g !== Rating.Again) setCorrectCount((n) => n + 1)
 
@@ -295,6 +319,9 @@ export function useSession(deck: Deck): Session {
     position: Math.min(index + 1, queue.length),
     length: queue.length,
     stats,
+    score,
+    sessionPoints,
+    award,
     autoGrade,
     level,
     levelChosen,

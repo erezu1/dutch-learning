@@ -4,6 +4,7 @@ import type { Session } from '../session/useSession'
 import { ContinueBar, GradeBar } from './GradeBar'
 import { cardVariants, glide, quiet, tap, turn } from './motion'
 import { PromptCard } from './PromptCard'
+import { ScorePop } from './ScorePop'
 
 /**
  * Both header icons are drawn to fill the same 13-unit box inside a 24-unit
@@ -38,7 +39,7 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
   if (!prompt) return null
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="relative flex h-full flex-col">
       <header className="flex items-center gap-3 px-4 pt-3">
         <motion.button
           onClick={onExit}
@@ -104,6 +105,8 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
           />
         </motion.div>
       </AnimatePresence>
+
+      <ScorePop award={session.award} />
 
       <div className="flex min-h-[7.5rem] items-end">
         {revealed &&

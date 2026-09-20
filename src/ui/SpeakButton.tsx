@@ -1,7 +1,12 @@
 import { motion } from 'framer-motion'
 import { speak, supported } from '../core/speech'
-import { pressable } from './motion'
+import { tap } from './motion'
 
+/**
+ * A bare icon, no chip around it. It sits beside text that is itself tappable,
+ * so it only needs to say "this can be heard" — giving it a filled circle and
+ * a shadow made it compete with the word it belongs to.
+ */
 export function SpeakButton({
   text,
   className = '',
@@ -14,20 +19,19 @@ export function SpeakButton({
   if (!supported()) return null
   return (
     <motion.button
-      {...pressable}
       type="button"
+      whileTap={{ scale: 0.85 }}
+      transition={tap}
       aria-label={`Speak: ${text}`}
       onClick={(e) => {
         e.stopPropagation()
         speak(text)
       }}
-      className={`grid shrink-0 place-items-center rounded-full bg-surface-1 text-on-surface-dim shadow-1 ${
-        small ? 'h-8 w-8' : 'h-11 w-11'
-      } ${className}`}
+      className={`shrink-0 text-on-surface-dim/60 transition-colors active:text-primary ${className}`}
     >
       <svg
         viewBox="0 0 24 24"
-        className={small ? 'h-4 w-4' : 'h-5 w-5'}
+        className={small ? 'h-[18px] w-[18px]' : 'h-6 w-6'}
         fill="currentColor"
         aria-hidden="true"
       >

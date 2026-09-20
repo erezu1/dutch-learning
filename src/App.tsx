@@ -118,12 +118,17 @@ export default function App() {
           </Screen>
         ) : finished ? (
           <Screen key="done">
-            <Done stats={session.stats} onHome={() => setScreen('home')} />
+            <Done
+              stats={session.stats}
+              points={session.sessionPoints}
+              onHome={() => setScreen('home')}
+            />
           </Screen>
         ) : (
           <Screen key="home">
             <Home
               stats={session.stats}
+              score={session.score}
               level={session.level}
               theme={session.theme}
               onChangeTheme={session.setTheme}
