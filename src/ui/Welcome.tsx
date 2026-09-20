@@ -28,8 +28,7 @@ export function Welcome({ onBegin }: { onBegin: () => void }) {
       >
         <h1 className="font-display text-5xl font-semibold">Doei</h1>
         <p className="mt-3 text-lg text-balance text-on-surface-dim">
-          Dutch, a few minutes a day. Two thousand words, in the order you&rsquo;ll actually hear
-          them.
+          Dutch, a few minutes a day.
         </p>
       </motion.div>
 

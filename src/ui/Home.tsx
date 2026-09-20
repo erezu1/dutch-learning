@@ -100,19 +100,9 @@ export function Home({ stats, level, theme, onStart, onChangeLevel, onChangeThem
         </div>
 
         <Button onClick={onStart} disabled={waiting === 0} className="w-full max-w-xs">
-          {waiting > 0 ? `Start — ${waiting} cards` : 'Nothing due — done for today'}
+          {waiting > 0 ? 'Start' : 'Done for today'}
         </Button>
 
-        <div className="flex gap-6 text-center text-sm">
-          <div>
-            <p className="font-display text-2xl font-semibold">{stats.dueCount}</p>
-            <p className="text-on-surface-dim">to review</p>
-          </div>
-          <div>
-            <p className="font-display text-2xl font-semibold">{stats.newCount}</p>
-            <p className="text-on-surface-dim">new</p>
-          </div>
-        </div>
       </div>
 
       <div className="flex flex-col items-center gap-5">
