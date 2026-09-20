@@ -47,7 +47,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
         {prompt.subtitle && <p className="text-sm text-on-surface-dim">{prompt.subtitle}</p>}
 
         {!revealed && !isChoice && (
-          <p className="mt-6 text-sm text-on-surface-dim/70">tik om te zien</p>
+          <p className="mt-6 text-sm text-on-surface-dim/70">tap to reveal</p>
         )}
 
         {revealed && (
@@ -66,7 +66,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
             </div>
 
             {correct === false && picked && (
-              <p className="text-sm text-bad/80">je koos &ldquo;{picked}&rdquo;</p>
+              <p className="text-sm text-bad/80">you chose &ldquo;{picked}&rdquo;</p>
             )}
 
             {prompt.detail && (

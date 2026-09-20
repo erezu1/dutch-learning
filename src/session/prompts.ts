@@ -39,14 +39,16 @@ export interface Prompt {
   note: Note
 }
 
+// The interface is in English: the Dutch on screen should be the thing you're
+// learning, not the furniture around it.
 const posLabel: Record<string, string> = {
-  noun: 'zelfstandig naamwoord',
-  verb: 'werkwoord',
-  adj: 'bijvoeglijk naamwoord',
-  adv: 'bijwoord',
-  prep: 'voorzetsel',
-  phrase: 'uitdrukking',
-  num: 'telwoord',
+  noun: 'noun',
+  verb: 'verb',
+  adj: 'adjective',
+  adv: 'adverb',
+  prep: 'preposition',
+  phrase: 'phrase',
+  num: 'numeral',
 }
 
 function example(note: Note) {
@@ -67,7 +69,7 @@ export function buildPrompt(card: Card, note: Note): Prompt {
       return {
         ...base,
         shape: 'reveal',
-        instruction: 'Wat betekent dit?',
+        instruction: 'What does this mean?',
         question: note.nl,
         questionLang: 'nl',
         subtitle: posLabel[note.pos],
@@ -81,7 +83,7 @@ export function buildPrompt(card: Card, note: Note): Prompt {
       return {
         ...base,
         shape: 'reveal',
-        instruction: 'Hoe zeg je dit in het Nederlands?',
+        instruction: 'How do you say this in Dutch?',
         question: note.en.join(', '),
         questionLang: 'en',
         subtitle: posLabel[note.pos],
@@ -95,7 +97,7 @@ export function buildPrompt(card: Card, note: Note): Prompt {
       return {
         ...base,
         shape: 'choice',
-        instruction: 'de of het?',
+        instruction: 'de or het?',
         question: note.nl,
         questionLang: 'nl',
         answer: note.gender!,
@@ -109,7 +111,7 @@ export function buildPrompt(card: Card, note: Note): Prompt {
       return {
         ...base,
         shape: 'reveal',
-        instruction: 'Wat is het meervoud?',
+        instruction: 'What is the plural?',
         question: `${note.gender ?? ''} ${note.nl}`.trim(),
         questionLang: 'nl',
         answer: note.plural!,
@@ -122,10 +124,10 @@ export function buildPrompt(card: Card, note: Note): Prompt {
       return {
         ...base,
         shape: 'reveal',
-        instruction: 'Wat is het voltooid deelwoord?',
+        instruction: 'What is the past participle?',
         question: note.nl,
         questionLang: 'nl',
-        subtitle: note.verb?.separable ? 'scheidbaar werkwoord' : undefined,
+        subtitle: note.verb?.separable ? 'separable verb' : undefined,
         answer: `${note.verb!.auxiliary} ${note.verb!.participle}`,
         answerLang: 'nl',
         speak: note.verb!.participle,
@@ -136,7 +138,7 @@ export function buildPrompt(card: Card, note: Note): Prompt {
       return {
         ...base,
         shape: 'choice',
-        instruction: 'hebben of zijn?',
+        instruction: 'hebben or zijn?',
         question: note.verb!.participle,
         questionLang: 'nl',
         subtitle: note.nl,

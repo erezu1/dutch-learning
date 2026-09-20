@@ -19,7 +19,7 @@ export function Home({ stats, onStart }: Props) {
     <div className="flex h-full flex-col justify-between px-6 py-10">
       <div>
         <h1 className="text-3xl font-semibold">Nederlands</h1>
-        <p className="mt-1 text-on-surface-dim">Een paar minuten per dag.</p>
+        <p className="mt-1 text-on-surface-dim">A few minutes a day.</p>
       </div>
 
       <div className="flex flex-col items-center gap-8">
@@ -40,7 +40,7 @@ export function Home({ stats, onStart }: Props) {
           </svg>
           <div className="text-center">
             <p className="text-4xl font-semibold">{stats.known}</p>
-            <p className="text-sm text-on-surface-dim">van {stats.total} woorden</p>
+            <p className="text-sm text-on-surface-dim">of {stats.total} words</p>
           </div>
         </div>
 
@@ -49,17 +49,17 @@ export function Home({ stats, onStart }: Props) {
           disabled={waiting === 0}
           className="w-full max-w-xs rounded-full bg-primary py-4 text-lg font-semibold text-on-primary transition active:scale-95 disabled:opacity-40"
         >
-          {waiting > 0 ? `Begin — ${waiting} kaarten` : 'Klaar voor vandaag'}
+          {waiting > 0 ? `Start — ${waiting} cards` : 'Nothing due — done for today'}
         </button>
 
         <div className="flex gap-6 text-center text-sm">
           <div>
             <p className="text-xl font-semibold">{stats.dueCount}</p>
-            <p className="text-on-surface-dim">te herhalen</p>
+            <p className="text-on-surface-dim">to review</p>
           </div>
           <div>
             <p className="text-xl font-semibold">{stats.newCount}</p>
-            <p className="text-on-surface-dim">nieuw</p>
+            <p className="text-on-surface-dim">new</p>
           </div>
         </div>
       </div>
@@ -71,10 +71,10 @@ export function Home({ stats, onStart }: Props) {
       >
         <span className={voice.found ? 'text-good' : 'text-bad'}>●</span>
         {voice.found
-          ? `Stem: ${voice.name}${voice.local ? '' : ' (online)'} — tik om te testen`
+          ? `Dutch voice: ${voice.name}${voice.local ? '' : ' (online)'} — tap to test`
           : voice.supported
-            ? 'Geen Nederlandse stem gevonden'
-            : 'Spraak niet ondersteund'}
+            ? 'No Dutch voice on this device'
+            : 'Speech not supported here'}
       </button>
     </div>
   )

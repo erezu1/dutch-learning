@@ -11,7 +11,7 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
       <header className="flex items-center gap-3 px-4 pt-3">
         <button
           onClick={onExit}
-          aria-label="Stoppen"
+          aria-label="Stop"
           className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-on-surface-dim active:scale-90"
         >
           ✕
@@ -25,7 +25,7 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
         <button
           onClick={session.undo}
           disabled={!session.canUndo}
-          aria-label="Ongedaan maken"
+          aria-label="Undo"
           className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-on-surface-dim active:scale-90 disabled:opacity-25"
         >
           ↺

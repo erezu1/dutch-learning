@@ -5,7 +5,7 @@ export function SpeakButton({ text, className = '' }: { text: string; className?
   return (
     <button
       type="button"
-      aria-label={`Spreek uit: ${text}`}
+      aria-label={`Speak: ${text}`}
       onClick={(e) => {
         e.stopPropagation()
         speak(text)
