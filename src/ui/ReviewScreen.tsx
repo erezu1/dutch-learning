@@ -1,12 +1,17 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import type { Session } from '../session/useSession'
 import { ContinueBar, GradeBar } from './GradeBar'
-import { cardVariants, glide, pressable, quiet } from './motion'
+import { cardVariants, glide, quiet, tap } from './motion'
 import { PromptCard } from './PromptCard'
 
-/** Both header icons drawn at one size — text glyphs like ✕ and ↺ are set at
- *  wildly different optical sizes and never match. */
+/**
+ * Both header icons are drawn to fill the same 13-unit box inside a 24-unit
+ * viewBox, at the same stroke width. Text glyphs (✕, ↺) are set at very
+ * different optical sizes, and scaling one icon to match the other scales its
+ * stroke too, which makes it visibly thinner — so both are drawn at native
+ * size instead.
+ */
 function Icon({ children }: { children: ReactNode }) {
   return (
     <svg
@@ -24,18 +29,23 @@ function Icon({ children }: { children: ReactNode }) {
   )
 }
 
+const headerButton =
+  'grid h-10 w-10 shrink-0 place-items-center rounded-full text-on-surface-dim transition-colors'
+
 export function ReviewScreen({ session, onExit }: { session: Session; onExit: () => void }) {
   const { prompt, revealed, picked, correct, position, length } = session
+  const [spins, setSpins] = useState(0)
   if (!prompt) return null
 
   return (
     <div className="flex h-full flex-col">
       <header className="flex items-center gap-3 px-4 pt-3">
         <motion.button
-          {...pressable}
           onClick={onExit}
           aria-label="Stop"
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-on-surface-dim"
+          whileTap={{ scale: 0.82 }}
+          transition={tap}
+          className={`${headerButton} active:bg-surface-2`}
         >
           <Icon>
             <path d="M5.5 5.5l13 13M18.5 5.5l-13 13" />
@@ -50,21 +60,25 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
           />
         </div>
         <motion.button
-          {...pressable}
-          onClick={session.undo}
+          onClick={() => {
+            setSpins((n) => n - 1)
+            session.undo()
+          }}
           disabled={!session.canUndo}
           aria-label="Undo"
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-on-surface-dim disabled:opacity-25"
+          whileTap={{ scale: 0.82 }}
+          transition={tap}
+          className={`${headerButton} active:bg-surface-2 disabled:opacity-25`}
         >
-          <Icon>
-            {/* Scaled about the centre so it occupies the same 13-unit box as
-                the cross. Drawn full size it spans 20 units and reads far
-                larger at the same button size. */}
-            <g transform="translate(12 12) scale(0.72) translate(-12 -12)">
-              <path d="M1 4v6h6" />
-              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
-            </g>
-          </Icon>
+          {/* The icon turns a full circle each time, so the button visibly
+              does something rather than just recolouring. */}
+          <motion.span animate={{ rotate: spins * 360 }} transition={glide} className="grid">
+            <Icon>
+              <path d="M12.3 8.6a4.6 4.6 0 1 1-4.6 4.6" />
+              <path d="M12.3 8.6H6.9" />
+              <path d="M9.5 6L6.9 8.6l2.6 2.6" />
+            </Icon>
+          </motion.span>
         </motion.button>
       </header>
 
