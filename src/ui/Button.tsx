@@ -9,10 +9,12 @@ import { pressable } from './motion'
 // of the clearest tells of a homemade interface.
 // ---------------------------------------------------------------------------
 
-type Tone = 'primary' | 'good' | 'bad' | 'neutral'
+type Tone = 'primary' | 'accent' | 'good' | 'bad' | 'neutral'
 
 const tones: Record<Tone, string> = {
   primary: 'bg-primary text-on-primary shadow-3',
+  /** The accent, quietly — for an action that shouldn't shout on every card. */
+  accent: 'bg-primary-container text-on-primary-container shadow-2',
   good: 'bg-good text-good-ink shadow-2',
   bad: 'bg-bad text-bad-ink shadow-2',
   neutral: 'bg-surface-1 text-on-surface shadow-2',

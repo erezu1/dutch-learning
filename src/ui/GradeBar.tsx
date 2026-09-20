@@ -25,10 +25,9 @@ export function GradeBar({ onGrade }: { onGrade: (grade: Grade) => void }) {
 }
 
 /** The countdown's wash, faint at the start and stronger at the leading edge. */
-function fillGradient(correct: boolean): string {
-  const tint = correct ? 'var(--color-good-ink)' : 'var(--color-primary)'
-  const at = (pct: number) => `color-mix(in srgb, ${tint} ${pct}%, transparent)`
-  return `linear-gradient(to right, ${at(6)}, ${at(26)})`
+function fillGradient(): string {
+  const at = (pct: number) => `color-mix(in srgb, var(--color-primary) ${pct}%, transparent)`
+  return `linear-gradient(to right, ${at(8)}, ${at(30)})`
 }
 
 /** Long enough to read the answer before anything starts moving. */
@@ -42,6 +41,10 @@ const SETTLE = 300
  * Shown after a multiple-choice answer. The app already knows whether you were
  * right, so there is nothing to grade — just carry on.
  *
+ * It always wears the accent, never a right-or-wrong colour: whether you got
+ * it is already said by the answer above, and a button that changes colour for
+ * a reason you have to work out is worse than one that doesn't change at all.
+ *
  * After a pause to read, the button fills from the left and moves on by
  * itself. The fill sits behind the label rather than over it, so the word
  * stays readable the whole way across, and tapping at any point skips ahead.
@@ -49,7 +52,7 @@ const SETTLE = 300
  * Only multiple choice does this. A self-graded card is waiting on a judgement
  * only you can make, so it waits as long as it takes.
  */
-export function ContinueBar({ onContinue, correct }: { onContinue: () => void; correct: boolean }) {
+export function ContinueBar({ onContinue }: { onContinue: () => void }) {
   const settle = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(
@@ -61,11 +64,7 @@ export function ContinueBar({ onContinue, correct }: { onContinue: () => void; c
 
   return (
     <div className="w-full px-4 pb-4">
-      <Button
-        tone={correct ? 'good' : 'neutral'}
-        onClick={onContinue}
-        className="relative w-full overflow-hidden"
-      >
+      <Button tone="accent" onClick={onContinue} className="relative w-full overflow-hidden">
         {/* A crisp leading edge, with the fill itself graded from faint at the
             start to stronger at the edge. Because the gradient spans the
             element it stretches as the fill grows, so the strongest point
@@ -81,7 +80,7 @@ export function ContinueBar({ onContinue, correct }: { onContinue: () => void; c
             settle.current = setTimeout(onContinue, SETTLE)
           }}
           className="absolute inset-y-0 left-0"
-          style={{ background: fillGradient(correct) }}
+          style={{ background: fillGradient() }}
         />
 
         <span className="relative">Continue</span>
