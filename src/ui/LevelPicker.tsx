@@ -37,7 +37,7 @@ export function LevelPicker({ current, known, onPick, onCancel }: Props) {
   }
 
   return (
-    <div className="flex min-h-full flex-col justify-center gap-8 px-6 py-10">
+    <div className="flex flex-1 flex-col justify-center gap-8 px-6 py-10">
       <div>
         <h1 className={`text-4xl ${TITLE}`}>Where are you now?</h1>
         <p className="mt-2 text-on-surface-dim">

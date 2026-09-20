@@ -39,7 +39,7 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
   if (!prompt) return null
 
   return (
-    <div className="relative flex h-full flex-col">
+    <div className="relative flex flex-1 flex-col">
       <header className="flex items-center gap-3 px-4 pt-3">
         <motion.button
           onClick={onExit}

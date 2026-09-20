@@ -30,11 +30,13 @@ function Screen({ children }: { children: React.ReactNode }) {
       animate="center"
       exit="exit"
       transition={glide}
-      // min rather than exact: a screen taller than the window (Settings on a
-      // short phone) has to be able to grow, or its overflow spills out of a
-      // box that is already the height of the glass and the end of it can
-      // never be scrolled to.
-      className="min-h-full"
+      // A column at least as tall as the window. The screen inside it is a
+      // flex child that stretches to fill it, so a screen that fits is laid
+      // out against the window exactly as it always was — and one that
+      // doesn't, like Settings on a short phone, pushes the column taller
+      // instead of spilling out of a box the height of the glass, where the
+      // end of it can never be scrolled to.
+      className="flex min-h-full flex-col"
     >
       {children}
     </motion.div>

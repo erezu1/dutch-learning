@@ -12,7 +12,7 @@ import { WORDMARK } from './type'
 
 export function Welcome({ onBegin }: { onBegin: () => void }) {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-10 px-8 text-center">
+    <div className="flex flex-1 flex-col items-center justify-center gap-10 px-8 text-center">
       <motion.div
         initial={{ opacity: 0, scale: 0.8, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -28,9 +28,7 @@ export function Welcome({ onBegin }: { onBegin: () => void }) {
         transition={{ ...glide, delay: 0.18 }}
       >
         <h1 className={`text-6xl leading-none ${WORDMARK}`}>Doei</h1>
-        <p className="mt-3 text-lg text-balance text-on-surface-dim">
-          Dutch, a few minutes a day.
-        </p>
+        <p className="mt-3 text-lg text-balance text-on-surface-dim">Dutch, a few minutes a day.</p>
       </motion.div>
 
       <motion.div

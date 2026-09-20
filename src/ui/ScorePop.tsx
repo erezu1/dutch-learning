@@ -84,9 +84,7 @@ export function ScorePop({ award }: { award: (Award & { key: number }) | null })
               className="relative flex flex-col items-center"
             >
               <span
-                className={`leading-none text-primary ${TITLE} ${
-                  big ? 'text-7xl' : 'text-6xl'
-                }`}
+                className={`leading-none text-primary ${TITLE} ${big ? 'text-7xl' : 'text-6xl'}`}
               >
                 +{shown.amount}
               </span>

@@ -259,7 +259,7 @@ export function Settings({
   onBack,
 }: Props) {
   return (
-    <div className="flex min-h-full flex-col px-6 py-10">
+    <div className="flex flex-1 flex-col px-6 py-10">
       <div className="flex items-center gap-3">
         <motion.button
           whileTap={{ scale: 0.85 }}
@@ -344,13 +344,11 @@ export function Settings({
           <StartOver />
         </motion.div>
 
-        {/* A screen is the height of the window, so a longer one overflows it
-            — and an overflowing box's own bottom padding sits inside the box,
-            where the overflow has already gone past it. The page's safe-area
-            inset is on the body and goes the same way. So the last card ended
-            flush against the bottom of the glass, under the gesture bar. A
-            real element is the only trailing space the scroll reaches. */}
-        <div aria-hidden className="h-[calc(2.5rem+env(safe-area-inset-bottom))] shrink-0" />
+        {/* The page's own bottom padding is below this; what it can't give is
+            the phone's gesture inset, which lives on the body and so sits
+            inside a box the content has already overflowed. Zero on anything
+            without one. */}
+        <div aria-hidden className="h-[env(safe-area-inset-bottom)] shrink-0" />
       </div>
     </div>
   )
