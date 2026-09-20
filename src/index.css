@@ -94,10 +94,10 @@
   --glow-boost: 1;
 
   /* How much of the accent the moving ground carries. Low enough that the
-     words never have to compete with it: at anything stronger the page starts
-     reading as decoration with text on it. */
-  --ambient-near: 13%;
-  --ambient-far: 9%;
+     words never have to compete with it — but it does have to be visible on a
+     phone in daylight, which is a harder test than a bright screen indoors. */
+  --ambient-near: 18%;
+  --ambient-far: 12%;
 
   /* Every level opens with a 1px ring. White cards on a warm off-white page
      have very little edge contrast of their own, and pressing one draws its
@@ -221,7 +221,7 @@ body::before {
   background: radial-gradient(
     circle,
     color-mix(in oklab, var(--color-primary) var(--ambient-near), transparent) 0%,
-    transparent 60%
+    transparent 48%
   );
   animation: ambient-near 97s linear infinite;
 }
@@ -230,7 +230,7 @@ body::after {
   background: radial-gradient(
     circle,
     color-mix(in oklab, var(--color-primary) var(--ambient-far), transparent) 0%,
-    transparent 56%
+    transparent 44%
   );
   animation: ambient-far 61s linear infinite;
 }
@@ -451,6 +451,6 @@ body::after {
 
   /* The accent is a light colour in dark mode, so the same strength reads
      brighter against the ground. */
-  --ambient-near: 10%;
-  --ambient-far: 7%;
+  --ambient-near: 13%;
+  --ambient-far: 9%;
 }

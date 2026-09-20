@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import deckCore from './content/deck-core.json'
 import type { Deck } from './core/types'
+import { setReviewing } from './core/update'
 import { useSession } from './session/useSession'
 import { Done } from './ui/Done'
 import { Home } from './ui/Home'
@@ -82,6 +83,11 @@ export default function App() {
   const [screen, setScreen] = useScreenHistory()
   // Only ever seen before a level is chosen, which is stored, so it shows once.
   const [greeted, setGreeted] = useState(false)
+
+  // A new build waits for the end of a session before it takes the screen.
+  useEffect(() => {
+    setReviewing(session.status === 'reviewing')
+  }, [session.status])
 
   if (session.status === 'loading') {
     return <div className="grid h-full place-items-center text-on-surface-dim">…</div>
