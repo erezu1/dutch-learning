@@ -145,6 +145,10 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
               <p className="text-sm text-bad/80">you chose &ldquo;{picked}&rdquo;</p>
             )}
 
+            {prompt.meaning && (
+              <p className="max-w-xs text-sm text-on-surface-dim">{prompt.meaning}</p>
+            )}
+
             {isCloze ? (
               prompt.detailTranslation && (
                 <p className="max-w-xs text-sm text-on-surface-dim">{prompt.detailTranslation}</p>

@@ -333,7 +333,56 @@ const CONDITIONAL = new Set([
 ])
 
 /**
- * We only ever *assert* "zijn", never "hebben".
+ * Second source for the auxiliary: 85,000 real Dutch sentences.
+ *
+ * Wiktionary marks zijn explicitly but leaves hebben blank, so its silence is
+ * not evidence. The corpus gives positive evidence both ways — count how often
+ * each participle appears in a sentence with a form of zijn versus a form of
+ * hebben. Validated against verbs whose auxiliary is known: the zijn verbs
+ * score 1.00 and the hebben verbs 0.00-0.21, so the two are cleanly separable.
+ *
+ * The stray zijn-votes on hebben verbs are passives — "het is gemaakt" — which
+ * is why the thresholds leave a wide gap in the middle rather than splitting
+ * at half.
+ */
+async function loadCorpusVotes(participleToVerb) {
+  const raw = await readFile(path.join(DATA, 'nld.txt'), 'utf8')
+  const ZIJN = /(^|\W)(ben|bent|is|zijn|was|waren)(\W|$)/
+  const HEBBEN = /(^|\W)(heb|hebt|heeft|hebben|had|hadden)(\W|$)/
+  const votes = new Map()
+
+  for (const line of raw.split('\n')) {
+    const nl = line.split('\t')[1]
+    if (!nl) continue
+    const lower = nl.toLowerCase()
+    const z = ZIJN.test(lower)
+    const h = HEBBEN.test(lower)
+    // A sentence with both is ambiguous about which one governs the participle.
+    if (z === h) continue
+    for (const token of lower.match(/[a-zà-ÿ']+/g) ?? []) {
+      const verb = participleToVerb.get(token)
+      if (!verb) continue
+      const tally = votes.get(verb) ?? { zijn: 0, hebben: 0 }
+      if (z) tally.zijn++
+      else tally.hebben++
+      votes.set(verb, tally)
+    }
+  }
+
+  return function corpusAuxiliary(verb) {
+    const tally = votes.get(verb)
+    if (!tally) return null
+    const total = tally.zijn + tally.hebben
+    if (total < 4) return null
+    const ratio = tally.zijn / total
+    if (ratio >= 0.85) return 'zijn'
+    if (ratio <= 0.25) return 'hebben'
+    return null // genuinely mixed; say nothing
+  }
+}
+
+/**
+ * We assert an auxiliary only where a source positively supports it.
  *
  * The conjugation templates are precise about zijn — if one says zijn, it is
  * zijn — but their silence is not evidence of hebben: the template for
@@ -342,14 +391,23 @@ const CONDITIONAL = new Set([
  * claims an auxiliary, rather than claiming the more likely one and being
  * confidently wrong a few dozen times.
  */
-async function loadAuxiliaries() {
+async function loadAuxiliaries(corpusAuxiliary) {
   const { auxiliaries } = JSON.parse(await readFile('src/content/auxiliaries.json', 'utf8'))
 
   return function auxiliaryFor(verb) {
     if (CONDITIONAL.has(verb)) return { auxiliary: 'both', auxiliaryUnknown: true }
-    const aux = auxiliaries[verb]
-    if (aux === 'zijn') return { auxiliary: 'zijn' }
-    return { auxiliary: aux === 'both' ? 'both' : 'hebben', auxiliaryUnknown: true }
+
+    const stated = auxiliaries[verb]
+    const observed = corpusAuxiliary(verb)
+
+    // Wiktionary saying zijn is reliable on its own.
+    if (stated === 'zijn') return { auxiliary: 'zijn' }
+    // The corpus can also reveal a zijn verb Wiktionary left blank, which is
+    // how weglopen and verhuizen are caught.
+    if (observed === 'zijn') return { auxiliary: 'zijn' }
+    // hebben needs positive evidence, not merely an absence of zijn.
+    if (observed === 'hebben') return { auxiliary: 'hebben' }
+    return { auxiliary: stated === 'both' ? 'both' : 'hebben', auxiliaryUnknown: true }
   }
 }
 
@@ -374,7 +432,15 @@ async function main() {
 
   console.log('reading sentences…')
   const sentences = await loadSentences(rank)
-  const auxiliaryFor = await loadAuxiliaries()
+  const participleToVerb = new Map()
+  for (const c of byKey.values()) {
+    if (c.pos === 'verb' && c.extra.participle) {
+      participleToVerb.set(norm(c.extra.participle), c.word)
+    }
+  }
+  console.log('counting auxiliaries in the sentence corpus…')
+  const corpusAuxiliary = await loadCorpusVotes(participleToVerb)
+  const auxiliaryFor = await loadAuxiliaries(corpusAuxiliary)
 
   // Hand-written notes win: their grammar was checked by a human and they
   // carry auxiliary data the import cannot supply.

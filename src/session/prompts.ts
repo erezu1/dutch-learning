@@ -31,6 +31,13 @@ export interface Prompt {
 
   answer: string
   answerLang: 'nl' | 'en'
+  /**
+   * The word's other senses, shown only once the card is answered. Asking
+   * "what is 'little, few' in Dutch?" reads like a riddle; asking for "little"
+   * and then showing the fuller meaning teaches the same thing without the
+   * question looking odd.
+   */
+  meaning?: string
   /** Extra context shown once revealed, e.g. an example sentence. */
   detail?: string
   detailTranslation?: string
@@ -131,6 +138,7 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         subtitle: posLabel[note.pos],
         answer: choice ? firstGloss(note) : note.en.join(' · '),
         answerLang: 'en',
+        meaning: choice && note.en.length > 1 ? note.en.join(' · ') : undefined,
         choices: choice
           ? shuffle([firstGloss(note), ...distractors(note, ctx, firstGloss)])
           : undefined,
@@ -145,13 +153,15 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         ...base,
         shape: choice ? 'choice' : 'reveal',
         instruction: 'How do you say this in Dutch?',
-        question: note.en.join(' · '),
+        // Only the main sense is asked. The rest comes after the answer.
+        question: firstGloss(note),
         questionLang: 'en',
         subtitle: posLabel[note.pos],
         // Free recall shows the article too; multiple choice must not, or the
         // options would give away the gender answer elsewhere in the deck.
         answer: choice ? note.nl : note.gender ? `${note.gender} ${note.nl}` : note.nl,
         answerLang: 'nl',
+        meaning: note.en.length > 1 ? note.en.join(' · ') : undefined,
         choices: choice ? shuffle([dutch(note), ...distractors(note, ctx, dutch)]) : undefined,
         speak: note.nl,
         ...example(note),

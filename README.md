@@ -92,13 +92,23 @@ they are written and checked by hand instead.
 verbs in the deck, so it is a few hundred API calls rather than a bulk
 download.
 
-**We only ever assert "zijn", never "hebben."** The templates are precise
-about zijn, but their silence is not evidence of hebben — the template for
-*weglopen* carries no auxiliary although *hij is weggelopen* is the normal
-form. So a verb we cannot confirm never claims an auxiliary at all. Motion
-verbs (`CONDITIONAL` in the build script) take zijn only with a destination —
-*ik heb gelopen* but *ik ben naar huis gelopen* — which is too conditional for
-a flashcard, so they are never asserted either.
+Wiktionary marks zijn explicitly but leaves hebben blank, so its silence is
+not evidence — the template for *weglopen* carries no auxiliary although *hij
+is weggelopen* is the normal form. A second source fixes that: the build
+counts, across the 85,000 sentence corpus, how often each participle appears
+with a form of *zijn* versus a form of *hebben*.
+
+Validated against verbs whose auxiliary is known, the two separate cleanly:
+zijn verbs score 1.00, hebben verbs 0.00–0.21. The stray zijn-votes on hebben
+verbs are passives (*het is gemaakt*), which is why the thresholds leave a wide
+gap rather than splitting at half: ≥0.85 means zijn, ≤0.25 means hebben, and
+anything between is left unclaimed.
+
+**An auxiliary is asserted only where a source positively supports it.** Where
+neither source is decisive the card shows the participle alone rather than
+guessing. Motion verbs (`CONDITIONAL` in the build script) take zijn only with
+a destination — *ik heb gelopen* but *ik ben naar huis gelopen* — so they are
+never asserted either.
 
 The build cross-checks the hand-written verbs against the fetched data and
 warns on disagreement.
