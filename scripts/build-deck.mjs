@@ -139,7 +139,7 @@ function cleanGloss(gloss) {
     const allSingleWords = parts.every((x) => !x.includes(' '))
     if (allVerbs || allSingleWords) return parts[0].length > 38 ? '' : parts[0]
   }
-  return g.length > 44 ? '' : g
+  return g.length > 34 ? '' : g
 }
 
 /** Two senses are only worth showing if they mean noticeably different things. */

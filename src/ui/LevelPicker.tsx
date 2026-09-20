@@ -1,4 +1,6 @@
+import { motion } from 'framer-motion'
 import { LEVELS, type LevelOption } from '../core/levels'
+import { glide, pressable } from './motion'
 
 // ---------------------------------------------------------------------------
 // Asked once on first run, changeable any time. It sets where new words start
@@ -25,16 +27,24 @@ export function LevelPicker({ current, onPick, onCancel }: Props) {
         {LEVELS.map((option) => {
           const active = current?.id === option.id
           return (
-            <button
+            <motion.button
               key={option.id}
+              {...pressable}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ ...glide, delay: 0.05 * LEVELS.indexOf(option) }}
               onClick={() => onPick(option)}
-              className={`rounded-3xl px-5 py-4 text-left transition active:scale-[0.98] ${
-                active ? 'bg-primary-container' : 'bg-surface-1'
+              className={`rounded-3xl px-5 py-4 text-left shadow-2 transition-shadow active:shadow-press ${
+                active
+                  ? 'bg-primary-container text-on-primary-container'
+                  : 'bg-surface-1'
               }`}
             >
               <p className="font-semibold">{option.name}</p>
-              <p className="mt-0.5 text-sm text-on-surface-dim">{option.description}</p>
-            </button>
+              <p className={`mt-0.5 text-sm ${active ? 'opacity-70' : 'text-on-surface-dim'}`}>
+                {option.description}
+              </p>
+            </motion.button>
           )
         })}
       </div>

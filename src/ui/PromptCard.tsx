@@ -1,5 +1,7 @@
+import { motion } from 'framer-motion'
 import { splitAroundWord } from '../core/cards'
 import type { Prompt } from '../session/prompts'
+import { glide, pressable } from './motion'
 import { SpeakButton } from './SpeakButton'
 
 // ---------------------------------------------------------------------------
@@ -20,10 +22,10 @@ interface Props {
 // The grammar pairs get their own colours so they stay recognisable at a
 // glance; vocabulary options are neutral.
 const choiceColor: Record<string, string> = {
-  de: 'text-de',
-  het: 'text-het',
-  hebben: 'text-de',
-  zijn: 'text-het',
+  de: 'bg-de-bg text-de',
+  het: 'bg-het-bg text-het',
+  hebben: 'bg-de-bg text-de',
+  zijn: 'bg-het-bg text-het',
 }
 
 /** Renders "you (formal)" with the clarifying part played down. */
@@ -45,17 +47,21 @@ function Choices({ prompt, onChoose }: { prompt: Prompt; onChoose: (v: string) =
 
   return (
     <div className={`px-4 pb-2 ${pair ? 'flex gap-3' : 'flex flex-col gap-2'}`}>
-      {choices.map((choice) => (
-        <button
+      {choices.map((choice, i) => (
+        <motion.button
           key={choice}
+          {...pressable}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...glide, delay: 0.04 * i }}
           onClick={() => onChoose(choice)}
           translate="no"
-          className={`notranslate rounded-3xl bg-surface-2 transition active:scale-95 ${
+          className={`notranslate rounded-3xl shadow-2 transition-shadow active:shadow-press ${
             pair ? 'flex-1 py-6 text-2xl font-semibold' : 'px-5 py-4 text-lg'
-          } ${choiceColor[choice] ?? ''}`}
+          } ${choiceColor[choice] ?? 'bg-surface-1'}`}
         >
           <Gloss text={choice} />
-        </button>
+        </motion.button>
       ))}
     </div>
   )
@@ -134,7 +140,12 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
         )}
 
         {revealed && (
-          <div className="mt-2 flex flex-col items-center gap-3">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={glide}
+            className="mt-2 flex flex-col items-center gap-3"
+          >
             <div className="h-px w-16 bg-surface-3" />
 
             {isCloze ? (
@@ -143,7 +154,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                   sentence={prompt.detail ?? ''}
                   word={prompt.answer}
                   className="text-2xl leading-snug font-semibold"
-                  highlight="text-good"
+                  highlight="text-good-ink"
                 />
                 {prompt.speak && <SpeakButton text={prompt.speak} />}
               </div>
@@ -153,7 +164,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                   lang={prompt.answerLang}
                   translate="no"
                   className={`notranslate text-3xl font-semibold ${
-                    correct === false ? 'text-bad' : correct === true ? 'text-good' : ''
+                    correct === false ? 'text-bad-ink' : correct === true ? 'text-good-ink' : ''
                   }`}
                 >
                   {prompt.answerLang === 'en' ? <Gloss text={prompt.answer} /> : prompt.answer}
@@ -163,7 +174,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
             )}
 
             {correct === false && picked && (
-              <p className="text-sm text-bad/80">you chose &ldquo;{picked}&rdquo;</p>
+              <p className="text-sm text-bad-ink/80">you chose &ldquo;{picked}&rdquo;</p>
             )}
 
             {prompt.meaning && (
@@ -191,7 +202,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                 </div>
               )
             )}
-          </div>
+          </motion.div>
         )}
       </div>
 

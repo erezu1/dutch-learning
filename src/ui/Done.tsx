@@ -1,4 +1,6 @@
+import { motion } from 'framer-motion'
 import type { SessionStats } from '../session/useSession'
+import { glide, pressable } from './motion'
 
 interface Props {
   stats: SessionStats
@@ -10,20 +12,25 @@ export function Done({ stats, onHome }: Props) {
 
   return (
     <div className="flex h-full flex-col items-center justify-center gap-8 px-6 text-center">
-      <div>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={glide}
+      >
         <p className="text-6xl">🎉</p>
         <h1 className="mt-4 text-3xl font-semibold">Done for today</h1>
         <p className="mt-2 text-on-surface-dim">
           {stats.reviewed} cards · {pct}% correct
         </p>
-      </div>
+      </motion.div>
 
-      <button
+      <motion.button
+        {...pressable}
         onClick={onHome}
-        className="rounded-full bg-primary px-10 py-4 font-semibold text-on-primary transition active:scale-95"
+        className="rounded-full bg-primary px-10 py-4 font-semibold text-on-primary shadow-3 transition-shadow active:shadow-press"
       >
         Back
-      </button>
+      </motion.button>
     </div>
   )
 }

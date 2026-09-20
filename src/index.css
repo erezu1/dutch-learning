@@ -1,28 +1,63 @@
 @import 'tailwindcss';
 
 /* ---------------------------------------------------------------------------
-   Design tokens. Phase 3 restyles the app largely by changing values here.
-   Roughly Material 3 colour roles, dark by default.
+   Design tokens. The UI layer restyles almost entirely by changing values here.
+
+   Light and warm rather than dark: shadows barely read on a dark background,
+   and shadow is what makes a card feel like an object you could pick up.
+
+   Surfaces are off-white, never pure white — pure white glares, especially on
+   a phone at night, and leaves no room for a card to sit *above* the page.
 --------------------------------------------------------------------------- */
 @theme {
-  --color-surface: #12121a;
-  --color-surface-1: #1b1b25;
-  --color-surface-2: #23232f;
-  --color-surface-3: #2d2d3b;
-  --color-on-surface: #e8e8f0;
-  --color-on-surface-dim: #9a9aae;
+  /* --- surfaces, warm off-white --- */
+  --color-surface: #faf7f2;
+  --color-surface-1: #ffffff;
+  --color-surface-2: #f2ece3;
+  --color-surface-3: #e6ddd0;
+  --color-on-surface: #1f1b16;
+  --color-on-surface-dim: #6f665a;
 
-  --color-primary: #b9c3ff;
-  --color-on-primary: #1a2050;
-  --color-primary-container: #323a75;
+  /* --- accent: Dutch orange, warmed down so it doesn't shout --- */
+  --color-primary: #e2622a;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #ffe5d6;
+  --color-on-primary-container: #7c2d06;
 
-  --color-good: #7ddba0;
-  --color-bad: #ff8f8f;
-  --color-de: #7fc8ff;
-  --color-het: #ffc27f;
+  /* --- feedback. The "ink" variants are for text, which needs more contrast
+         against a light background than a fill does. --- */
+  --color-good: #dff2e5;
+  --color-good-ink: #1f7a4c;
+  --color-bad: #fde4e1;
+  --color-bad-ink: #b3382a;
+
+  /* --- de/het, kept distinguishable at a glance --- */
+  --color-de: #1d6fd0;
+  --color-de-bg: #e1edfd;
+  --color-het: #a55a09;
+  --color-het-bg: #fdeed8;
+
+  /* --- elevation ---
+     Every level pairs a tight contact shadow with a soft ambient one. That
+     pairing is what reads as a physical object; a single blurred shadow reads
+     as a glow. Tinted with the text colour rather than pure black, so shadows
+     stay warm instead of turning grey. */
+  --shadow-1: 0 1px 2px rgba(31, 27, 22, 0.05), 0 1px 3px rgba(31, 27, 22, 0.04);
+  --shadow-2: 0 2px 4px rgba(31, 27, 22, 0.05), 0 6px 14px rgba(31, 27, 22, 0.06);
+  --shadow-3: 0 4px 8px rgba(31, 27, 22, 0.06), 0 14px 32px rgba(31, 27, 22, 0.09);
+  --shadow-4: 0 8px 16px rgba(31, 27, 22, 0.07), 0 24px 56px rgba(31, 27, 22, 0.12);
+  /* Pressed: the object moves closer to the page, so its shadow tightens. */
+  --shadow-press: 0 1px 2px rgba(31, 27, 22, 0.08);
 
   --radius-card: 1.75rem;
-  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* --- motion ---
+     Two or three curves, used everywhere. A different easing per component is
+     what makes an interface feel homemade. */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-tap: 140ms;
+  --duration-move: 320ms;
 }
 
 @layer base {
@@ -49,5 +84,16 @@
     color: inherit;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+  }
+
+  /* Animation is decoration. If the phone asks for less of it, give none. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }

@@ -1,5 +1,7 @@
+import { AnimatePresence, motion } from 'framer-motion'
 import type { Session } from '../session/useSession'
 import { ContinueBar, GradeBar } from './GradeBar'
+import { cardVariants, glide, pressable, quiet } from './motion'
 import { PromptCard } from './PromptCard'
 
 export function ReviewScreen({ session, onExit }: { session: Session; onExit: () => void }) {
@@ -9,37 +11,55 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
   return (
     <div className="flex h-full flex-col">
       <header className="flex items-center gap-3 px-4 pt-3">
-        <button
+        <motion.button
+          {...pressable}
           onClick={onExit}
           aria-label="Stop"
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-on-surface-dim active:scale-90"
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-on-surface-dim"
         >
           ✕
-        </button>
-        <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-2">
-          <div
-            className="h-full rounded-full bg-primary transition-[width] duration-300"
-            style={{ width: `${length ? (position / length) * 100 : 0}%` }}
+        </motion.button>
+        <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-3">
+          <motion.div
+            className="h-full rounded-full bg-primary"
+            initial={false}
+            animate={{ width: `${length ? (position / length) * 100 : 0}%` }}
+            transition={quiet}
           />
         </div>
-        <button
+        <motion.button
+          {...pressable}
           onClick={session.undo}
           disabled={!session.canUndo}
           aria-label="Undo"
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-on-surface-dim active:scale-90 disabled:opacity-25"
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-on-surface-dim disabled:opacity-25"
         >
           ↺
-        </button>
+        </motion.button>
       </header>
 
-      <PromptCard
-        prompt={prompt}
-        revealed={revealed}
-        picked={picked}
-        correct={correct}
-        onReveal={session.reveal}
-        onChoose={session.choose}
-      />
+      {/* Keyed on the card, so moving to the next one animates rather than
+          swapping the text in place. */}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={prompt.cardId}
+          variants={cardVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={glide}
+          className="flex flex-1 flex-col"
+        >
+          <PromptCard
+            prompt={prompt}
+            revealed={revealed}
+            picked={picked}
+            correct={correct}
+            onReveal={session.reveal}
+            onChoose={session.choose}
+          />
+        </motion.div>
+      </AnimatePresence>
 
       {revealed &&
         (session.autoGrade !== null ? (

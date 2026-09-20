@@ -1,32 +1,40 @@
+import { motion } from 'framer-motion'
 import { Rating, type Grade } from '../core/scheduler'
+import { pressable } from './motion'
 
 // ---------------------------------------------------------------------------
-// Two buttons, and no mention of when the card comes back. The scheduling is
-// the app's job, not something to think about mid-review — being shown "back
-// in 16d" invites you to grade for the interval you want rather than for what
-// you actually knew, which is exactly what corrupts the data.
+// Two buttons. The only judgement that has to be honest is "did I know it or
+// not", and asking for a finer one on every card invites dishonest grading,
+// which would poison the scheduler.
+//
+// No mention of when the card comes back: the scheduling is the app's job.
 // ---------------------------------------------------------------------------
 
 interface Props {
   onGrade: (grade: Grade) => void
 }
 
+const base =
+  'rounded-3xl py-6 text-base font-semibold shadow-2 transition-shadow active:shadow-press'
+
 export function GradeBar({ onGrade }: Props) {
   return (
     <div className="grid grid-cols-2 gap-3 px-4 pb-4">
-      <button
+      <motion.button
+        {...pressable}
         onClick={() => onGrade(Rating.Again)}
-        className="rounded-3xl bg-bad/15 py-6 text-base font-semibold text-bad transition active:scale-95"
+        className={`${base} bg-bad text-bad-ink`}
       >
         Didn&rsquo;t know
-      </button>
+      </motion.button>
 
-      <button
+      <motion.button
+        {...pressable}
         onClick={() => onGrade(Rating.Good)}
-        className="rounded-3xl bg-good/15 py-6 text-base font-semibold text-good transition active:scale-95"
+        className={`${base} bg-good text-good-ink`}
       >
         Knew it
-      </button>
+      </motion.button>
     </div>
   )
 }
@@ -38,14 +46,15 @@ export function GradeBar({ onGrade }: Props) {
 export function ContinueBar({ onContinue, correct }: { onContinue: () => void; correct: boolean }) {
   return (
     <div className="px-4 pb-4">
-      <button
+      <motion.button
+        {...pressable}
         onClick={onContinue}
-        className={`w-full rounded-3xl py-6 text-base font-semibold transition active:scale-95 ${
-          correct ? 'bg-good/15 text-good' : 'bg-surface-2 text-on-surface'
+        className={`w-full ${base} ${
+          correct ? 'bg-good text-good-ink' : 'bg-surface-1 text-on-surface'
         }`}
       >
         Continue
-      </button>
+      </motion.button>
     </div>
   )
 }

@@ -147,7 +147,12 @@ meaningful chunks rather than single words, and it has to accept several
 correct orders — *Morgen ga ik naar de stad* and *Ik ga morgen naar de stad*
 are both right — so it cannot simply compare against one stored answer.
 
-### Phase 3 — The UI pass (the fun one)
+### Phase 3 — The UI pass (in progress)
+
+Done: light palette, elevation scale, motion vocabulary, name and icon.
+Next: the card as a draggable object (swipe to grade), then haptics and the
+correct/wrong micro-interactions.
+
 - Full-bleed vertical cards, one per screen, TikTok-style
 - **Swipe to grade**: left = Again, right = Good, up = Easy — Tinder mechanics mapped onto the four FSRS ratings
 - Haptics, spring physics, colour-coded feedback

@@ -1,7 +1,14 @@
-# Nederlands
+# Doei
 
 A small spaced-repetition app for learning Dutch. Personal use, two phones,
 no server, no cost.
+
+The interface is light and warm, and the design tokens in `src/index.css` are
+where almost all of its appearance lives: surfaces, the accent, a four-level
+elevation scale and the motion curves. `src/ui/motion.ts` holds the animation
+vocabulary — components pick from it rather than inventing their own easing,
+since a different curve per component is what makes an interface feel
+homemade.
 
 See [ROADMAP.md](ROADMAP.md) for the plan and the reasoning behind it.
 

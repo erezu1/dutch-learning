@@ -1,7 +1,9 @@
+import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { onVoicesReady, speak, voiceReport, type VoiceReport } from '../core/speech'
 import type { LevelOption } from '../core/levels'
 import type { SessionStats } from '../session/useSession'
+import { pressable, quiet } from './motion'
 
 interface Props {
   stats: SessionStats
@@ -22,22 +24,23 @@ export function Home({ stats, level, onStart, onChangeLevel }: Props) {
     <div className="flex h-full flex-col justify-between px-6 py-10">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold">Nederlands</h1>
-          <p className="mt-1 text-on-surface-dim">A few minutes a day.</p>
+          <h1 className="text-3xl font-semibold">Doei</h1>
+          <p className="mt-1 text-on-surface-dim">A little Dutch, every day.</p>
         </div>
-        <button
+        <motion.button
+          {...pressable}
           onClick={onChangeLevel}
-          className="rounded-full bg-surface-1 px-3 py-1.5 text-xs text-on-surface-dim active:scale-95"
+          className="rounded-full bg-surface-1 px-3 py-1.5 text-xs font-medium text-on-surface-dim shadow-1"
         >
           {level.name}
-        </button>
+        </motion.button>
       </div>
 
       <div className="flex flex-col items-center gap-8">
         <div className="relative grid h-48 w-48 place-items-center">
           <svg viewBox="0 0 100 100" className="absolute inset-0 -rotate-90">
-            <circle cx="50" cy="50" r="45" fill="none" stroke="var(--color-surface-2)" strokeWidth="8" />
-            <circle
+            <circle cx="50" cy="50" r="45" fill="none" stroke="var(--color-surface-3)" strokeWidth="8" />
+            <motion.circle
               cx="50"
               cy="50"
               r="45"
@@ -45,8 +48,9 @@ export function Home({ stats, level, onStart, onChangeLevel }: Props) {
               stroke="var(--color-primary)"
               strokeWidth="8"
               strokeLinecap="round"
-              strokeDasharray={`${progress * 283} 283`}
-              className="transition-[stroke-dasharray] duration-700"
+              initial={false}
+              animate={{ strokeDasharray: `${progress * 283} 283` }}
+              transition={quiet}
             />
           </svg>
           <div className="text-center">
@@ -55,13 +59,14 @@ export function Home({ stats, level, onStart, onChangeLevel }: Props) {
           </div>
         </div>
 
-        <button
+        <motion.button
+          {...pressable}
           onClick={onStart}
           disabled={waiting === 0}
-          className="w-full max-w-xs rounded-full bg-primary py-4 text-lg font-semibold text-on-primary transition active:scale-95 disabled:opacity-40"
+          className="w-full max-w-xs rounded-full bg-primary py-4 text-lg font-semibold text-on-primary shadow-3 transition-shadow active:shadow-press disabled:opacity-40 disabled:shadow-1"
         >
           {waiting > 0 ? `Start — ${waiting} cards` : 'Nothing due — done for today'}
-        </button>
+        </motion.button>
 
         <div className="flex gap-6 text-center text-sm">
           <div>
@@ -76,17 +81,18 @@ export function Home({ stats, level, onStart, onChangeLevel }: Props) {
       </div>
 
       {/* Phase 0 diagnostic: does this phone actually have a Dutch voice? */}
-      <button
+      <motion.button
+        {...pressable}
         onClick={() => speak('Goedemorgen, hoe gaat het met je?')}
-        className="mx-auto flex items-center gap-2 rounded-full bg-surface-1 px-4 py-2 text-xs text-on-surface-dim active:scale-95"
+        className="mx-auto flex items-center gap-2 rounded-full bg-surface-1 px-4 py-2 text-xs text-on-surface-dim shadow-1"
       >
-        <span className={voice.found ? 'text-good' : 'text-bad'}>●</span>
+        <span className={voice.found ? 'text-good-ink' : 'text-bad-ink'}>●</span>
         {voice.found
           ? `Dutch voice: ${voice.name}${voice.local ? '' : ' (online)'} — tap to test`
           : voice.supported
             ? 'No Dutch voice on this device'
             : 'Speech not supported here'}
-      </button>
+      </motion.button>
     </div>
   )
 }

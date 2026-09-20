@@ -97,9 +97,16 @@ function distractors(note: Note, ctx: PromptContext, render: (n: Note) => string
   const candidates = ctx.notes.filter((n) => n.id !== note.id && render(n) !== correct)
   const tag = note.tags?.[0]
 
+  // Options of wildly different lengths give the answer away — a distractor
+  // three times longer than the rest is discarded on sight, without knowing
+  // any Dutch. Keep them in the same rough size band as the answer.
+  const maxLength = Math.max(18, correct.length * 2)
+  const sized = candidates.filter((n) => render(n).length <= maxLength)
+
   const tiers = [
-    candidates.filter((n) => n.pos === note.pos && tag && n.tags?.includes(tag)),
-    candidates.filter((n) => n.pos === note.pos),
+    sized.filter((n) => n.pos === note.pos && tag && n.tags?.includes(tag)),
+    sized.filter((n) => n.pos === note.pos),
+    sized,
     candidates,
   ]
 
