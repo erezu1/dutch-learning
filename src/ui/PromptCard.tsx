@@ -212,9 +212,11 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
             <h1
               lang={prompt.questionLang}
               translate="no"
-              className={`notranslate font-display font-semibold text-balance ${
-                isSentence ? 'text-[1.9rem] leading-snug' : 'text-[3.4rem] leading-none'
-              }`}
+              // Serif only when the question is Dutch. An English prompt is
+              // interface, not material.
+              className={`notranslate text-balance ${
+                prompt.questionLang === 'nl' ? 'font-display font-semibold' : 'font-bold tracking-tight'
+              } ${isSentence ? 'text-[1.9rem] leading-snug' : 'text-[3.4rem] leading-none'}`}
             >
               {prompt.questionLang === 'en' ? <Gloss text={prompt.question} /> : prompt.question}
             </h1>

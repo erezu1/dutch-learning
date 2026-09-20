@@ -6,7 +6,13 @@ no server, no cost.
 The interface is light and warm, and the design tokens in `src/index.css` are
 where almost all of its appearance lives. Colour schemes are blocks of the
 same tokens selected by `data-theme` on `<html>` — no component knows which
-one is active: surfaces, the accent, a four-level
+one is active.
+
+**The serif is reserved for Dutch.** Fraunces carries the words and sentences
+being learned; everything else, including the app's own name and its numbers,
+is Bricolage Grotesque. Keeping the serif to the material means that when you
+see it, it is Dutch — which is why an English prompt on a recall card is set
+in the sans even though it sits in the same slot as the Dutch one: surfaces, the accent, a four-level
 elevation scale and the motion curves. `src/ui/motion.ts` holds the animation
 vocabulary — components pick from it rather than inventing their own easing,
 since a different curve per component is what makes an interface feel

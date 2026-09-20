@@ -36,7 +36,7 @@ export function Home({ stats, score, level, theme, onStart, onChangeLevel, onCha
         <div>
           <div className="flex items-center gap-2.5">
             <Paw className="h-8 w-8 text-primary" />
-            <h1 className="font-display text-4xl font-semibold">Doei</h1>
+            <h1 className="text-4xl font-bold tracking-tight">Doei</h1>
           </div>
           <p className="mt-1 text-on-surface-dim">A little Dutch, every day.</p>
         </div>
@@ -100,7 +100,7 @@ export function Home({ stats, score, level, theme, onStart, onChangeLevel, onCha
               initial={{ scale: 0.86, opacity: 0.4 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={quiet}
-              className="font-display text-5xl font-semibold"
+              className="text-5xl font-bold tracking-tight"
             >
               {score.toLocaleString()}
             </motion.p>

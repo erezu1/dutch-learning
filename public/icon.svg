@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="114" fill="#e2622a"/>
+  <rect width="512" height="512" rx="114" fill="#c2306b"/>
   <!-- The paw, centred on the tile. Same geometry as src/ui/Paw.tsx. -->
   <g fill="#ffffff" transform="translate(256 256) scale(15.6) translate(-12.1 -12.7)">
     <circle cx="4.6" cy="11.6" r="2.3"/>

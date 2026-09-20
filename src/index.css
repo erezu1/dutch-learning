@@ -4,9 +4,11 @@
    Fonts, self-hosted so the app keeps its typography offline and makes no
    third-party request. Both are SIL Open Font License.
 
-   Fraunces is a soft serif with real character — it carries the Dutch words,
-   which are the thing you are actually here to look at. Plus Jakarta Sans is
-   the quiet one, for everything around them.
+   Fraunces, a soft serif, is reserved for the Dutch itself — the words and
+   sentences you are here to read. Everything else, including the app's own
+   name and its numbers, is Bricolage Grotesque, whose slight wonkiness suits
+   the serif without imitating it. Keeping the serif to the material means
+   that when you see it, it is Dutch.
 --------------------------------------------------------------------------- */
 @font-face {
   font-family: 'Fraunces';
@@ -19,9 +21,9 @@
 }
 
 @font-face {
-  font-family: 'Jakarta';
-  src: url('/fonts/jakarta.woff2') format('woff2-variations');
-  font-weight: 400 800;
+  font-family: 'Bricolage';
+  src: url('/fonts/bricolage.woff2') format('woff2-variations');
+  font-weight: 300 800;
   font-display: swap;
 }
 
@@ -35,23 +37,22 @@
    a phone at night, and leaves no room for a card to sit *above* the page.
 --------------------------------------------------------------------------- */
 @theme {
-  /* --- surfaces, warm off-white --- */
-  --color-surface: #faf7f2;
+  /* --- surfaces: the default scheme, Tulp --- */
+  --color-surface: #fdf6f8;
   --color-surface-1: #ffffff;
-  --color-surface-2: #f2ece3;
-  --color-surface-3: #e6ddd0;
-  --color-on-surface: #1f1b16;
-  --color-on-surface-dim: #6f665a;
+  --color-surface-2: #f8e8ed;
+  --color-surface-3: #eed6de;
+  --color-on-surface: #241419;
+  --color-on-surface-dim: #715a62;
 
   /* Hairline edge used by every elevation level. */
-  --edge: rgba(31, 27, 22, 0.07);
-  --edge-strong: rgba(31, 27, 22, 0.13);
+  --edge: rgba(36, 20, 25, 0.07);
+  --edge-strong: rgba(36, 20, 25, 0.14);
 
-  /* --- accent: Dutch orange, warmed down so it doesn't shout --- */
-  --color-primary: #e2622a;
+  --color-primary: #c2306b;
   --color-on-primary: #ffffff;
-  --color-primary-container: #ffe5d6;
-  --color-on-primary-container: #7c2d06;
+  --color-primary-container: #fbdde8;
+  --color-on-primary-container: #6d0f37;
 
   /* --- feedback. The "ink" variants are for text, which needs more contrast
          against a light background than a fill does. --- */
@@ -76,20 +77,20 @@
      have very little edge contrast of their own, and pressing one draws its
      shadow in — without the ring the outline disappears at exactly the moment
      you are looking at it. */
-  --shadow-1: 0 0 0 1px var(--edge), 0 0 3px rgba(31, 27, 22, 0.05),
-    0 0 9px rgba(31, 27, 22, 0.04);
-  --shadow-2: 0 0 0 1px var(--edge), 0 0 6px rgba(31, 27, 22, 0.06),
-    0 0 20px rgba(31, 27, 22, 0.06);
-  --shadow-3: 0 0 0 1px var(--edge), 0 0 10px rgba(31, 27, 22, 0.07),
-    0 0 36px rgba(31, 27, 22, 0.09);
-  --shadow-4: 0 0 0 1px var(--edge), 0 0 16px rgba(31, 27, 22, 0.08),
-    0 0 64px rgba(31, 27, 22, 0.11);
+  --shadow-1: 0 0 0 1px var(--edge), 0 0 3px rgba(30, 20, 24, 0.05),
+    0 0 9px rgba(30, 20, 24, 0.04);
+  --shadow-2: 0 0 0 1px var(--edge), 0 0 6px rgba(30, 20, 24, 0.06),
+    0 0 20px rgba(30, 20, 24, 0.06);
+  --shadow-3: 0 0 0 1px var(--edge), 0 0 10px rgba(30, 20, 24, 0.07),
+    0 0 36px rgba(30, 20, 24, 0.09);
+  --shadow-4: 0 0 0 1px var(--edge), 0 0 16px rgba(30, 20, 24, 0.08),
+    0 0 64px rgba(30, 20, 24, 0.11);
   /* Pressed: the object sits closer to the page, so its shadow draws in — but
      the ring stays, and strengthens, so the edge never vanishes. */
-  --shadow-press: 0 0 0 1px var(--edge-strong), 0 0 4px rgba(31, 27, 22, 0.09);
+  --shadow-press: 0 0 0 1px var(--edge-strong), 0 0 4px rgba(30, 20, 24, 0.09);
 
   --font-display: 'Fraunces', ui-serif, Georgia, serif;
-  --font-sans: 'Jakarta', ui-rounded, system-ui, -apple-system, sans-serif;
+  --font-sans: 'Bricolage', ui-rounded, system-ui, -apple-system, sans-serif;
 
   --radius-card: 1.75rem;
 
@@ -209,18 +210,18 @@
   --edge-strong: rgba(22, 27, 37, 0.14);
 }
 
-:root[data-theme='tulip'] {
-  --color-surface: #fdf6f8;
+:root[data-theme='orange'] {
+  --color-surface: #faf7f2;
   --color-surface-1: #ffffff;
-  --color-surface-2: #f8e8ed;
-  --color-surface-3: #eed6de;
-  --color-on-surface: #241419;
-  --color-on-surface-dim: #715a62;
-  --color-primary: #c2306b;
-  --color-primary-container: #fbdde8;
-  --color-on-primary-container: #6d0f37;
-  --edge: rgba(36, 20, 25, 0.07);
-  --edge-strong: rgba(36, 20, 25, 0.14);
+  --color-surface-2: #f2ece3;
+  --color-surface-3: #e6ddd0;
+  --color-on-surface: #1f1b16;
+  --color-on-surface-dim: #6f665a;
+  --color-primary: #e2622a;
+  --color-primary-container: #ffe5d6;
+  --color-on-primary-container: #7c2d06;
+  --edge: rgba(31, 27, 22, 0.07);
+  --edge-strong: rgba(31, 27, 22, 0.13);
 }
 
 :root[data-theme='polder'] {
