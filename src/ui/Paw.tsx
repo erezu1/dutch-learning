@@ -8,7 +8,14 @@ export function Paw({ className = '' }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
       {PAW_TOES.map((t) => (
-        <circle key={`${t.cx}-${t.cy}`} cx={t.cx} cy={t.cy} r={t.r} />
+        <ellipse
+          key={`${t.cx}-${t.cy}`}
+          cx={t.cx}
+          cy={t.cy}
+          rx={t.rx}
+          ry={t.ry}
+          transform={`rotate(${t.rot} ${t.cx} ${t.cy})`}
+        />
       ))}
       <path d={PAW_PAD} />
     </svg>

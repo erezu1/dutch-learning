@@ -146,14 +146,19 @@ function resolvedAccent(): string {
   const value = getComputedStyle(probe).color
   probe.remove()
   if (!value) return '#c2306b'
-  // Chrome hands back the oklch as written. A canvas normalises any colour it
-  // accepts to plain sRGB, which is what belongs in an SVG that has to survive
-  // being a data URI in a <link rel=icon>.
+  // Chrome hands back the oklch exactly as written, and setting a canvas's
+  // fillStyle to it hands it straight back too. Painting one pixel and reading
+  // it is the only way to get plain sRGB out, which is what belongs in an SVG
+  // that has to survive being a data URI in a <link rel=icon>.
   try {
-    const ctx = document.createElement('canvas').getContext('2d')
+    const canvas = document.createElement('canvas')
+    canvas.width = canvas.height = 1
+    const ctx = canvas.getContext('2d', { willReadFrequently: true })
     if (ctx) {
       ctx.fillStyle = value
-      return ctx.fillStyle as string
+      ctx.fillRect(0, 0, 1, 1)
+      const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data
+      return `rgb(${r} ${g} ${b})`
     }
   } catch {
     /* Fall through to the raw value; a modern browser renders it anyway. */

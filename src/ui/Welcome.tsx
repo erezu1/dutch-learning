@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { Button } from './Button'
 import { glide } from './motion'
 import { Paw } from './Paw'
-import { TITLE } from './type'
+import { WORDMARK } from './type'
 
 // ---------------------------------------------------------------------------
 // The first thing anyone sees. Opening on a question — "where are you now?" —
@@ -19,7 +19,7 @@ export function Welcome({ onBegin }: { onBegin: () => void }) {
         transition={{ ...glide, delay: 0.05 }}
         className="grid h-28 w-28 place-items-center rounded-[2rem] bg-primary shadow-3"
       >
-        <Paw className="h-16 w-16 text-on-primary" />
+        <Paw className="h-20 w-20 text-on-primary" />
       </motion.div>
 
       <motion.div
@@ -27,7 +27,7 @@ export function Welcome({ onBegin }: { onBegin: () => void }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ ...glide, delay: 0.18 }}
       >
-        <h1 className={`text-5xl ${TITLE}`}>Doei</h1>
+        <h1 className={`text-6xl leading-none ${WORDMARK}`}>Doei</h1>
         <p className="mt-3 text-lg text-balance text-on-surface-dim">
           Dutch, a few minutes a day.
         </p>

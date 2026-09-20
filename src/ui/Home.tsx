@@ -10,7 +10,7 @@ import { Paw } from './Paw'
 import { useCanInstall } from './useCanInstall'
 import { ThemePicker } from './ThemePicker'
 import { pressable, quiet } from './motion'
-import { TITLE } from './type'
+import { TITLE, WORDMARK } from './type'
 
 interface Props {
   stats: SessionStats
@@ -51,9 +51,12 @@ export function Home({
     <div className="flex h-full flex-col justify-between px-6 py-10">
       <div>
         <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
-            <Paw className="h-8 w-8 text-primary" />
-            <h1 className={`text-4xl ${TITLE}`}>Doei</h1>
+          {/* The paw is sized against the word's cap height, not against its
+              line box, and the gap is set from the mark's own edge — which is
+              why these are exact numbers rather than the spacing scale. */}
+          <div className="flex items-center gap-3">
+            <Paw className="h-[38px] w-[38px] text-primary" />
+            <h1 className={`text-[2.6rem] leading-none ${WORDMARK}`}>Doei</h1>
           </div>
 
           <div className="flex shrink-0 items-center gap-2">

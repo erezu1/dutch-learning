@@ -3,14 +3,21 @@
 //
 //   FOCUS   the thing being taught at this moment — the word being asked
 //           about, the answer once revealed, the Dutch example sentence.
-//   TITLE   titles: the app's name and the heading of a screen.
+//   TITLE   headings and numbers: "Settings", "Done for today", the score.
 //   (body)  everything else, which is the default and needs no class:
 //           instructions, parts of speech, options, translations, buttons.
 //
 // The serif marks what you are meant to be looking at, not what language it
 // happens to be in — which is why the options are set in the sans even when
 // they are Dutch words. They are choices, not the subject.
+//
+// The app's name is the one heading set in the serif, and for the same reason
+// everything else in it is: *doei* is a Dutch word. Reading it as one is the
+// point of calling the app that, so it is set as the material and not as the
+// furniture. Screen headings around it stay in the sans — they are English,
+// and they are interface.
 // ---------------------------------------------------------------------------
 
 export const FOCUS = 'font-display font-semibold'
 export const TITLE = 'font-bold tracking-tight'
+export const WORDMARK = 'font-display font-semibold tracking-tight'
