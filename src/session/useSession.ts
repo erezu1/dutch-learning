@@ -34,6 +34,8 @@ export interface Session {
   length: number
   stats: SessionStats
   intervals: Record<Grade, string> | null
+  /** Set for a choice prompt once answered: the grade the app will apply. */
+  autoGrade: Grade | null
 
   start: () => void
   reveal: () => void
@@ -121,12 +123,25 @@ export function useSession(deck: Deck): Session {
 
   const card = queue[index] ?? null
   const note: Note | null = card ? notes.get(card.noteId) ?? null : null
-  const prompt = card && note ? buildPrompt(card, note) : null
 
   const currentState = useMemo(() => {
     if (!card) return null
     return states.get(card.id) ?? emptyState(card.id)
   }, [card, states])
+
+  // Memoised on the card, not the render: multiple-choice options are shuffled
+  // when they are built, so rebuilding on every render would reorder the
+  // buttons under the user's finger.
+  const prompt = useMemo(() => {
+    if (!card || !note) return null
+    const saved = states.get(card.id)
+    return buildPrompt(card, note, {
+      notes: deck.notes,
+      // Multiple choice while learning, free recall once the word sticks.
+      introduce: !saved || saved.state !== State.Review,
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [card?.id, note?.id, deck])
 
   const intervals = useMemo(
     () => (currentState && revealed ? previewIntervals(currentState) : null),
@@ -144,6 +159,15 @@ export function useSession(deck: Deck): Session {
     setPicked(value)
     setRevealed(true)
   }, [])
+
+  /**
+   * A multiple-choice answer is graded by the app, not by you — it already
+   * knows whether you were right. Wrong becomes Again, right becomes Good.
+   */
+  const autoGrade: Grade | null = useMemo(() => {
+    if (correct === null) return null
+    return correct ? Rating.Good : Rating.Again
+  }, [correct])
 
   const grade = useCallback(
     async (g: Grade) => {
@@ -214,6 +238,7 @@ export function useSession(deck: Deck): Session {
     length: queue.length,
     stats,
     intervals,
+    autoGrade,
     start,
     reveal,
     choose,

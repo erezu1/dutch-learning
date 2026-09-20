@@ -126,6 +126,11 @@ This is where the app earns its existence versus just using Anki. Build these in
 
 ### Phase 2 — Content
 - Import script for `.apkg` or CSV/frequency lists → your JSON format
+- **Add a frequency rank per word.** We track how hard a word is *for you*
+  (FSRS difficulty + lapses), but nothing about how common or hard it is in
+  general, so new words currently arrive in the order they were typed rather
+  than most-useful-first. A frequency list fixes that and is the main reason
+  to do the import properly.
 - Auto-generate cards from notes (one note → 2–4 cards)
 - Grow to 1000+ words with gender and plural filled in
 - Deck/level organisation (A1, A2, …, thematic)

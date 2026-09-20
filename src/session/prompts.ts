@@ -11,7 +11,7 @@ import type { Note } from '../core/types'
 export type PromptShape =
   /** show question, tap to reveal, self-grade */
   | 'reveal'
-  /** pick one of a few options; we know whether it was right */
+  /** pick one of a few options; the app knows whether it was right */
   | 'choice'
 
 export interface Prompt {
@@ -56,7 +56,57 @@ function example(note: Note) {
   return { detail: ex?.nl, detailTranslation: ex?.en }
 }
 
-export function buildPrompt(card: Card, note: Note): Prompt {
+export interface PromptContext {
+  /** The whole deck, so we can draw plausible wrong answers from it. */
+  notes: Note[]
+  /**
+   * True while the word is still being learned. Multiple choice is easier than
+   * recalling from nothing, so we use it to introduce a word and switch to
+   * free recall once it sticks.
+   */
+  introduce: boolean
+}
+
+function shuffle<T>(items: T[]): T[] {
+  const out = [...items]
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[out[i], out[j]] = [out[j], out[i]]
+  }
+  return out
+}
+
+/**
+ * Wrong answers have to be plausible or the question answers itself. Prefer
+ * words of the same kind and topic; fall back to same kind, then anything.
+ */
+function distractors(note: Note, ctx: PromptContext, render: (n: Note) => string, count = 3): string[] {
+  const correct = render(note)
+  const candidates = ctx.notes.filter((n) => n.id !== note.id && render(n) !== correct)
+  const tag = note.tags?.[0]
+
+  const tiers = [
+    candidates.filter((n) => n.pos === note.pos && tag && n.tags?.includes(tag)),
+    candidates.filter((n) => n.pos === note.pos),
+    candidates,
+  ]
+
+  const picked: string[] = []
+  for (const tier of tiers) {
+    for (const n of shuffle(tier)) {
+      const text = render(n)
+      if (picked.includes(text)) continue
+      picked.push(text)
+      if (picked.length === count) return picked
+    }
+  }
+  return picked
+}
+
+const firstGloss = (n: Note) => n.en[0]
+const dutch = (n: Note) => n.nl
+
+export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt {
   const base = {
     cardId: card.id,
     noteId: note.id,
@@ -65,33 +115,43 @@ export function buildPrompt(card: Card, note: Note): Prompt {
   }
 
   switch (card.type) {
-    case 'recognize':
+    case 'recognize': {
+      const choice = ctx.introduce
       return {
         ...base,
-        shape: 'reveal',
+        shape: choice ? 'choice' : 'reveal',
         instruction: 'What does this mean?',
         question: note.nl,
         questionLang: 'nl',
         subtitle: posLabel[note.pos],
-        answer: note.en.join(', '),
+        answer: choice ? firstGloss(note) : note.en.join(', '),
         answerLang: 'en',
+        choices: choice
+          ? shuffle([firstGloss(note), ...distractors(note, ctx, firstGloss)])
+          : undefined,
         speak: note.nl,
         ...example(note),
       }
+    }
 
-    case 'recall':
+    case 'recall': {
+      const choice = ctx.introduce
       return {
         ...base,
-        shape: 'reveal',
+        shape: choice ? 'choice' : 'reveal',
         instruction: 'How do you say this in Dutch?',
         question: note.en.join(', '),
         questionLang: 'en',
         subtitle: posLabel[note.pos],
-        answer: note.gender ? `${note.gender} ${note.nl}` : note.nl,
+        // Free recall shows the article too; multiple choice must not, or the
+        // options would give away the gender answer elsewhere in the deck.
+        answer: choice ? note.nl : note.gender ? `${note.gender} ${note.nl}` : note.nl,
         answerLang: 'nl',
+        choices: choice ? shuffle([dutch(note), ...distractors(note, ctx, dutch)]) : undefined,
         speak: note.nl,
         ...example(note),
       }
+    }
 
     case 'gender':
       return {

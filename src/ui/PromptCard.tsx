@@ -16,11 +16,36 @@ interface Props {
   onChoose: (value: string) => void
 }
 
+// The grammar pairs get their own colours so they stay recognisable at a
+// glance; vocabulary options are neutral.
 const choiceColor: Record<string, string> = {
   de: 'text-de',
   het: 'text-het',
   hebben: 'text-de',
   zijn: 'text-het',
+}
+
+function Choices({ prompt, onChoose }: { prompt: Prompt; onChoose: (v: string) => void }) {
+  const choices = prompt.choices!
+  // Two options are the grammar pairs (de/het, hebben/zijn) and deserve to be
+  // big and side by side. Four vocabulary options stack, so long glosses fit.
+  const pair = choices.length === 2
+
+  return (
+    <div className={`px-4 pb-2 ${pair ? 'flex gap-3' : 'flex flex-col gap-2'}`}>
+      {choices.map((choice) => (
+        <button
+          key={choice}
+          onClick={() => onChoose(choice)}
+          className={`rounded-3xl bg-surface-2 transition active:scale-95 ${
+            pair ? 'flex-1 py-6 text-2xl font-semibold' : 'px-5 py-4 text-lg'
+          } ${choiceColor[choice] ?? ''}`}
+        >
+          {choice}
+        </button>
+      ))}
+    </div>
+  )
 }
 
 export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoose }: Props) {
@@ -83,21 +108,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
         )}
       </div>
 
-      {isChoice && !revealed && (
-        <div className="flex gap-3 px-4 pb-2">
-          {prompt.choices!.map((choice) => (
-            <button
-              key={choice}
-              onClick={() => onChoose(choice)}
-              className={`flex-1 rounded-3xl bg-surface-2 py-6 text-2xl font-semibold transition active:scale-95 ${
-                choiceColor[choice] ?? ''
-              }`}
-            >
-              {choice}
-            </button>
-          ))}
-        </div>
-      )}
+      {isChoice && !revealed && <Choices prompt={prompt} onChoose={onChoose} />}
     </div>
   )
 }

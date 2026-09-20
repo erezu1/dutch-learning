@@ -1,5 +1,5 @@
 import type { Session } from '../session/useSession'
-import { GradeBar } from './GradeBar'
+import { ContinueBar, GradeBar } from './GradeBar'
 import { PromptCard } from './PromptCard'
 
 export function ReviewScreen({ session, onExit }: { session: Session; onExit: () => void }) {
@@ -41,7 +41,17 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
         onChoose={session.choose}
       />
 
-      {revealed && <GradeBar onGrade={session.grade} intervals={session.intervals} />}
+      {revealed &&
+        (session.autoGrade !== null ? (
+          // Multiple choice: already graded, just move on.
+          <ContinueBar
+            correct={correct === true}
+            interval={session.intervals?.[session.autoGrade]}
+            onContinue={() => session.grade(session.autoGrade!)}
+          />
+        ) : (
+          <GradeBar onGrade={session.grade} intervals={session.intervals} />
+        ))}
     </div>
   )
 }
