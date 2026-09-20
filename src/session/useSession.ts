@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { allCards, type Card } from '../core/cards'
 import { db, getMeta, setMeta, type CardStateRow } from '../core/db'
-import { buildQueue, DEFAULTS, type QueueOptions } from '../core/queue'
+import { buildQueue, DEFAULTS, isUnlocked, type QueueOptions } from '../core/queue'
 import { applyGrade, emptyState, isNew, Rating, State, type Grade } from '../core/scheduler'
 import { awardFor, type Award } from '../core/score'
 import { DEFAULT_LEVEL, levelById, type LevelOption } from '../core/levels'
@@ -17,6 +17,11 @@ import { buildPrompt, type Prompt } from './prompts'
 
 export type SessionStatus = 'loading' | 'idle' | 'reviewing' | 'done'
 
+/** How many scoring answers go by between point bursts. */
+const BURST_EVERY = 3
+
+const startOfToday = () => new Date(new Date().setHours(0, 0, 0, 0)).getTime()
+
 export interface SessionStats {
   reviewed: number
   correct: number
@@ -25,6 +30,9 @@ export interface SessionStats {
   /** Words whose recognise card has reached the review stage. */
   known: number
   total: number
+  /** Cards answered since midnight, and how many were planned for today. */
+  doneToday: number
+  plannedToday: number
 }
 
 export interface Session {
@@ -99,8 +107,15 @@ export function useSession(deck: Deck): Session {
   const [picked, setPicked] = useState<string | null>(null)
   const [reviewed, setReviewed] = useState(0)
   const [correctCount, setCorrectCount] = useState(0)
+  const [doneToday, setDoneToday] = useState(0)
 
   const shownAt = useRef<number>(Date.now())
+  /**
+   * Points earned since the last burst. A burst on every single answer turns
+   * the reward into wallpaper — and it covers the screen each time. Holding
+   * three answers' worth back makes each one land, and the number is bigger.
+   */
+  const pending = useRef<{ amount: number; answers: number }>({ amount: 0, answers: 0 })
   const undoStack = useRef<UndoEntry[]>([])
   const revealTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   /** Guards against scoring the same card twice — once on answer, once on Continue. */
@@ -108,6 +123,9 @@ export function useSession(deck: Deck): Session {
   /** The live queue, so advancing can see a card requeued a moment earlier. */
   const queueRef = useRef<Card[]>([])
   const promptRef = useRef<Prompt | null>(null)
+  /** The live states, so advancing can see an answer recorded a moment ago. */
+  const statesRef = useRef(states)
+  statesRef.current = states
 
   const clearRevealTimer = useCallback(() => {
     if (revealTimer.current) {
@@ -123,13 +141,15 @@ export function useSession(deck: Deck): Session {
     let cancelled = false
     Promise.all([
       db.states.toArray(),
+      db.reviews.where('at').aboveOrEqual(startOfToday()).count(),
       getMeta<string | null>('level', null),
       getMeta<string | null>('theme', null),
       getMeta<number>('score', 0),
       getMeta<boolean>('autoContinue', false),
-    ]).then(([rows, savedLevel, savedTheme, savedScore, savedAuto]) => {
+    ]).then(([rows, today, savedLevel, savedTheme, savedScore, savedAuto]) => {
       if (cancelled) return
       setStates(new Map(rows.map((r) => [r.cardId, r] as const)))
+      setDoneToday(today)
       setLevelState(levelById(savedLevel))
       setLevelChosen(savedLevel !== null)
       setScore(savedScore)
@@ -189,8 +209,12 @@ export function useSession(deck: Deck): Session {
       newCount: preview.newCount,
       known,
       total: deck.notes.length,
+      doneToday,
+      // What's left plus what's already done is the day's whole shape, so the
+      // ring fills as the day is worked through and is full when it's finished.
+      plannedToday: doneToday + preview.dueCount + preview.newCount,
     }
-  }, [deck, states, preview, reviewed, correctCount])
+  }, [deck, states, preview, reviewed, correctCount, doneToday])
 
   const start = useCallback(() => {
     clearRevealTimer()
@@ -201,6 +225,7 @@ export function useSession(deck: Deck): Session {
       startRank: level.startRank,
     })
     undoStack.current = []
+    pending.current = { amount: 0, answers: 0 }
     queueRef.current = q.cards
     recorded.current = false
     setQueue(q.cards)
@@ -269,14 +294,30 @@ export function useSession(deck: Deck): Session {
         earned: earned.amount,
       })
 
-      setStates((prev) => new Map(prev).set(card.id, next))
+      statesRef.current = new Map(statesRef.current).set(card.id, next)
+      setStates(statesRef.current)
       setScore((s) => {
         const total = s + earned.amount
         void setMeta('score', total).catch(() => {})
         return total
       })
       setSessionPoints((p) => p + earned.amount)
-      if (earned.amount > 0) setAward({ ...earned, key: Date.now() })
+      setDoneToday((n) => n + 1)
+
+      // A word graduating is worth interrupting for, whenever it happens.
+      // Anything else waits its turn, and carries the banked points with it.
+      pending.current.amount += earned.amount
+      pending.current.answers += earned.amount > 0 ? 1 : 0
+      if (earned.milestone || pending.current.answers >= BURST_EVERY) {
+        if (pending.current.amount > 0) {
+          setAward({
+            amount: pending.current.amount,
+            milestone: earned.milestone,
+            key: Date.now(),
+          })
+        }
+        pending.current = { amount: 0, answers: 0 }
+      }
       setReviewed((n) => n + 1)
       if (g !== Rating.Again) setCorrectCount((n) => n + 1)
 
@@ -324,8 +365,14 @@ export function useSession(deck: Deck): Session {
     setPicked(null)
     shownAt.current = Date.now()
     setIndex((i) => {
-      const nextIndex = i + 1
-      if (nextIndex >= queueRef.current.length) setStatus('done')
+      // The queue was decided at the start of the session, but failing a word
+      // partway through locks its other cards again — being asked to fill a
+      // gap with a word you just got wrong is a question you can't answer.
+      // Those are stepped over rather than asked.
+      const q = queueRef.current
+      let nextIndex = i + 1
+      while (nextIndex < q.length && !isUnlocked(q[nextIndex], statesRef.current)) nextIndex++
+      if (nextIndex >= q.length) setStatus('done')
       return nextIndex
     })
   }, [clearRevealTimer])
@@ -360,7 +407,12 @@ export function useSession(deck: Deck): Session {
     })
     setIndex(last.index)
     setReviewed((n) => Math.max(0, n - 1))
+    setDoneToday((n) => Math.max(0, n - 1))
     if (last.earned) {
+      pending.current = {
+        amount: Math.max(0, pending.current.amount - last.earned),
+        answers: Math.max(0, pending.current.answers - 1),
+      }
       setScore((v) => {
         const total = Math.max(0, v - last.earned)
         void setMeta('score', total).catch(() => {})

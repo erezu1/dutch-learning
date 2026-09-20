@@ -10,7 +10,10 @@ import { isNew, State } from './scheduler'
 // ---------------------------------------------------------------------------
 
 export interface QueueOptions {
+  /** New *words* per day. Counted in words, not cards — see buildQueue. */
   newPerDay: number
+  /** Follow-up cards per day: the second questions about words you know. */
+  followPerDay: number
   maxSession: number
   now: Date
   /**
@@ -22,9 +25,10 @@ export interface QueueOptions {
   startRank: number
 }
 
-export const DEFAULTS: Pick<QueueOptions, 'newPerDay' | 'maxSession'> = {
-  newPerDay: 8,
-  maxSession: 20,
+export const DEFAULTS: Pick<QueueOptions, 'newPerDay' | 'followPerDay' | 'maxSession'> = {
+  newPerDay: 5,
+  followPerDay: 11,
+  maxSession: 32,
 }
 
 /**
@@ -40,6 +44,27 @@ export function isUnlocked(card: Card, states: Map<string, CardStateRow>): boole
     return !!recognize && recognize.reps > 0
   }
   return !!recognize && recognize.state === State.Review
+}
+
+/**
+ * The daily budget is counted in *words*, not cards, and the follow-up
+ * questions get their own. Counting cards meant a word's four questions all
+ * came out of the same eight, so you met barely two new words a day — and the
+ * de/het and plural cards, which sit behind every word's core cards in rank
+ * order, were pushed back by months. Splitting the budgets means the grammar
+ * questions arrive shortly after the word they are about.
+ *
+ * Within the follow-ups, the grammar cards go first: there are few of them and
+ * each teaches something unpredictable, while almost every word has a gap-fill.
+ */
+const FOLLOW_ORDER: Record<Card['type'], number> = {
+  recognize: 0,
+  gender: 1,
+  plural: 1,
+  participle: 1,
+  auxiliary: 1,
+  recall: 2,
+  cloze: 3,
 }
 
 export interface Queue {
@@ -58,27 +83,41 @@ export function buildQueue(
   const rank = (c: Card) => opts.rankOf.get(c.noteId) ?? Number.MAX_SAFE_INTEGER
 
   const due: Card[] = []
+  /** First meeting with a word. */
   const fresh: Card[] = []
+  /** A second question about a word already met — grammar, gap-fill, reverse. */
+  const follow: Card[] = []
 
   for (const card of eligible) {
     const state = states.get(card.id)
     if (isNew(state)) {
       // A word below your level's starting rank is still reachable — you just
       // aren't given it as a new word unless you lower your level.
-      if (rank(card) >= opts.startRank) fresh.push(card)
+      if (rank(card) >= opts.startRank) {
+        ;(card.type === 'recognize' ? fresh : follow).push(card)
+      }
     } else if (state!.due <= nowMs) due.push(card)
   }
 
   due.sort((a, b) => states.get(a.id)!.due - states.get(b.id)!.due)
-  // Most common words first, so the daily eight are the eight most useful.
+  // Most common words first, so the daily new words are the most useful ones.
   fresh.sort((a, b) => rank(a) - rank(b))
+  follow.sort((a, b) => FOLLOW_ORDER[a.type] - FOLLOW_ORDER[b.type] || rank(a) - rank(b))
 
+  // The day's new words and follow-ups are reserved first and the reviews
+  // fill what's left. The other way round — reviews first, new cards from the
+  // remainder — stalls completely as soon as the backlog reaches the session
+  // cap: you stop meeting new words entirely. A review deferred a day is still
+  // due tomorrow, so trimming that end costs far less.
   const newToday = fresh.slice(0, opts.newPerDay)
-  const picked = [...due, ...newToday].slice(0, opts.maxSession)
+  const followToday = follow.slice(0, opts.followPerDay)
+  const room = Math.max(0, opts.maxSession - newToday.length - followToday.length)
+  const dueToday = due.slice(0, room)
+  const picked = [...dueToday, ...followToday, ...newToday]
 
   return {
     cards: interleave(picked, states),
-    dueCount: due.length,
+    dueCount: dueToday.length,
     newCount: newToday.length,
   }
 }

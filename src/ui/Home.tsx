@@ -39,7 +39,11 @@ export function Home({
   useEffect(() => onVoicesReady(() => setVoice(voiceReport())), [])
 
   const waiting = stats.dueCount + stats.newCount
-  const progress = stats.total ? stats.known / stats.total : 0
+  // The ring is today: it empties overnight and closes when the day's cards
+  // are done. It used to show words known out of the whole two thousand, which
+  // on any real day is a sliver that never visibly moves — it read as broken
+  // because nothing you did changed it.
+  const progress = stats.plannedToday ? stats.doneToday / stats.plannedToday : 0
 
   return (
     <div className="flex h-full flex-col justify-between px-6 py-10">
@@ -146,6 +150,13 @@ export function Home({
               {score.toLocaleString()}
             </motion.p>
             <p className="text-sm text-on-surface-dim">points</p>
+            <p className="mt-2 text-xs text-on-surface-dim/70">
+              {waiting > 0
+                ? `${stats.doneToday} of ${stats.plannedToday} today`
+                : stats.doneToday > 0
+                  ? "today's done"
+                  : 'nothing due'}
+            </p>
           </div>
         </div>
 

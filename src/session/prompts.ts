@@ -32,6 +32,12 @@ export interface Prompt {
   answer: string
   answerLang: 'nl' | 'en'
   /**
+   * What to show once the card is answered, when the answer being matched is
+   * only part of what you were meant to learn. "de or het?" is answered with
+   * one word, but the thing worth seeing afterwards is "de man".
+   */
+  reveal?: string
+  /**
    * The word's other senses, shown only once the card is answered. Asking
    * "what is 'little, few' in Dutch?" reads like a riddle; asking for "little"
    * and then showing the fuller meaning teaches the same thing without the
@@ -92,9 +98,15 @@ function shuffle<T>(items: T[]): T[] {
  * Wrong answers have to be plausible or the question answers itself. Prefer
  * words of the same kind and topic; fall back to same kind, then anything.
  */
+/**
+ * "this" and "this (het-word)" are different strings but the same option to
+ * anyone reading them, so options are compared without their clarifier.
+ */
+const bare = (text: string) => text.replace(/\s*\([^)]*\)\s*$/, '').toLowerCase()
+
 function distractors(note: Note, ctx: PromptContext, render: (n: Note) => string, count = 3): string[] {
   const correct = render(note)
-  const candidates = ctx.notes.filter((n) => n.id !== note.id && render(n) !== correct)
+  const candidates = ctx.notes.filter((n) => n.id !== note.id && bare(render(n)) !== bare(correct))
   const tag = note.tags?.[0]
 
   // Options of wildly different lengths give the answer away — a distractor
@@ -111,10 +123,12 @@ function distractors(note: Note, ctx: PromptContext, render: (n: Note) => string
   ]
 
   const picked: string[] = []
+  const taken = new Set([bare(correct)])
   for (const tier of tiers) {
     for (const n of shuffle(tier)) {
       const text = render(n)
-      if (picked.includes(text)) continue
+      if (taken.has(bare(text))) continue
+      taken.add(bare(text))
       picked.push(text)
       if (picked.length === count) return picked
     }
@@ -183,6 +197,7 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         question: note.nl,
         questionLang: 'nl',
         answer: note.gender!,
+        reveal: `${note.gender} ${note.nl}`,
         answerLang: 'nl',
         choices: ['de', 'het'],
         speak: `${note.gender} ${note.nl}`,
@@ -210,10 +225,10 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         question: note.nl,
         questionLang: 'nl',
         subtitle: note.verb?.separable ? 'separable verb' : undefined,
-        // Only claim the auxiliary when we actually know it.
-        answer: note.verb!.auxiliaryUnknown
-          ? note.verb!.participle
-          : `${note.verb!.auxiliary} ${note.verb!.participle}`,
+        // Just the participle. The question asks for one word, so answering
+        // with "hebben gedaan" answers a question that wasn't asked — and the
+        // helper is drilled by its own card anyway.
+        answer: note.verb!.participle,
         answerLang: 'nl',
         speak: note.verb!.participle,
         ...example(note),
@@ -240,19 +255,23 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
       }
     }
 
-    case 'auxiliary':
+    case 'auxiliary': {
+      const aux = note.verb!.auxiliary === 'both' ? 'hebben' : note.verb!.auxiliary
       return {
         ...base,
         shape: 'choice',
         instruction: 'hebben or zijn?',
         question: note.verb!.participle,
         questionLang: 'nl',
-        subtitle: note.nl,
-        answer: note.verb!.auxiliary === 'both' ? 'hebben' : note.verb!.auxiliary,
+        subtitle: note.en[0],
+        answer: aux,
+        // The point of the card is the pair, so the pair is what you see.
+        reveal: `${aux} ${note.verb!.participle}`,
         answerLang: 'nl',
         choices: ['hebben', 'zijn'],
-        speak: `${note.verb!.auxiliary} ${note.verb!.participle}`,
+        speak: `${aux} ${note.verb!.participle}`,
         ...example(note),
       }
+    }
   }
 }
