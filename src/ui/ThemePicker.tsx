@@ -35,11 +35,14 @@ export function ThemePicker({
               className="block h-5 w-5 rounded-full transition-[box-shadow]"
               style={{
                 background: swatch(theme, resolved),
-                // The active dot gets a ring drawn in the page colour, then a
-                // hairline, so it reads as selected on any background.
+                // On the elevation scale like every other control on this
+                // screen — they were the one thing here sitting flat on the
+                // page while the buttons around them sat above it. The active
+                // dot adds a ring drawn in the page colour, then in its own,
+                // so it reads as selected on any background.
                 boxShadow: active
-                  ? `0 0 0 3px var(--color-surface), 0 0 0 4.5px ${swatch(theme, resolved)}`
-                  : '0 0 0 1px var(--edge-strong)',
+                  ? `0 0 0 3px var(--color-surface), 0 0 0 4.5px ${swatch(theme, resolved)}, var(--shadow-1)`
+                  : 'var(--shadow-1)',
               }}
             />
           </motion.button>
