@@ -116,52 +116,59 @@ export function Home({
       </div>
 
       <div className="flex flex-col items-center gap-8">
-        <div className="relative grid h-48 w-48 place-items-center">
-          <svg viewBox="0 0 100 100" className="absolute inset-0 -rotate-90">
-            <circle
-              cx="50"
-              cy="50"
-              r="45"
-              fill="none"
-              stroke="var(--color-surface-3)"
-              strokeWidth="8"
-            />
-            <motion.circle
-              cx="50"
-              cy="50"
-              r="45"
-              fill="none"
-              stroke="var(--color-primary)"
-              strokeWidth="8"
-              strokeLinecap="round"
-              initial={false}
-              animate={{ strokeDasharray: `${progress * 283} 283` }}
-              transition={quiet}
-            />
-          </svg>
-          <div className="text-center">
-            <motion.p
-              key={score}
-              initial={{ scale: 0.86, opacity: 0.4 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={quiet}
-              className={`text-5xl ${TITLE}`}
-            >
-              {score.toLocaleString()}
-            </motion.p>
-            <p className="text-sm text-on-surface-dim">points</p>
-            <p className="mt-2 text-xs text-on-surface-dim/70">
-              {waiting > 0
-                ? `${stats.doneToday} of ${stats.plannedToday} today`
-                : stats.doneToday > 0
-                  ? "today's done"
-                  : 'nothing due'}
-            </p>
+        <div className="flex flex-col items-center gap-3">
+          <div className="relative grid h-48 w-48 place-items-center">
+            <svg viewBox="0 0 100 100" className="absolute inset-0 -rotate-90">
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke="var(--color-surface-3)"
+                strokeWidth="8"
+              />
+              <motion.circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke="var(--color-primary)"
+                strokeWidth="8"
+                strokeLinecap="round"
+                initial={false}
+                animate={{ strokeDasharray: `${progress * 283} 283` }}
+                transition={quiet}
+              />
+            </svg>
+            <div className="text-center">
+              <motion.p
+                key={score}
+                initial={{ scale: 0.86, opacity: 0.4 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={quiet}
+                className={`text-5xl ${TITLE}`}
+              >
+                {score.toLocaleString()}
+              </motion.p>
+              <p className="text-sm text-on-surface-dim">points</p>
+            </div>
           </div>
+
+          {/* What the ring is measuring, said in words. The number inside it is
+            a lifetime total and the ring is only today, so without this the
+            two look like they ought to agree, and don't. Below rather than
+            inside: it doesn't fit across a circle. */}
+          <p className="text-sm text-on-surface-dim">
+            {waiting > 0
+              ? `${stats.doneToday} of ${stats.plannedToday} questions today`
+              : stats.doneToday > 0
+                ? `all ${stats.doneToday} questions done today`
+                : 'nothing due today'}
+          </p>
         </div>
 
         <Button onClick={onStart} disabled={waiting === 0} className="w-full max-w-xs">
-          {waiting > 0 ? 'Start' : 'Done for today'}
+          {waiting === 0 ? 'Done for today' : stats.doneToday > 0 ? 'Continue' : 'Start'}
         </Button>
       </div>
 

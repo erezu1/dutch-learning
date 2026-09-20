@@ -6,7 +6,7 @@ import type { Prompt } from '../session/prompts'
 import { speak as say } from '../core/speech'
 import { glide, pressable, swapVariants, tap } from './motion'
 import { FOCUS } from './type'
-import { SpeakButton, STEP } from './SpeakButton'
+import { ICON, SpeakButton, STEP } from './SpeakButton'
 
 // ---------------------------------------------------------------------------
 // The presentation of one question. Phase 3 replaces this file (full-bleed,
@@ -38,17 +38,30 @@ interface Props {
  * character. Clamped so short words don't become enormous and long ones stay
  * readable.
  */
-function fitSize(text: string, max: string, min = '1.6rem', whole = false): string {
+function fitSize(text: string | string[], max: string, min = '1.6rem', whole = false): string {
+  // Several strings when one size has to fit them all — a question and the
+  // answer that takes its place.
+  const texts = (Array.isArray(text) ? text : [text]).map(withoutNote)
   // A phrase that has to stay on one line is measured entire; anything that
   // may wrap is measured by its longest unbreakable run. For a single word
   // the two are the same.
-  const run = whole
-    ? text.length
-    : Math.max(...text.split(/\s+/).map((w) => w.length), 1)
+  const run = Math.max(
+    ...texts.map((t) =>
+      whole ? t.length : Math.max(...t.split(/\s+/).map((w) => w.length), 1),
+    ),
+    1,
+  )
   // 80vw, not the full width: the speaker hangs off the word's right edge
   // and needs somewhere to be.
-  return `clamp(${min}, calc(80vw / ${Math.max(run, 1)} * 1.85), ${max})`
+  return `clamp(${min}, calc(80vw / ${run} * 1.85), ${max})`
 }
+
+/**
+ * "you (formal)" without its clarifier. Gloss sets that part small and out of
+ * the way, so letting it decide how big the word is shrinks the word for the
+ * sake of its own footnote.
+ */
+const withoutNote = (text: string) => text.replace(/\s*\([^)]*\)\s*$/, '').trim() || text
 
 /**
  * Renders "you (formal)" with the clarifying part played down, so the word
@@ -145,14 +158,20 @@ function Choices({
  * Putting the two in a row and centring the row centres the *pair*, which
  * leaves the word itself sitting left of centre — visible as soon as you line
  * it up against the label above and the buttons below.
+ *
+ * The caller says how its text is set, and the icon lands on the middle of
+ * that text's *first* line. Centring on the block instead drops it into the
+ * gutter as soon as a sentence runs to two lines, which is why it sat
+ * differently on a word, a sentence and an answer.
  */
 function WithSpeaker({
   speak: phrase,
-  small = false,
+  size,
   children,
 }: {
   speak?: string
-  small?: boolean
+  /** The font size of the text inside, so the icon can be placed in its terms. */
+  size: string
   children: ReactNode
 }) {
   // True while the voice is talking, so the waves run for the length of the
@@ -187,7 +206,11 @@ function WithSpeaker({
   // stopped a gap-fill's sentence from ever animating, since the sentence only
   // becomes speakable at the moment it changes.
   return (
-    <div className="flex justify-center">
+    // Baseline alignment, so the marker beside the text sits on the text's
+    // first baseline — the line the icon belongs next to, whether the text is
+    // one line or three. The marker has no width, so centring the row still
+    // centres the text alone.
+    <div className="flex items-baseline justify-center" style={{ fontSize: size }}>
       {/* The text itself is the button — tapping the word or the sentence is
           the obvious way to hear it, and the icon is only a hint that you can.
           Stops propagation so it doesn't also flip the card. */}
@@ -210,12 +233,15 @@ function WithSpeaker({
             }
           : {})}
         transition={tap}
-        className={`relative ${phrase ? 'cursor-pointer' : ''}`}
+        className={phrase ? 'cursor-pointer' : undefined}
       >
         {children}
+      </motion.div>
+
+      <span className="relative w-0">
         {/* Fades rather than appearing: it hangs off the right edge of whatever
-            it belongs to, so it arrives at a different place on a question that
-            has just been completed. */}
+            it belongs to, so it arrives somewhere else on a question that has
+            just been completed. */}
         <AnimatePresence initial={false}>
           {phrase && (
             <motion.span
@@ -223,18 +249,22 @@ function WithSpeaker({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1, transition: { duration: 0.3, delay: 0.24 } }}
               exit={{ opacity: 0, transition: { duration: 0.22 } }}
-              className={`absolute top-1/2 -translate-y-1/2 ${small ? 'left-full ml-1.5' : 'left-full ml-2.5'}`}
+              // Half an x-height above the baseline: the middle of the
+              // lower-case letters, which is where the eye puts the middle of
+              // a word. Half the em box — the line's own middle — sits lower,
+              // because most words leave the descender space empty.
+              style={{ bottom: `calc(0.5ex - ${ICON / 2}px)` }}
+              // flex, so the box is the icon and nothing else. As an inline
+              // box it inherits the text's line-height, which at a heading's
+              // size is a box several times the icon's height — and the icon
+              // then sits wherever that box's own baseline falls.
+              className="absolute left-2 flex"
             >
-              <SpeakButton
-                text={phrase}
-                small={small}
-                speaking={speaking}
-                onActivate={trigger}
-              />
+              <SpeakButton text={phrase} speaking={speaking} onActivate={trigger} />
             </motion.span>
           )}
         </AnimatePresence>
-      </motion.div>
+      </span>
     </div>
   )
 }
@@ -272,6 +302,26 @@ function Sentence({
   )
 }
 
+/** What you picked, when it wasn't the answer. */
+function YouChose({ picked }: { picked: string }) {
+  return (
+    <p className="flex items-center gap-1.5 text-base text-bad-ink/80">
+      <svg
+        viewBox="0 0 24 24"
+        className="h-[0.85em] w-[0.85em] shrink-0"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+        aria-hidden="true"
+      >
+        <path d="M6 6l12 12M18 6L6 18" />
+      </svg>
+      you chose &ldquo;{picked}&rdquo;
+    </p>
+  )
+}
+
 export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoose }: Props) {
   const isChoice = prompt.shape === 'choice'
   // "de or het?" is answered with one word; what you should walk away with is
@@ -286,9 +336,14 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
   const headlineClass = `notranslate text-balance ${FOCUS} ${
     isSentence ? 'max-w-[17rem] leading-snug' : 'leading-none'
   }`
-  const headlineSize = isSentence
+  // One size for the question and for the answer beneath it. They are two
+  // forms of the same thing — "het huis" and "de huizen", "gaan" and "gegaan"
+  // — and setting the second smaller than the first makes it read as a
+  // footnote to the question rather than the other half of a pair. Big enough
+  // for the longer of the two, so neither has to be shrunk on its own.
+  const focalSize = isSentence
     ? fitSize(prompt.completion ?? prompt.question, '2.05rem', '1.35rem')
-    : fitSize(prompt.completion ?? prompt.question, '4rem', '1.6rem', true)
+    : fitSize([prompt.completion ?? prompt.question, prompt.answer], '4rem', '1.6rem', true)
 
   return (
     <div
@@ -303,7 +358,8 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
         <p className="text-base font-medium text-on-surface-dim">{prompt.instruction}</p>
 
         <WithSpeaker
-          small={isSentence}
+          size={focalSize}
+          
           // Speaking a gap-fill before it's answered would read out the answer.
           // A question that hasn't been completed yet must not be read out —
           // for a gap-fill that would speak the answer.
@@ -326,7 +382,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
             {prompt.completion && (
               <span
                 aria-hidden="true"
-                style={{ fontSize: headlineSize }}
+                style={{ fontSize: focalSize }}
                 className={`invisible ${headlineClass}`}
               >
                 {prompt.completion}
@@ -343,7 +399,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                 exit={{ opacity: 0, transition: { duration: 0.22 } }}
                 lang={prompt.questionLang}
                 translate="no"
-                style={{ fontSize: headlineSize }}
+                style={{ fontSize: focalSize }}
                 className={headlineClass}
               >
                 {completes && revealed ? (
@@ -385,7 +441,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
               // Standing exactly where the answer will: the same box, so the
               // line doesn't shift when one replaces the other. Set in the
               // body face — it is an instruction, not something to learn.
-              style={{ height: fitSize(prompt.answer, '2.6rem', '1.4rem') }}
+              style={{ height: focalSize }}
               className="flex items-center text-xl text-on-surface-dim/70"
             >
               tap to reveal
@@ -425,7 +481,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                   {/* Unless the example *is* the completed question, as it is
                       for a gap-fill — then it's already up there. */}
                   {prompt.detail && prompt.detail !== prompt.completion && (
-                    <WithSpeaker speak={prompt.detail} small>
+                    <WithSpeaker speak={prompt.detail} size="1.125rem">
                       <Sentence
                         sentence={prompt.detail}
                         word={prompt.note.nl}
@@ -438,19 +494,20 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                       {prompt.detailTranslation}
                     </p>
                   )}
-                  {correct === false && picked && (
-                    <p className="text-base text-bad-ink/80">you chose &ldquo;{picked}&rdquo;</p>
-                  )}
+                  {correct === false && picked && <YouChose picked={picked} />}
                 </>
               ) : (
                 <>
                   {/* Every other card states its answer here: the thing you
                       were meant to arrive at, in the serif. */}
-                  <WithSpeaker speak={prompt.answerLang === 'nl' ? prompt.answer : undefined}>
+                  <WithSpeaker
+                    speak={prompt.answerLang === 'nl' ? prompt.answer : undefined}
+                    size={focalSize}
+                  >
                     <p
                       lang={prompt.answerLang}
                       translate="no"
-                      style={{ fontSize: fitSize(prompt.answer, '2.6rem', '1.4rem') }}
+                      style={{ fontSize: focalSize }}
                       // Green is the right answer, whether or not you found it —
                       // colouring the correct word red because you missed it says
                       // the word is wrong. Red belongs to what you chose, below.
@@ -466,9 +523,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                     </p>
                   </WithSpeaker>
 
-                  {correct === false && picked && (
-                    <p className="text-base text-bad-ink/80">you chose &ldquo;{picked}&rdquo;</p>
-                  )}
+                  {correct === false && picked && <YouChose picked={picked} />}
 
                   {prompt.meaning && (
                     <p className="max-w-xs text-base text-on-surface-dim">{prompt.meaning}</p>
@@ -478,7 +533,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                       a shadow is what the things you press look like. */}
                   {prompt.detail && (
                     <div className="mt-6 max-w-[17rem] space-y-1">
-                      <WithSpeaker speak={prompt.detail} small>
+                      <WithSpeaker speak={prompt.detail} size="1.125rem">
                         <Sentence
                           sentence={prompt.detail}
                           word={prompt.note.nl}

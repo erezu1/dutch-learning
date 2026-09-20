@@ -37,18 +37,25 @@ const wave = {
   vectorEffect: 'non-scaling-stroke' as const,
 }
 
+/**
+ * One size, everywhere. It is a mark saying "this can be heard", not part of
+ * the text, so it doesn't grow with a heading or shrink with a caption — it
+ * was two hand-picked sizes before, and which one you got depended on which
+ * component happened to be rendering it.
+ */
+/** The one size, in pixels, so callers can place it by its middle. */
+export const ICON = 20
+
 export function SpeakButton({
   text,
   speaking,
   onActivate,
   className = '',
-  small = false,
 }: {
   text: string
   speaking: boolean
   onActivate: () => void
   className?: string
-  small?: boolean
 }) {
   if (!supported()) return null
 
@@ -64,7 +71,7 @@ export function SpeakButton({
     >
       <svg
         viewBox="0 0 24 24"
-        className={small ? 'h-[18px] w-[18px]' : 'h-6 w-6'}
+        style={{ width: ICON, height: ICON }}
         fill="currentColor"
         aria-hidden="true"
       >
