@@ -203,9 +203,13 @@ export function Home({
           disabled={waiting === 0 && !another}
           className="w-full max-w-xs"
         >
+          {/* Not "Continue": nothing is ever in progress here. The queue is
+              built when you press this and thrown away when you leave, so
+              every press starts a session — what changes is whether the day
+              has been started, which is what these say instead. */}
           {waiting > 0
             ? stats.doneToday > 0
-              ? 'Continue'
+              ? 'Keep going'
               : 'Start'
             : another
               ? 'Another round?'

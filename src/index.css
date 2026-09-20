@@ -51,6 +51,13 @@
   --hue: 1;
   --chroma: 0.187;
   --accent-l: 55%;
+  /* The accent in dark mode. Lighter than the light-mode one, because a
+     colour dark enough to read on white disappears on a dark page — but how
+     much lighter is per-scheme, for the same reason the light one is. A hue
+     that has to stay recognisable can't always be lifted that far. */
+  --accent-dark-l: 78%;
+  --accent-dark-c: calc(var(--chroma) * 0.8);
+  --accent-dark-h: var(--hue);
 
   /* --- surfaces --- */
   --color-surface: oklch(98% calc(var(--chroma) * 0.1) var(--hue));
@@ -372,12 +379,27 @@ body::after {
   --hue: 1;
   --chroma: 0.187;
   --accent-l: 55%;
+  /* The accent in dark mode. Lighter than the light-mode one, because a
+     colour dark enough to read on white disappears on a dark page — but how
+     much lighter is per-scheme, for the same reason the light one is. A hue
+     that has to stay recognisable can't always be lifted that far. */
+  --accent-dark-l: 78%;
+  --accent-dark-c: calc(var(--chroma) * 0.8);
+  --accent-dark-h: var(--hue);
 }
 
+/* Red is the one hue that will not survive being lifted. At the lightness the
+   other schemes use in dark mode it has no room left for chroma and comes out
+   as salmon, so it stays darker and keeps all of its own. And it turns toward
+   orange while it does: a red at 15° is a crimson when it is dark and a pink
+   when it is light, and the hue has to move to stay the same colour. */
 :root[data-theme='baksteen'] {
   --hue: 15;
   --chroma: 0.17;
   --accent-l: 51%;
+  --accent-dark-l: 64%;
+  --accent-dark-c: var(--chroma);
+  --accent-dark-h: 27;
 }
 
 /* Likewise #e2622a. Light enough that white on it is thin, so its ink is dark. */
@@ -434,7 +456,7 @@ body::after {
   --edge: oklch(100% 0 var(--hue) / 0.1);
   --edge-strong: oklch(100% 0 var(--hue) / 0.2);
 
-  --color-primary: oklch(78% calc(var(--chroma) * 0.8) var(--hue));
+  --color-primary: oklch(var(--accent-dark-l) var(--accent-dark-c) var(--accent-dark-h));
   --color-on-primary: oklch(22% calc(var(--chroma) * 0.4) var(--hue));
   --color-primary-container: oklch(33% calc(var(--chroma) * 0.5) var(--hue));
   --color-on-primary-container: oklch(90% calc(var(--chroma) * 0.3) var(--hue));

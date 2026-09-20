@@ -21,6 +21,8 @@ export interface Theme {
   chroma: number
   /** How light the accent is. A yellow has to be light; a blue must not be. */
   light: number
+  /** Where dark mode differs from lifting the accent the usual amount. */
+  dark?: { light?: number; chroma?: number; hue?: number }
 }
 
 /**
@@ -30,7 +32,14 @@ export interface Theme {
  */
 export const THEMES: Theme[] = [
   { id: 'tulip', name: 'Tulp', hue: 1, chroma: 0.187, light: 55 },
-  { id: 'baksteen', name: 'Baksteen', hue: 15, chroma: 0.17, light: 51 },
+  {
+    id: 'baksteen',
+    name: 'Baksteen',
+    hue: 15,
+    chroma: 0.17,
+    light: 51,
+    dark: { light: 66, chroma: 0.17 },
+  },
   { id: 'klomp', name: 'Klomp', hue: 42, chroma: 0.173, light: 65 },
   { id: 'polder', name: 'Polder', hue: 158, chroma: 0.11, light: 55 },
   { id: 'zee', name: 'Zee', hue: 200, chroma: 0.12, light: 57 },
@@ -99,9 +108,9 @@ export function onSystemModeChange(fn: () => void): () => void {
  * and the dots should look like what choosing them will give you.
  */
 export function swatch(theme: Theme, resolved: Resolved): string {
-  return resolved === 'dark'
-    ? `oklch(78% ${theme.chroma * 0.8} ${theme.hue})`
-    : `oklch(${theme.light}% ${theme.chroma} ${theme.hue})`
+  if (resolved !== 'dark') return `oklch(${theme.light}% ${theme.chroma} ${theme.hue})`
+  const { light = 78, chroma = theme.chroma * 0.8, hue = theme.hue } = theme.dark ?? {}
+  return `oklch(${light}% ${chroma} ${hue})`
 }
 
 let settling: ReturnType<typeof setTimeout> | null = null
