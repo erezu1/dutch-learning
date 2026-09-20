@@ -90,10 +90,7 @@ function DutchVoice() {
                 {voice.local ? '' : ' — needs a connection'}
               </>
             ) : (
-              <>
-                This phone hasn&rsquo;t said which voices it has, which is normal and doesn&rsquo;t
-                mean it can&rsquo;t speak. Press it and listen.
-              </>
+              <>No voice listed. Press it and listen anyway.</>
             )}
           </p>
 
@@ -109,18 +106,15 @@ function DutchVoice() {
 
           {!voice.found && (
             <p className="mt-3 text-sm text-on-surface-dim">
-              Nothing? Then the voice data is missing. On Android:{' '}
+              Silent? Install it once and it works offline:{' '}
               <span className="text-on-surface">
-                Settings → System → Languages &amp; input → Text-to-speech → install Nederlands
+                Settings → System → Languages &amp; input → Text-to-speech → Nederlands
               </span>
-              . It downloads once and then works offline, like the rest of the app.
             </p>
           )}
         </>
       ) : (
-        <p className="mt-0.5 text-sm text-on-surface-dim">
-          This browser can&rsquo;t speak. Everything else works.
-        </p>
+        <p className="mt-0.5 text-sm text-on-surface-dim">This browser can&rsquo;t speak.</p>
       )}
     </div>
   )
@@ -128,11 +122,9 @@ function DutchVoice() {
 
 /** What the switch's subtitle says, for each way this can fail. */
 const TROUBLE: Record<NudgeTrouble, string> = {
-  unsupported:
-    'This browser can’t wake the app while it’s closed. Chrome on Android can, once the app is on your home screen.',
-  blocked: 'Notifications are switched off for Doei in your phone’s settings.',
-  'not-allowed':
-    'Your phone won’t wake the app yet. Add it to your home screen and use it for a few days, then try again.',
+  unsupported: 'Only Chrome on Android can do this.',
+  blocked: 'Notifications are off in your phone’s settings.',
+  'not-allowed': 'Add Doei to your home screen first.',
 }
 
 /**
@@ -174,11 +166,7 @@ function DailyNudge() {
       <div>
         <p className="font-semibold">Evening nudge</p>
         <p className="mt-0.5 text-sm text-on-surface-dim">
-          {trouble
-            ? TROUBLE[trouble]
-            : on
-              ? 'On. Nothing answered by the evening and your phone will say so — once, and only on those days.'
-              : 'A reminder in the evening, only on days you haven’t answered anything.'}
+          {trouble ? TROUBLE[trouble] : 'One reminder, on evenings you’ve done nothing.'}
         </p>
       </div>
       <Switch
@@ -206,7 +194,7 @@ function WeekStartPicker({
 }) {
   return (
     <>
-      <div className="mt-4 flex rounded-full bg-surface-2 p-1">
+      <div className="mt-3 flex rounded-full bg-surface-2 p-1">
         {DAY_NAMES.map((name, i) => {
           const day = i as WeekStartDay
           const active = day === value
@@ -232,7 +220,7 @@ function WeekStartPicker({
         })}
       </div>
       <p className="mt-3 text-sm text-on-surface-dim">
-        Weeks run {DAY_NAMES[value]} to {DAY_NAMES[(value + 6) % 7]}.
+        {DAY_NAMES[value]} to {DAY_NAMES[(value + 6) % 7]}.
       </p>
     </>
   )
@@ -263,7 +251,7 @@ function StartOver() {
     <div className="mt-2 rounded-3xl bg-surface-1 px-5 py-4 shadow-2">
       <p className="font-semibold">Start over</p>
       <p className="mt-0.5 text-sm text-on-surface-dim">
-        Erases your progress and settings. This can&rsquo;t be undone.
+        Erases everything. Can&rsquo;t be undone.
       </p>
 
       <AnimatePresence mode="wait" initial={false}>
@@ -365,9 +353,7 @@ export function Settings({
         >
           <div>
             <p className="font-semibold">Continue automatically</p>
-            <p className="mt-0.5 text-sm text-on-surface-dim">
-              After a multiple-choice answer, move on by itself instead of waiting for a tap.
-            </p>
+            <p className="mt-0.5 text-sm text-on-surface-dim">Skip the Continue tap.</p>
           </div>
           <Switch checked={autoContinue} onChange={onAutoContinue} label="Continue automatically" />
         </motion.div>
@@ -379,9 +365,7 @@ export function Settings({
           className="rounded-3xl bg-surface-1 px-5 py-4 shadow-2"
         >
           <p className="font-semibold">Appearance</p>
-          <p className="mt-0.5 text-sm text-on-surface-dim">
-            Every colour comes in both. System follows your phone.
-          </p>
+          <p className="mt-0.5 text-sm text-on-surface-dim">System follows your phone.</p>
           <ModePicker mode={mode} onMode={onMode} />
         </motion.div>
 
@@ -392,9 +376,6 @@ export function Settings({
           className="rounded-3xl bg-surface-1 px-5 py-4 shadow-2"
         >
           <p className="font-semibold">Week starts on</p>
-          <p className="mt-0.5 text-sm text-on-surface-dim">
-            Where the seven dots under the Start button are cut.
-          </p>
           <WeekStartPicker value={weekStartsOn} onChange={onWeekStartsOn} />
         </motion.div>
 
