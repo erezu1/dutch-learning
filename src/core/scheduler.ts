@@ -57,31 +57,6 @@ export function applyGrade(row: CardStateRow, grade: Grade, now = new Date()): C
   return toRow(row.cardId, result.card)
 }
 
-/** What each button would do, for showing "2 days" under the grade buttons. */
-export function previewIntervals(row: CardStateRow, now = new Date()): Record<Grade, string> {
-  const s = scheduler.repeat(toFsrs(row), now)
-  const fmt = (d: Date) => humanInterval(d.getTime() - now.getTime())
-  return {
-    [Rating.Again]: fmt(s[Rating.Again].card.due),
-    [Rating.Hard]: fmt(s[Rating.Hard].card.due),
-    [Rating.Good]: fmt(s[Rating.Good].card.due),
-    [Rating.Easy]: fmt(s[Rating.Easy].card.due),
-  } as Record<Grade, string>
-}
-
-export function humanInterval(ms: number): string {
-  const min = ms / 60000
-  if (min < 1) return 'nu'
-  if (min < 60) return `${Math.round(min)}m`
-  const hours = min / 60
-  if (hours < 24) return `${Math.round(hours)}u`
-  const days = hours / 24
-  if (days < 30) return `${Math.round(days)}d`
-  const months = days / 30.4
-  if (months < 12) return `${Math.round(months)}mnd`
-  return `${(days / 365).toFixed(1)}j`
-}
-
 export function isNew(row: CardStateRow | undefined): boolean {
   return !row || row.state === State.New
 }

@@ -44,13 +44,9 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
       {revealed &&
         (session.autoGrade !== null ? (
           // Multiple choice: already graded, just move on.
-          <ContinueBar
-            correct={correct === true}
-            interval={session.intervals?.[session.autoGrade]}
-            onContinue={() => session.grade(session.autoGrade!)}
-          />
+          <ContinueBar correct={correct === true} onContinue={() => session.grade(session.autoGrade!)} />
         ) : (
-          <GradeBar onGrade={session.grade} intervals={session.intervals} />
+          <GradeBar onGrade={session.grade} />
         ))}
     </div>
   )

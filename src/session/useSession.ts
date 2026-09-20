@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { allCards, type Card } from '../core/cards'
 import { db, type CardStateRow } from '../core/db'
 import { buildQueue, DEFAULTS, type QueueOptions } from '../core/queue'
-import { applyGrade, emptyState, isNew, previewIntervals, Rating, State, type Grade } from '../core/scheduler'
+import { applyGrade, emptyState, isNew, Rating, State, type Grade } from '../core/scheduler'
 import type { Deck, Note } from '../core/types'
 import { buildPrompt, type Prompt } from './prompts'
 
@@ -33,7 +33,6 @@ export interface Session {
   position: number
   length: number
   stats: SessionStats
-  intervals: Record<Grade, string> | null
   /** Set for a choice prompt once answered: the grade the app will apply. */
   autoGrade: Grade | null
 
@@ -124,11 +123,6 @@ export function useSession(deck: Deck): Session {
   const card = queue[index] ?? null
   const note: Note | null = card ? notes.get(card.noteId) ?? null : null
 
-  const currentState = useMemo(() => {
-    if (!card) return null
-    return states.get(card.id) ?? emptyState(card.id)
-  }, [card, states])
-
   // Memoised on the card, not the render: multiple-choice options are shuffled
   // when they are built, so rebuilding on every render would reorder the
   // buttons under the user's finger.
@@ -142,11 +136,6 @@ export function useSession(deck: Deck): Session {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [card?.id, note?.id, deck])
-
-  const intervals = useMemo(
-    () => (currentState && revealed ? previewIntervals(currentState) : null),
-    [currentState, revealed],
-  )
 
   const correct = useMemo(() => {
     if (!prompt || prompt.shape !== 'choice' || picked === null) return null
@@ -237,7 +226,6 @@ export function useSession(deck: Deck): Session {
     position: Math.min(index + 1, queue.length),
     length: queue.length,
     stats,
-    intervals,
     autoGrade,
     start,
     reveal,
