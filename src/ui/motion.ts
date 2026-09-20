@@ -16,6 +16,20 @@ export const glide: Transition = { type: 'spring', stiffness: 260, damping: 28, 
  *  enough that you see it happen. */
 export const turn: Transition = { duration: 0.62, ease: [0.22, 1, 0.36, 1] }
 
+/**
+ * The home screen's ring drawing itself in, and the seconds the text inside
+ * and under it waits for that to finish. Written out rather than left to the
+ * general curves: this is the one moment in the app that is allowed to take
+ * its time, because it is the only one you arrive at rather than cause.
+ */
+export const RING_GROW = 0.85
+export const ringGrow: Transition = { duration: RING_GROW, ease: [0.22, 1, 0.36, 1] }
+export const afterRing = (extra = 0): Transition => ({
+  duration: 0.42,
+  ease: 'easeOut',
+  delay: RING_GROW + extra,
+})
+
 /** Things that shouldn't draw attention: progress bars, fades. */
 export const quiet: Transition = { duration: 0.32, ease: [0.22, 1, 0.36, 1] }
 

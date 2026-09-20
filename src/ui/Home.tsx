@@ -9,7 +9,7 @@ import { promptInstall } from '../core/install'
 import { Paw } from './Paw'
 import { useCanInstall } from './useCanInstall'
 import { ThemePicker } from './ThemePicker'
-import { pressable, quiet } from './motion'
+import { afterRing, pressable, ringGrow } from './motion'
 import { TITLE, WORDMARK } from './type'
 
 interface Props {
@@ -140,36 +140,43 @@ export function Home({
                 stroke="var(--color-primary)"
                 strokeWidth="8"
                 strokeLinecap="round"
-                initial={false}
+                // Drawn in from nothing every time the screen arrives, rather
+                // than being there already. The ring is the day, and watching
+                // it close is the closest the app gets to a reward.
+                initial={{ strokeDasharray: '0 283' }}
                 animate={{ strokeDasharray: `${progress * 283} 283` }}
-                transition={quiet}
+                transition={ringGrow}
               />
             </svg>
-            <div className="text-center">
-              <motion.p
-                key={score}
-                initial={{ scale: 0.86, opacity: 0.4 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={quiet}
-                className={`text-5xl ${TITLE}`}
-              >
-                {score.toLocaleString()}
-              </motion.p>
+            {/* The numbers wait for the ring: arriving together, the eye has
+                nowhere to start. */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={afterRing()}
+              className="text-center"
+            >
+              <p className={`text-5xl ${TITLE}`}>{score.toLocaleString()}</p>
               <p className="text-sm text-on-surface-dim">points</p>
-            </div>
+            </motion.div>
           </div>
 
           {/* What the ring is measuring, said in words. The number inside it is
             a lifetime total and the ring is only today, so without this the
             two look like they ought to agree, and don't. Below rather than
             inside: it doesn't fit across a circle. */}
-          <p className="text-sm text-on-surface-dim">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={afterRing(0.09)}
+            className="text-sm text-on-surface-dim"
+          >
             {waiting > 0
               ? `${stats.doneToday} of ${stats.plannedToday} questions today`
               : stats.doneToday > 0
                 ? `all ${stats.doneToday} questions done today`
                 : 'nothing due today'}
-          </p>
+          </motion.p>
         </div>
 
         <Button onClick={onStart} disabled={waiting === 0} className="w-full max-w-xs">
