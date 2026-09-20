@@ -1255,8 +1255,8 @@
    "verb": {
     "past": "liet",
     "participle": "gelaten",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -2361,8 +2361,8 @@
    "verb": {
     "past": "zat",
     "participle": "gezeten",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -2667,8 +2667,8 @@
    "verb": {
     "past": "kreeg",
     "participle": "gekregen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -2740,8 +2740,8 @@
    "verb": {
     "past": "hield",
     "participle": "gehouden",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -2921,8 +2921,8 @@
    "verb": {
     "past": "keek",
     "participle": "gekeken",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -3370,8 +3370,8 @@
    "verb": {
     "past": "stond",
     "participle": "gestaan",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -4918,9 +4918,8 @@
    "verb": {
     "past": "begon",
     "participle": "begonnen",
-    "auxiliary": "hebben",
     "irregular": true,
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -5219,8 +5218,7 @@
    "verb": {
     "past": "gebeurde",
     "participle": "gebeurd",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -6239,8 +6237,8 @@
    "verb": {
     "past": "lag",
     "participle": "gelegen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -6312,9 +6310,8 @@
    "verb": {
     "past": "stierf",
     "participle": "gestorven",
-    "auxiliary": "hebben",
     "irregular": true,
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -7035,7 +7032,7 @@
    "verb": {
     "past": "veranderde",
     "participle": "veranderd",
-    "auxiliary": "hebben",
+    "auxiliary": "both",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -7735,8 +7732,8 @@
    "verb": {
     "past": "reed",
     "participle": "gereden",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "both",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -8004,8 +8001,8 @@
    "verb": {
     "past": "vocht",
     "participle": "gevochten",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -8439,8 +8436,8 @@
    "verb": {
     "past": "won",
     "participle": "gewonnen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -8583,8 +8580,8 @@
    "verb": {
     "past": "schoot",
     "participle": "geschoten",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -9023,7 +9020,7 @@
    "verb": {
     "past": "volgde",
     "participle": "gevolgd",
-    "auxiliary": "hebben",
+    "auxiliary": "both",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -9996,8 +9993,8 @@
    "verb": {
     "past": "sloeg",
     "participle": "geslagen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -10117,8 +10114,8 @@
    "verb": {
     "past": "droeg",
     "participle": "gedragen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -11223,8 +11220,8 @@
    "verb": {
     "past": "lachte",
     "participle": "gelachen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -11667,8 +11664,8 @@
    "verb": {
     "past": "loog",
     "participle": "gelogen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -12346,8 +12343,8 @@
    "verb": {
     "past": "sloot",
     "participle": "gesloten",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -12703,8 +12700,8 @@
    "verb": {
     "past": "bekeek",
     "participle": "bekeken",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -12963,8 +12960,8 @@
    "verb": {
     "past": "bewoog",
     "participle": "bewogen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -13317,9 +13314,8 @@
     "separable": true,
     "past": "ging weg",
     "participle": "weggegaan",
-    "auxiliary": "hebben",
     "irregular": true,
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -14042,8 +14038,8 @@
    "verb": {
     "past": "zong",
     "participle": "gezongen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -14514,8 +14510,8 @@
     "separable": true,
     "past": "hield op",
     "participle": "opgehouden",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "both",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -14537,8 +14533,8 @@
    "verb": {
     "past": "hing",
     "participle": "gehangen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -15062,8 +15058,7 @@
    "verb": {
     "past": "ontsnapte",
     "participle": "ontsnapt",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -15214,8 +15209,8 @@
    "verb": {
     "past": "brak",
     "participle": "gebroken",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "both",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -15259,8 +15254,8 @@
     "separable": true,
     "past": "schoot op",
     "participle": "opgeschoten",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -15353,8 +15348,8 @@
    "verb": {
     "past": "besprak",
     "participle": "besproken",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -15499,9 +15494,8 @@
     "separable": true,
     "past": "ging door",
     "participle": "doorgegaan",
-    "auxiliary": "hebben",
     "irregular": true,
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -16065,8 +16059,8 @@
    "verb": {
     "past": "verborg",
     "participle": "verborgen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -16731,9 +16725,8 @@
    "verb": {
     "past": "verdween",
     "participle": "verdwenen",
-    "auxiliary": "hebben",
     "irregular": true,
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -17528,8 +17521,8 @@
     "separable": true,
     "past": "nam op",
     "participle": "opgenomen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -17759,8 +17752,8 @@
     "separable": true,
     "past": "hield tegen",
     "participle": "tegengehouden",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -18393,9 +18386,8 @@
     "separable": true,
     "past": "kwam terug",
     "participle": "teruggekomen",
-    "auxiliary": "hebben",
     "irregular": true,
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -18456,8 +18448,8 @@
    "verb": {
     "past": "bood",
     "participle": "geboden",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -18657,8 +18649,8 @@
    "verb": {
     "past": "sprong",
     "participle": "gesprongen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "both",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -18870,8 +18862,8 @@
    "verb": {
     "past": "versloeg",
     "participle": "verslagen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -19170,8 +19162,8 @@
    "verb": {
     "past": "leed",
     "participle": "geleden",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -19440,8 +19432,8 @@
    "verb": {
     "past": "joeg",
     "participle": "gejaagd",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -19612,8 +19604,7 @@
    "verb": {
     "past": "lukte",
     "participle": "gelukt",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -20118,8 +20109,8 @@
    "verb": {
     "past": "genoot",
     "participle": "genoten",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -20143,8 +20134,8 @@
     "separable": true,
     "past": "nam aan",
     "participle": "aangenomen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -20718,8 +20709,8 @@
    "verb": {
     "past": "zwom",
     "participle": "gezwommen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "both",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -20812,8 +20803,8 @@
     "separable": true,
     "past": "hield vast",
     "participle": "vastgehouden",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -20896,8 +20887,8 @@
     "separable": true,
     "past": "gaf op",
     "participle": "opgegeven",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -20958,7 +20949,7 @@
    "verb": {
     "past": "kookte",
     "participle": "gekookt",
-    "auxiliary": "hebben",
+    "auxiliary": "both",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -21733,8 +21724,8 @@
     "separable": true,
     "past": "gaf toe",
     "participle": "toegegeven",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -22031,8 +22022,8 @@
     "separable": true,
     "past": "bood aan",
     "participle": "aangeboden",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -22280,7 +22271,7 @@
    "verb": {
     "past": "verhuisde",
     "participle": "verhuisd",
-    "auxiliary": "hebben",
+    "auxiliary": "both",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -22618,9 +22609,8 @@
     "separable": true,
     "past": "kwam binnen",
     "participle": "binnengekomen",
-    "auxiliary": "hebben",
     "irregular": true,
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -22789,8 +22779,8 @@
     "separable": true,
     "past": "liet achter",
     "participle": "achtergelaten",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -22926,8 +22916,8 @@
    "verb": {
     "past": "bad",
     "participle": "gebeden",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -23353,8 +23343,7 @@
    "verb": {
     "past": "eindigde",
     "participle": "geëindigd",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -23376,8 +23365,7 @@
    "verb": {
     "past": "groeide",
     "participle": "gegroeid",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -23822,7 +23810,7 @@
    "verb": {
     "past": "herstelde",
     "participle": "hersteld",
-    "auxiliary": "hebben",
+    "auxiliary": "both",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -24194,8 +24182,8 @@
    "verb": {
     "past": "zweeg",
     "participle": "gezwegen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -24964,8 +24952,8 @@
     "separable": true,
     "past": "ging om",
     "participle": "omgegaan",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "both",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -25179,8 +25167,8 @@
     "separable": true,
     "past": "trad op",
     "participle": "opgetreden",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -25289,8 +25277,8 @@
    "verb": {
     "past": "scheidde",
     "participle": "gescheiden",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "both",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -26081,8 +26069,8 @@
    "verb": {
     "past": "rook",
     "participle": "geroken",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -26352,7 +26340,7 @@
    "verb": {
     "past": "wandelde",
     "participle": "gewandeld",
-    "auxiliary": "hebben",
+    "auxiliary": "both",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -26502,8 +26490,8 @@
     "separable": true,
     "past": "hing op",
     "participle": "opgehangen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    }
   },
@@ -27406,8 +27394,8 @@
     "separable": true,
     "past": "zag uit",
     "participle": "uitgezien",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -27551,8 +27539,8 @@
    "verb": {
     "past": "ontsloeg",
     "participle": "ontslagen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -27833,8 +27821,8 @@
    "verb": {
     "past": "sneed",
     "participle": "gesneden",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -28011,9 +27999,8 @@
     "separable": true,
     "past": "ging terug",
     "participle": "teruggegaan",
-    "auxiliary": "hebben",
     "irregular": true,
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -28035,8 +28022,8 @@
     "separable": true,
     "past": "schoot neer",
     "participle": "neergeschoten",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -28693,8 +28680,8 @@
    "verb": {
     "past": "dwong",
     "participle": "gedwongen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -29777,8 +29764,8 @@
     "separable": true,
     "past": "at op",
     "participle": "opgegeten",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -30175,9 +30162,8 @@
     "separable": true,
     "past": "kwam mee",
     "participle": "meegekomen",
-    "auxiliary": "hebben",
     "irregular": true,
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -30836,9 +30822,8 @@
     "separable": true,
     "past": "ging uit",
     "participle": "uitgegaan",
-    "auxiliary": "hebben",
     "irregular": true,
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -31628,8 +31613,8 @@
     "separable": true,
     "past": "liep weg",
     "participle": "weggelopen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "both",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -32153,8 +32138,8 @@
     "separable": true,
     "past": "nam over",
     "participle": "overgenomen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    }
   },
@@ -32281,8 +32266,8 @@
    "verb": {
     "past": "ondervroeg",
     "participle": "ondervraagd",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -32857,8 +32842,8 @@
    "verb": {
     "past": "verzon",
     "participle": "verzonnen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    }
   },
@@ -32989,9 +32974,8 @@
     "separable": true,
     "past": "ging dood",
     "participle": "doodgegaan",
-    "auxiliary": "hebben",
     "irregular": true,
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -33905,9 +33889,8 @@
     "separable": true,
     "past": "kwam langs",
     "participle": "langsgekomen",
-    "auxiliary": "hebben",
     "irregular": true,
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -34180,8 +34163,8 @@
    "verb": {
     "past": "greep",
     "participle": "gegrepen",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -34229,8 +34212,8 @@
     "separable": true,
     "past": "trok terug",
     "participle": "teruggetrokken",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -34420,8 +34403,8 @@
     "separable": true,
     "past": "liet los",
     "participle": "losgelaten",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -34826,8 +34809,8 @@
     "separable": true,
     "past": "gaf over",
     "participle": "overgegeven",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -35246,8 +35229,7 @@
     "separable": true,
     "past": "keerde terug",
     "participle": "teruggekeerd",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
+    "auxiliary": "zijn"
    },
    "examples": [
     {
@@ -35694,8 +35676,8 @@
     "separable": true,
     "past": "stond toe",
     "participle": "toegestaan",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -36636,8 +36618,8 @@
    "verb": {
     "past": "heette",
     "participle": "geheten",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [
@@ -36719,8 +36701,8 @@
    "verb": {
     "past": "vermeed",
     "participle": "vermeden",
-    "auxiliary": "hebben",
     "irregular": true,
+    "auxiliary": "hebben",
     "auxiliaryUnknown": true
    },
    "examples": [

@@ -1,4 +1,4 @@
-import type { Card, CardType } from '../core/cards'
+import { blankOut, clozeSource, type Card, type CardType } from '../core/cards'
 import type { Note } from '../core/types'
 
 // ---------------------------------------------------------------------------
@@ -24,6 +24,8 @@ export interface Prompt {
   instruction: string
   question: string
   questionLang: 'nl' | 'en'
+  /** A sentence needs smaller type than a single word. */
+  display?: 'word' | 'sentence'
   /** Disambiguates when a question alone is ambiguous, e.g. "(zelfstandig nw.)" */
   subtitle?: string
 
@@ -199,6 +201,27 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         speak: note.verb!.participle,
         ...example(note),
       }
+
+    case 'cloze': {
+      const ex = clozeSource(note)!
+      const choice = ctx.introduce
+      return {
+        ...base,
+        shape: choice ? 'choice' : 'reveal',
+        display: 'sentence',
+        instruction: 'Which word fits the gap?',
+        question: blankOut(ex.nl, note.nl),
+        questionLang: 'nl',
+        answer: note.nl,
+        answerLang: 'nl',
+        choices: choice ? shuffle([dutch(note), ...distractors(note, ctx, dutch)]) : undefined,
+        // The full sentence gives the answer away, so it is only spoken and
+        // shown once the card has been answered.
+        speak: ex.nl,
+        detail: ex.nl,
+        detailTranslation: ex.en,
+      }
+    }
 
     case 'auxiliary':
       return {

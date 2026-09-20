@@ -13,6 +13,7 @@ export type CardType =
   | 'plural' // what's the plural?
   | 'participle' // past participle
   | 'auxiliary' // hebben or zijn?
+  | 'cloze' // which word fills this gap?
 
 export interface Card {
   id: string
@@ -25,6 +26,31 @@ export const CORE_TYPES: CardType[] = ['recognize', 'recall']
 
 export function cardId(noteId: string, type: CardType): string {
   return `${noteId}::${type}`
+}
+
+/**
+ * Matches the word only as a whole word, so blanking "in" doesn't gut
+ * "binnen". \P{L} is "not a letter", which handles Dutch accents correctly
+ * where \b and [a-z] would not.
+ */
+function wordPattern(word: string): RegExp {
+  const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  return new RegExp(`(^|\\P{L})(${escaped})(\\P{L}|$)`, 'iu')
+}
+
+/**
+ * The example sentence a gap-fill card is built from — the word's own
+ * sentence, with the word appearing in exactly the form we'd blank out.
+ */
+export function clozeSource(note: Note): { nl: string; en: string } | null {
+  for (const ex of note.examples ?? []) {
+    if (wordPattern(note.nl).test(ex.nl)) return ex
+  }
+  return null
+}
+
+export function blankOut(sentence: string, word: string): string {
+  return sentence.replace(wordPattern(word), (_m, before, _w, after) => `${before}____${after}`)
 }
 
 /**
@@ -44,10 +70,13 @@ export function cardsForNote(note: Note): Card[] {
 
   if (note.verb) {
     if (note.verb.irregular || note.verb.separable) types.push('participle')
-    // "hebben" is the default, so only "zijn" verbs are worth a card — and
-    // only when the auxiliary was actually verified rather than assumed.
-    if (!note.verb.auxiliaryUnknown && note.verb.auxiliary !== 'hebben') types.push('auxiliary')
+    // "hebben" is the default and "both" is too conditional to drill, so only
+    // the zijn verbs get asked — and only where the auxiliary is known.
+    if (!note.verb.auxiliaryUnknown && note.verb.auxiliary === 'zijn') types.push('auxiliary')
   }
+
+  // A gap-fill needs a sentence containing the word itself.
+  if (clozeSource(note)) types.push('cloze')
 
   return types.map((type) => ({ id: cardId(note.id, type), noteId: note.id, type }))
 }

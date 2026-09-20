@@ -289,7 +289,43 @@ async function loadSentences(rank) {
   return byWord
 }
 
-// --- 4. assemble -----------------------------------------------------------
+// --- 4. auxiliaries --------------------------------------------------------
+
+/**
+ * Motion verbs take zijn only when a destination is named — "ik heb gelopen"
+ * but "ik ben naar huis gelopen". Too conditional to put on a flashcard, so
+ * we never assert an auxiliary for these.
+ */
+const CONDITIONAL = new Set([
+  'lopen', 'wandelen', 'rennen', 'fietsen', 'rijden', 'varen', 'vliegen',
+  'zwemmen', 'springen', 'klimmen', 'kruipen', 'glijden', 'stappen', 'reizen',
+  'zeilen', 'schaatsen', 'joggen', 'oversteken', 'volgen', 'passeren',
+  'trekken', 'keren', 'verhuizen', 'weglopen', 'ophouden', 'stoppen',
+  'veranderen', 'breken', 'herstellen', 'verbeteren', 'trouwen', 'scheiden',
+])
+
+/**
+ * We only ever *assert* "zijn", never "hebben".
+ *
+ * The conjugation templates are precise about zijn — if one says zijn, it is
+ * zijn — but their silence is not evidence of hebben: the template for
+ * weglopen carries no auxiliary at all, though "hij is weggelopen" is the
+ * normal form. So a verb we cannot confirm is marked unknown and simply never
+ * claims an auxiliary, rather than claiming the more likely one and being
+ * confidently wrong a few dozen times.
+ */
+async function loadAuxiliaries() {
+  const { auxiliaries } = JSON.parse(await readFile('src/content/auxiliaries.json', 'utf8'))
+
+  return function auxiliaryFor(verb) {
+    if (CONDITIONAL.has(verb)) return { auxiliary: 'both', auxiliaryUnknown: true }
+    const aux = auxiliaries[verb]
+    if (aux === 'zijn') return { auxiliary: 'zijn' }
+    return { auxiliary: aux === 'both' ? 'both' : 'hebben', auxiliaryUnknown: true }
+  }
+}
+
+// --- 5. assemble -----------------------------------------------------------
 
 const POS_SUFFIX = { noun: 'n', verb: 'v', adj: 'a', adv: 'adv', prep: 'p', num: 'num', phrase: 'x' }
 
@@ -310,6 +346,7 @@ async function main() {
 
   console.log('reading sentences…')
   const sentences = await loadSentences(rank)
+  const auxiliaryFor = await loadAuxiliaries()
 
   // Hand-written notes win: their grammar was checked by a human and they
   // carry auxiliary data the import cannot supply.
@@ -319,6 +356,17 @@ async function main() {
     handWritten.push(...deck.notes)
   }
   const takenWords = new Set(handWritten.map((n) => norm(n.nl)))
+
+  for (const n of handWritten) {
+    if (n.pos !== 'verb' || !n.verb || n.verb.auxiliaryUnknown) continue
+    const fetched = auxiliaryFor(n.nl)
+    if (fetched.auxiliary === 'zijn' && n.verb.auxiliary === 'hebben') {
+      console.warn(`  ! hand-written "${n.nl}" says hebben, Wiktionary says zijn`)
+    }
+    if (!fetched.auxiliaryUnknown && fetched.auxiliary !== n.verb.auxiliary) {
+      console.warn(`  ! hand-written "${n.nl}": ${n.verb.auxiliary} vs ${fetched.auxiliary}`)
+    }
+  }
 
   const notes = handWritten.map((n) => ({
     ...n,
@@ -338,7 +386,7 @@ async function main() {
     // "kan" are verb forms that Wiktionary also happens to list as nouns.
     if (!takenWords.has(c.word) && inflections.has(c.word)) continue
 
-    const { auxiliaryUnknown, separable, past, participle, irregular, gender, plural, comparative, superlative } =
+    const { separable, past, participle, irregular, gender, plural, comparative, superlative } =
       c.extra
 
     const note = {
@@ -361,10 +409,8 @@ async function main() {
             : undefined
       }
     } else if (c.pos === 'verb') {
-      note.verb = { separable, past, participle, auxiliary: 'hebben', irregular }
-      // Marks that hebben is a default, not a checked fact — cards.ts uses
-      // this to withhold the hebben/zijn question.
-      if (auxiliaryUnknown) note.verb.auxiliaryUnknown = true
+      const aux = auxiliaryFor(c.word)
+      note.verb = { separable, past, participle, irregular, ...aux }
     } else if (c.pos === 'adj') {
       if (comparative) note.comparative = comparative
       if (superlative) note.superlative = superlative

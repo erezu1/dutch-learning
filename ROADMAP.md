@@ -137,9 +137,15 @@ This is where the app earns its existence versus just using Anki. Build these in
 - Level is now chosen in the app and sets where new words start in the
   frequency list. Automatic progression between levels is still to do.
 
-**Still outstanding from this phase:** sentences exist as one example per word,
-but there are no standalone sentence notes yet, so the word-order and
-fill-in-the-blank card types are still not built.
+**Gap-fill is built** — 1827 of the 2000 words generate one, using the word's
+own example sentence with the word blanked out. The card belongs to that word,
+so it is scheduled alongside its other cards and unlocks once the word is
+known.
+
+**Still outstanding:** the word-order card. It needs sentences split into
+meaningful chunks rather than single words, and it has to accept several
+correct orders — *Morgen ga ik naar de stad* and *Ik ga morgen naar de stad*
+are both right — so it cannot simply compare against one stored answer.
 
 ### Phase 3 — The UI pass (the fun one)
 - Full-bleed vertical cards, one per screen, TikTok-style

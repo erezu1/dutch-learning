@@ -37,7 +37,8 @@ function Choices({ prompt, onChoose }: { prompt: Prompt; onChoose: (v: string) =
         <button
           key={choice}
           onClick={() => onChoose(choice)}
-          className={`rounded-3xl bg-surface-2 transition active:scale-95 ${
+          translate="no"
+          className={`notranslate rounded-3xl bg-surface-2 transition active:scale-95 ${
             pair ? 'flex-1 py-6 text-2xl font-semibold' : 'px-5 py-4 text-lg'
           } ${choiceColor[choice] ?? ''}`}
         >
@@ -50,6 +51,7 @@ function Choices({ prompt, onChoose }: { prompt: Prompt; onChoose: (v: string) =
 
 export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoose }: Props) {
   const isChoice = prompt.shape === 'choice'
+  const isSentence = prompt.display === 'sentence'
 
   return (
     <div className="flex flex-1 flex-col">
@@ -62,11 +64,15 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
         <div className="flex items-center gap-3">
           <h1
             lang={prompt.questionLang}
-            className="text-[2.75rem] leading-tight font-semibold text-balance"
+            translate="no"
+            className={`notranslate leading-snug font-semibold text-balance ${
+              isSentence ? 'text-2xl' : 'text-[2.75rem] leading-tight'
+            }`}
           >
             {prompt.question}
           </h1>
-          {prompt.questionLang === 'nl' && <SpeakButton text={prompt.question} />}
+          {/* Speaking a gap-fill sentence would read out the answer. */}
+          {prompt.questionLang === 'nl' && !isSentence && <SpeakButton text={prompt.question} />}
         </div>
 
         {prompt.subtitle && <p className="text-sm text-on-surface-dim">{prompt.subtitle}</p>}
@@ -81,7 +87,8 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
             <div className="flex items-center gap-3">
               <p
                 lang={prompt.answerLang}
-                className={`text-3xl font-semibold ${
+                translate="no"
+                className={`notranslate text-3xl font-semibold ${
                   correct === false ? 'text-bad' : correct === true ? 'text-good' : ''
                 }`}
               >
@@ -96,7 +103,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
 
             {prompt.detail && (
               <div className="mt-4 max-w-xs space-y-1">
-                <p lang="nl" className="text-base text-on-surface/90">
+                <p lang="nl" translate="no" className="notranslate text-base text-on-surface/90">
                   {prompt.detail}
                 </p>
                 {prompt.detailTranslation && (

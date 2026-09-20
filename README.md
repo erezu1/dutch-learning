@@ -84,12 +84,26 @@ outrank the real sense — Wiktionary's primary gloss for *mijn* is "shaft dug
 by an insect larva". Those ~90 words are the most frequent in the language, so
 they are written and checked by hand instead.
 
-### Known limits of the imported data
+### hebben or zijn
 
-- **No hebben/zijn.** The extract carries no auxiliary-verb information, so
-  imported verbs are marked `auxiliaryUnknown` and generate no hebben/zijn
-  card. Only the 37 hand-written verbs have a checked auxiliary. Drilling a
-  guess would be worse than not asking.
+`scripts/fetch-auxiliaries.mjs` fetches this from English Wiktionary's
+`{{nl-conj-*}}` conjugation templates, which carry `aux=zijn` and
+`trans=unacc` even though the kaikki extract drops them. It asks only for the
+verbs in the deck, so it is a few hundred API calls rather than a bulk
+download.
+
+**We only ever assert "zijn", never "hebben."** The templates are precise
+about zijn, but their silence is not evidence of hebben — the template for
+*weglopen* carries no auxiliary although *hij is weggelopen* is the normal
+form. So a verb we cannot confirm never claims an auxiliary at all. Motion
+verbs (`CONDITIONAL` in the build script) take zijn only with a destination —
+*ik heb gelopen* but *ik ben naar huis gelopen* — which is too conditional for
+a flashcard, so they are never asserted either.
+
+The build cross-checks the hand-written verbs against the fetched data and
+warns on disagreement.
+
+### Known limits of the imported data
 - **First gloss wins.** A word with several senses shows the most prominent
   one. Occasionally that isn't the sense you'd meet first.
 - **`SKIP_WORDS` in the build script** lists verb stems whose noun sense is
