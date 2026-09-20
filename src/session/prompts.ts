@@ -32,11 +32,15 @@ export interface Prompt {
   answer: string
   answerLang: 'nl' | 'en'
   /**
-   * What to show once the card is answered, when the answer being matched is
-   * only part of what you were meant to learn. "de or het?" is answered with
-   * one word, but the thing worth seeing afterwards is "de man".
+   * The question as it reads once it has been answered — "tijd" becomes
+   * "de tijd", "geweest" becomes "zijn geweest", a gapped sentence becomes
+   * the whole one. Cards that have this complete their own question in place
+   * instead of stating a separate answer underneath it, because the answer
+   * only means anything attached to what was asked.
+   *
+   * It must contain `answer` as a whole word: that is the part picked out.
    */
-  reveal?: string
+  completion?: string
   /**
    * The word's other senses, shown only once the card is answered. Asking
    * "what is 'little, few' in Dutch?" reads like a riddle; asking for "little"
@@ -197,7 +201,7 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         question: note.nl,
         questionLang: 'nl',
         answer: note.gender!,
-        reveal: `${note.gender} ${note.nl}`,
+        completion: `${note.gender} ${note.nl}`,
         answerLang: 'nl',
         choices: ['de', 'het'],
         speak: `${note.gender} ${note.nl}`,
@@ -245,6 +249,7 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         question: blankOut(ex.nl, note.nl),
         questionLang: 'nl',
         answer: note.nl,
+        completion: ex.nl,
         answerLang: 'nl',
         choices: choice ? shuffle([dutch(note), ...distractors(note, ctx, dutch)]) : undefined,
         // The full sentence gives the answer away, so it is only spoken and
@@ -266,7 +271,7 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         subtitle: note.en[0],
         answer: aux,
         // The point of the card is the pair, so the pair is what you see.
-        reveal: `${aux} ${note.verb!.participle}`,
+        completion: `${aux} ${note.verb!.participle}`,
         answerLang: 'nl',
         choices: ['hebben', 'zijn'],
         speak: `${aux} ${note.verb!.participle}`,

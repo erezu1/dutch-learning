@@ -38,11 +38,16 @@ interface Props {
  * character. Clamped so short words don't become enormous and long ones stay
  * readable.
  */
-function fitSize(text: string, max: string, min = '1.6rem'): string {
-  const longest = Math.max(...text.split(/\s+/).map((w) => w.length), 1)
+function fitSize(text: string, max: string, min = '1.6rem', whole = false): string {
+  // A phrase that has to stay on one line is measured entire; anything that
+  // may wrap is measured by its longest unbreakable run. For a single word
+  // the two are the same.
+  const run = whole
+    ? text.length
+    : Math.max(...text.split(/\s+/).map((w) => w.length), 1)
   // 80vw, not the full width: the speaker hangs off the word's right edge
   // and needs somewhere to be.
-  return `clamp(${min}, calc(80vw / ${longest} * 1.85), ${max})`
+  return `clamp(${min}, calc(80vw / ${Math.max(run, 1)} * 1.85), ${max})`
 }
 
 /**
@@ -90,8 +95,8 @@ function Choices({
 }) {
   const choices = prompt.choices!
   // Two options are the grammar pairs (de/het, hebben/zijn) and sit side by
-  // side. Four vocabulary options stack, so longer glosses fit. They are the
-  // same button either way — only the arrangement differs.
+  // side. Four vocabulary options stack, so longer glosses fit. Same button
+  // either way — only the width differs.
   const pair = choices.length === 2
 
   return (
@@ -123,8 +128,8 @@ function Choices({
             transition={{ ...glide, delay: picked === null ? 0.04 * i : 0 }}
             onClick={() => onChoose(choice)}
             translate="no"
-            className={`notranslate rounded-3xl shadow-2 transition-shadow active:shadow-press ${
-              pair ? 'flex-1 py-7 text-xl' : 'px-5 py-4 text-xl'
+            className={`notranslate rounded-3xl px-5 py-4 text-xl shadow-2 transition-shadow active:shadow-press ${
+              pair ? 'flex-1' : ''
             } ${resultTone || 'bg-surface-1'}`}
           >
             <Gloss text={choice} />
@@ -259,12 +264,16 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
   const isChoice = prompt.shape === 'choice'
   // "de or het?" is answered with one word; what you should walk away with is
   // "de man". Cards that differ this way say so, and the rest answer as asked.
-  const answerText = prompt.reveal ?? prompt.answer
   const isSentence = prompt.display === 'sentence'
-  const isCloze = prompt.cardType === 'cloze'
-  // A gap-fill's question changes once it's answered; every other card's
-  // stays as it was.
-  const headline = isCloze && revealed ? (prompt.detail ?? prompt.question) : prompt.question
+  // Some questions finish themselves: "tijd" becomes "de tijd", a gapped
+  // sentence becomes the whole one. Those don't state an answer underneath —
+  // the completed question is the answer.
+  const completes = !!prompt.completion
+  const headline = completes && revealed ? prompt.completion! : prompt.question
+  // Sized from the completed form throughout, so nothing resizes mid-card.
+  const headlineSize = isSentence
+    ? fitSize(prompt.completion ?? prompt.question, '2.05rem', '1.35rem')
+    : fitSize(prompt.completion ?? prompt.question, '4rem', '1.6rem', true)
 
   return (
     <div
@@ -281,8 +290,10 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
         <WithSpeaker
           small={isSentence}
           // Speaking a gap-fill before it's answered would read out the answer.
+          // A question that hasn't been completed yet must not be read out —
+          // for a gap-fill that would speak the answer.
           speak={
-            isCloze
+            completes
               ? revealed
                 ? prompt.speak
                 : undefined
@@ -291,43 +302,45 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                 : undefined
           }
         >
-          {/* The two sentences share one grid cell, so the old one can leave
-              while the new one arrives without the line collapsing and the
-              instruction above it jumping down. */}
-          <div className="grid place-items-center [&>*]:col-start-1 [&>*]:row-start-1">
+          {/* The two sentences share one grid cell and dissolve into each
+              other. They are the same line of text apart from one word, so
+              sliding one out and the other in reads as a jolt; and because
+              both are present throughout, nothing collapses underneath them.
+              The cell itself animates its width, so the line settling into
+              its new centre is a move rather than a jump. */}
+          <motion.div
+            layout
+            transition={glide}
+            className="grid place-items-center [&>*]:col-start-1 [&>*]:row-start-1"
+          >
             <AnimatePresence initial={false}>
               <motion.h1
-                // Keyed on the words it shows: a question that changes swaps
-                // itself out for the new one, the way the options below swap for
-                // the answer. A question that doesn't change keeps its key and
-                // stays where it is.
+                // Keyed on the words it shows: a question that changes
+                // dissolves into the new one, and a question that doesn't
+                // keeps its key and stays exactly where it is.
                 key={headline}
-                variants={swapVariants}
-                initial="enter"
-                animate="center"
-                // The old line leaves first and the new one follows it in, so
-                // you see the gap close rather than two sentences crossing.
-                // Written out because a shared transition would delay the exit
-                // by as much as the entrance, and they would overlap.
-                exit={{ opacity: 0, y: -10, transition: { duration: 0.15, ease: 'easeIn' } }}
-                transition={{ ...glide, delay: 0.17 }}
+                // Position only. The cell around them animates its width, and
+                // a plain layout animation does that by scaling — which
+                // stretches the letters. This cancels the parent's scale and
+                // leaves each line simply sliding to its new centre.
+                layout="position"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
                 lang={prompt.questionLang}
                 translate="no"
-                // Sized from the filled sentence either way, so filling the gap
-                // never changes the type size under you.
-                style={{
-                  fontSize: isSentence
-                    ? fitSize(prompt.detail ?? prompt.question, '2.05rem', '1.35rem')
-                    : fitSize(prompt.question, '4rem'),
-                }}
+                style={{ fontSize: headlineSize }}
                 className={`notranslate text-balance ${FOCUS} ${
                   isSentence ? 'max-w-[17rem] leading-snug' : 'leading-none'
                 }`}
               >
-                {isCloze && revealed ? (
+                {completes && revealed ? (
+                  // Only the part that was missing is coloured: the article,
+                  // the helper, the word that went in the gap.
                   <Sentence
                     as="span"
-                    sentence={prompt.detail ?? prompt.question}
+                    sentence={prompt.completion!}
                     word={prompt.answer}
                     highlight="text-good-ink"
                   />
@@ -338,7 +351,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                 )}
               </motion.h1>
             </AnimatePresence>
-          </div>
+          </motion.div>
         </WithSpeaker>
 
         {prompt.subtitle && <p className="text-base text-on-surface-dim">{prompt.subtitle}</p>}
@@ -388,13 +401,23 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
               transition={glide}
               className="flex flex-col items-center gap-3"
             >
-              {/* A gap-fill is already answered above — the sentence is the
-                  answer, with the word in it. Repeating the word on its own
-                  underneath says the same thing a third time, so all that is
-                  left is what the sentence means, and what you picked if it
-                  wasn't that. */}
-              {isCloze ? (
+              {/* A question that completed itself is already answered above,
+                  so all that is left is what it means and what you picked if
+                  it wasn't that. Repeating the word underneath would be the
+                  third time of saying it. */}
+              {completes ? (
                 <>
+                  {/* Unless the example *is* the completed question, as it is
+                      for a gap-fill — then it's already up there. */}
+                  {prompt.detail && prompt.detail !== prompt.completion && (
+                    <WithSpeaker speak={prompt.detail} small>
+                      <Sentence
+                        sentence={prompt.detail}
+                        word={prompt.note.nl}
+                        className={`max-w-[17rem] text-lg leading-snug text-on-surface/85 ${FOCUS}`}
+                      />
+                    </WithSpeaker>
+                  )}
                   {prompt.detailTranslation && (
                     <p className="max-w-xs text-base text-on-surface-dim">
                       {prompt.detailTranslation}
@@ -406,13 +429,13 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                 </>
               ) : (
                 <>
-                  {/* Every other card states the answer here: the thing you
+                  {/* Every other card states its answer here: the thing you
                       were meant to arrive at, in the serif. */}
-                  <WithSpeaker speak={prompt.answerLang === 'nl' ? answerText : undefined}>
+                  <WithSpeaker speak={prompt.answerLang === 'nl' ? prompt.answer : undefined}>
                     <p
                       lang={prompt.answerLang}
                       translate="no"
-                      style={{ fontSize: fitSize(answerText, '2.6rem', '1.4rem') }}
+                      style={{ fontSize: fitSize(prompt.answer, '2.6rem', '1.4rem') }}
                       // Green is the right answer, whether or not you found it —
                       // colouring the correct word red because you missed it says
                       // the word is wrong. Red belongs to what you chose, below.
@@ -420,7 +443,11 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                         correct === null ? '' : 'text-good-ink'
                       }`}
                     >
-                      {prompt.answerLang === 'en' ? <Gloss text={answerText} stacked /> : answerText}
+                      {prompt.answerLang === 'en' ? (
+                        <Gloss text={prompt.answer} stacked />
+                      ) : (
+                        prompt.answer
+                      )}
                     </p>
                   </WithSpeaker>
 
@@ -432,10 +459,10 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                     <p className="max-w-xs text-base text-on-surface-dim">{prompt.meaning}</p>
                   )}
 
-                  {/* And the sentence it lives in, on a card of its own so it
-                      belongs to the same furniture as everything else. */}
+                  {/* And the sentence it lives in. Plain text: a surface with
+                      a shadow is what the things you press look like. */}
                   {prompt.detail && (
-                    <div className="mt-5 w-full max-w-[17rem] space-y-1 rounded-3xl bg-surface-1 px-5 py-4 shadow-1">
+                    <div className="mt-6 max-w-[17rem] space-y-1">
                       <WithSpeaker speak={prompt.detail} small>
                         <Sentence
                           sentence={prompt.detail}
