@@ -62,18 +62,32 @@ function Choices({ prompt, onChoose }: { prompt: Prompt; onChoose: (v: string) =
 }
 
 /**
- * A gap-fill shows the answer back in the sentence it came from, rather than
- * on its own — the word in context is the thing worth reading, and the audio
- * is of the whole sentence.
+ * A sentence with the word it is teaching picked out, so the eye lands on it
+ * rather than having to search the line.
  */
-function FilledSentence({ prompt }: { prompt: Prompt }) {
-  const parts = prompt.detail ? splitAroundWord(prompt.detail, prompt.answer) : null
-  if (!parts) return <p className="text-2xl font-semibold">{prompt.detail}</p>
+function Sentence({
+  sentence,
+  word,
+  className = '',
+  highlight = 'font-semibold text-on-surface',
+}: {
+  sentence: string
+  word: string
+  className?: string
+  highlight?: string
+}) {
+  const parts = splitAroundWord(sentence, word)
   return (
-    <p lang="nl" translate="no" className="notranslate text-2xl leading-snug font-semibold">
-      {parts.before}
-      <span className="text-good">{parts.match}</span>
-      {parts.after}
+    <p lang="nl" translate="no" className={`notranslate ${className}`}>
+      {parts ? (
+        <>
+          {parts.before}
+          <span className={highlight}>{parts.match}</span>
+          {parts.after}
+        </>
+      ) : (
+        sentence
+      )}
     </p>
   )
 }
@@ -123,8 +137,13 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
 
             {isCloze ? (
               <div className="flex max-w-sm items-center gap-3">
-                <FilledSentence prompt={prompt} />
-                {prompt.speak && <SpeakButton text={prompt.speak} className="shrink-0" />}
+                <Sentence
+                  sentence={prompt.detail ?? ''}
+                  word={prompt.answer}
+                  className="text-2xl leading-snug font-semibold"
+                  highlight="text-good"
+                />
+                {prompt.speak && <SpeakButton text={prompt.speak} />}
               </div>
             ) : (
               <div className="flex items-center gap-3">
@@ -155,13 +174,18 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
               )
             ) : (
               prompt.detail && (
-                <div className="mt-4 max-w-xs space-y-1">
-                  <p lang="nl" translate="no" className="notranslate text-base text-on-surface/90">
-                    {prompt.detail}
-                  </p>
-                  {prompt.detailTranslation && (
-                    <p className="text-sm text-on-surface-dim">{prompt.detailTranslation}</p>
-                  )}
+                <div className="mt-4 flex max-w-xs items-start gap-2">
+                  <div className="space-y-1 text-left">
+                    <Sentence
+                      sentence={prompt.detail}
+                      word={prompt.note.nl}
+                      className="text-base text-on-surface/80"
+                    />
+                    {prompt.detailTranslation && (
+                      <p className="text-sm text-on-surface-dim">{prompt.detailTranslation}</p>
+                    )}
+                  </div>
+                  <SpeakButton text={prompt.detail} small className="mt-0.5" />
                 </div>
               )
             )}
