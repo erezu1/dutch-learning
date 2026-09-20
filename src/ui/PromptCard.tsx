@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import type { ReactNode } from 'react'
 import { splitAroundWord } from '../core/cards'
 import type { Prompt } from '../session/prompts'
 import { glide, pressable } from './motion'
@@ -73,6 +74,36 @@ function Choices({ prompt, onChoose }: { prompt: Prompt; onChoose: (v: string) =
 }
 
 /**
+ * Centres the text on the frame and hangs the speaker off its right edge.
+ * Putting the two in a row and centring the row centres the *pair*, which
+ * leaves the word itself sitting left of centre — visible as soon as you line
+ * it up against the label above and the buttons below.
+ */
+function WithSpeaker({
+  speak,
+  small = false,
+  children,
+}: {
+  speak?: string
+  small?: boolean
+  children: ReactNode
+}) {
+  if (!speak) return <>{children}</>
+  return (
+    <div className="flex justify-center">
+      <div className="relative">
+        {children}
+        <SpeakButton
+          text={speak}
+          small={small}
+          className={`absolute top-1/2 -translate-y-1/2 ${small ? 'left-full ml-2' : 'left-full ml-3'}`}
+        />
+      </div>
+    </div>
+  )
+}
+
+/**
  * A sentence with the word it is teaching picked out, so the eye lands on it
  * rather than having to search the line.
  */
@@ -120,7 +151,10 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
         {/* Once a gap-fill is answered the filled sentence replaces the gapped
             one, so the question isn't shown twice. */}
         {!(isCloze && revealed) && (
-          <div className="flex items-center gap-3">
+          // Speaking a gap-fill sentence would read out the answer.
+          <WithSpeaker
+            speak={prompt.questionLang === 'nl' && !isSentence ? prompt.question : undefined}
+          >
             <h1
               lang={prompt.questionLang}
               translate="no"
@@ -130,9 +164,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
             >
               {prompt.questionLang === 'en' ? <Gloss text={prompt.question} /> : prompt.question}
             </h1>
-            {/* Speaking a gap-fill sentence would read out the answer. */}
-            {prompt.questionLang === 'nl' && !isSentence && <SpeakButton text={prompt.question} />}
-          </div>
+          </WithSpeaker>
         )}
 
         {prompt.subtitle && !(isCloze && revealed) && (
@@ -156,17 +188,18 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
             className="flex flex-col items-center gap-3"
           >
             {isCloze ? (
-              <div className="flex max-w-sm items-center gap-3">
+              <WithSpeaker speak={prompt.speak} small>
                 <Sentence
                   sentence={prompt.detail ?? ''}
                   word={prompt.answer}
-                  className="font-display text-[1.9rem] leading-snug font-semibold"
+                  className="max-w-[16rem] font-display text-[1.9rem] leading-snug font-semibold"
                   highlight="text-good-ink"
                 />
-                {prompt.speak && <SpeakButton text={prompt.speak} />}
-              </div>
+              </WithSpeaker>
             ) : (
-              <div className="flex items-center gap-3">
+              <WithSpeaker
+                speak={prompt.answerLang === 'nl' ? prompt.speak : undefined}
+              >
                 <p
                   lang={prompt.answerLang}
                   translate="no"
@@ -176,8 +209,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                 >
                   {prompt.answerLang === 'en' ? <Gloss text={prompt.answer} /> : prompt.answer}
                 </p>
-                {prompt.answerLang === 'nl' && prompt.speak && <SpeakButton text={prompt.speak} />}
-              </div>
+              </WithSpeaker>
             )}
 
             {correct === false && picked && (
@@ -191,18 +223,17 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                   <p className="max-w-xs text-base text-on-surface-dim">{prompt.detailTranslation}</p>
                 )
               : prompt.detail && (
-                  <div className="mt-3 flex max-w-xs items-start gap-2">
-                    <div className="space-y-1 text-left">
+                  <div className="mt-3 max-w-[16rem] space-y-1">
+                    <WithSpeaker speak={prompt.detail} small>
                       <Sentence
                         sentence={prompt.detail}
                         word={prompt.note.nl}
                         className="text-lg text-on-surface/85"
                       />
-                      {prompt.detailTranslation && (
-                        <p className="text-base text-on-surface-dim">{prompt.detailTranslation}</p>
-                      )}
-                    </div>
-                    <SpeakButton text={prompt.detail} small className="mt-1" />
+                    </WithSpeaker>
+                    {prompt.detailTranslation && (
+                      <p className="text-base text-on-surface-dim">{prompt.detailTranslation}</p>
+                    )}
                   </div>
                 )}
           </motion.div>

@@ -63,16 +63,17 @@
   --color-het-bg: #fdeed8;
 
   /* --- elevation ---
-     Every level pairs a tight contact shadow with a soft ambient one. That
-     pairing is what reads as a physical object; a single blurred shadow reads
-     as a glow. Tinted with the text colour rather than pure black, so shadows
-     stay warm instead of turning grey. */
-  --shadow-1: 0 1px 2px rgba(31, 27, 22, 0.05), 0 1px 3px rgba(31, 27, 22, 0.04);
-  --shadow-2: 0 2px 4px rgba(31, 27, 22, 0.05), 0 6px 14px rgba(31, 27, 22, 0.06);
-  --shadow-3: 0 4px 8px rgba(31, 27, 22, 0.06), 0 14px 32px rgba(31, 27, 22, 0.09);
-  --shadow-4: 0 8px 16px rgba(31, 27, 22, 0.07), 0 24px 56px rgba(31, 27, 22, 0.12);
-  /* Pressed: the object moves closer to the page, so its shadow tightens. */
-  --shadow-press: 0 1px 2px rgba(31, 27, 22, 0.08);
+     Cast evenly on every side: no vertical offset, so nothing implies a light
+     source above. Each level still uses two layers — a tight one that defines
+     the edge and a wide, soft one that gives it room — because a single blur
+     reads as a flat halo. Tinted with the text colour rather than pure black,
+     so shadows stay warm instead of turning grey. */
+  --shadow-1: 0 0 3px rgba(31, 27, 22, 0.05), 0 0 9px rgba(31, 27, 22, 0.04);
+  --shadow-2: 0 0 6px rgba(31, 27, 22, 0.06), 0 0 20px rgba(31, 27, 22, 0.06);
+  --shadow-3: 0 0 10px rgba(31, 27, 22, 0.07), 0 0 36px rgba(31, 27, 22, 0.09);
+  --shadow-4: 0 0 16px rgba(31, 27, 22, 0.08), 0 0 64px rgba(31, 27, 22, 0.11);
+  /* Pressed: the object sits closer to the page, so its shadow draws in. */
+  --shadow-press: 0 0 4px rgba(31, 27, 22, 0.09);
 
   --font-display: 'Fraunces', ui-serif, Georgia, serif;
   --font-sans: 'Jakarta', ui-rounded, system-ui, -apple-system, sans-serif;

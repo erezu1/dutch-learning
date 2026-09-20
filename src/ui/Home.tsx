@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { onVoicesReady, speak, voiceReport, type VoiceReport } from '../core/speech'
 import type { LevelOption } from '../core/levels'
 import type { SessionStats } from '../session/useSession'
+import { Button } from './Button'
 import { pressable, quiet } from './motion'
 
 interface Props {
@@ -59,14 +60,9 @@ export function Home({ stats, level, onStart, onChangeLevel }: Props) {
           </div>
         </div>
 
-        <motion.button
-          {...pressable}
-          onClick={onStart}
-          disabled={waiting === 0}
-          className="w-full max-w-xs rounded-full bg-primary py-4 text-lg font-semibold text-on-primary shadow-3 transition-shadow active:shadow-press disabled:opacity-40 disabled:shadow-1"
-        >
+        <Button onClick={onStart} disabled={waiting === 0} className="w-full max-w-xs">
           {waiting > 0 ? `Start — ${waiting} cards` : 'Nothing due — done for today'}
-        </motion.button>
+        </Button>
 
         <div className="flex gap-6 text-center text-sm">
           <div>

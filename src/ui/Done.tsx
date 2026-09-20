@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import type { SessionStats } from '../session/useSession'
-import { glide, pressable } from './motion'
+import { Button } from './Button'
+import { glide } from './motion'
 
 interface Props {
   stats: SessionStats
@@ -24,13 +25,9 @@ export function Done({ stats, onHome }: Props) {
         </p>
       </motion.div>
 
-      <motion.button
-        {...pressable}
-        onClick={onHome}
-        className="rounded-full bg-primary px-10 py-4 font-semibold text-on-primary shadow-3 transition-shadow active:shadow-press"
-      >
+      <Button onClick={onHome} className="px-12">
         Back
-      </motion.button>
+      </Button>
     </div>
   )
 }

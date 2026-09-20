@@ -1,6 +1,5 @@
-import { motion } from 'framer-motion'
 import { Rating, type Grade } from '../core/scheduler'
-import { pressable } from './motion'
+import { Button } from './Button'
 
 // ---------------------------------------------------------------------------
 // Two buttons. The only judgement that has to be honest is "did I know it or
@@ -10,31 +9,15 @@ import { pressable } from './motion'
 // No mention of when the card comes back: the scheduling is the app's job.
 // ---------------------------------------------------------------------------
 
-interface Props {
-  onGrade: (grade: Grade) => void
-}
-
-const base =
-  'rounded-3xl py-6 text-base font-semibold shadow-2 transition-shadow active:shadow-press'
-
-export function GradeBar({ onGrade }: Props) {
+export function GradeBar({ onGrade }: { onGrade: (grade: Grade) => void }) {
   return (
     <div className="grid w-full grid-cols-2 gap-3 px-4 pb-4">
-      <motion.button
-        {...pressable}
-        onClick={() => onGrade(Rating.Again)}
-        className={`${base} bg-bad text-bad-ink`}
-      >
+      <Button tone="bad" onClick={() => onGrade(Rating.Again)} className="px-4">
         Didn&rsquo;t know
-      </motion.button>
-
-      <motion.button
-        {...pressable}
-        onClick={() => onGrade(Rating.Good)}
-        className={`${base} bg-good text-good-ink`}
-      >
+      </Button>
+      <Button tone="good" onClick={() => onGrade(Rating.Good)} className="px-4">
         Knew it
-      </motion.button>
+      </Button>
     </div>
   )
 }
@@ -46,15 +29,9 @@ export function GradeBar({ onGrade }: Props) {
 export function ContinueBar({ onContinue, correct }: { onContinue: () => void; correct: boolean }) {
   return (
     <div className="w-full px-4 pb-4">
-      <motion.button
-        {...pressable}
-        onClick={onContinue}
-        className={`w-full ${base} ${
-          correct ? 'bg-good text-good-ink' : 'bg-surface-1 text-on-surface'
-        }`}
-      >
+      <Button tone={correct ? 'good' : 'neutral'} onClick={onContinue} className="w-full">
         Continue
-      </motion.button>
+      </Button>
     </div>
   )
 }
