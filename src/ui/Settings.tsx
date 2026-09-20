@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { eraseEverything } from '../core/db'
+import { onVoicesReady, speak, voiceReport, type VoiceReport } from '../core/speech'
 import { MODES, type Mode } from '../core/themes'
 import { Button } from './Button'
 import { glide, pressable, swapVariants, tap } from './motion'
@@ -44,6 +45,58 @@ function ModePicker({ mode, onMode }: { mode: Mode; onMode: (next: Mode) => void
           </motion.button>
         )
       })}
+    </div>
+  )
+}
+
+/**
+ * Whether this phone can say anything, and what to do when it can't.
+ *
+ * The app has no audio files — it borrows whichever Dutch voice the phone
+ * already has, which is free and works offline but is the one thing that
+ * varies by device. When there isn't one, every speaker button in the app is
+ * silent, so it is worth saying plainly where the voice comes from rather than
+ * reporting the fact and leaving it there.
+ */
+function DutchVoice() {
+  const [voice, setVoice] = useState<VoiceReport>(voiceReport)
+  useEffect(() => onVoicesReady(() => setVoice(voiceReport())), [])
+
+  return (
+    <div className="rounded-3xl bg-surface-1 px-5 py-4 shadow-2">
+      <p className="font-semibold">Dutch voice</p>
+
+      {voice.found ? (
+        <>
+          <p className="mt-0.5 text-sm text-on-surface-dim">
+            {voice.name}
+            {voice.local ? '' : ' — needs a connection'}
+          </p>
+          <div className="mt-4">
+            <Button
+              tone="neutral"
+              onClick={() => speak('Goedemorgen, hoe gaat het met je?')}
+              className="px-5 py-3 text-base"
+            >
+              Hear it
+            </Button>
+          </div>
+        </>
+      ) : voice.supported ? (
+        <p className="mt-0.5 text-sm text-on-surface-dim">
+          This phone has no Dutch voice installed, so the speaker buttons stay
+          quiet. On Android:{' '}
+          <span className="text-on-surface">
+            Settings → System → Languages &amp; input → Text-to-speech → install
+            Nederlands
+          </span>
+          . It downloads once and then works offline, like the rest of the app.
+        </p>
+      ) : (
+        <p className="mt-0.5 text-sm text-on-surface-dim">
+          This browser can&rsquo;t speak. Everything else works.
+        </p>
+      )}
     </div>
   )
 }
@@ -189,6 +242,14 @@ export function Settings({ autoContinue, onAutoContinue, mode, onMode, onBack }:
             Every colour comes in both. System follows your phone.
           </p>
           <ModePicker mode={mode} onMode={onMode} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...glide, delay: 0.08 }}
+        >
+          <DutchVoice />
         </motion.div>
 
         {/* Apart from the rest, and last: the one thing on this screen that

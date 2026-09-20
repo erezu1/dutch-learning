@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { onVoicesReady, speak, voiceReport, type VoiceReport } from '../core/speech'
 import type { LevelOption } from '../core/levels'
 import type { Resolved, Theme } from '../core/themes'
 import type { SessionStats } from '../session/useSession'
@@ -35,7 +34,6 @@ export function Home({
   onChangeTheme,
   onOpenSettings,
 }: Props) {
-  const [voice, setVoice] = useState<VoiceReport>(voiceReport)
   const canInstall = useCanInstall()
   /**
    * Flipped one tick after mount, and the ring and the numbers below animate
@@ -46,7 +44,6 @@ export function Home({
    */
   const [arrived, setArrived] = useState(false)
 
-  useEffect(() => onVoicesReady(() => setVoice(voiceReport())), [])
   useEffect(() => {
     // A timer rather than a frame callback: a frame callback is at the mercy
     // of how often the page is being painted, and this only has to happen
@@ -224,20 +221,6 @@ export function Home({
 
       <div className="flex flex-col items-center gap-5">
         <ThemePicker current={theme} resolved={resolvedMode} onPick={onChangeTheme} />
-
-        {/* Phase 0 diagnostic: does this phone actually have a Dutch voice? */}
-        <motion.button
-          {...pressable}
-          onClick={() => speak('Goedemorgen, hoe gaat het met je?')}
-          className="mx-auto flex items-center gap-2 rounded-full bg-surface-1 px-4 py-2 text-xs text-on-surface-dim shadow-1"
-        >
-          <span className={voice.found ? 'text-good-ink' : 'text-bad-ink'}>●</span>
-          {voice.found
-            ? `Dutch voice: ${voice.name}${voice.local ? '' : ' (online)'} — tap to test`
-            : voice.supported
-              ? 'No Dutch voice on this device'
-              : 'Speech not supported here'}
-        </motion.button>
       </div>
     </div>
   )
