@@ -17,7 +17,9 @@
   font-display: swap;
   /* A touch of the "soft" and "wonk" axes: rounder terminals and the playful
      single-storey g, without tipping into novelty. */
-  font-variation-settings: 'SOFT' 28, 'WONK' 1;
+  font-variation-settings:
+    'SOFT' 28,
+    'WONK' 1;
 }
 
 @font-face {
@@ -113,18 +115,22 @@
      have very little edge contrast of their own, and pressing one draws its
      shadow in — without the ring the outline disappears at exactly the moment
      you are looking at it. */
-  --shadow-1: 0 0 0 1px var(--edge), 0 0 3px rgb(var(--glow) / calc(0.05 * var(--glow-boost))),
+  --shadow-1:
+    0 0 0 1px var(--edge), 0 0 3px rgb(var(--glow) / calc(0.05 * var(--glow-boost))),
     0 0 9px rgb(var(--glow) / calc(0.04 * var(--glow-boost)));
-  --shadow-2: 0 0 0 1px var(--edge), 0 0 6px rgb(var(--glow) / calc(0.06 * var(--glow-boost))),
+  --shadow-2:
+    0 0 0 1px var(--edge), 0 0 6px rgb(var(--glow) / calc(0.06 * var(--glow-boost))),
     0 0 20px rgb(var(--glow) / calc(0.06 * var(--glow-boost)));
-  --shadow-3: 0 0 0 1px var(--edge), 0 0 10px rgb(var(--glow) / calc(0.07 * var(--glow-boost))),
+  --shadow-3:
+    0 0 0 1px var(--edge), 0 0 10px rgb(var(--glow) / calc(0.07 * var(--glow-boost))),
     0 0 36px rgb(var(--glow) / calc(0.09 * var(--glow-boost)));
-  --shadow-4: 0 0 0 1px var(--edge), 0 0 16px rgb(var(--glow) / calc(0.08 * var(--glow-boost))),
+  --shadow-4:
+    0 0 0 1px var(--edge), 0 0 16px rgb(var(--glow) / calc(0.08 * var(--glow-boost))),
     0 0 64px rgb(var(--glow) / calc(0.11 * var(--glow-boost)));
   /* Pressed: the object sits closer to the page, so its shadow draws in — but
      the ring stays, and strengthens, so the edge never vanishes. */
-  --shadow-press: 0 0 0 1px var(--edge-strong),
-    0 0 4px rgb(var(--glow) / calc(0.09 * var(--glow-boost)));
+  --shadow-press:
+    0 0 0 1px var(--edge-strong), 0 0 4px rgb(var(--glow) / calc(0.09 * var(--glow-boost)));
 
   --font-display: 'Fraunces', ui-serif, Georgia, serif;
   --font-sans: 'Bricolage', ui-rounded, system-ui, -apple-system, sans-serif;
@@ -350,6 +356,15 @@
      app — visible whenever the viewport is taller or wider than the layout —
      keeps the browser's default white. */
   html {
+    /* Panning, and nothing else. The viewport meta already asks for this, but
+       it is a request a browser is free to ignore — Chrome has in the past,
+       and Safari ignores `user-scalable=no` outright — whereas touch-action is
+       a rule about the gesture itself. There is nothing here to pinch into:
+       the layout is built for the phone's own width, so a two-finger drag can
+       only leave the app at 1.3× with the edges cut off and no scrollbar to
+       tell you why. It also takes double-tap zoom with it, which is the same
+       accident arrived at by a different route. */
+    touch-action: pan-x pan-y;
     background: var(--color-surface);
     /* Without this the browser keeps its own surfaces light: scrollbar
        tracks, form controls and the area it paints behind the page all stay
@@ -370,6 +385,10 @@
     -webkit-user-select: none;
     user-select: none;
     -webkit-touch-callout: none;
+    /* Belt and braces with the same rule on <html>: the gesture is decided by
+       the whole chain from the finger up, and leaving a gap in it invites the
+       one browser that reads the chain differently. */
+    touch-action: pan-x pan-y;
     margin: 0;
     background: var(--color-surface);
     color: var(--color-on-surface);
@@ -397,7 +416,9 @@
     font: inherit;
     color: inherit;
     -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
+    /* `manipulation` would have been enough to drop the double-tap delay, but
+       it leaves pinch-zoom on — and a button is what your fingers land on. */
+    touch-action: pan-x pan-y;
   }
 
   /* Animation is decoration. If the phone asks for less of it, give none. */
