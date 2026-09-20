@@ -1,6 +1,13 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { eraseEverything } from '../core/db'
+import {
+  disableNudge,
+  enableNudge,
+  nudgeState,
+  type NudgeState,
+  type NudgeTrouble,
+} from '../core/nudge'
 import { onVoicesReady, speak, voiceReport, type VoiceReport } from '../core/speech'
 import { MODES, type Mode } from '../core/themes'
 import { DAY_NAMES, type WeekStartDay } from '../core/week'
@@ -115,6 +122,71 @@ function DutchVoice() {
           This browser can&rsquo;t speak. Everything else works.
         </p>
       )}
+    </div>
+  )
+}
+
+/** What the switch's subtitle says, for each way this can fail. */
+const TROUBLE: Record<NudgeTrouble, string> = {
+  unsupported:
+    'This browser can’t wake the app while it’s closed. Chrome on Android can, once the app is on your home screen.',
+  blocked: 'Notifications are switched off for Doei in your phone’s settings.',
+  'not-allowed':
+    'Your phone won’t wake the app yet. Add it to your home screen and use it for a few days, then try again.',
+}
+
+/**
+ * One reminder, on days nothing has been answered.
+ *
+ * Android decides when it actually fires — the app asks for no more often
+ * than every twelve hours and checks the time itself when it is woken — so
+ * this is honestly an evening, not an alarm. It is worth saying so on the
+ * screen where it is switched on, because a reminder that doesn't arrive at
+ * eight o'clock is only broken if it promised to.
+ */
+function DailyNudge() {
+  const [state, setState] = useState<NudgeState | null>(null)
+  const [busy, setBusy] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
+    void nudgeState().then((next) => !cancelled && setState(next))
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const toggle = async (next: boolean) => {
+    if (busy) return
+    setBusy(true)
+    try {
+      setState(await (next ? enableNudge() : disableNudge()))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const on = state?.on ?? false
+  const trouble = state?.trouble
+
+  return (
+    <div className="flex items-center justify-between gap-5 rounded-3xl bg-surface-1 px-5 py-4 shadow-2">
+      <div>
+        <p className="font-semibold">Evening nudge</p>
+        <p className="mt-0.5 text-sm text-on-surface-dim">
+          {trouble
+            ? TROUBLE[trouble]
+            : on
+              ? 'On. Nothing answered by the evening and your phone will say so — once, and only on those days.'
+              : 'A reminder in the evening, only on days you haven’t answered anything.'}
+        </p>
+      </div>
+      <Switch
+        checked={on}
+        onChange={(next) => void toggle(next)}
+        disabled={busy || trouble === 'unsupported' || trouble === 'blocked'}
+        label="Evening nudge"
+      />
     </div>
   )
 }
@@ -331,6 +403,14 @@ export function Settings({
           animate={{ opacity: 1, y: 0 }}
           transition={{ ...glide, delay: 0.11 }}
         >
+          <DailyNudge />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...glide, delay: 0.14 }}
+        >
           <DutchVoice />
         </motion.div>
 
@@ -339,7 +419,7 @@ export function Settings({
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ ...glide, delay: 0.14 }}
+          transition={{ ...glide, delay: 0.17 }}
         >
           <StartOver />
         </motion.div>

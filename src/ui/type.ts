@@ -18,6 +18,9 @@
 // and they are interface.
 // ---------------------------------------------------------------------------
 
-export const FOCUS = 'font-display font-semibold'
+// Selectable, because this is the role for the material itself: the word
+// being asked about, the answer, the example sentence. Everything else on the
+// screen is furniture, and furniture doesn't need to be copied.
+export const FOCUS = 'font-display font-semibold select-text [-webkit-touch-callout:default]'
 export const TITLE = 'font-bold tracking-tight'
 export const WORDMARK = 'font-display font-semibold tracking-tight'

@@ -34,6 +34,11 @@ export default defineConfig({
       workbox: {
         // The word list ships with the build and is cached for offline use.
         globPatterns: ['**/*.{js,css,html,svg,png,woff2,json}'],
+        // The evening nudge lives in the service worker, which this plugin
+        // generates — so it is imported into it rather than replacing it.
+        // Resolved against the worker's own URL, which is what makes it work
+        // under the /dutch-learning/ base on Pages as well as at the root.
+        importScripts: ['nudge.js'],
       },
     }),
   ],

@@ -508,7 +508,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                     </WithSpeaker>
                   )}
                   {prompt.detailTranslation && (
-                    <p className="max-w-xs text-base text-on-surface-dim">
+                    <p className="max-w-xs text-base text-on-surface-dim select-text">
                       {prompt.detailTranslation}
                     </p>
                   )}
@@ -543,7 +543,9 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                   {correct === false && picked && <YouChose picked={picked} />}
 
                   {prompt.meaning && (
-                    <p className="max-w-xs text-base text-on-surface-dim">{prompt.meaning}</p>
+                    <p className="max-w-xs text-base text-on-surface-dim select-text">
+                      {prompt.meaning}
+                    </p>
                   )}
 
                   {/* And the sentence it lives in. Plain text: a surface with
@@ -561,7 +563,9 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                         )}
                       </WithSpeaker>
                       {prompt.detailTranslation && (
-                        <p className="text-base text-on-surface-dim">{prompt.detailTranslation}</p>
+                        <p className="text-base text-on-surface-dim select-text">
+                          {prompt.detailTranslation}
+                        </p>
                       )}
                     </div>
                   )}

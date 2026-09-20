@@ -6,10 +6,13 @@ export function Switch({
   checked,
   onChange,
   label,
+  disabled = false,
 }: {
   checked: boolean
   onChange: (next: boolean) => void
   label: string
+  /** For a switch the phone won't honour: still readable, not pressable. */
+  disabled?: boolean
 }) {
   return (
     <button
@@ -17,8 +20,9 @@ export function Switch({
       role="switch"
       aria-checked={checked}
       aria-label={label}
+      disabled={disabled}
       onClick={() => onChange(!checked)}
-      className={`relative h-8 w-[3.25rem] shrink-0 rounded-full transition-colors ${
+      className={`relative h-8 w-[3.25rem] shrink-0 rounded-full transition-[color,background-color,opacity] disabled:opacity-40 ${
         checked ? 'bg-primary' : 'bg-surface-3'
       }`}
     >

@@ -362,6 +362,14 @@
   }
 
   body {
+    /* An app, not a document: dragging a finger across a question should not
+       put half of it in a blue box with a magnifier over it. What can be
+       selected is marked selectable — the Dutch being taught, the answer, the
+       example sentence and the English for them, which are the only things
+       here anyone would want to copy into a dictionary or a message. */
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
     margin: 0;
     background: var(--color-surface);
     color: var(--color-on-surface);
