@@ -30,8 +30,8 @@ export interface Theme {
  */
 export const THEMES: Theme[] = [
   { id: 'tulip', name: 'Tulp', hue: 1, chroma: 0.187, light: 55 },
+  { id: 'baksteen', name: 'Baksteen', hue: 15, chroma: 0.17, light: 51 },
   { id: 'klomp', name: 'Klomp', hue: 42, chroma: 0.173, light: 65 },
-  { id: 'stroop', name: 'Stroop', hue: 88, chroma: 0.15, light: 74 },
   { id: 'polder', name: 'Polder', hue: 158, chroma: 0.11, light: 55 },
   { id: 'zee', name: 'Zee', hue: 200, chroma: 0.12, light: 57 },
   { id: 'lucht', name: 'Lucht', hue: 255, chroma: 0.16, light: 55 },
@@ -45,7 +45,12 @@ export const DEFAULT_THEME = THEMES[0]
  * here because it didn't become a colour — it became a mode, which is what
  * `wasNightScheme` is for.
  */
-const RENAMED: Record<string, string> = { orange: 'klomp', delft: 'lucht' }
+const RENAMED: Record<string, string> = {
+  orange: 'klomp',
+  delft: 'lucht',
+  // Stroop was a mustard, and mustard is not a colour anything should be.
+  stroop: 'baksteen',
+}
 
 export function themeById(id: string | null): Theme {
   const wanted = id ? (RENAMED[id] ?? id) : null

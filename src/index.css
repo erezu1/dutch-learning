@@ -71,11 +71,14 @@
 
   /* --- feedback. Right and wrong are the same green and red in every scheme:
          they mean something, so they can't be the decoration. The "ink"
-         variants are for text, which needs more contrast than a fill. --- */
-  --color-good: oklch(94% 0.05 155);
-  --color-good-ink: oklch(50% 0.13 155);
-  --color-bad: oklch(93% 0.05 25);
-  --color-bad-ink: oklch(52% 0.17 25);
+         variants are for text, which needs more contrast than a fill.
+
+         These are the original hand-picked pairs — #dff2e5 / #1f7a4c and
+         #fde4e1 / #b3382a — converted rather than re-chosen. --- */
+  --color-good: oklch(94.4% 0.026 156);
+  --color-good-ink: oklch(51.5% 0.111 156);
+  --color-bad: oklch(93.8% 0.028 26);
+  --color-bad-ink: oklch(52% 0.162 30);
 
   /* --- elevation ---
      Cast evenly on every side: no vertical offset, so nothing implies a light
@@ -284,20 +287,18 @@
   --accent-l: 55%;
 }
 
+:root[data-theme='baksteen'] {
+  --hue: 15;
+  --chroma: 0.17;
+  --accent-l: 51%;
+}
+
 /* Likewise #e2622a. Light enough that white on it is thin, so its ink is dark. */
 :root[data-theme='klomp'] {
   --hue: 42;
   --chroma: 0.173;
   --accent-l: 65%;
   --color-on-primary: oklch(24% 0.05 42);
-}
-
-/* Stroop is the one that has to be light to be itself at all. */
-:root[data-theme='stroop'] {
-  --hue: 88;
-  --chroma: 0.15;
-  --accent-l: 74%;
-  --color-on-primary: oklch(26% 0.06 88);
 }
 
 :root[data-theme='polder'] {
@@ -351,10 +352,10 @@
   --color-primary-container: oklch(33% calc(var(--chroma) * 0.5) var(--hue));
   --color-on-primary-container: oklch(90% calc(var(--chroma) * 0.3) var(--hue));
 
-  --color-good: oklch(28% 0.06 155);
-  --color-good-ink: oklch(80% 0.14 155);
-  --color-bad: oklch(28% 0.07 25);
-  --color-bad-ink: oklch(78% 0.13 25);
+  --color-good: oklch(28% 0.04 156);
+  --color-good-ink: oklch(80% 0.13 156);
+  --color-bad: oklch(28% 0.05 28);
+  --color-bad-ink: oklch(78% 0.13 28);
 
   /* Light, not ink — and stronger, because a glow has to carry across a dark
      page where a shadow had a white card to fall away from. */
