@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useRef, useState, type ReactNode } from 'react'
+import type React from 'react'
 import { splitAroundWord } from '../core/cards'
 import type { Prompt } from '../session/prompts'
 import { speak as say } from '../core/speech'
@@ -25,15 +26,6 @@ interface Props {
   correct: boolean | null
   onReveal: () => void
   onChoose: (value: string) => void
-}
-
-// The grammar pairs get their own colours so they stay recognisable at a
-// glance; vocabulary options are neutral.
-const choiceColor: Record<string, string> = {
-  de: 'bg-de-bg text-de',
-  het: 'bg-het-bg text-het',
-  hebben: 'bg-de-bg text-de',
-  zijn: 'bg-het-bg text-het',
 }
 
 /**
@@ -97,8 +89,9 @@ function Choices({
   onChoose: (v: string) => void
 }) {
   const choices = prompt.choices!
-  // Two options are the grammar pairs (de/het, hebben/zijn) and deserve to be
-  // big and side by side. Four vocabulary options stack, so longer glosses fit.
+  // Two options are the grammar pairs (de/het, hebben/zijn) and sit side by
+  // side. Four vocabulary options stack, so longer glosses fit. They are the
+  // same button either way — only the arrangement differs.
   const pair = choices.length === 2
 
   return (
@@ -131,8 +124,8 @@ function Choices({
             onClick={() => onChoose(choice)}
             translate="no"
             className={`notranslate rounded-3xl shadow-2 transition-shadow active:shadow-press ${
-              pair ? 'flex-1 py-7 text-3xl font-semibold' : 'px-5 py-4 text-xl'
-            } ${resultTone || choiceColor[choice] || 'bg-surface-1'}`}
+              pair ? 'flex-1 py-7 text-xl' : 'px-5 py-4 text-xl'
+            } ${resultTone || 'bg-surface-1'}`}
           >
             <Gloss text={choice} />
           </motion.button>
@@ -163,9 +156,8 @@ function WithSpeaker({
   const [speaking, setSpeaking] = useState(false)
   const startedAt = useRef(0)
 
-  if (!phrase) return <>{children}</>
-
   const trigger = () => {
+    if (!phrase) return
     startedAt.current = performance.now()
     setSpeaking(true)
     void say(phrase).finally(() => {
@@ -179,42 +171,52 @@ function WithSpeaker({
       const step = STEP * 1000
       const wave = document.querySelector('.speaker-wave')
       const clock = wave?.getAnimations?.()[0]?.currentTime
-      const elapsed =
-        typeof clock === 'number' ? clock : performance.now() - startedAt.current
+      const elapsed = typeof clock === 'number' ? clock : performance.now() - startedAt.current
       setTimeout(() => setSpeaking(false), step - (elapsed % step))
     })
   }
 
+  // The same elements whether or not there is anything to hear. Returning the
+  // children bare when there isn't moves everything inside up two levels of
+  // the tree, which unmounts whatever was animating in there — that is what
+  // stopped a gap-fill's sentence from ever animating, since the sentence only
+  // becomes speakable at the moment it changes.
   return (
     <div className="flex justify-center">
       {/* The text itself is the button — tapping the word or the sentence is
           the obvious way to hear it, and the icon is only a hint that you can.
           Stops propagation so it doesn't also flip the card. */}
       <motion.div
-        role="button"
-        tabIndex={0}
-        whileTap={{ scale: 0.97 }}
+        {...(phrase
+          ? {
+              role: 'button',
+              tabIndex: 0,
+              whileTap: { scale: 0.97 },
+              onClick: (e: React.MouseEvent) => {
+                e.stopPropagation()
+                trigger()
+              },
+              onKeyDown: (e: React.KeyboardEvent) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.stopPropagation()
+                  trigger()
+                }
+              },
+            }
+          : {})}
         transition={tap}
-        onClick={(e) => {
-          e.stopPropagation()
-          trigger()
-        }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.stopPropagation()
-            trigger()
-          }
-        }}
-        className="relative cursor-pointer"
+        className={`relative ${phrase ? 'cursor-pointer' : ''}`}
       >
         {children}
-        <SpeakButton
-          text={phrase}
-          small={small}
-          speaking={speaking}
-          onActivate={trigger}
-          className={`absolute top-1/2 -translate-y-1/2 ${small ? 'left-full ml-1.5' : 'left-full ml-2.5'}`}
-        />
+        {phrase && (
+          <SpeakButton
+            text={phrase}
+            small={small}
+            speaking={speaking}
+            onActivate={trigger}
+            className={`absolute top-1/2 -translate-y-1/2 ${small ? 'left-full ml-1.5' : 'left-full ml-2.5'}`}
+          />
+        )}
       </motion.div>
     </div>
   )
@@ -260,6 +262,9 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
   const answerText = prompt.reveal ?? prompt.answer
   const isSentence = prompt.display === 'sentence'
   const isCloze = prompt.cardType === 'cloze'
+  // A gap-fill's question changes once it's answered; every other card's
+  // stays as it was.
+  const headline = isCloze && revealed ? (prompt.detail ?? prompt.question) : prompt.question
 
   return (
     <div
@@ -286,33 +291,54 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                 : undefined
           }
         >
-          <h1
-            lang={prompt.questionLang}
-            translate="no"
-            // Sized from the filled sentence either way, so filling the gap
-            // never changes the type size under you.
-            style={{
-              fontSize: isSentence
-                ? fitSize(prompt.detail ?? prompt.question, '2.05rem', '1.35rem')
-                : fitSize(prompt.question, '4rem'),
-            }}
-            className={`notranslate text-balance ${FOCUS} ${
-              isSentence ? 'max-w-[17rem] leading-snug' : 'leading-none'
-            }`}
-          >
-            {isCloze && revealed ? (
-              <Sentence
-                as="span"
-                sentence={prompt.detail ?? prompt.question}
-                word={prompt.answer}
-                highlight="text-good-ink"
-              />
-            ) : prompt.questionLang === 'en' ? (
-              <Gloss text={prompt.question} stacked />
-            ) : (
-              prompt.question
-            )}
-          </h1>
+          {/* The two sentences share one grid cell, so the old one can leave
+              while the new one arrives without the line collapsing and the
+              instruction above it jumping down. */}
+          <div className="grid place-items-center [&>*]:col-start-1 [&>*]:row-start-1">
+            <AnimatePresence initial={false}>
+              <motion.h1
+                // Keyed on the words it shows: a question that changes swaps
+                // itself out for the new one, the way the options below swap for
+                // the answer. A question that doesn't change keeps its key and
+                // stays where it is.
+                key={headline}
+                variants={swapVariants}
+                initial="enter"
+                animate="center"
+                // The old line leaves first and the new one follows it in, so
+                // you see the gap close rather than two sentences crossing.
+                // Written out because a shared transition would delay the exit
+                // by as much as the entrance, and they would overlap.
+                exit={{ opacity: 0, y: -10, transition: { duration: 0.15, ease: 'easeIn' } }}
+                transition={{ ...glide, delay: 0.17 }}
+                lang={prompt.questionLang}
+                translate="no"
+                // Sized from the filled sentence either way, so filling the gap
+                // never changes the type size under you.
+                style={{
+                  fontSize: isSentence
+                    ? fitSize(prompt.detail ?? prompt.question, '2.05rem', '1.35rem')
+                    : fitSize(prompt.question, '4rem'),
+                }}
+                className={`notranslate text-balance ${FOCUS} ${
+                  isSentence ? 'max-w-[17rem] leading-snug' : 'leading-none'
+                }`}
+              >
+                {isCloze && revealed ? (
+                  <Sentence
+                    as="span"
+                    sentence={prompt.detail ?? prompt.question}
+                    word={prompt.answer}
+                    highlight="text-good-ink"
+                  />
+                ) : prompt.questionLang === 'en' ? (
+                  <Gloss text={prompt.question} stacked />
+                ) : (
+                  prompt.question
+                )}
+              </motion.h1>
+            </AnimatePresence>
+          </div>
         </WithSpeaker>
 
         {prompt.subtitle && <p className="text-base text-on-surface-dim">{prompt.subtitle}</p>}
@@ -362,52 +388,67 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
               transition={glide}
               className="flex flex-col items-center gap-3"
             >
-              {/* The answer, stated the same way whatever was asked: the
-                  thing you were meant to arrive at, in the serif, coloured by
-                  whether you got there. */}
-              <WithSpeaker speak={prompt.answerLang === 'nl' ? answerText : undefined}>
-                <p
-                  lang={prompt.answerLang}
-                  translate="no"
-                  style={{ fontSize: fitSize(answerText, '2.6rem', '1.4rem') }}
-                  // Green is the right answer, whether or not you found it —
-                  // colouring the correct word red because you missed it says
-                  // the word is wrong. Red belongs to what you chose, below.
-                  className={`notranslate leading-none ${FOCUS} ${
-                    correct === null ? '' : 'text-good-ink'
-                  }`}
-                >
-                  {prompt.answerLang === 'en' ? <Gloss text={answerText} stacked /> : answerText}
-                </p>
-              </WithSpeaker>
-
-              {correct === false && picked && (
-                <p className="text-base text-bad-ink/80">you chose &ldquo;{picked}&rdquo;</p>
-              )}
-
-              {prompt.meaning && (
-                <p className="max-w-xs text-base text-on-surface-dim">{prompt.meaning}</p>
-              )}
-
-              {/* And the sentence it lives in, on a card of its own so it
-                  belongs to the same furniture as everything else. A gap-fill's
-                  sentence is already the question above, so only its meaning
-                  is added here. */}
-              {(isCloze ? prompt.detailTranslation : prompt.detail) && (
-                <div className="mt-5 w-full max-w-[17rem] space-y-1 rounded-3xl bg-surface-1 px-5 py-4 shadow-1">
-                  {!isCloze && prompt.detail && (
-                    <WithSpeaker speak={prompt.detail} small>
-                      <Sentence
-                        sentence={prompt.detail}
-                        word={prompt.note.nl}
-                        className={`text-lg leading-snug text-on-surface/85 ${FOCUS}`}
-                      />
-                    </WithSpeaker>
-                  )}
+              {/* A gap-fill is already answered above — the sentence is the
+                  answer, with the word in it. Repeating the word on its own
+                  underneath says the same thing a third time, so all that is
+                  left is what the sentence means, and what you picked if it
+                  wasn't that. */}
+              {isCloze ? (
+                <>
                   {prompt.detailTranslation && (
-                    <p className="text-base text-on-surface-dim">{prompt.detailTranslation}</p>
+                    <p className="max-w-xs text-base text-on-surface-dim">
+                      {prompt.detailTranslation}
+                    </p>
                   )}
-                </div>
+                  {correct === false && picked && (
+                    <p className="text-base text-bad-ink/80">you chose &ldquo;{picked}&rdquo;</p>
+                  )}
+                </>
+              ) : (
+                <>
+                  {/* Every other card states the answer here: the thing you
+                      were meant to arrive at, in the serif. */}
+                  <WithSpeaker speak={prompt.answerLang === 'nl' ? answerText : undefined}>
+                    <p
+                      lang={prompt.answerLang}
+                      translate="no"
+                      style={{ fontSize: fitSize(answerText, '2.6rem', '1.4rem') }}
+                      // Green is the right answer, whether or not you found it —
+                      // colouring the correct word red because you missed it says
+                      // the word is wrong. Red belongs to what you chose, below.
+                      className={`notranslate leading-none ${FOCUS} ${
+                        correct === null ? '' : 'text-good-ink'
+                      }`}
+                    >
+                      {prompt.answerLang === 'en' ? <Gloss text={answerText} stacked /> : answerText}
+                    </p>
+                  </WithSpeaker>
+
+                  {correct === false && picked && (
+                    <p className="text-base text-bad-ink/80">you chose &ldquo;{picked}&rdquo;</p>
+                  )}
+
+                  {prompt.meaning && (
+                    <p className="max-w-xs text-base text-on-surface-dim">{prompt.meaning}</p>
+                  )}
+
+                  {/* And the sentence it lives in, on a card of its own so it
+                      belongs to the same furniture as everything else. */}
+                  {prompt.detail && (
+                    <div className="mt-5 w-full max-w-[17rem] space-y-1 rounded-3xl bg-surface-1 px-5 py-4 shadow-1">
+                      <WithSpeaker speak={prompt.detail} small>
+                        <Sentence
+                          sentence={prompt.detail}
+                          word={prompt.note.nl}
+                          className={`text-lg leading-snug text-on-surface/85 ${FOCUS}`}
+                        />
+                      </WithSpeaker>
+                      {prompt.detailTranslation && (
+                        <p className="text-base text-on-surface-dim">{prompt.detailTranslation}</p>
+                      )}
+                    </div>
+                  )}
+                </>
               )}
             </motion.div>
           )}

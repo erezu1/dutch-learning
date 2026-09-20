@@ -61,12 +61,6 @@
   --color-bad: #fde4e1;
   --color-bad-ink: #b3382a;
 
-  /* --- de/het, kept distinguishable at a glance --- */
-  --color-de: #1d6fd0;
-  --color-de-bg: #e1edfd;
-  --color-het: #a55a09;
-  --color-het-bg: #fdeed8;
-
   /* --- elevation ---
      Cast evenly on every side: no vertical offset, so nothing implies a light
      source above. Each level still uses two layers — a tight one that defines
@@ -318,10 +312,6 @@
   --color-good-ink: #7fd8a6;
   --color-bad: #40231f;
   --color-bad-ink: #ff9d92;
-  --color-de-bg: #1d2c46;
-  --color-de: #8cc0ff;
-  --color-het-bg: #3a2d1a;
-  --color-het: #f0bc74;
   --edge: rgba(255, 255, 255, 0.09);
   --edge-strong: rgba(255, 255, 255, 0.18);
 }
