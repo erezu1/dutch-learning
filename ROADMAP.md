@@ -115,12 +115,14 @@ This is where the app earns its existence versus just using Anki. Build these in
 
 *Goal: validate the entire delivery path — build, deploy, install, offline, TTS — while there is nothing to debug. This is deliberately the first phase.*
 
-### Phase 1 — The core loop ✅ done (ugly but genuinely usable)
-- Note/Card/ReviewLog schema in Dexie
-- `ts-fsrs` wired to card state; daily queue with new/review limits
-- ~100 hand-picked words as a JSON deck
-- One review screen: show prompt → reveal → grade (Again/Hard/Good/Easy)
-- Export/import progress button
+### Phase 1 — The core loop ✅ done, with one item never built
+- Note/Card/ReviewLog schema in Dexie ✅
+- `ts-fsrs` wired to card state; daily queue with new/review limits ✅
+- ~100 hand-picked words as a JSON deck ✅ *(now 2000 — see Phase 2)*
+- One review screen: show prompt → reveal → grade ✅ *(two buttons, not four:
+  a finer judgement on every card invites dishonest grading)*
+- **Export/import progress button — ❌ never built.** See Phase 4; this is the
+  only thing on the whole roadmap whose absence can lose data.
 
 *Goal: start actually studying daily. Everything after this is improvement on a working thing.*
 
@@ -147,21 +149,39 @@ meaningful chunks rather than single words, and it has to accept several
 correct orders — *Morgen ga ik naar de stad* and *Ik ga morgen naar de stad*
 are both right — so it cannot simply compare against one stored answer.
 
-### Phase 3 — The UI pass (in progress)
+### Phase 3 — The UI pass (most of it done; the gestures are not)
 
-Done: light palette, elevation scale, motion vocabulary, name and icon.
-Next: the card as a draggable object (swipe to grade), then haptics and the
-correct/wrong micro-interactions.
+**Done:**
+- Elevation scale, motion vocabulary, name, mark and icon
+- Seven colour schemes, each with a dark mode, plus light/dark/system
+- Typography: three roles, one rule *(see README)*
+- Daily goal ring, points, and a "that's today" screen
+- A ground that moves — two slow lights, masked at the edges of the screen
+- Settings: auto-continue, appearance, start over
 
+**Done but never on this list**, because they came from using the thing:
+points instead of card counts, the score burst, undo, "another round?", the
+day's intake actually being daily, and the reset.
+
+**Not started — and this is the part that motivated the project:**
 - Full-bleed vertical cards, one per screen, TikTok-style
-- **Swipe to grade**: left = Again, right = Good, up = Easy — Tinder mechanics mapped onto the four FSRS ratings
-- Haptics, spring physics, colour-coded feedback
-- Streak, daily goal ring, a satisfying "done for today" screen
-- M3 dark theme as the default
+- **Swipe to grade**: left = Again, right = Good — Tinder mechanics on the
+  two ratings the app actually uses
+- Haptics
+- Streak
 
-### Phase 4 — Durability
+Dark mode is a *mode* rather than a scheme, which is better than the "M3 dark
+theme as the default" this list originally asked for: you keep your colour.
+
+### Phase 4 — Durability ← **the next thing to build**
+- **Export / import progress.** Everything lives in one browser's IndexedDB on
+  one phone. `navigator.storage.persist()` is asked for, and it makes eviction
+  unlikely rather than impossible — a phone that dies, a browser reinstall, or
+  a mis-tapped "Start over" takes the lot. The review log is append-only and
+  small (~100 bytes an answer), so a whole history is a file you can mail to
+  yourself. This is the one gap that can lose something that can't be rebuilt.
 - Automatic periodic backup export
-- Undo last review (you *will* mis-swipe — this matters more than it sounds)
+- Undo last review ✅ done
 - Optional real sync, only if you find you actually want it
 
 ### Phase 5 — Extras, by whatever you're missing most
@@ -177,6 +197,40 @@ correct/wrong micro-interactions.
   The browser's own `SpeechRecognition` API is free and needs no download but
   has the same leniency problem. The honest cheap version: record yourself,
   play it back next to the TTS, judge it by ear.
+
+---
+
+---
+
+## 6b. Where it actually stands
+
+| | state |
+|---|---|
+| Delivery: build → Pages → installed, offline | working |
+| Scheduler, queue, daily budget | working |
+| 2000 words, frequency-ranked | working |
+| Card types | 7 of 8 — word order missing |
+| UI | built, minus the gestures |
+| **Backup** | **none** |
+| Dutch audio | code works; needs a voice installed on the phone |
+
+Card types built: recognise, recall, de/het, plural, past participle,
+hebben/zijn, gap-fill. The deck carries gender on 1209 words, an irregular
+plural on 397, verb forms on 261, and an example sentence on 1869.
+
+**The three things worth doing next, in this order:**
+
+1. **Export / import.** Phase 4. Nothing else on the list can lose data.
+2. **Swipe to grade.** Phase 3, and the reason the project exists — the app is
+   currently a very polished set of buttons.
+3. **Automatic level progression**, then **word order**. Both Phase 2
+   leftovers; the second is the most Dutch thing still unbuilt.
+
+One non-code item: every screenshot so far says *No Dutch voice on this
+device*. Nothing is wrong with the app — Android needs the Dutch voice data
+installed (Settings → System → Languages → Text-to-speech → install Dutch).
+Until then every speaker button is silent, which is a real hole in a language
+app and costs nothing to close.
 
 ---
 

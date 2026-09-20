@@ -19,7 +19,8 @@ geometry, so a card glows off the page instead of pressing into it.
 | role | used for |
 |---|---|
 | `FOCUS` (serif) | the thing being taught right now: the word being asked about, the answer once revealed, the Dutch example sentence |
-| `TITLE` (sans, bold, tight) | the app's name and screen headings |
+| `WORDMARK` (serif) | the app's name — *doei* is a Dutch word, so it goes with the material |
+| `TITLE` (sans, bold, tight) | screen headings and numbers: "Settings", "Done for today", the score |
 | default (sans) | everything else: instructions, parts of speech, options, translations, buttons |
 
 The serif marks **what you are meant to be looking at**, not what language it
