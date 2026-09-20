@@ -134,34 +134,31 @@ export function applyAppearance(theme: Theme, mode: Mode, animate = false): void
   root.dataset.theme = theme.id
   root.dataset.mode = resolveMode(mode)
 
-  // The strip above the app gets the plain surface, and the ground fades out
-  // before it reaches the top of the screen so the page meets it with exactly
-  // that. Chasing it with the live colour was the wrong idea: an installed app
-  // takes this once, at launch, and nothing set at run time reaches it.
+  // The system bars above and below the app. An installed app takes its first
+  // colour from the manifest at launch, which is one fixed value and cannot
+  // know about modes, so this is what corrects it afterwards.
+  //
+  // It has to be plain sRGB. Every colour in the app is written in oklch and
+  // derived through calc, so the computed background comes back as an oklch()
+  // string — and a theme-color the browser can't parse is not a colour it
+  // falls back on, it is no theme colour at all, which is why the bar showed
+  // black in dark mode instead of the app's own near-black.
   const meta = document.querySelector('meta[name="theme-color"]')
-  const bg = getComputedStyle(document.body).backgroundColor
+  const bg = toSrgb(getComputedStyle(document.body).backgroundColor)
   if (meta && bg) meta.setAttribute('content', bg)
 
   setFavicon()
 }
 
 /**
- * The accent as the browser has actually worked it out — an sRGB string, so it
- * can go somewhere that isn't a stylesheet. The tokens are written in oklch
- * and derived through calc, so there is nothing to read without asking the
- * browser to resolve it.
+ * Any resolved colour as plain sRGB. Chrome hands back the oklch exactly as
+ * written, and setting a canvas's fillStyle to it hands it straight back too.
+ * Painting one pixel and reading it is the only way out — and everywhere this
+ * colour is going (a data-URI favicon, a theme-color meta, an Android system
+ * bar) wants something older than oklch.
  */
-function resolvedAccent(): string {
-  const probe = document.createElement('span')
-  probe.style.cssText = 'display:none;color:var(--color-primary)'
-  document.body.appendChild(probe)
-  const value = getComputedStyle(probe).color
-  probe.remove()
-  if (!value) return '#c2306b'
-  // Chrome hands back the oklch exactly as written, and setting a canvas's
-  // fillStyle to it hands it straight back too. Painting one pixel and reading
-  // it is the only way to get plain sRGB out, which is what belongs in an SVG
-  // that has to survive being a data URI in a <link rel=icon>.
+function toSrgb(value: string): string {
+  if (!value) return value
   try {
     const canvas = document.createElement('canvas')
     canvas.width = canvas.height = 1
@@ -170,12 +167,29 @@ function resolvedAccent(): string {
       ctx.fillStyle = value
       ctx.fillRect(0, 0, 1, 1)
       const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data
-      return `rgb(${r} ${g} ${b})`
+      // Hex rather than rgb(): this ends up in a meta tag, an SVG attribute
+      // and an Android system bar, and hex is the one spelling nothing has
+      // ever failed to read.
+      return `#${[r, g, b].map((n) => n.toString(16).padStart(2, '0')).join('')}`
     }
   } catch {
     /* Fall through to the raw value; a modern browser renders it anyway. */
   }
   return value
+}
+
+/**
+ * The accent as the browser has actually worked it out. The tokens are written
+ * in oklch and derived through calc, so there is nothing to read without
+ * asking the browser to resolve it.
+ */
+function resolvedAccent(): string {
+  const probe = document.createElement('span')
+  probe.style.cssText = 'display:none;color:var(--color-primary)'
+  document.body.appendChild(probe)
+  const value = getComputedStyle(probe).color
+  probe.remove()
+  return value ? toSrgb(value) : '#c2306b'
 }
 
 /**
