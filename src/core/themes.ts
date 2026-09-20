@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------
 
 import { pawSvg } from './paw'
+import { paintStatusBar } from './statusbar'
 
 export interface Theme {
   id: string
@@ -134,11 +135,9 @@ export function applyAppearance(theme: Theme, mode: Mode, animate = false): void
   root.dataset.theme = theme.id
   root.dataset.mode = resolveMode(mode)
 
-  // Keep the phone's status bar in step with the page.
-  const meta = document.querySelector('meta[name="theme-color"]')
-  const bg = getComputedStyle(document.body).backgroundColor
-  if (meta && bg) meta.setAttribute('content', bg)
-
+  // The strip above the app, which can only ever be one flat colour — so it
+  // is given the colour the page happens to be at its top edge.
+  paintStatusBar()
   setFavicon()
 }
 

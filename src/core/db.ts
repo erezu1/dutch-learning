@@ -65,3 +65,20 @@ export async function getMeta<T>(key: string, fallback: T): Promise<T> {
 export async function setMeta(key: string, value: unknown): Promise<void> {
   await db.meta.put({ key, value })
 }
+
+/**
+ * Everything the app knows about you, gone: the scheduling state, the log it
+ * could be rebuilt from, the score, the level, the colour. Back to a first
+ * run. The word list isn't touched — it ships with the build and was never
+ * yours to lose.
+ *
+ * The caller reloads afterwards rather than trying to talk the running app
+ * back to its starting state, which is more code and more ways to be wrong.
+ */
+export async function eraseEverything(): Promise<void> {
+  await db.transaction('rw', db.states, db.reviews, db.meta, async () => {
+    await db.states.clear()
+    await db.reviews.clear()
+    await db.meta.clear()
+  })
+}

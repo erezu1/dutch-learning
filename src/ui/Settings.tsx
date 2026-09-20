@@ -1,6 +1,9 @@
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useState } from 'react'
+import { eraseEverything } from '../core/db'
 import { MODES, type Mode } from '../core/themes'
-import { glide, pressable, tap } from './motion'
+import { Button } from './Button'
+import { glide, pressable, swapVariants, tap } from './motion'
 import { Switch } from './Switch'
 import { TITLE } from './type'
 
@@ -41,6 +44,89 @@ function ModePicker({ mode, onMode }: { mode: Mode; onMode: (next: Mode) => void
           </motion.button>
         )
       })}
+    </div>
+  )
+}
+
+/**
+ * Erasing everything, behind one deliberate step. Not a browser confirm box —
+ * those are easy to dismiss without reading and belong to a different app —
+ * and not a single tap either, which is the wrong amount of friction for the
+ * one thing here that cannot be undone.
+ */
+function StartOver() {
+  const [asking, setAsking] = useState(false)
+  const [erasing, setErasing] = useState(false)
+
+  const erase = async () => {
+    setErasing(true)
+    try {
+      await eraseEverything()
+    } finally {
+      // Reload either way: a half-erased app is worse than a reloaded one,
+      // and the reload is what shows whether it worked.
+      location.reload()
+    }
+  }
+
+  return (
+    <div className="mt-2 rounded-3xl bg-surface-1 px-5 py-4 shadow-2">
+      <p className="font-semibold">Start over</p>
+      <p className="mt-0.5 text-sm text-on-surface-dim">
+        Erases your progress and settings. This can&rsquo;t be undone.
+      </p>
+
+      <AnimatePresence mode="wait" initial={false}>
+        {asking ? (
+          <motion.div
+            key="asking"
+            variants={swapVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            // Quick: this is the answer to a tap, and the card's spring took
+            // well over a second to get the question on screen.
+            transition={{ duration: 0.16, ease: 'easeOut' }}
+            className="mt-4 flex flex-col gap-2"
+          >
+            <p className="text-sm font-semibold text-bad-ink">
+              Erase everything and start from nothing?
+            </p>
+            <div className="flex gap-2">
+              <Button
+                tone="bad"
+                onClick={() => void erase()}
+                disabled={erasing}
+                className="flex-1 px-4 py-3 text-base"
+              >
+                {erasing ? 'Erasing…' : 'Erase it all'}
+              </Button>
+              <Button
+                tone="neutral"
+                onClick={() => setAsking(false)}
+                disabled={erasing}
+                className="flex-1 px-4 py-3 text-base"
+              >
+                Keep it
+              </Button>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="idle"
+            variants={swapVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.16, ease: 'easeOut' }}
+            className="mt-4"
+          >
+            <Button tone="bad" onClick={() => setAsking(true)} className="px-5 py-3 text-base">
+              Start over
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
@@ -103,6 +189,16 @@ export function Settings({ autoContinue, onAutoContinue, mode, onMode, onBack }:
             Every colour comes in both. System follows your phone.
           </p>
           <ModePicker mode={mode} onMode={onMode} />
+        </motion.div>
+
+        {/* Apart from the rest, and last: the one thing on this screen that
+            takes something away. */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...glide, delay: 0.1 }}
+        >
+          <StartOver />
         </motion.div>
       </div>
     </div>
