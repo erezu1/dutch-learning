@@ -1,6 +1,31 @@
 @import 'tailwindcss';
 
 /* ---------------------------------------------------------------------------
+   Fonts, self-hosted so the app keeps its typography offline and makes no
+   third-party request. Both are SIL Open Font License.
+
+   Fraunces is a soft serif with real character — it carries the Dutch words,
+   which are the thing you are actually here to look at. Plus Jakarta Sans is
+   the quiet one, for everything around them.
+--------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces.woff2') format('woff2-variations');
+  font-weight: 300 700;
+  font-display: swap;
+  /* A touch of the "soft" and "wonk" axes: rounder terminals and the playful
+     single-storey g, without tipping into novelty. */
+  font-variation-settings: 'SOFT' 28, 'WONK' 1;
+}
+
+@font-face {
+  font-family: 'Jakarta';
+  src: url('/fonts/jakarta.woff2') format('woff2-variations');
+  font-weight: 400 800;
+  font-display: swap;
+}
+
+/* ---------------------------------------------------------------------------
    Design tokens. The UI layer restyles almost entirely by changing values here.
 
    Light and warm rather than dark: shadows barely read on a dark background,
@@ -49,6 +74,9 @@
   /* Pressed: the object moves closer to the page, so its shadow tightens. */
   --shadow-press: 0 1px 2px rgba(31, 27, 22, 0.08);
 
+  --font-display: 'Fraunces', ui-serif, Georgia, serif;
+  --font-sans: 'Jakarta', ui-rounded, system-ui, -apple-system, sans-serif;
+
   --radius-card: 1.75rem;
 
   /* --- motion ---
@@ -71,7 +99,7 @@
     margin: 0;
     background: var(--color-surface);
     color: var(--color-on-surface);
-    font-family: ui-rounded, 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     overscroll-behavior: none;
     /* Respect the phone's notch and gesture bar. */

@@ -24,7 +24,7 @@ export function Home({ stats, level, onStart, onChangeLevel }: Props) {
     <div className="flex h-full flex-col justify-between px-6 py-10">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold">Doei</h1>
+          <h1 className="font-display text-4xl font-semibold">Doei</h1>
           <p className="mt-1 text-on-surface-dim">A little Dutch, every day.</p>
         </div>
         <motion.button
@@ -54,7 +54,7 @@ export function Home({ stats, level, onStart, onChangeLevel }: Props) {
             />
           </svg>
           <div className="text-center">
-            <p className="text-4xl font-semibold">{stats.known}</p>
+            <p className="font-display text-5xl font-semibold">{stats.known}</p>
             <p className="text-sm text-on-surface-dim">of {stats.total} words</p>
           </div>
         </div>
@@ -70,11 +70,11 @@ export function Home({ stats, level, onStart, onChangeLevel }: Props) {
 
         <div className="flex gap-6 text-center text-sm">
           <div>
-            <p className="text-xl font-semibold">{stats.dueCount}</p>
+            <p className="font-display text-2xl font-semibold">{stats.dueCount}</p>
             <p className="text-on-surface-dim">to review</p>
           </div>
           <div>
-            <p className="text-xl font-semibold">{stats.newCount}</p>
+            <p className="font-display text-2xl font-semibold">{stats.newCount}</p>
             <p className="text-on-surface-dim">new</p>
           </div>
         </div>

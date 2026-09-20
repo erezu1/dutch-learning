@@ -18,7 +18,7 @@ export function Done({ stats, onHome }: Props) {
         transition={glide}
       >
         <p className="text-6xl">🎉</p>
-        <h1 className="mt-4 text-3xl font-semibold">Done for today</h1>
+        <h1 className="mt-4 font-display text-4xl font-semibold">Done for today</h1>
         <p className="mt-2 text-on-surface-dim">
           {stats.reviewed} cards · {pct}% correct
         </p>

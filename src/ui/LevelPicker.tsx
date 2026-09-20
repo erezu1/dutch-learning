@@ -17,7 +17,7 @@ export function LevelPicker({ current, onPick, onCancel }: Props) {
   return (
     <div className="flex h-full flex-col justify-center gap-8 px-6 py-10">
       <div>
-        <h1 className="text-3xl font-semibold">Where are you now?</h1>
+        <h1 className="font-display text-4xl font-semibold">Where are you now?</h1>
         <p className="mt-2 text-on-surface-dim">
           This decides which words you&rsquo;re given first. You can change it whenever you like.
         </p>
@@ -40,7 +40,7 @@ export function LevelPicker({ current, onPick, onCancel }: Props) {
                   : 'bg-surface-1'
               }`}
             >
-              <p className="font-semibold">{option.name}</p>
+              <p className="font-display text-xl font-semibold">{option.name}</p>
               <p className={`mt-0.5 text-sm ${active ? 'opacity-70' : 'text-on-surface-dim'}`}>
                 {option.description}
               </p>

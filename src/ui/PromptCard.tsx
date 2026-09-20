@@ -8,6 +8,11 @@ import { SpeakButton } from './SpeakButton'
 // The presentation of one question. Phase 3 replaces this file (full-bleed,
 // swipeable, animated) without touching any logic — it only ever reads a
 // Prompt and calls the callbacks it is handed.
+//
+// Layout is two equal zones. The question sits at the bottom of the upper
+// zone, just above the optical centre, and everything that appears afterwards
+// grows downward into the lower one. Centring the whole lot instead would make
+// the question jump upward the moment an answer appeared beneath it.
 // ---------------------------------------------------------------------------
 
 interface Props {
@@ -34,7 +39,7 @@ function Gloss({ text }: { text: string }) {
   if (!m) return <>{text}</>
   return (
     <>
-      {m[1]} <span className="text-[0.6em] font-normal opacity-50">({m[2]})</span>
+      {m[1]} <span className="font-sans text-[0.5em] font-normal opacity-50">({m[2]})</span>
     </>
   )
 }
@@ -42,11 +47,11 @@ function Gloss({ text }: { text: string }) {
 function Choices({ prompt, onChoose }: { prompt: Prompt; onChoose: (v: string) => void }) {
   const choices = prompt.choices!
   // Two options are the grammar pairs (de/het, hebben/zijn) and deserve to be
-  // big and side by side. Four vocabulary options stack, so long glosses fit.
+  // big and side by side. Four vocabulary options stack, so longer glosses fit.
   const pair = choices.length === 2
 
   return (
-    <div className={`px-4 pb-2 ${pair ? 'flex gap-3' : 'flex flex-col gap-2'}`}>
+    <div className={`w-full ${pair ? 'flex gap-3' : 'flex flex-col gap-2.5'}`}>
       {choices.map((choice, i) => (
         <motion.button
           key={choice}
@@ -57,7 +62,7 @@ function Choices({ prompt, onChoose }: { prompt: Prompt; onChoose: (v: string) =
           onClick={() => onChoose(choice)}
           translate="no"
           className={`notranslate rounded-3xl shadow-2 transition-shadow active:shadow-press ${
-            pair ? 'flex-1 py-6 text-2xl font-semibold' : 'px-5 py-4 text-lg'
+            pair ? 'flex-1 py-7 font-display text-3xl font-semibold' : 'px-5 py-4 text-xl'
           } ${choiceColor[choice] ?? 'bg-surface-1'}`}
         >
           <Gloss text={choice} />
@@ -104,14 +109,13 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
   const isCloze = prompt.cardType === 'cloze'
 
   return (
-    <div className="flex flex-1 flex-col">
-      {/* Anchored to the top rather than vertically centred: centring makes the
-          question jump upwards the moment the answer appears below it. */}
-      <div
-        onClick={!isChoice && !revealed ? onReveal : undefined}
-        className="flex flex-1 flex-col items-center gap-4 overflow-y-auto px-6 pt-[18vh] text-center"
-      >
-        <p className="text-sm font-medium tracking-wide text-on-surface-dim">{prompt.instruction}</p>
+    <div
+      onClick={!isChoice && !revealed ? onReveal : undefined}
+      className="grid flex-1 grid-rows-2 gap-7 px-5 text-center"
+    >
+      {/* Upper zone: the question, resting on the centre line. */}
+      <div className="flex flex-col items-center justify-end gap-3">
+        <p className="text-base font-medium text-on-surface-dim">{prompt.instruction}</p>
 
         {/* Once a gap-fill is answered the filled sentence replaces the gapped
             one, so the question isn't shown twice. */}
@@ -120,8 +124,8 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
             <h1
               lang={prompt.questionLang}
               translate="no"
-              className={`notranslate font-semibold text-balance ${
-                isSentence ? 'text-2xl leading-snug' : 'text-[2.75rem] leading-tight'
+              className={`notranslate font-display font-semibold text-balance ${
+                isSentence ? 'text-[1.9rem] leading-snug' : 'text-[3.4rem] leading-none'
               }`}
             >
               {prompt.questionLang === 'en' ? <Gloss text={prompt.question} /> : prompt.question}
@@ -132,28 +136,31 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
         )}
 
         {prompt.subtitle && !(isCloze && revealed) && (
-          <p className="text-sm text-on-surface-dim">{prompt.subtitle}</p>
+          <p className="text-base text-on-surface-dim">{prompt.subtitle}</p>
+        )}
+      </div>
+
+      {/* Lower zone: the options, or the answer once it is given. */}
+      <div className="flex flex-col items-center gap-3 overflow-y-auto">
+        {!revealed && !isChoice && (
+          <p className="pt-4 text-base text-on-surface-dim/70">tap to reveal</p>
         )}
 
-        {!revealed && !isChoice && (
-          <p className="mt-6 text-sm text-on-surface-dim/70">tap to reveal</p>
-        )}
+        {!revealed && isChoice && <Choices prompt={prompt} onChoose={onChoose} />}
 
         {revealed && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={glide}
-            className="mt-2 flex flex-col items-center gap-3"
+            className="flex flex-col items-center gap-3"
           >
-            <div className="h-px w-16 bg-surface-3" />
-
             {isCloze ? (
               <div className="flex max-w-sm items-center gap-3">
                 <Sentence
                   sentence={prompt.detail ?? ''}
                   word={prompt.answer}
-                  className="text-2xl leading-snug font-semibold"
+                  className="font-display text-[1.9rem] leading-snug font-semibold"
                   highlight="text-good-ink"
                 />
                 {prompt.speak && <SpeakButton text={prompt.speak} />}
@@ -163,7 +170,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                 <p
                   lang={prompt.answerLang}
                   translate="no"
-                  className={`notranslate text-3xl font-semibold ${
+                  className={`notranslate font-display text-[2.6rem] leading-none font-semibold ${
                     correct === false ? 'text-bad-ink' : correct === true ? 'text-good-ink' : ''
                   }`}
                 >
@@ -174,39 +181,33 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
             )}
 
             {correct === false && picked && (
-              <p className="text-sm text-bad-ink/80">you chose &ldquo;{picked}&rdquo;</p>
+              <p className="text-base text-bad-ink/80">you chose &ldquo;{picked}&rdquo;</p>
             )}
 
-            {prompt.meaning && (
-              <p className="max-w-xs text-sm text-on-surface-dim">{prompt.meaning}</p>
-            )}
+            {prompt.meaning && <p className="max-w-xs text-base text-on-surface-dim">{prompt.meaning}</p>}
 
-            {isCloze ? (
-              prompt.detailTranslation && (
-                <p className="max-w-xs text-sm text-on-surface-dim">{prompt.detailTranslation}</p>
-              )
-            ) : (
-              prompt.detail && (
-                <div className="mt-4 flex max-w-xs items-start gap-2">
-                  <div className="space-y-1 text-left">
-                    <Sentence
-                      sentence={prompt.detail}
-                      word={prompt.note.nl}
-                      className="text-base text-on-surface/80"
-                    />
-                    {prompt.detailTranslation && (
-                      <p className="text-sm text-on-surface-dim">{prompt.detailTranslation}</p>
-                    )}
+            {isCloze
+              ? prompt.detailTranslation && (
+                  <p className="max-w-xs text-base text-on-surface-dim">{prompt.detailTranslation}</p>
+                )
+              : prompt.detail && (
+                  <div className="mt-3 flex max-w-xs items-start gap-2">
+                    <div className="space-y-1 text-left">
+                      <Sentence
+                        sentence={prompt.detail}
+                        word={prompt.note.nl}
+                        className="text-lg text-on-surface/85"
+                      />
+                      {prompt.detailTranslation && (
+                        <p className="text-base text-on-surface-dim">{prompt.detailTranslation}</p>
+                      )}
+                    </div>
+                    <SpeakButton text={prompt.detail} small className="mt-1" />
                   </div>
-                  <SpeakButton text={prompt.detail} small className="mt-0.5" />
-                </div>
-              )
-            )}
+                )}
           </motion.div>
         )}
       </div>
-
-      {isChoice && !revealed && <Choices prompt={prompt} onChoose={onChoose} />}
     </div>
   )
 }

@@ -1,8 +1,28 @@
 import { AnimatePresence, motion } from 'framer-motion'
+import type { ReactNode } from 'react'
 import type { Session } from '../session/useSession'
 import { ContinueBar, GradeBar } from './GradeBar'
 import { cardVariants, glide, pressable, quiet } from './motion'
 import { PromptCard } from './PromptCard'
+
+/** Both header icons drawn at one size — text glyphs like ✕ and ↺ are set at
+ *  wildly different optical sizes and never match. */
+function Icon({ children }: { children: ReactNode }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-[22px] w-[22px]"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {children}
+    </svg>
+  )
+}
 
 export function ReviewScreen({ session, onExit }: { session: Session; onExit: () => void }) {
   const { prompt, revealed, picked, correct, position, length } = session
@@ -15,9 +35,11 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
           {...pressable}
           onClick={onExit}
           aria-label="Stop"
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-on-surface-dim"
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-on-surface-dim"
         >
-          ✕
+          <Icon>
+            <path d="M6 6l12 12M18 6L6 18" />
+          </Icon>
         </motion.button>
         <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-3">
           <motion.div
@@ -32,9 +54,12 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
           onClick={session.undo}
           disabled={!session.canUndo}
           aria-label="Undo"
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-on-surface-dim disabled:opacity-25"
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-on-surface-dim disabled:opacity-25"
         >
-          ↺
+          <Icon>
+            <path d="M3 7v6h6" />
+            <path d="M3.5 13a9 9 0 1 0 2.1-5.4L3 10" />
+          </Icon>
         </motion.button>
       </header>
 
@@ -61,13 +86,18 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
         </motion.div>
       </AnimatePresence>
 
-      {revealed &&
+      <div className="flex min-h-[7.5rem] items-end">
+        {revealed &&
         (session.autoGrade !== null ? (
           // Multiple choice: already graded, just move on.
-          <ContinueBar correct={correct === true} onContinue={() => session.grade(session.autoGrade!)} />
+          <ContinueBar
+            correct={correct === true}
+            onContinue={() => session.grade(session.autoGrade!)}
+          />
         ) : (
           <GradeBar onGrade={session.grade} />
         ))}
+      </div>
     </div>
   )
 }

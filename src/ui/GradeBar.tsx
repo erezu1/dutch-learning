@@ -19,7 +19,7 @@ const base =
 
 export function GradeBar({ onGrade }: Props) {
   return (
-    <div className="grid grid-cols-2 gap-3 px-4 pb-4">
+    <div className="grid w-full grid-cols-2 gap-3 px-4 pb-4">
       <motion.button
         {...pressable}
         onClick={() => onGrade(Rating.Again)}
@@ -45,7 +45,7 @@ export function GradeBar({ onGrade }: Props) {
  */
 export function ContinueBar({ onContinue, correct }: { onContinue: () => void; correct: boolean }) {
   return (
-    <div className="px-4 pb-4">
+    <div className="w-full px-4 pb-4">
       <motion.button
         {...pressable}
         onClick={onContinue}
