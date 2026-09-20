@@ -2,18 +2,22 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { onVoicesReady, speak, voiceReport, type VoiceReport } from '../core/speech'
 import type { LevelOption } from '../core/levels'
+import type { Theme } from '../core/themes'
 import type { SessionStats } from '../session/useSession'
 import { Button } from './Button'
+import { ThemePicker } from './ThemePicker'
 import { pressable, quiet } from './motion'
 
 interface Props {
   stats: SessionStats
   level: LevelOption
+  theme: Theme
   onStart: () => void
   onChangeLevel: () => void
+  onChangeTheme: (theme: Theme) => void
 }
 
-export function Home({ stats, level, onStart, onChangeLevel }: Props) {
+export function Home({ stats, level, theme, onStart, onChangeLevel, onChangeTheme }: Props) {
   const [voice, setVoice] = useState<VoiceReport>(voiceReport)
 
   useEffect(() => onVoicesReady(() => setVoice(voiceReport())), [])
@@ -76,10 +80,13 @@ export function Home({ stats, level, onStart, onChangeLevel }: Props) {
         </div>
       </div>
 
-      {/* Phase 0 diagnostic: does this phone actually have a Dutch voice? */}
-      <motion.button
-        {...pressable}
-        onClick={() => speak('Goedemorgen, hoe gaat het met je?')}
+      <div className="flex flex-col items-center gap-5">
+        <ThemePicker current={theme} onPick={onChangeTheme} />
+
+        {/* Phase 0 diagnostic: does this phone actually have a Dutch voice? */}
+        <motion.button
+          {...pressable}
+          onClick={() => speak('Goedemorgen, hoe gaat het met je?')}
         className="mx-auto flex items-center gap-2 rounded-full bg-surface-1 px-4 py-2 text-xs text-on-surface-dim shadow-1"
       >
         <span className={voice.found ? 'text-good-ink' : 'text-bad-ink'}>●</span>
@@ -88,7 +95,8 @@ export function Home({ stats, level, onStart, onChangeLevel }: Props) {
           : voice.supported
             ? 'No Dutch voice on this device'
             : 'Speech not supported here'}
-      </motion.button>
+        </motion.button>
+      </div>
     </div>
   )
 }

@@ -4,6 +4,7 @@ import { db, getMeta, setMeta, type CardStateRow } from '../core/db'
 import { buildQueue, DEFAULTS, type QueueOptions } from '../core/queue'
 import { applyGrade, emptyState, isNew, Rating, State, type Grade } from '../core/scheduler'
 import { DEFAULT_LEVEL, levelById, type LevelOption } from '../core/levels'
+import { applyTheme, DEFAULT_THEME, themeById, type Theme } from '../core/themes'
 import type { Deck, Note } from '../core/types'
 import { SELECT_DELAY } from '../ui/motion'
 import { buildPrompt, type Prompt } from './prompts'
@@ -41,6 +42,8 @@ export interface Session {
   /** False until the level has been picked, so we can ask on first run. */
   levelChosen: boolean
   setLevel: (option: LevelOption) => void
+  theme: Theme
+  setTheme: (theme: Theme) => void
 
   start: () => void
   reveal: () => void
@@ -69,6 +72,7 @@ export function useSession(deck: Deck): Session {
   const [states, setStates] = useState<Map<string, CardStateRow>>(new Map())
   const [level, setLevelState] = useState<LevelOption>(DEFAULT_LEVEL)
   const [levelChosen, setLevelChosen] = useState(false)
+  const [theme, setThemeState] = useState<Theme>(DEFAULT_THEME)
   const [status, setStatus] = useState<SessionStatus>('loading')
   const [queue, setQueue] = useState<Card[]>([])
   const [index, setIndex] = useState(0)
@@ -93,18 +97,29 @@ export function useSession(deck: Deck): Session {
   // Load saved progress and the chosen level once.
   useEffect(() => {
     let cancelled = false
-    Promise.all([db.states.toArray(), getMeta<string | null>('level', null)]).then(
-      ([rows, savedLevel]) => {
-        if (cancelled) return
-        setStates(new Map(rows.map((r) => [r.cardId, r] as const)))
-        setLevelState(levelById(savedLevel))
-        setLevelChosen(savedLevel !== null)
-        setStatus('idle')
-      },
-    )
+    Promise.all([
+      db.states.toArray(),
+      getMeta<string | null>('level', null),
+      getMeta<string | null>('theme', null),
+    ]).then(([rows, savedLevel, savedTheme]) => {
+      if (cancelled) return
+      setStates(new Map(rows.map((r) => [r.cardId, r] as const)))
+      setLevelState(levelById(savedLevel))
+      setLevelChosen(savedLevel !== null)
+      const t = themeById(savedTheme)
+      setThemeState(t)
+      applyTheme(t)
+      setStatus('idle')
+    })
     return () => {
       cancelled = true
     }
+  }, [])
+
+  const setTheme = useCallback((next: Theme) => {
+    setThemeState(next)
+    applyTheme(next)
+    void setMeta('theme', next.id).catch(() => {})
   }, [])
 
   const setLevel = useCallback((option: LevelOption) => {
@@ -284,6 +299,8 @@ export function useSession(deck: Deck): Session {
     level,
     levelChosen,
     setLevel,
+    theme,
+    setTheme,
     start,
     reveal,
     choose,

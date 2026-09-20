@@ -67,6 +67,8 @@ export default function App() {
           <Home
             stats={session.stats}
             level={session.level}
+            theme={session.theme}
+            onChangeTheme={session.setTheme}
             onChangeLevel={() => setScreen('level')}
             onStart={() => {
               session.start()

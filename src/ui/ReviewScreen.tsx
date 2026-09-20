@@ -38,7 +38,7 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
           className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-on-surface-dim"
         >
           <Icon>
-            <path d="M6 6l12 12M18 6L6 18" />
+            <path d="M5.5 5.5l13 13M18.5 5.5l-13 13" />
           </Icon>
         </motion.button>
         <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-3">
@@ -57,8 +57,13 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
           className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-on-surface-dim disabled:opacity-25"
         >
           <Icon>
-            <path d="M1 4v6h6" />
-            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+            {/* Scaled about the centre so it occupies the same 13-unit box as
+                the cross. Drawn full size it spans 20 units and reads far
+                larger at the same button size. */}
+            <g transform="translate(12 12) scale(0.72) translate(-12 -12)">
+              <path d="M1 4v6h6" />
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+            </g>
           </Icon>
         </motion.button>
       </header>

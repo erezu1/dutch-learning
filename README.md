@@ -4,7 +4,9 @@ A small spaced-repetition app for learning Dutch. Personal use, two phones,
 no server, no cost.
 
 The interface is light and warm, and the design tokens in `src/index.css` are
-where almost all of its appearance lives: surfaces, the accent, a four-level
+where almost all of its appearance lives. Colour schemes are blocks of the
+same tokens selected by `data-theme` on `<html>` — no component knows which
+one is active: surfaces, the accent, a four-level
 elevation scale and the motion curves. `src/ui/motion.ts` holds the animation
 vocabulary — components pick from it rather than inventing their own easing,
 since a different curve per component is what makes an interface feel
