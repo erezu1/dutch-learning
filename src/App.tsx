@@ -112,6 +112,7 @@ export default function App() {
           <Screen key="level">
             <LevelPicker
               current={session.levelChosen ? session.level : undefined}
+              known={session.stats.known}
               onPick={(option) => {
                 session.setLevel(option)
                 setScreen('home')
@@ -151,6 +152,7 @@ export default function App() {
               stats={session.stats}
               score={session.score}
               level={session.level}
+              week={session.week}
               theme={session.theme}
               resolvedMode={session.resolvedMode}
               onChangeTheme={session.setTheme}

@@ -21,7 +21,10 @@ export interface QueueOptions {
    * this order, so you learn useful words before obscure ones.
    */
   rankOf: Map<string, number>
-  /** Words rarer than your level's starting point are held back. */
+  /**
+   * Where in the frequency list new words start. Not a filter: words in front
+   * of it come first, and the ones behind it follow once you catch up.
+   */
   startRank: number
 }
 
@@ -82,6 +85,20 @@ export function buildQueue(
   const eligible = cards.filter((c) => isUnlocked(c, states))
   const rank = (c: Card) => opts.rankOf.get(c.noteId) ?? Number.MAX_SAFE_INTEGER
 
+  /**
+   * How far ahead of your starting point a word sits. Everything in front
+   * comes first, in frequency order; everything behind follows, in frequency
+   * order, once you've caught up. Starting at 'Confident' used to mean the
+   * fifteen hundred commonest words were never offered again — a permanent
+   * hole in the middle of your vocabulary, and one you could only fill by
+   * declaring yourself a beginner again. Deferring rather than excluding also
+   * means raising your level mid-course doesn't strand the words you were
+   * already working on.
+   */
+  const BEHIND = 1_000_000
+  const distance = (c: Card) =>
+    rank(c) >= opts.startRank ? rank(c) - opts.startRank : rank(c) + BEHIND
+
   const due: Card[] = []
   /** First meeting with a word. */
   const fresh: Card[] = []
@@ -90,18 +107,13 @@ export function buildQueue(
 
   for (const card of eligible) {
     const state = states.get(card.id)
-    if (isNew(state)) {
-      // A word below your level's starting rank is still reachable — you just
-      // aren't given it as a new word unless you lower your level.
-      if (rank(card) >= opts.startRank) {
-        ;(card.type === 'recognize' ? fresh : follow).push(card)
-      }
-    } else if (state!.due <= nowMs) due.push(card)
+    if (isNew(state)) (card.type === 'recognize' ? fresh : follow).push(card)
+    else if (state!.due <= nowMs) due.push(card)
   }
 
   due.sort((a, b) => states.get(a.id)!.due - states.get(b.id)!.due)
-  // Most common words first, so the daily new words are the most useful ones.
-  fresh.sort((a, b) => rank(a) - rank(b))
+  // Most common words first, counting from where your level starts.
+  fresh.sort((a, b) => distance(a) - distance(b))
   follow.sort((a, b) => FOLLOW_ORDER[a.type] - FOLLOW_ORDER[b.type] || rank(a) - rank(b))
 
   // The day's new words and follow-ups are reserved first and the reviews

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import type { LevelOption } from '../core/levels'
+import { reachedLevel, type LevelOption } from '../core/levels'
 import type { Resolved, Theme } from '../core/themes'
 import type { SessionStats } from '../session/useSession'
 import { Button } from './Button'
@@ -9,12 +9,15 @@ import { Paw } from './Paw'
 import { useCanInstall } from './useCanInstall'
 import { ThemePicker } from './ThemePicker'
 import { afterRing, pressable, ringGrow } from './motion'
+import { WeekStrip } from './WeekStrip'
+import type { WeekDay } from '../core/week'
 import { TITLE, WORDMARK } from './type'
 
 interface Props {
   stats: SessionStats
   score: number
   level: LevelOption
+  week: WeekDay[]
   onOpenSettings: () => void
   theme: Theme
   resolvedMode: Resolved
@@ -27,6 +30,7 @@ export function Home({
   stats,
   score,
   level,
+  week,
   theme,
   resolvedMode,
   onStart,
@@ -62,6 +66,10 @@ export function Home({
   // on any real day is a sliver that never visibly moves — it read as broken
   // because nothing you did changed it.
   const progress = stats.plannedToday ? stats.doneToday / stats.plannedToday : 0
+  // The level you've reached, not the one you claimed on the first run. The
+  // claim only decides where the deck starts handing out words; this moves as
+  // the words go by, which is what a level is for.
+  const reached = reachedLevel(stats.known, level)
 
   return (
     <div className="flex h-full flex-col justify-between px-6 py-10">
@@ -107,7 +115,7 @@ export function Home({
               onClick={onChangeLevel}
               className="rounded-full bg-surface-1 px-3 py-1.5 text-xs font-medium text-on-surface-dim shadow-1"
             >
-              {level.name}
+              {reached.name}
             </motion.button>
 
             <motion.button
@@ -200,23 +208,27 @@ export function Home({
           </motion.p>
         </div>
 
-        <Button
-          onClick={() => onStart(another)}
-          disabled={waiting === 0 && !another}
-          className="w-full max-w-xs"
-        >
-          {/* Not "Continue": nothing is ever in progress here. The queue is
-              built when you press this and thrown away when you leave, so
-              every press starts a session — what changes is whether the day
-              has been started, which is what these say instead. */}
-          {waiting > 0
-            ? stats.doneToday > 0
-              ? 'Keep going'
-              : 'Start'
-            : another
-              ? 'Another round?'
-              : 'Nothing left'}
-        </Button>
+        <div className="flex w-full flex-col items-center gap-6">
+          <Button
+            onClick={() => onStart(another)}
+            disabled={waiting === 0 && !another}
+            className="w-full max-w-xs"
+          >
+            {/* Not "Continue": nothing is ever in progress here. The queue is
+                built when you press this and thrown away when you leave, so
+                every press starts a session — what changes is whether the day
+                has been started, which is what these say instead. */}
+            {waiting > 0
+              ? stats.doneToday > 0
+                ? 'Keep going'
+                : 'Start'
+              : another
+                ? 'Another round?'
+                : 'Nothing left'}
+          </Button>
+
+          <WeekStrip week={week} arrived={arrived} />
+        </div>
       </div>
 
       <div className="flex flex-col items-center gap-5">

@@ -1,21 +1,29 @@
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import { LEVELS, type LevelOption } from '../core/levels'
+import { LEVELS, reachedLevel, type LevelOption } from '../core/levels'
 import { glide, pressable, SELECT_DELAY } from './motion'
 import { TITLE } from './type'
 
 // ---------------------------------------------------------------------------
 // Asked once on first run, changeable any time. It sets where new words start
-// in the frequency list — nothing is locked away, so picking wrong is cheap.
+// in the frequency list — the deck works forward from there and comes back
+// afterwards for whatever the head start skipped, so picking wrong costs you
+// an ordering and nothing else.
+//
+// Which also means the answer stops mattering after the first few weeks, so
+// once there is a real number to show, the screen shows that instead.
 // ---------------------------------------------------------------------------
 
 interface Props {
   current?: LevelOption
+  /** Words whose recognise card has reached the review stage. */
+  known: number
   onPick: (option: LevelOption) => void
   onCancel?: () => void
 }
 
-export function LevelPicker({ current, onPick, onCancel }: Props) {
+export function LevelPicker({ current, known, onPick, onCancel }: Props) {
+  const reached = current ? reachedLevel(known, current) : null
   // Leaving the instant you tap means you never see which one you chose.
   const [chosen, setChosen] = useState<LevelOption | null>(null)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -33,8 +41,15 @@ export function LevelPicker({ current, onPick, onCancel }: Props) {
       <div>
         <h1 className={`text-4xl ${TITLE}`}>Where are you now?</h1>
         <p className="mt-2 text-on-surface-dim">
-          This decides which words you&rsquo;re given first. You can change it whenever you like.
+          This decides which words you&rsquo;re given first. Nothing is locked away &mdash; whatever
+          a head start skips comes back once you catch up.
         </p>
+        {reached && known > 0 && (
+          <p className="mt-3 text-sm text-on-surface-dim">
+            You know {known.toLocaleString()} {known === 1 ? 'word' : 'words'} so far, which puts
+            you at <span className="text-on-surface">{reached.name}</span>.
+          </p>
+        )}
       </div>
 
       <div className="flex flex-col gap-3">
@@ -54,9 +69,7 @@ export function LevelPicker({ current, onPick, onCancel }: Props) {
               transition={{ ...glide, delay: chosen ? 0 : 0.05 * LEVELS.indexOf(option) }}
               onClick={() => pick(option)}
               className={`rounded-3xl px-5 py-4 text-left shadow-2 transition-shadow active:shadow-press ${
-                active
-                  ? 'bg-primary-container text-on-primary-container'
-                  : 'bg-surface-1'
+                active ? 'bg-primary-container text-on-primary-container' : 'bg-surface-1'
               }`}
             >
               <p className={`text-xl ${TITLE}`}>{option.name}</p>

@@ -136,8 +136,14 @@ This is where the app earns its existence versus just using Anki. Build these in
 - Auto-generate cards from notes (one note → 2–4 cards)
 - Grow to 1000+ words with gender and plural filled in
 - Deck/level organisation (A1, A2, …, thematic)
-- Level is now chosen in the app and sets where new words start in the
-  frequency list. Automatic progression between levels is still to do.
+- Level is chosen in the app and sets where new words *start* in the frequency
+  list. It used to be a filter, which meant starting at Confident put a
+  permanent hole where the fifteen hundred commonest words should be; it now
+  defers rather than excludes, so the deck works forward from your starting
+  point and comes back afterwards for whatever the head start skipped.
+  Progression needs no button as a result: the chip on the home screen shows
+  the level you have *reached*, from the words you actually know, and it moves
+  on its own.
 
 **Gap-fill is built** — 1827 of the 2000 words generate one, using the word's
 own example sentence with the word blanked out. The card belongs to that word,
@@ -161,14 +167,15 @@ are both right — so it cannot simply compare against one stored answer.
 
 **Done but never on this list**, because they came from using the thing:
 points instead of card counts, the score burst, undo, "another round?", the
-day's intake actually being daily, and the reset.
+day's intake actually being daily, the reset, and the week strip under the
+button — seven dots and a line about them, which is the streak this list
+asked for without the thing a streak does when you break it.
 
 **Not started — and this is the part that motivated the project:**
 - Full-bleed vertical cards, one per screen, TikTok-style
 - **Swipe to grade**: left = Again, right = Good — Tinder mechanics on the
   two ratings the app actually uses
 - Haptics
-- Streak
 
 Dark mode is a *mode* rather than a scheme, which is better than the "M3 dark
 theme as the default" this list originally asked for: you keep your colour.
@@ -223,13 +230,13 @@ plural on 397, verb forms on 261, and an example sentence on 1869.
 1. **Export / import.** Phase 4. Nothing else on the list can lose data.
 2. **Swipe to grade.** Phase 3, and the reason the project exists — the app is
    currently a very polished set of buttons.
-3. **Automatic level progression**, then **word order**. Both Phase 2
-   leftovers; the second is the most Dutch thing still unbuilt.
+3. **Word order.** The Phase 2 leftover, and the most Dutch thing still
+   unbuilt. (Level progression is done — it happens by itself now.)
 
-One non-code item: every screenshot so far says *No Dutch voice on this
-device*. Nothing is wrong with the app — Android needs the Dutch voice data
-installed (Settings → System → Languages → Text-to-speech → install Dutch).
-Until then every speaker button is silent, which is a real hole in a language
+One non-code item: the Dutch voice. The app no longer reports its absence on
+the home screen — Settings says what to do about it instead (Settings → System
+→ Languages & input → Text-to-speech → install Nederlands). Until that is
+installed every speaker button is silent, which is a real hole in a language
 app and costs nothing to close.
 
 ---

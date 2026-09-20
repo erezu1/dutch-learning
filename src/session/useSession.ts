@@ -5,6 +5,7 @@ import { buildQueue, DEFAULTS, isUnlocked, type QueueOptions } from '../core/que
 import { applyGrade, emptyState, isNew, Rating, State, type Grade } from '../core/scheduler'
 import { awardFor, type Award } from '../core/score'
 import { DEFAULT_LEVEL, levelById, type LevelOption } from '../core/levels'
+import { dayKey, weekDays, weekStart, type WeekDay } from '../core/week'
 import {
   applyAppearance,
   DEFAULT_MODE,
@@ -69,6 +70,9 @@ export interface SessionStats {
   plannedToday: number
 }
 
+/** How many finished days are kept. Long enough to survive a holiday. */
+const KEEP_DAYS = 60
+
 export interface Session {
   status: SessionStatus
   prompt: Prompt | null
@@ -87,6 +91,8 @@ export interface Session {
   award: (Award & { key: number }) | null
   /** Set for a choice prompt once answered: the grade the app will apply. */
   autoGrade: Grade | null
+  /** This week, Monday first, for the strip under the button. */
+  week: WeekDay[]
   level: LevelOption
   /** False until the level has been picked, so we can ask on first run. */
   levelChosen: boolean
@@ -151,6 +157,11 @@ export function useSession(deck: Deck): Session {
   const [correctCount, setCorrectCount] = useState(0)
   const [doneToday, setDoneToday] = useState(0)
   const [intake, setIntake] = useState<Intake>(EMPTY_INTAKE)
+  /** Days with any answer on them, and days that were seen through to the end. */
+  const [studied, setStudied] = useState<Set<string>>(() => new Set())
+  const [finished, setFinished] = useState<Set<string>>(() => new Set())
+  /** The day of the first ever answer. Days before it can't have been missed. */
+  const [firstDay, setFirstDay] = useState<string | null>(null)
 
   const shownAt = useRef<number>(Date.now())
   /**
@@ -186,17 +197,35 @@ export function useSession(deck: Deck): Session {
       db.states.toArray(),
       db.reviews.where('at').aboveOrEqual(startOfToday()).count(),
       getMeta<Intake>('intake', EMPTY_INTAKE),
+      db.reviews.where('at').aboveOrEqual(weekStart(new Date()).getTime()).toArray(),
+      getMeta<string[]>('finishedDays', []),
+      db.reviews.orderBy('at').first(),
       getMeta<string | null>('level', null),
       getMeta<string | null>('theme', null),
       getMeta<string | null>('mode', null),
       getMeta<number>('score', 0),
       getMeta<boolean>('autoContinue', false),
     ]).then(
-      ([rows, done, savedIntake, savedLevel, savedTheme, savedMode, savedScore, savedAuto]) => {
+      ([
+        rows,
+        done,
+        savedIntake,
+        thisWeek,
+        savedFinished,
+        earliest,
+        savedLevel,
+        savedTheme,
+        savedMode,
+        savedScore,
+        savedAuto,
+      ]) => {
         if (cancelled) return
         setStates(new Map(rows.map((r) => [r.cardId, r] as const)))
         setDoneToday(done)
         setIntake(spentToday(savedIntake))
+        setStudied(new Set(thisWeek.map((r) => dayKey(new Date(r.at)))))
+        setFinished(new Set(savedFinished))
+        setFirstDay(earliest ? dayKey(new Date(earliest.at)) : null)
         setLevelState(levelById(savedLevel))
         setLevelChosen(savedLevel !== null)
         setScore(savedScore)
@@ -313,6 +342,32 @@ export function useSession(deck: Deck): Session {
     }
   }, [deck, states, preview, extraPreview, reviewed, correctCount, doneToday])
 
+  /**
+   * A day is finished when there is nothing left waiting on it. Written down
+   * as it happens rather than worked out later: the review log knows how many
+   * questions you answered, but not how many the day was asking for, and by
+   * tomorrow that number is gone.
+   */
+  useEffect(() => {
+    if (status === 'loading' || doneToday === 0 || preview.cards.length > 0) return
+    const key = today()
+    setFinished((was) => {
+      if (was.has(key)) return was
+      const next = [...was, key].sort().slice(-KEEP_DAYS)
+      void setMeta('finishedDays', next).catch(() => {})
+      return new Set(next)
+    })
+  }, [status, doneToday, preview])
+
+  // Rebuilt when the days change rather than on a timer: the app is opened,
+  // looked at, and put down, so midnight passing while it sits on screen is
+  // not a case worth code.
+  const week = useMemo(
+    () => weekDays(new Date(), studied, finished, firstDay ?? today()),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [studied, finished, firstDay, doneToday],
+  )
+
   const start = useCallback(
     (extra = false) => {
       clearRevealTimer()
@@ -398,6 +453,8 @@ export function useSession(deck: Deck): Session {
       })
       setSessionPoints((p) => p + earned.amount)
       setDoneToday((n) => n + 1)
+      setStudied((was) => (was.has(today()) ? was : new Set(was).add(today())))
+      setFirstDay((was) => was ?? today())
 
       // A card only counts against the day's allowance the first time it is
       // seen. Reviews are not intake — they are the debt the intake created.
@@ -548,6 +605,7 @@ export function useSession(deck: Deck): Session {
     sessionPoints,
     award,
     autoGrade,
+    week,
     level,
     levelChosen,
     setLevel,
