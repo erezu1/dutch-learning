@@ -20,7 +20,9 @@ export const THEMES: Theme[] = [
   { id: 'delft', name: 'Delft', swatch: '#2a5fd0', ring: '#f4f6fb' },
   { id: 'tulip', name: 'Tulp', swatch: '#c2306b', ring: '#fdf5f7' },
   { id: 'polder', name: 'Polder', swatch: '#2f7d5c', ring: '#f4f9f5' },
-  { id: 'night', name: 'Nacht', swatch: '#8fa4ff', ring: '#181820' },
+  // The dot shows the scheme, not its accent — a pale dot for the dark scheme
+  // reads as another light option.
+  { id: 'night', name: 'Nacht', swatch: '#2a2a38', ring: '#14141b' },
 ]
 
 export const DEFAULT_THEME = THEMES[0]

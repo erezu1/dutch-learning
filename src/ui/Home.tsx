@@ -5,7 +5,9 @@ import type { LevelOption } from '../core/levels'
 import type { Theme } from '../core/themes'
 import type { SessionStats } from '../session/useSession'
 import { Button } from './Button'
+import { promptInstall } from '../core/install'
 import { Paw } from './Paw'
+import { useCanInstall } from './useCanInstall'
 import { ThemePicker } from './ThemePicker'
 import { pressable, quiet } from './motion'
 
@@ -20,6 +22,7 @@ interface Props {
 
 export function Home({ stats, level, theme, onStart, onChangeLevel, onChangeTheme }: Props) {
   const [voice, setVoice] = useState<VoiceReport>(voiceReport)
+  const canInstall = useCanInstall()
 
   useEffect(() => onVoicesReady(() => setVoice(voiceReport())), [])
 
@@ -36,13 +39,41 @@ export function Home({ stats, level, theme, onStart, onChangeLevel, onChangeThem
           </div>
           <p className="mt-1 text-on-surface-dim">A little Dutch, every day.</p>
         </div>
-        <motion.button
-          {...pressable}
-          onClick={onChangeLevel}
-          className="rounded-full bg-surface-1 px-3 py-1.5 text-xs font-medium text-on-surface-dim shadow-1"
-        >
-          {level.name}
-        </motion.button>
+        <div className="flex shrink-0 items-center gap-2">
+          {/* Only while the browser will actually install it. The one-time
+              card is easy to dismiss, so this stays as the way back. */}
+          {canInstall && (
+            <motion.button
+              {...pressable}
+              onClick={() => void promptInstall()}
+              aria-label="Add to home screen"
+              className="grid h-8 w-8 place-items-center rounded-full bg-surface-1 text-on-surface-dim shadow-1"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="h-[18px] w-[18px]"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M12 4.5v11" />
+                <path d="M7.5 11 12 15.5 16.5 11" />
+                <path d="M5 19h14" />
+              </svg>
+            </motion.button>
+          )}
+
+          <motion.button
+            {...pressable}
+            onClick={onChangeLevel}
+            className="rounded-full bg-surface-1 px-3 py-1.5 text-xs font-medium text-on-surface-dim shadow-1"
+          >
+            {level.name}
+          </motion.button>
+        </div>
       </div>
 
       <div className="flex flex-col items-center gap-8">

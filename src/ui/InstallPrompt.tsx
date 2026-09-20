@@ -1,89 +1,31 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { cardDismissed, promptInstall, rememberDismissed } from '../core/install'
 import { Button } from './Button'
 import { glide, pressable } from './motion'
 import { Paw } from './Paw'
+import { useCanInstall } from './useCanInstall'
 
 // ---------------------------------------------------------------------------
-// Offers to add the app to the home screen. Installing is what makes it open
-// fullscreen, work offline reliably, and keep its stored progress from being
-// evicted — so it is worth asking once. Once.
+// The one-time offer. Installing is what makes the app open fullscreen, work
+// offline reliably, and keep its stored progress from being evicted — so it is
+// worth asking once. Once: dismissing it is remembered, and the small button
+// on the home screen remains for anyone who changes their mind.
 // ---------------------------------------------------------------------------
-
-const DISMISSED = 'install-dismissed'
-
-interface InstallEvent extends Event {
-  prompt: () => Promise<void>
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
-}
-
-/** Already running as an installed app? Then there is nothing to offer. */
-function isInstalled(): boolean {
-  return (
-    window.matchMedia('(display-mode: standalone)').matches ||
-    // iOS reports it here instead.
-    (navigator as { standalone?: boolean }).standalone === true
-  )
-}
-
-function wasDismissed(): boolean {
-  try {
-    return localStorage.getItem(DISMISSED) === '1'
-  } catch {
-    // Private browsing and blocked storage both throw. Asking again is the
-    // kinder failure than never asking.
-    return false
-  }
-}
-
-function remember(): void {
-  try {
-    localStorage.setItem(DISMISSED, '1')
-  } catch {
-    /* nothing we can do; it will ask again next time */
-  }
-}
 
 export function InstallPrompt() {
-  const [event, setEvent] = useState<InstallEvent | null>(null)
-
-  useEffect(() => {
-    if (isInstalled() || wasDismissed()) return
-
-    const onPrompt = (e: Event) => {
-      // Chrome shows its own bar unless we take the event.
-      e.preventDefault()
-      setEvent(e as InstallEvent)
-    }
-    window.addEventListener('beforeinstallprompt', onPrompt)
-    // If it gets installed while open, stop offering.
-    const onInstalled = () => setEvent(null)
-    window.addEventListener('appinstalled', onInstalled)
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', onPrompt)
-      window.removeEventListener('appinstalled', onInstalled)
-    }
-  }, [])
+  const available = useCanInstall()
+  const [hidden, setHidden] = useState(() => cardDismissed())
+  const show = available && !hidden
 
   const dismiss = () => {
-    remember()
-    setEvent(null)
-  }
-
-  const install = async () => {
-    const e = event
-    setEvent(null)
-    if (!e) return
-    await e.prompt()
-    const { outcome } = await e.userChoice
-    // Declining the system dialog counts as declining. Don't nag.
-    if (outcome === 'dismissed') remember()
+    rememberDismissed()
+    setHidden(true)
   }
 
   return (
     <AnimatePresence>
-      {event && (
+      {show && (
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -112,7 +54,7 @@ export function InstallPrompt() {
               >
                 Not now
               </motion.button>
-              <Button onClick={install} className="flex-1">
+              <Button onClick={() => void promptInstall()} className="flex-1">
                 Add
               </Button>
             </div>

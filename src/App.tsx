@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import deckCore from './content/deck-core.json'
 import type { Deck } from './core/types'
 import { useSession } from './session/useSession'
@@ -9,6 +9,7 @@ import { InstallPrompt } from './ui/InstallPrompt'
 import { LevelPicker } from './ui/LevelPicker'
 import { glide, screenVariants } from './ui/motion'
 import { ReviewScreen } from './ui/ReviewScreen'
+import { Welcome } from './ui/Welcome'
 
 const deck = deckCore as Deck
 
@@ -34,16 +35,61 @@ function Screen({ children }: { children: React.ReactNode }) {
   )
 }
 
+type ScreenName = 'home' | 'review' | 'level'
+
+/**
+ * Screen changes go through the browser history, so the phone's back gesture
+ * steps back through the app instead of closing it.
+ *
+ * Leaving a screen from inside the app calls history.back() rather than
+ * setting the screen directly — otherwise every visit would leave an entry
+ * behind and you would have to press back several times to get out.
+ */
+function useScreenHistory(): [ScreenName, (next: ScreenName) => void] {
+  const [screen, setScreen] = useState<ScreenName>('home')
+  const pushed = useRef(false)
+
+  useEffect(() => {
+    const onPop = () => {
+      pushed.current = false
+      setScreen('home')
+    }
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [])
+
+  const go = useCallback((next: ScreenName) => {
+    if (next === 'home') {
+      if (pushed.current) {
+        // popstate sets the screen, so the two routes stay identical.
+        window.history.back()
+      } else {
+        setScreen('home')
+      }
+      return
+    }
+    window.history.pushState({ screen: next }, '')
+    pushed.current = true
+    setScreen(next)
+  }, [])
+
+  return [screen, go]
+}
+
 export default function App() {
   const session = useSession(deck)
-  const [screen, setScreen] = useState<'home' | 'review' | 'level'>('home')
+  const [screen, setScreen] = useScreenHistory()
+  // Only ever seen before a level is chosen, which is stored, so it shows once.
+  const [greeted, setGreeted] = useState(false)
 
   if (session.status === 'loading') {
     return <div className="grid h-full place-items-center text-on-surface-dim">…</div>
   }
 
-  // Asked once, before anything else.
-  const showLevel = !session.levelChosen || screen === 'level'
+  const firstRun = !session.levelChosen
+  const showWelcome = firstRun && !greeted
+  // Asked once, after the welcome.
+  const showLevel = (firstRun && greeted) || screen === 'level'
   const reviewing = !showLevel && screen === 'review' && session.status === 'reviewing'
   const finished = !showLevel && screen === 'review' && session.status === 'done'
 
@@ -51,7 +97,11 @@ export default function App() {
     <>
       <InstallPrompt />
       <AnimatePresence mode="wait" initial={false}>
-        {showLevel ? (
+        {showWelcome ? (
+          <Screen key="welcome">
+            <Welcome onBegin={() => setGreeted(true)} />
+          </Screen>
+        ) : showLevel ? (
           <Screen key="level">
             <LevelPicker
               current={session.levelChosen ? session.level : undefined}

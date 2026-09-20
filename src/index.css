@@ -114,6 +114,14 @@
      keeps the browser's default white. */
   html {
     background: var(--color-surface);
+    /* Without this the browser keeps its own surfaces light: scrollbar
+       tracks, form controls and the area it paints behind the page all stay
+       white, which shows as a pale strip at the edges on a dark scheme. */
+    color-scheme: light;
+  }
+
+  :root[data-theme='night'] {
+    color-scheme: dark;
   }
 
   body {
