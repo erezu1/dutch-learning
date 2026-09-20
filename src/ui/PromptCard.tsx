@@ -308,10 +308,14 @@ function YouChose({ picked }: { picked: string }) {
     <p className="flex items-center gap-1.5 text-base text-bad-ink/80">
       <svg
         viewBox="0 0 24 24"
-        className="h-[0.85em] w-[0.85em] shrink-0"
+        // Drawn to about the weight of the text beside it: the stroke scales
+        // with the box, so a mark this small needs a wide nominal width to
+        // come out at a hairline — 2.4 of 24 units across 0.8em is ~1.3px,
+        // which is what the letters are.
+        className="h-[0.8em] w-[0.8em] shrink-0"
         fill="none"
         stroke="currentColor"
-        strokeWidth="3"
+        strokeWidth="2.4"
         strokeLinecap="round"
         aria-hidden="true"
       >
@@ -341,9 +345,10 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
   // — and setting the second smaller than the first makes it read as a
   // footnote to the question rather than the other half of a pair. Big enough
   // for the longer of the two, so neither has to be shrunk on its own.
+  const answerShown = prompt.answerInFull ?? prompt.answer
   const focalSize = isSentence
     ? fitSize(prompt.completion ?? prompt.question, '2.05rem', '1.35rem')
-    : fitSize([prompt.completion ?? prompt.question, prompt.answer], '4rem', '1.6rem', true)
+    : fitSize([prompt.completion ?? prompt.question, answerShown], '4rem', '1.6rem', true)
 
   return (
     <div
@@ -499,26 +504,25 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
               ) : (
                 <>
                   {/* Every other card states its answer here: the thing you
-                      were meant to arrive at, in the serif. */}
+                      were meant to arrive at, in the serif — written out, when
+                      what you had to pick was a shortened form of it. */}
                   <WithSpeaker
-                    speak={prompt.answerLang === 'nl' ? prompt.answer : undefined}
+                    speak={prompt.answerLang === 'nl' ? answerShown : undefined}
                     size={focalSize}
                   >
                     <p
                       lang={prompt.answerLang}
                       translate="no"
                       style={{ fontSize: focalSize }}
-                      // Green is the right answer, whether or not you found it —
-                      // colouring the correct word red because you missed it says
-                      // the word is wrong. Red belongs to what you chose, below.
-                      className={`notranslate leading-none ${FOCUS} ${
-                        correct === null ? '' : 'text-good-ink'
-                      }`}
+                      // Always green: this is the right answer, whether you
+                      // found it, missed it, or were never asked to choose.
+                      // Red belongs to what you chose, below.
+                      className={`notranslate leading-none ${FOCUS} text-good-ink`}
                     >
                       {prompt.answerLang === 'en' ? (
-                        <Gloss text={prompt.answer} stacked />
+                        <Gloss text={answerShown} stacked />
                       ) : (
-                        prompt.answer
+                        answerShown
                       )}
                     </p>
                   </WithSpeaker>

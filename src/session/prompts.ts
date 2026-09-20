@@ -42,10 +42,17 @@ export interface Prompt {
    */
   completion?: string
   /**
-   * The word's other senses, shown only once the card is answered. Asking
-   * "what is 'little, few' in Dutch?" reads like a riddle; asking for "little"
-   * and then showing the fuller meaning teaches the same thing without the
-   * question looking odd.
+   * The answer written out, when what had to be matched was a shortened form
+   * of it: one of a word's senses, picked from four options. The card states
+   * this instead of the answer, rather than stating the answer and then
+   * repeating it inside a fuller version underneath.
+   */
+  answerInFull?: string
+  /**
+   * The word's *other* senses — never the one that was asked. Asking "what is
+   * 'little, few' in Dutch?" reads like a riddle; asking for "little" and then
+   * saying it also means "few" teaches the same thing without the question
+   * looking odd.
    */
   meaning?: string
   /** Extra context shown once revealed, e.g. an example sentence. */
@@ -162,8 +169,11 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         questionLang: 'nl',
         subtitle: posLabel[note.pos],
         answer: choice ? firstGloss(note) : note.en.join(' · '),
+        // Both shapes end up saying the same thing: every sense the word has.
+        // One of them had to ask for a single sense to have something to put
+        // on a button.
+        answerInFull: note.en.length > 1 ? note.en.join(' · ') : undefined,
         answerLang: 'en',
-        meaning: choice && note.en.length > 1 ? note.en.join(' · ') : undefined,
         choices: choice
           ? shuffle([firstGloss(note), ...distractors(note, ctx, firstGloss)])
           : undefined,
@@ -186,7 +196,9 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         // options would give away the gender answer elsewhere in the deck.
         answer: choice ? note.nl : note.gender ? `${note.gender} ${note.nl}` : note.nl,
         answerLang: 'nl',
-        meaning: note.en.length > 1 ? note.en.join(' · ') : undefined,
+        // The senses that weren't asked for. The one that was is the question
+        // at the top of the card, so listing it again says nothing.
+        meaning: note.en.length > 1 ? `also ${note.en.slice(1).join(' · ')}` : undefined,
         choices: choice ? shuffle([dutch(note), ...distractors(note, ctx, dutch)]) : undefined,
         speak: note.nl,
         ...example(note),
@@ -215,9 +227,13 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         instruction: 'What is the plural?',
         question: `${note.gender ?? ''} ${note.nl}`.trim(),
         questionLang: 'nl',
-        answer: note.plural!,
+        // Every Dutch plural is a de-word, whatever the singular was. Showing
+        // "het huis" and answering "huizen" hides that, and reads as if the
+        // article had simply been dropped; "het huis" answered "de huizen"
+        // teaches the rule in passing, every time a het-word comes up.
+        answer: note.gender ? `de ${note.plural}` : note.plural!,
         answerLang: 'nl',
-        speak: note.plural,
+        speak: note.gender ? `de ${note.plural}` : note.plural,
         ...example(note),
       }
 
