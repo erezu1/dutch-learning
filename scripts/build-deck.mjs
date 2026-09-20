@@ -83,6 +83,7 @@ function posPriority(pos, rank) {
 const BAD_SENSE_TAGS = new Set([
   'obsolete', 'archaic', 'dated', 'rare', 'dialectal', 'poetic', 'historical',
   'nonstandard', 'informal-obsolete', 'form-of', 'alt-of', 'misspelling',
+  'vulgar', 'offensive', 'derogatory', 'slur', 'ethnic-slur',
 ])
 
 // Articles are taught by the de/het card, not as vocabulary. Their English
@@ -120,29 +121,54 @@ async function loadFrequency() {
 // --- 2. wiktionary ---------------------------------------------------------
 
 function cleanGloss(gloss) {
-  let g = gloss
+  const g = gloss
     .replace(/\([^)]*\)/g, ' ') // parenthetical asides
     .replace(/\[[^\]]*\]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim()
     .replace(/[;:.]$/, '')
-  // "to run, go fast on one's own legs" -> "to run, go fast"
-  const parts = g.split(',').map((p) => p.trim()).filter(Boolean)
-  g = parts.slice(0, 2).join(', ')
-  return g.length > 42 ? parts[0] ?? '' : g
+  // Dictionaries pile up near-synonyms — "to lead, to take the lead" — and
+  // keeping them turns a flashcard answer into a list. But commas also
+  // separate modifiers sharing one head noun, as in "destructive,
+  // uncontrolled fire", where taking the first part leaves "destructive" and
+  // loses the meaning entirely. Only split when the parts are alternatives:
+  // all verbs, or all single words.
+  const parts = g.split(/[,;]/).map((x) => x.trim()).filter(Boolean)
+  if (parts.length > 1) {
+    const allVerbs = parts.every((x) => /^to /.test(x))
+    const allSingleWords = parts.every((x) => !x.includes(' '))
+    if (allVerbs || allSingleWords) return parts[0].length > 38 ? '' : parts[0]
+  }
+  return g.length > 44 ? '' : g
+}
+
+/** Two senses are only worth showing if they mean noticeably different things. */
+function distinctSense(a, b) {
+  const strip = (s) => s.replace(/^(to|a|an|the) /, '').toLowerCase()
+  const x = strip(a)
+  const y = strip(b)
+  return !(x === y || x.startsWith(y) || y.startsWith(x))
 }
 
 function pickGlosses(entry) {
   const out = []
+  const word = norm(entry.word ?? '')
   for (const sense of entry.senses ?? []) {
     if (!sense.glosses?.length) continue
     if (sense.form_of || sense.alt_of) continue
     const tags = sense.tags ?? []
     if (tags.some((t) => BAD_SENSE_TAGS.has(t))) continue
     const g = cleanGloss(sense.glosses[0])
-    if (!g || g.length < 2) continue
+    // Two-letter glosses are almost always junk ("or" for goud, from heraldry).
+    if (!g || g.length < 3) continue
     if (BAD_GLOSS.some((re) => re.test(g))) continue
-    if (!out.includes(g)) out.push(g)
+    // "info -> info" is not a flashcard.
+    if (norm(g) === word) continue
+    if (out.some((existing) => !distinctSense(existing, g))) continue
+    // A second sense earns its place only if it is short. Wiktionary's second
+    // gloss for burgemeester is "one of two species of gull".
+    if (out.length && g.length > 24) continue
+    out.push(g)
     if (out.length === 2) break
   }
   return out

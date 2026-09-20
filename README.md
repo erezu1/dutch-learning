@@ -106,6 +106,12 @@ warns on disagreement.
 ### Known limits of the imported data
 - **First gloss wins.** A word with several senses shows the most prominent
   one. Occasionally that isn't the sense you'd meet first.
+- **Glosses are one term per sense.** Dictionaries pile up near-synonyms
+  ("to lead, to take the lead, to guide"), which turns a flashcard answer into
+  a list. Commas are only split on when the parts are alternatives — all verbs
+  or all single words — because they also separate modifiers sharing one head
+  noun, as in *brand*: "destructive, catastrophic fire", where taking the
+  first part would leave "destructive" and lose the meaning.
 - **`SKIP_WORDS` in the build script** lists verb stems whose noun sense is
   marginal (*weet*, *kom*, *kijk*). This can't be a blanket rule: *huis*,
   *geld*, *werk*, *water* and *school* are all real nouns that happen to match

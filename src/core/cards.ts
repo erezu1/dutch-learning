@@ -53,6 +53,22 @@ export function blankOut(sentence: string, word: string): string {
   return sentence.replace(wordPattern(word), (_m, before, _w, after) => `${before}____${after}`)
 }
 
+/** The sentence split around the word, so the UI can fill it back in place. */
+export function splitAroundWord(
+  sentence: string,
+  word: string,
+): { before: string; match: string; after: string } | null {
+  const m = wordPattern(word).exec(sentence)
+  if (!m) return null
+  const start = m.index + m[1].length
+  const end = start + m[2].length
+  return {
+    before: sentence.slice(0, start),
+    match: sentence.slice(start, end),
+    after: sentence.slice(end),
+  }
+}
+
 /**
  * Deterministic: the same note always produces the same cards with the same
  * ids, so regenerating after a content edit never disturbs saved progress.
