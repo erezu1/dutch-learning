@@ -72,7 +72,7 @@ export function Home({
   const reached = reachedLevel(stats.known, level)
 
   return (
-    <div className="flex h-full flex-col justify-between px-6 py-10">
+    <div className="flex min-h-full flex-col justify-between px-6 py-10">
       <div>
         <div className="flex items-center justify-between gap-4">
           {/* The paw is sized against the word's cap height, not against its

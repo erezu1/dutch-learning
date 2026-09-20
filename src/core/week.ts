@@ -133,7 +133,7 @@ export function weekMessage(days: WeekDay[]): string {
   // Not "day one of the week": it can be a Saturday, and the dots say so.
   // This is day one of the history the app has, which is also what it says
   // after a reset.
-  if (firstDay && !todayDone) return 'A fresh start — nothing to catch up on!'
+  if (firstDay && !todayDone) return 'Your first day. Nothing to catch up on!'
   if (firstDay && todayDone) return 'First day, done!'
   if (todayDone && missed === 0 && started === 0) {
     if (index === 6) return 'Every day this week. All seven!'
