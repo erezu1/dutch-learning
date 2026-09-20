@@ -53,13 +53,18 @@ function ModePicker({ mode, onMode }: { mode: Mode; onMode: (next: Mode) => void
 }
 
 /**
- * Whether this phone can say anything, and what to do when it can't.
+ * Whether this phone can say anything, and what to do if it can't.
  *
  * The app has no audio files — it borrows whichever Dutch voice the phone
  * already has, which is free and works offline but is the one thing that
- * varies by device. When there isn't one, every speaker button in the app is
- * silent, so it is worth saying plainly where the voice comes from rather than
- * reporting the fact and leaving it there.
+ * varies by device.
+ *
+ * This used to say "no Dutch voice installed" whenever the voice list came
+ * back without one, which was wrong on the phone it was written for: Android
+ * often reports no voices at all and then speaks perfectly well, because the
+ * app asks for Dutch by language and the system engine answers. An empty list
+ * is not evidence of silence. So the button is offered in every case and your
+ * ear decides, which is the only test that was ever going to be right.
  */
 function DutchVoice() {
   const [voice, setVoice] = useState<VoiceReport>(voiceReport)
@@ -69,12 +74,22 @@ function DutchVoice() {
     <div className="rounded-3xl bg-surface-1 px-5 py-4 shadow-2">
       <p className="font-semibold">Dutch voice</p>
 
-      {voice.found ? (
+      {voice.supported ? (
         <>
           <p className="mt-0.5 text-sm text-on-surface-dim">
-            {voice.name}
-            {voice.local ? '' : ' — needs a connection'}
+            {voice.found ? (
+              <>
+                {voice.name}
+                {voice.local ? '' : ' — needs a connection'}
+              </>
+            ) : (
+              <>
+                This phone hasn&rsquo;t said which voices it has, which is normal and doesn&rsquo;t
+                mean it can&rsquo;t speak. Press it and listen.
+              </>
+            )}
           </p>
+
           <div className="mt-4">
             <Button
               tone="neutral"
@@ -84,15 +99,17 @@ function DutchVoice() {
               Hear it
             </Button>
           </div>
+
+          {!voice.found && (
+            <p className="mt-3 text-sm text-on-surface-dim">
+              Nothing? Then the voice data is missing. On Android:{' '}
+              <span className="text-on-surface">
+                Settings → System → Languages &amp; input → Text-to-speech → install Nederlands
+              </span>
+              . It downloads once and then works offline, like the rest of the app.
+            </p>
+          )}
         </>
-      ) : voice.supported ? (
-        <p className="mt-0.5 text-sm text-on-surface-dim">
-          This phone has no Dutch voice installed, so the speaker buttons stay quiet. On Android:{' '}
-          <span className="text-on-surface">
-            Settings → System → Languages &amp; input → Text-to-speech → install Nederlands
-          </span>
-          . It downloads once and then works offline, like the rest of the app.
-        </p>
       ) : (
         <p className="mt-0.5 text-sm text-on-surface-dim">
           This browser can&rsquo;t speak. Everything else works.

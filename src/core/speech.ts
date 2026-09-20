@@ -1,10 +1,17 @@
 // ---------------------------------------------------------------------------
 // Dutch text-to-speech, using the voice already on the phone. No audio files,
-// nothing to host. Availability varies by device, which is why the home screen
-// reports what it found.
+// nothing to host.
+//
+// One thing to know before reading any of this: an empty voice list does not
+// mean a silent phone. Android hands `getVoices()` back empty for the first
+// seconds, and on plenty of devices until something has actually been spoken —
+// while `speak()` with `lang = 'nl-NL'` goes straight to the system engine and
+// talks anyway. So the list is evidence of a voice when it has one, and
+// evidence of nothing at all when it doesn't.
 // ---------------------------------------------------------------------------
 
-let cached: SpeechSynthesisVoice | null | undefined
+/** Only ever holds a hit: a cached miss would be a miss for the whole session. */
+let cached: SpeechSynthesisVoice | null = null
 
 export function supported(): boolean {
   return typeof window !== 'undefined' && 'speechSynthesis' in window
@@ -25,15 +32,15 @@ function pickVoice(): SpeechSynthesisVoice | null {
 }
 
 export function dutchVoice(): SpeechSynthesisVoice | null {
-  if (cached === undefined) cached = pickVoice()
-  return cached ?? null
+  if (!cached) cached = pickVoice()
+  return cached
 }
 
 /** Voices load asynchronously on some platforms; re-check when they arrive. */
 export function onVoicesReady(cb: () => void): () => void {
   if (!supported()) return () => {}
   const handler = () => {
-    cached = undefined
+    cached = null
     cb()
   }
   window.speechSynthesis.addEventListener('voiceschanged', handler)
@@ -77,6 +84,7 @@ export function speak(text: string, rate = 0.9): Promise<void> {
 
 export interface VoiceReport {
   supported: boolean
+  /** A named Dutch voice in the list. Its absence proves nothing — see above. */
   found: boolean
   name?: string
   lang?: string

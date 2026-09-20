@@ -130,7 +130,10 @@ export function weekMessage(days: WeekDay[]): string {
   // Vacuously true on a Monday, which is why the index is part of it.
   const firstDay = index > 0 && sofar.slice(0, index).every((d) => d.state === 'ahead')
   if (index === 0 && !todayDone && started === 0) return 'A new week. Start it straight!'
-  if (firstDay && !todayDone) return 'Day one. The rest of the week is yours!'
+  // Not "day one of the week": it can be a Saturday, and the dots say so.
+  // This is day one of the history the app has, which is also what it says
+  // after a reset.
+  if (firstDay && !todayDone) return 'A fresh start — nothing to catch up on!'
   if (firstDay && todayDone) return 'First day, done!'
   if (todayDone && missed === 0 && started === 0) {
     if (index === 6) return 'Every day this week. All seven!'
