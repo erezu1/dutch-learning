@@ -215,19 +215,45 @@
    Gradients on a transform and nothing else: no blur filter, which is the
    expensive part of this effect and would be running the whole time the app is
    open, on a phone.
+
+   It fades out at the top and bottom of the screen. An installed app does not
+   own the strip above it or the rounded corners below — the system fills those
+   with one flat colour it took at launch, and nothing the page does at run
+   time reaches them. So the page meets them with the same flat colour it has:
+   the ground lives in the middle, where it can be seen, and the edges of the
+   screen are the plain surface, which is what the system is painting.
 --------------------------------------------------------------------------- */
-body::before,
-body::after {
-  content: '';
+#ground {
   position: fixed;
-  /* Larger than the screen, so the far edge of the gradient never shows. */
-  inset: -28%;
+  inset: 0;
   z-index: 0;
   pointer-events: none;
+  overflow: hidden;
+  --edge-fade: 120px;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 var(--edge-fade),
+    #000 calc(100% - var(--edge-fade)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 var(--edge-fade),
+    #000 calc(100% - var(--edge-fade)),
+    transparent 100%
+  );
+}
+
+#ground i {
+  position: absolute;
+  /* Larger than the screen, so the far edge of a light never shows. */
+  inset: -28%;
   will-change: transform;
 }
 
-body::before {
+#ground i:first-child {
   background: radial-gradient(
     circle,
     color-mix(in oklab, var(--color-primary) var(--ambient-near), transparent) 0%,
@@ -236,7 +262,7 @@ body::before {
   animation: ambient-near 97s linear infinite;
 }
 
-body::after {
+#ground i:last-child {
   background: radial-gradient(
     circle,
     color-mix(in oklab, var(--color-primary) var(--ambient-far), transparent) 0%,
@@ -276,6 +302,16 @@ body::after {
   100% {
     transform: translate(17%, 19%);
   }
+}
+
+/* The elevation scale as a filter, for things that aren't boxes. The ring on
+   the home screen is a stroke, and a box-shadow on its frame would sit around
+   a square that isn't there — this follows the shape. Same colour, same two
+   layers, same lack of a direction as shadow-2; no hairline, because a stroke
+   has no edge to define. */
+.lift {
+  filter: drop-shadow(0 0 5px rgb(var(--glow) / calc(0.1 * var(--glow-boost))))
+    drop-shadow(0 0 14px rgb(var(--glow) / calc(0.09 * var(--glow-boost))));
 }
 
 @layer base {

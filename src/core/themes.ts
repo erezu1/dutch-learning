@@ -11,7 +11,6 @@
 // ---------------------------------------------------------------------------
 
 import { pawSvg } from './paw'
-import { paintStatusBar } from './statusbar'
 
 export interface Theme {
   id: string
@@ -135,9 +134,14 @@ export function applyAppearance(theme: Theme, mode: Mode, animate = false): void
   root.dataset.theme = theme.id
   root.dataset.mode = resolveMode(mode)
 
-  // The strip above the app, which can only ever be one flat colour — so it
-  // is given the colour the page happens to be at its top edge.
-  paintStatusBar()
+  // The strip above the app gets the plain surface, and the ground fades out
+  // before it reaches the top of the screen so the page meets it with exactly
+  // that. Chasing it with the live colour was the wrong idea: an installed app
+  // takes this once, at launch, and nothing set at run time reaches it.
+  const meta = document.querySelector('meta[name="theme-color"]')
+  const bg = getComputedStyle(document.body).backgroundColor
+  if (meta && bg) meta.setAttribute('content', bg)
+
   setFavicon()
 }
 
