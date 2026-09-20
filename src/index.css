@@ -105,27 +105,30 @@
 
 /* The speaker's waves, propagating.
 
-   Each wave starts exactly at the inner arc and travels outwards. The timing
-   is chosen so that a third of the way through its life a wave sits precisely
-   where the outer arc is drawn: the scale runs 1 -> 3.82, so at t = 1/3 it is
-   at 1.94, which is the outer arc's size. With three waves a third of a cycle
-   apart, at every instant one sits at the inner arc and one at the outer —
-   the resting icon — while a third travels on and fades.
+   Two waves half a cycle apart. A wave starts exactly at the inner arc and
+   grows; halfway through its life it is at 1.9, which is where the outer arc
+   is drawn. The second wave carries a negative delay, so it begins already
+   halfway along — meaning from the very first frame one wave sits on the inner
+   arc and the other on the outer, and the icon is never anything other than
+   itself.
 
-   So the icon keeps its shape the whole time it is speaking, rather than
-   dissolving into pulses. Written in CSS because the motion library would not
-   tween these SVG paths at all; it jumped them straight to their final scale.
+   vector-effect keeps the stroke at its drawn width as the wave grows. Without
+   it a scale of 2.8 also multiplies the line thickness, and the waves swell
+   into each other instead of staying as distinct arcs.
+
+   Written in CSS because the motion library would not tween these SVG paths at
+   all; it jumped them straight to their final scale.
 --------------------------------------------------------------------------- */
 @keyframes speaker-wave {
   0% {
     transform: scale(1);
     opacity: 1;
   }
-  66% {
+  62% {
     opacity: 1;
   }
   100% {
-    transform: scale(3.82);
+    transform: scale(2.8);
     opacity: 0;
   }
 }
@@ -133,7 +136,8 @@
 .speaker-wave {
   transform-box: view-box;
   transform-origin: 13px 12px;
-  animation: speaker-wave 1.05s linear infinite;
+  vector-effect: non-scaling-stroke;
+  animation: speaker-wave 1.1s linear infinite;
 }
 
 @layer base {

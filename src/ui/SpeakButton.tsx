@@ -3,11 +3,10 @@ import { supported } from '../core/speech'
 // ---------------------------------------------------------------------------
 // The speaker, with its own waves as the animation.
 //
-// While the voice is talking the two arcs propagate: each travels outwards,
-// the one at the inner position moving to where the outer is drawn while a new
-// one takes its place. Three waves a third of a cycle apart mean the resting
-// icon is always present inside the motion, so the mark keeps its shape rather
-// than dissolving into pulses.
+// While the voice is talking the two arcs propagate outwards, each replaced by
+// the one behind it. The second wave runs on a negative delay so it starts
+// already halfway along: from the first frame one wave is on the inner arc and
+// the other on the outer, and the mark never stops looking like itself.
 //
 // The strokes keep their width while they grow: scaling a path scales its
 // stroke too, which made a wave thicken as it travelled out. vector-effect
@@ -21,8 +20,8 @@ const WAVE_INNER = 'M15.27 9.47A3.4 3.4 0 0 1 15.27 14.53'
 const WAVE_OUTER = 'M17.42 7.1A6.6 6.6 0 0 1 17.42 16.9'
 
 /** A wave's lifetime, matching the CSS. One departs every CYCLE / WAVES. */
-const CYCLE = 1.05
-const WAVES = 3
+const CYCLE = 1.1
+const WAVES = 2
 
 const wave = {
   fill: 'none',
@@ -73,7 +72,9 @@ export function SpeakButton({
                 d={WAVE_INNER}
                 {...wave}
                 className="speaker-wave"
-                style={{ animationDelay: `${(i * CYCLE) / WAVES}s` }}
+                // Negative, so each wave is already under way on the first
+                // frame rather than piling up at the inner arc while it waits.
+                style={{ animationDelay: `${(-i * CYCLE) / WAVES}s` }}
               />
             ))}
           </g>

@@ -69,6 +69,8 @@ interface UndoEntry {
   reviewId: number
   index: number
   wasCorrect: boolean | null
+  /** Points awarded for this answer, so undoing takes them back. */
+  earned: number
 }
 
 export function useSession(deck: Deck): Session {
@@ -259,7 +261,13 @@ export function useSession(deck: Deck): Session {
       })
       await db.states.put(next)
 
-      undoStack.current.push({ previous, reviewId: reviewId as number, index, wasCorrect: correct })
+      undoStack.current.push({
+        previous,
+        reviewId: reviewId as number,
+        index,
+        wasCorrect: correct,
+        earned: earned.amount,
+      })
 
       setStates((prev) => new Map(prev).set(card.id, next))
       setScore((s) => {
@@ -333,6 +341,10 @@ export function useSession(deck: Deck): Session {
 
   const undo = useCallback(async () => {
     clearRevealTimer()
+    // The card is answerable again, so the guard that stops one card being
+    // scored twice has to be lifted — without this, undo left every option
+    // dead, because choose() saw the card as already answered.
+    recorded.current = false
     const last = undoStack.current.pop()
     if (!last) return
     await db.reviews.delete(last.reviewId)
@@ -348,6 +360,14 @@ export function useSession(deck: Deck): Session {
     })
     setIndex(last.index)
     setReviewed((n) => Math.max(0, n - 1))
+    if (last.earned) {
+      setScore((v) => {
+        const total = Math.max(0, v - last.earned)
+        void setMeta('score', total).catch(() => {})
+        return total
+      })
+      setSessionPoints((p) => Math.max(0, p - last.earned))
+    }
     setRevealed(false)
     setPicked(null)
     setStatus('reviewing')
