@@ -99,9 +99,11 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
 
   return (
     <div className="flex flex-1 flex-col">
+      {/* Anchored to the top rather than vertically centred: centring makes the
+          question jump upwards the moment the answer appears below it. */}
       <div
         onClick={!isChoice && !revealed ? onReveal : undefined}
-        className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center"
+        className="flex flex-1 flex-col items-center gap-4 overflow-y-auto px-6 pt-[18vh] text-center"
       >
         <p className="text-sm font-medium tracking-wide text-on-surface-dim">{prompt.instruction}</p>
 

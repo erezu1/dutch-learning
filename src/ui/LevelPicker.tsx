@@ -44,6 +44,13 @@ export function LevelPicker({ current, onPick, onCancel }: Props) {
           Cancel
         </button>
       )}
+
+      {/* The word data is openly licensed and asks to be credited. Kept here
+          rather than on the home screen, which you see every day. */}
+      <p className="text-center text-[0.65rem] leading-relaxed text-on-surface-dim/50">
+        Word data from Wiktionary (CC BY-SA) and Tatoeba (CC BY), ordered by OpenSubtitles
+        frequency.
+      </p>
     </div>
   )
 }

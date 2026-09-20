@@ -75,7 +75,6 @@ export function Home({ stats, level, onStart, onChangeLevel }: Props) {
         </div>
       </div>
 
-      <div className="flex flex-col items-center gap-2">
       {/* Phase 0 diagnostic: does this phone actually have a Dutch voice? */}
       <button
         onClick={() => speak('Goedemorgen, hoe gaat het met je?')}
@@ -88,14 +87,6 @@ export function Home({ stats, level, onStart, onChangeLevel }: Props) {
             ? 'No Dutch voice on this device'
             : 'Speech not supported here'}
       </button>
-
-      {/* The word data is openly licensed and asks to be credited. */}
-      <p className="text-center text-[0.65rem] leading-relaxed text-on-surface-dim/50">
-        Word data from Wiktionary (CC BY-SA) and Tatoeba (CC BY),
-        <br />
-        ordered by OpenSubtitles frequency.
-      </p>
-      </div>
     </div>
   )
 }
