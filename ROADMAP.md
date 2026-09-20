@@ -107,7 +107,7 @@ This is where the app earns its existence versus just using Anki. Build these in
 
 ## 6. Phases
 
-### Phase 0 — Prove the pipe (one evening)
+### Phase 0 — Prove the pipe ✅ done
 - `git init`, push to a new GitHub repo, scaffold Vite+React+TS
 - GitHub Actions workflow → Pages
 - Add the PWA manifest and **install it on both phones before writing any real code**
@@ -115,7 +115,7 @@ This is where the app earns its existence versus just using Anki. Build these in
 
 *Goal: validate the entire delivery path — build, deploy, install, offline, TTS — while there is nothing to debug. This is deliberately the first phase.*
 
-### Phase 1 — The core loop (ugly but genuinely usable)
+### Phase 1 — The core loop ✅ done (ugly but genuinely usable)
 - Note/Card/ReviewLog schema in Dexie
 - `ts-fsrs` wired to card state; daily queue with new/review limits
 - ~100 hand-picked words as a JSON deck
@@ -147,6 +147,14 @@ This is where the app earns its existence versus just using Anki. Build these in
 - Cloze sentences from real Dutch text
 - Capacitor APK for daily reminder notifications
 - Leech detection (cards you keep failing) and a "hard words" session
+- **Speaking practice.** Considered Whisper for this. Two problems: running it
+  in the browser means a 40–150 MB model download and slow on-device inference,
+  which breaks the lightweight-PWA story; and Whisper is built to transcribe
+  *robustly*, correcting for accents on purpose, so it will happily write
+  "hond" when you mispronounced it — a weak judge of pronunciation quality.
+  The browser's own `SpeechRecognition` API is free and needs no download but
+  has the same leniency problem. The honest cheap version: record yourself,
+  play it back next to the TTS, judge it by ear.
 
 ---
 
