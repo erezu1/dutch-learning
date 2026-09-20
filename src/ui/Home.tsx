@@ -5,6 +5,7 @@ import type { LevelOption } from '../core/levels'
 import type { Theme } from '../core/themes'
 import type { SessionStats } from '../session/useSession'
 import { Button } from './Button'
+import { Paw } from './Paw'
 import { ThemePicker } from './ThemePicker'
 import { pressable, quiet } from './motion'
 
@@ -29,7 +30,10 @@ export function Home({ stats, level, theme, onStart, onChangeLevel, onChangeThem
     <div className="flex h-full flex-col justify-between px-6 py-10">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-display text-4xl font-semibold">Doei</h1>
+          <div className="flex items-center gap-2.5">
+            <Paw className="h-8 w-8 text-primary" />
+            <h1 className="font-display text-4xl font-semibold">Doei</h1>
+          </div>
           <p className="mt-1 text-on-surface-dim">A little Dutch, every day.</p>
         </div>
         <motion.button

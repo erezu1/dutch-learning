@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useState, type ReactNode } from 'react'
 import type { Session } from '../session/useSession'
 import { ContinueBar, GradeBar } from './GradeBar'
-import { cardVariants, glide, quiet, tap } from './motion'
+import { cardVariants, glide, quiet, tap, turn } from './motion'
 import { PromptCard } from './PromptCard'
 
 /**
@@ -72,11 +72,11 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
         >
           {/* The icon turns a full circle each time, so the button visibly
               does something rather than just recolouring. */}
-          <motion.span animate={{ rotate: spins * 360 }} transition={glide} className="grid">
+          <motion.span animate={{ rotate: spins * 360 }} transition={turn} className="grid">
             <Icon>
-              <path d="M12.3 8.6a4.6 4.6 0 1 1-4.6 4.6" />
-              <path d="M12.3 8.6H6.9" />
-              <path d="M9.5 6L6.9 8.6l2.6 2.6" />
+              <path d="M12.32 8.33a4.97 4.97 0 1 1-4.97 4.97" />
+              <path d="M12.32 8.33H6.49" />
+              <path d="M9.46 5.52L6.49 8.33l2.81 2.81" />
             </Icon>
           </motion.span>
         </motion.button>

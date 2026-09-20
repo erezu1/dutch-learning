@@ -4,6 +4,8 @@
 // knows which theme is active — they only ever reference the tokens.
 // ---------------------------------------------------------------------------
 
+import { pawSvg } from './paw'
+
 export interface Theme {
   id: string
   name: string
@@ -51,6 +53,26 @@ export function applyTheme(theme: Theme, animate = false): void {
   const meta = document.querySelector('meta[name="theme-color"]')
   const bg = getComputedStyle(document.body).backgroundColor
   if (meta && bg) meta.setAttribute('content', bg)
+
+  setFavicon(theme)
+}
+
+/**
+ * The browser tab icon follows the scheme too. The installed app's icon
+ * cannot — Android takes a copy of the PNG when you add it to the home screen
+ * and never asks again — so that one stays the default orange.
+ */
+function setFavicon(theme: Theme): void {
+  const svg = pawSvg('#ffffff', theme.swatch)
+  const href = `data:image/svg+xml,${encodeURIComponent(svg)}`
+  let link = document.querySelector<HTMLLinkElement>('link[rel="icon"]')
+  if (!link) {
+    link = document.createElement('link')
+    link.rel = 'icon'
+    document.head.appendChild(link)
+  }
+  link.type = 'image/svg+xml'
+  link.href = href
 }
 
 /** Kept in step with the CSS transition duration. */

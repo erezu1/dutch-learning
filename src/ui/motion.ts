@@ -12,6 +12,10 @@ export const tap: Transition = { type: 'spring', stiffness: 700, damping: 30, ma
 /** Cards moving on and off screen. Softer, with a little overshoot. */
 export const glide: Transition = { type: 'spring', stiffness: 260, damping: 28, mass: 0.9 }
 
+/** A deliberate, readable full turn — fast enough to feel responsive, slow
+ *  enough that you see it happen. */
+export const turn: Transition = { duration: 0.62, ease: [0.22, 1, 0.36, 1] }
+
 /** Things that shouldn't draw attention: progress bars, fades. */
 export const quiet: Transition = { duration: 0.32, ease: [0.22, 1, 0.36, 1] }
 

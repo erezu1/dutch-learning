@@ -5,6 +5,7 @@ import type { Deck } from './core/types'
 import { useSession } from './session/useSession'
 import { Done } from './ui/Done'
 import { Home } from './ui/Home'
+import { InstallPrompt } from './ui/InstallPrompt'
 import { LevelPicker } from './ui/LevelPicker'
 import { glide, screenVariants } from './ui/motion'
 import { ReviewScreen } from './ui/ReviewScreen'
@@ -47,41 +48,44 @@ export default function App() {
   const finished = !showLevel && screen === 'review' && session.status === 'done'
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      {showLevel ? (
-        <Screen key="level">
-          <LevelPicker
-            current={session.levelChosen ? session.level : undefined}
-            onPick={(option) => {
-              session.setLevel(option)
-              setScreen('home')
-            }}
-            onCancel={session.levelChosen ? () => setScreen('home') : undefined}
-          />
-        </Screen>
-      ) : reviewing ? (
-        <Screen key="review">
-          <ReviewScreen session={session} onExit={() => setScreen('home')} />
-        </Screen>
-      ) : finished ? (
-        <Screen key="done">
-          <Done stats={session.stats} onHome={() => setScreen('home')} />
-        </Screen>
-      ) : (
-        <Screen key="home">
-          <Home
-            stats={session.stats}
-            level={session.level}
-            theme={session.theme}
-            onChangeTheme={session.setTheme}
-            onChangeLevel={() => setScreen('level')}
-            onStart={() => {
-              session.start()
-              setScreen('review')
-            }}
-          />
-        </Screen>
-      )}
-    </AnimatePresence>
+    <>
+      <InstallPrompt />
+      <AnimatePresence mode="wait" initial={false}>
+        {showLevel ? (
+          <Screen key="level">
+            <LevelPicker
+              current={session.levelChosen ? session.level : undefined}
+              onPick={(option) => {
+                session.setLevel(option)
+                setScreen('home')
+              }}
+              onCancel={session.levelChosen ? () => setScreen('home') : undefined}
+            />
+          </Screen>
+        ) : reviewing ? (
+          <Screen key="review">
+            <ReviewScreen session={session} onExit={() => setScreen('home')} />
+          </Screen>
+        ) : finished ? (
+          <Screen key="done">
+            <Done stats={session.stats} onHome={() => setScreen('home')} />
+          </Screen>
+        ) : (
+          <Screen key="home">
+            <Home
+              stats={session.stats}
+              level={session.level}
+              theme={session.theme}
+              onChangeTheme={session.setTheme}
+              onChangeLevel={() => setScreen('level')}
+              onStart={() => {
+                session.start()
+                setScreen('review')
+              }}
+            />
+          </Screen>
+        )}
+      </AnimatePresence>
+    </>
   )
 }

@@ -109,6 +109,13 @@
     height: 100%;
   }
 
+  /* The canvas outside the body needs the colour too, or the area beyond the
+     app — visible whenever the viewport is taller or wider than the layout —
+     keeps the browser's default white. */
+  html {
+    background: var(--color-surface);
+  }
+
   body {
     margin: 0;
     background: var(--color-surface);
@@ -119,6 +126,18 @@
     /* Respect the phone's notch and gesture bar. */
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
       env(safe-area-inset-left);
+  }
+
+  /* A scroll container clips both axes, which crops the cards' shadows at the
+     left and right edges. The rule pairs with horizontal padding that gives
+     the shadow room; this just removes the scrollbar the browser draws down
+     the side, which reads as a stray vertical line on a phone. */
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 
   button {

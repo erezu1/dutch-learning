@@ -202,97 +202,101 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
       </div>
 
       {/* Lower zone: the options, or the answer once it is given. */}
-      <div className="flex flex-col items-center gap-3 overflow-y-auto">
+      {/* The negative margin lets the shadows spill into the card's own
+          padding instead of being cropped by the scroll container. */}
+      <div className="no-scrollbar -mx-3 flex flex-col items-center gap-3 overflow-y-auto px-3">
         <AnimatePresence mode="wait" initial={false}>
-        {!revealed && !isChoice && (
-          <motion.p
-            key="hint"
-            variants={swapVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={glide}
-            className="pt-4 text-base text-on-surface-dim/70"
-          >
-            tap to reveal
-          </motion.p>
-        )}
+          {!revealed && !isChoice && (
+            <motion.p
+              key="hint"
+              variants={swapVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={glide}
+              className="pt-4 text-base text-on-surface-dim/70"
+            >
+              tap to reveal
+            </motion.p>
+          )}
 
-        {!revealed && isChoice && (
-          <motion.div
-            key="choices"
-            className="w-full"
-            variants={swapVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={glide}
-          >
-            <Choices prompt={prompt} picked={picked} correct={correct} onChoose={onChoose} />
-          </motion.div>
-        )}
+          {!revealed && isChoice && (
+            <motion.div
+              key="choices"
+              className="w-full"
+              variants={swapVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={glide}
+            >
+              <Choices prompt={prompt} picked={picked} correct={correct} onChoose={onChoose} />
+            </motion.div>
+          )}
 
-        {revealed && (
-          <motion.div
-            key="answer"
-            variants={swapVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={glide}
-            className="flex flex-col items-center gap-3"
-          >
-            {isCloze ? (
-              <WithSpeaker speak={prompt.speak} small>
-                <Sentence
-                  sentence={prompt.detail ?? ''}
-                  word={prompt.answer}
-                  className="max-w-[16rem] font-display text-[1.9rem] leading-snug font-semibold"
-                  highlight="text-good-ink"
-                />
-              </WithSpeaker>
-            ) : (
-              <WithSpeaker
-                speak={prompt.answerLang === 'nl' ? prompt.speak : undefined}
-              >
-                <p
-                  lang={prompt.answerLang}
-                  translate="no"
-                  className={`notranslate font-display text-[2.6rem] leading-none font-semibold ${
-                    correct === false ? 'text-bad-ink' : correct === true ? 'text-good-ink' : ''
-                  }`}
-                >
-                  {prompt.answerLang === 'en' ? <Gloss text={prompt.answer} /> : prompt.answer}
-                </p>
-              </WithSpeaker>
-            )}
+          {revealed && (
+            <motion.div
+              key="answer"
+              variants={swapVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={glide}
+              className="flex flex-col items-center gap-3"
+            >
+              {isCloze ? (
+                <WithSpeaker speak={prompt.speak} small>
+                  <Sentence
+                    sentence={prompt.detail ?? ''}
+                    word={prompt.answer}
+                    className="max-w-[16rem] font-display text-[1.9rem] leading-snug font-semibold"
+                    highlight="text-good-ink"
+                  />
+                </WithSpeaker>
+              ) : (
+                <WithSpeaker speak={prompt.answerLang === 'nl' ? prompt.speak : undefined}>
+                  <p
+                    lang={prompt.answerLang}
+                    translate="no"
+                    className={`notranslate font-display text-[2.6rem] leading-none font-semibold ${
+                      correct === false ? 'text-bad-ink' : correct === true ? 'text-good-ink' : ''
+                    }`}
+                  >
+                    {prompt.answerLang === 'en' ? <Gloss text={prompt.answer} /> : prompt.answer}
+                  </p>
+                </WithSpeaker>
+              )}
 
-            {correct === false && picked && (
-              <p className="text-base text-bad-ink/80">you chose &ldquo;{picked}&rdquo;</p>
-            )}
+              {correct === false && picked && (
+                <p className="text-base text-bad-ink/80">you chose &ldquo;{picked}&rdquo;</p>
+              )}
 
-            {prompt.meaning && <p className="max-w-xs text-base text-on-surface-dim">{prompt.meaning}</p>}
+              {prompt.meaning && (
+                <p className="max-w-xs text-base text-on-surface-dim">{prompt.meaning}</p>
+              )}
 
-            {isCloze
-              ? prompt.detailTranslation && (
-                  <p className="max-w-xs text-base text-on-surface-dim">{prompt.detailTranslation}</p>
-                )
-              : prompt.detail && (
-                  <div className="mt-3 max-w-[16rem] space-y-1">
-                    <WithSpeaker speak={prompt.detail} small>
-                      <Sentence
-                        sentence={prompt.detail}
-                        word={prompt.note.nl}
-                        className="text-lg text-on-surface/85"
-                      />
-                    </WithSpeaker>
-                    {prompt.detailTranslation && (
-                      <p className="text-base text-on-surface-dim">{prompt.detailTranslation}</p>
-                    )}
-                  </div>
-                )}
-          </motion.div>
-        )}
+              {isCloze
+                ? prompt.detailTranslation && (
+                    <p className="max-w-xs text-base text-on-surface-dim">
+                      {prompt.detailTranslation}
+                    </p>
+                  )
+                : prompt.detail && (
+                    <div className="mt-3 max-w-[16rem] space-y-1">
+                      <WithSpeaker speak={prompt.detail} small>
+                        <Sentence
+                          sentence={prompt.detail}
+                          word={prompt.note.nl}
+                          className="text-lg text-on-surface/85"
+                        />
+                      </WithSpeaker>
+                      {prompt.detailTranslation && (
+                        <p className="text-base text-on-surface-dim">{prompt.detailTranslation}</p>
+                      )}
+                    </div>
+                  )}
+            </motion.div>
+          )}
         </AnimatePresence>
       </div>
     </div>
