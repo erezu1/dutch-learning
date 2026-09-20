@@ -133,6 +133,10 @@ export default function App() {
               stats={session.stats}
               points={session.sessionPoints}
               onHome={() => setScreen('home')}
+              onMore={(extra) => {
+                session.start(extra)
+                setScreen('review')
+              }}
             />
           </Screen>
         ) : (
@@ -146,8 +150,8 @@ export default function App() {
               onChangeTheme={session.setTheme}
               onChangeLevel={() => setScreen('level')}
               onOpenSettings={() => setScreen('settings')}
-              onStart={() => {
-                session.start()
+              onStart={(extra) => {
+                session.start(extra)
                 setScreen('review')
               }}
             />

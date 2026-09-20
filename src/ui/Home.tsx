@@ -19,7 +19,7 @@ interface Props {
   onOpenSettings: () => void
   theme: Theme
   resolvedMode: Resolved
-  onStart: () => void
+  onStart: (extra: boolean) => void
   onChangeLevel: () => void
   onChangeTheme: (theme: Theme) => void
 }
@@ -40,7 +40,11 @@ export function Home({
 
   useEffect(() => onVoicesReady(() => setVoice(voiceReport())), [])
 
-  const waiting = stats.dueCount + stats.newCount
+  const waiting = stats.waiting
+  // Once the day is done there is always more deck, so there is no reason to
+  // stop anyone who wants to carry on — the day's shape is a suggestion, not
+  // a gate. Only a finished deck disables the button.
+  const another = waiting === 0 && stats.extraWaiting > 0
   // The ring is today: it empties overnight and closes when the day's cards
   // are done. It used to show words known out of the whole two thousand, which
   // on any real day is a sliver that never visibly moves — it read as broken
@@ -174,13 +178,23 @@ export function Home({
             {waiting > 0
               ? `${stats.doneToday} of ${stats.plannedToday} questions today`
               : stats.doneToday > 0
-                ? `all ${stats.doneToday} questions done today`
+                ? `${stats.doneToday} questions today — that's the lot`
                 : 'nothing due today'}
           </motion.p>
         </div>
 
-        <Button onClick={onStart} disabled={waiting === 0} className="w-full max-w-xs">
-          {waiting === 0 ? 'Done for today' : stats.doneToday > 0 ? 'Continue' : 'Start'}
+        <Button
+          onClick={() => onStart(another)}
+          disabled={waiting === 0 && !another}
+          className="w-full max-w-xs"
+        >
+          {waiting > 0
+            ? stats.doneToday > 0
+              ? 'Continue'
+              : 'Start'
+            : another
+              ? 'Another round?'
+              : 'Nothing left'}
         </Button>
       </div>
 

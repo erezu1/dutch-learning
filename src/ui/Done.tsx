@@ -8,10 +8,16 @@ interface Props {
   stats: SessionStats
   points: number
   onHome: () => void
+  onMore: (extra: boolean) => void
 }
 
-export function Done({ stats, points, onHome }: Props) {
+export function Done({ stats, points, onHome, onMore }: Props) {
   const pct = stats.reviewed ? Math.round((stats.correct / stats.reviewed) * 100) : 0
+  // The end of a session is not the end of the day, and even the end of the
+  // day is not the end of the deck. Whichever it is, the way on is the button
+  // you land on — going back to the home screen to start again is a detour.
+  const more = stats.waiting > 0
+  const another = !more && stats.extraWaiting > 0
 
   return (
     <div className="flex h-full flex-col items-center justify-center gap-8 px-6 text-center">
@@ -21,7 +27,7 @@ export function Done({ stats, points, onHome }: Props) {
         transition={glide}
       >
         <p className="text-6xl">🎉</p>
-        <h1 className={`mt-4 text-4xl ${TITLE}`}>Done for today</h1>
+        <h1 className={`mt-4 text-4xl ${TITLE}`}>{more ? 'Nice work' : "That's today"}</h1>
         <motion.p
           initial={{ scale: 0.7, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -33,9 +39,16 @@ export function Done({ stats, points, onHome }: Props) {
         <p className="mt-1 text-on-surface-dim">{pct}% correct</p>
       </motion.div>
 
-      <Button onClick={onHome} className="px-12">
-        Back
-      </Button>
+      <div className="flex w-full max-w-xs flex-col items-center gap-3">
+        {(more || another) && (
+          <Button onClick={() => onMore(another)} className="w-full">
+            {more ? 'Keep going' : 'Another round?'}
+          </Button>
+        )}
+        <Button tone={more || another ? 'neutral' : 'primary'} onClick={onHome} className="px-12">
+          {more || another ? 'Not now' : 'Back'}
+        </Button>
+      </div>
     </div>
   )
 }

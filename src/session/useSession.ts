@@ -34,11 +34,33 @@ const BURST_EVERY = 3
 
 const startOfToday = () => new Date(new Date().setHours(0, 0, 0, 0)).getTime()
 
+/** Local calendar day, as a key we can compare. */
+const today = () => new Date().toLocaleDateString('sv')
+
+/**
+ * What the day's allowance has already been spent on. Without this the daily
+ * budget was a per-*session* budget: finish the five new words and the next
+ * five were immediately waiting, so the app never reached the end of a day and
+ * "done" only ever meant the whole deck was exhausted.
+ */
+interface Intake {
+  day: string
+  words: number
+  follows: number
+}
+
+const EMPTY_INTAKE: Intake = { day: '', words: 0, follows: 0 }
+
+const spentToday = (intake: Intake): Intake =>
+  intake.day === today() ? intake : { day: today(), words: 0, follows: 0 }
+
 export interface SessionStats {
   reviewed: number
   correct: number
-  dueCount: number
-  newCount: number
+  /** Questions the next session would ask. */
+  waiting: number
+  /** Questions one more round would find, once the day's are done. */
+  extraWaiting: number
   /** Words whose recognise card has reached the review stage. */
   known: number
   total: number
@@ -79,7 +101,8 @@ export interface Session {
   autoContinue: boolean
   setAutoContinue: (next: boolean) => void
 
-  start: () => void
+  /** `extra` asks for one more round past the day's allowance. */
+  start: (extra?: boolean) => void
   reveal: () => void
   choose: (value: string) => void
   grade: (grade: Grade) => void
@@ -127,6 +150,7 @@ export function useSession(deck: Deck): Session {
   const [reviewed, setReviewed] = useState(0)
   const [correctCount, setCorrectCount] = useState(0)
   const [doneToday, setDoneToday] = useState(0)
+  const [intake, setIntake] = useState<Intake>(EMPTY_INTAKE)
 
   const shownAt = useRef<number>(Date.now())
   /**
@@ -161,29 +185,33 @@ export function useSession(deck: Deck): Session {
     Promise.all([
       db.states.toArray(),
       db.reviews.where('at').aboveOrEqual(startOfToday()).count(),
+      getMeta<Intake>('intake', EMPTY_INTAKE),
       getMeta<string | null>('level', null),
       getMeta<string | null>('theme', null),
       getMeta<string | null>('mode', null),
       getMeta<number>('score', 0),
       getMeta<boolean>('autoContinue', false),
-    ]).then(([rows, today, savedLevel, savedTheme, savedMode, savedScore, savedAuto]) => {
-      if (cancelled) return
-      setStates(new Map(rows.map((r) => [r.cardId, r] as const)))
-      setDoneToday(today)
-      setLevelState(levelById(savedLevel))
-      setLevelChosen(savedLevel !== null)
-      setScore(savedScore)
-      setAutoContinueState(savedAuto)
-      const t = themeById(savedTheme)
-      // Nacht used to be one of the colours. Anyone who was using it wanted a
-      // dark app, so that is what they get — in whichever colour they land on.
-      const m = savedMode === null && wasNightScheme(savedTheme) ? 'dark' : modeById(savedMode)
-      setThemeState(t)
-      setModeState(m)
-      setResolvedMode(resolveMode(m))
-      applyAppearance(t, m)
-      setStatus('idle')
-    })
+    ]).then(
+      ([rows, done, savedIntake, savedLevel, savedTheme, savedMode, savedScore, savedAuto]) => {
+        if (cancelled) return
+        setStates(new Map(rows.map((r) => [r.cardId, r] as const)))
+        setDoneToday(done)
+        setIntake(spentToday(savedIntake))
+        setLevelState(levelById(savedLevel))
+        setLevelChosen(savedLevel !== null)
+        setScore(savedScore)
+        setAutoContinueState(savedAuto)
+        const t = themeById(savedTheme)
+        // Nacht used to be one of the colours. Anyone who was using it wanted a
+        // dark app, so that is what they get — in whichever colour they land on.
+        const m = savedMode === null && wasNightScheme(savedTheme) ? 'dark' : modeById(savedMode)
+        setThemeState(t)
+        setModeState(m)
+        setResolvedMode(resolveMode(m))
+        applyAppearance(t, m)
+        setStatus('idle')
+      },
+    )
     return () => {
       cancelled = true
     }
@@ -232,15 +260,34 @@ export function useSession(deck: Deck): Session {
     })
   }, [])
 
-  const options: QueueOptions = useMemo(
-    () => ({ ...DEFAULTS, now: new Date(), rankOf, startRank: level.startRank }),
-    // Rebuilt whenever progress or level changes, which is what we want.
-    [states, rankOf, level],
+  /**
+   * The day's allowance, less what it has already been spent on. An extra
+   * round ignores that and takes a fresh allowance — the point of asking for
+   * one is to go past the day's shape, not to be told there is nothing left.
+   */
+  const optionsFor = useCallback(
+    (extra: boolean): QueueOptions => ({
+      ...DEFAULTS,
+      newPerDay: extra ? DEFAULTS.newPerDay : Math.max(0, DEFAULTS.newPerDay - intake.words),
+      followPerDay: extra
+        ? DEFAULTS.followPerDay
+        : Math.max(0, DEFAULTS.followPerDay - intake.follows),
+      now: new Date(),
+      rankOf,
+      startRank: level.startRank,
+    }),
+    [intake, rankOf, level],
   )
 
   const preview = useMemo(
-    () => buildQueue(cards, states, options),
-    [cards, states, options],
+    () => buildQueue(cards, states, optionsFor(false)),
+    [cards, states, optionsFor],
+  )
+
+  /** What one more round would hold, so the button can offer it honestly. */
+  const extraPreview = useMemo(
+    () => buildQueue(cards, states, optionsFor(true)),
+    [cards, states, optionsFor],
   )
 
   const stats: SessionStats = useMemo(() => {
@@ -252,43 +299,44 @@ export function useSession(deck: Deck): Session {
     return {
       reviewed,
       correct: correctCount,
-      dueCount: preview.dueCount,
-      newCount: preview.newCount,
       known,
       total: deck.notes.length,
+      // Everything the next session would ask, not just the due and the new:
+      // the follow-up questions are questions too, and leaving them out made
+      // the day look shorter than it was.
+      waiting: preview.cards.length,
+      extraWaiting: extraPreview.cards.length,
       doneToday,
       // What's left plus what's already done is the day's whole shape, so the
       // ring fills as the day is worked through and is full when it's finished.
-      plannedToday: doneToday + preview.dueCount + preview.newCount,
+      plannedToday: doneToday + preview.cards.length,
     }
-  }, [deck, states, preview, reviewed, correctCount, doneToday])
+  }, [deck, states, preview, extraPreview, reviewed, correctCount, doneToday])
 
-  const start = useCallback(() => {
-    clearRevealTimer()
-    const q = buildQueue(cards, states, {
-      ...DEFAULTS,
-      now: new Date(),
-      rankOf,
-      startRank: level.startRank,
-    })
-    undoStack.current = []
-    pending.current = { amount: 0, answers: 0 }
-    queueRef.current = q.cards
-    recorded.current = false
-    setQueue(q.cards)
-    setIndex(0)
-    setReviewed(0)
-    setCorrectCount(0)
-    setSessionPoints(0)
-    setAward(null)
-    setRevealed(false)
-    setPicked(null)
-    shownAt.current = Date.now()
-    setStatus(q.cards.length ? 'reviewing' : 'done')
-  }, [cards, states, rankOf, level, clearRevealTimer])
+  const start = useCallback(
+    (extra = false) => {
+      clearRevealTimer()
+      const q = buildQueue(cards, states, optionsFor(extra))
+      undoStack.current = []
+      pending.current = { amount: 0, answers: 0 }
+      queueRef.current = q.cards
+      recorded.current = false
+      setQueue(q.cards)
+      setIndex(0)
+      setReviewed(0)
+      setCorrectCount(0)
+      setSessionPoints(0)
+      setAward(null)
+      setRevealed(false)
+      setPicked(null)
+      shownAt.current = Date.now()
+      setStatus(q.cards.length ? 'reviewing' : 'done')
+    },
+    [cards, states, optionsFor, clearRevealTimer],
+  )
 
   const card = queue[index] ?? null
-  const note: Note | null = card ? notes.get(card.noteId) ?? null : null
+  const note: Note | null = card ? (notes.get(card.noteId) ?? null) : null
 
   // Memoised on the card, not the render: multiple-choice options are shuffled
   // when they are built, so rebuilding on every render would reorder the
@@ -350,6 +398,20 @@ export function useSession(deck: Deck): Session {
       })
       setSessionPoints((p) => p + earned.amount)
       setDoneToday((n) => n + 1)
+
+      // A card only counts against the day's allowance the first time it is
+      // seen. Reviews are not intake — they are the debt the intake created.
+      if (!previous) {
+        setIntake((was) => {
+          const now = spentToday(was)
+          const next =
+            card.type === 'recognize'
+              ? { ...now, words: now.words + 1 }
+              : { ...now, follows: now.follows + 1 }
+          void setMeta('intake', next).catch(() => {})
+          return next
+        })
+      }
 
       // A word graduating is worth interrupting for, whenever it happens.
       // Anything else waits its turn, and carries the banked points with it.
