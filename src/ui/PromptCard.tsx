@@ -181,7 +181,7 @@ function WithSpeaker({
       <motion.div
         role="button"
         tabIndex={0}
-        whileTap={{ scale: 0.95 }}
+        whileTap={{ scale: 0.97 }}
         transition={tap}
         onClick={(e) => {
           e.stopPropagation()
