@@ -208,7 +208,9 @@ export function Home({
           </motion.p>
         </div>
 
-        <div className="flex w-full flex-col items-center gap-6">
+        {/* The week sits a little apart from the button: it's a record, not
+            a second thing to press. */}
+        <div className="flex w-full flex-col items-center gap-10">
           <Button
             onClick={() => onStart(another)}
             disabled={waiting === 0 && !another}
