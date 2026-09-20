@@ -103,6 +103,34 @@
   --duration-move: 320ms;
 }
 
+/* A wave leaving the speaker's mouth: out from the cone and fading as it goes.
+   Written as a CSS animation rather than in the motion library, which would
+   not tween these SVG paths at all — it jumped them straight to their final
+   scale. Three copies run at a third of a cycle apart, so one is always
+   departing while another is still travelling. */
+@keyframes speaker-wave {
+  0% {
+    transform: scale(0.55);
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.95;
+  }
+  60% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: scale(2.35);
+    opacity: 0;
+  }
+}
+
+.speaker-wave {
+  transform-box: view-box;
+  transform-origin: 13px 12px;
+  animation: speaker-wave 0.9s linear infinite;
+}
+
 @layer base {
   html,
   body,

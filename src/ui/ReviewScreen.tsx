@@ -69,15 +69,20 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
           aria-label="Undo"
           whileTap={{ scale: 0.82 }}
           transition={tap}
-          className={`${headerButton} active:bg-surface-2 disabled:opacity-25`}
+          className={`${headerButton} active:bg-surface-2 disabled:text-on-surface-dim/25`}
         >
           {/* The icon turns a full circle each time, so the button visibly
               does something rather than just recolouring. */}
           <motion.span animate={{ rotate: spins * 360 }} transition={turn} className="grid">
             <Icon>
-              <path d="M12.32 8.33a4.97 4.97 0 1 1-4.97 4.97" />
-              <path d="M12.32 8.33H6.49" />
-              <path d="M9.46 5.52L6.49 8.33l2.81 2.81" />
+              {/* Scaled to fill the same 13-unit box as the cross, with the
+                  stroke width pre-divided by that scale so it still renders at
+                  2 — scaling a group scales its stroke, which is what made
+                  this read heavier and smaller than the cross beside it. */}
+              <g transform="translate(3.33 3.33) scale(0.7222)" strokeWidth={2 / 0.7222}>
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                <path d="M3 3v5h5" />
+              </g>
             </Icon>
           </motion.span>
         </motion.button>

@@ -1,14 +1,13 @@
-import { motion } from 'framer-motion'
 import { supported } from '../core/speech'
 
 // ---------------------------------------------------------------------------
 // The speaker, with its own waves as the animation.
 //
-// The two arcs are concentric about the cone's mouth, and the outer is exactly
-// 1.94x the inner — so growing the inner by that factor lands it precisely
-// where the outer was. Each cycle therefore ends on an icon identical to the
-// one it began with, which is what lets it repeat seamlessly for as long as
-// the voice is talking, rather than pulsing once and snapping back.
+// While the voice is talking, waves leave the cone's mouth one after another.
+// They are staggered by a third of a cycle, so there is always one in flight
+// and a new one departing — an earlier version moved all of them together,
+// which meant a short word finished before the single cycle did and read as
+// one pulse rather than a stream.
 //
 // The strokes keep their width while they grow: scaling a path scales its
 // stroke too, which made a wave thicken as it travelled out. vector-effect
@@ -21,12 +20,9 @@ const CONE = 'M4 9v6h4l5 4V5L8 9H4Z'
 const WAVE_INNER = 'M15.27 9.47A3.4 3.4 0 0 1 15.27 14.53'
 const WAVE_OUTER = 'M17.42 7.1A6.6 6.6 0 0 1 17.42 16.9'
 
-/** How much bigger the outer wave is than the inner one. */
-const STEP = 1.94
-const CYCLE = 0.72
-
-/** Everything scales about the cone's mouth, so the waves leave from it. */
-const origin = { transformBox: 'view-box', transformOrigin: '13px 12px' } as const
+/** A wave's lifetime, matching the CSS. One departs every CYCLE / WAVES. */
+const CYCLE = 0.9
+const WAVES = 3
 
 const wave = {
   fill: 'none',
@@ -35,8 +31,6 @@ const wave = {
   strokeLinecap: 'round' as const,
   vectorEffect: 'non-scaling-stroke' as const,
 }
-
-const loop = { duration: CYCLE, ease: 'linear' as const, repeat: Infinity }
 
 export function SpeakButton({
   text,
@@ -73,33 +67,15 @@ export function SpeakButton({
 
         {speaking ? (
           <g>
-            {/* The outer wave carries on outwards and fades. */}
-            <motion.path
-              d={WAVE_OUTER}
-              {...wave}
-              style={origin}
-              initial={{ scale: 1, opacity: 1 }}
-              animate={{ scale: STEP, opacity: 0 }}
-              transition={loop}
-            />
-            {/* The inner one grows into exactly where the outer was. */}
-            <motion.path
-              d={WAVE_INNER}
-              {...wave}
-              style={origin}
-              initial={{ scale: 1, opacity: 1 }}
-              animate={{ scale: STEP, opacity: 1 }}
-              transition={loop}
-            />
-            {/* And a new one forms at the mouth to replace it. */}
-            <motion.path
-              d={WAVE_INNER}
-              {...wave}
-              style={origin}
-              initial={{ scale: 0.45, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={loop}
-            />
+            {Array.from({ length: WAVES }, (_, i) => (
+              <path
+                key={i}
+                d={WAVE_INNER}
+                {...wave}
+                className="speaker-wave"
+                style={{ animationDelay: `${(i * CYCLE) / WAVES}s` }}
+              />
+            ))}
           </g>
         ) : (
           <>
