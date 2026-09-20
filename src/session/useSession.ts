@@ -56,6 +56,8 @@ export interface Session {
   reveal: () => void
   choose: (value: string) => void
   grade: (grade: Grade) => void
+  /** Moves on without recording — a choice card is recorded when answered. */
+  advance: () => void
   undo: () => void
   canUndo: boolean
 }
@@ -95,6 +97,11 @@ export function useSession(deck: Deck): Session {
   const shownAt = useRef<number>(Date.now())
   const undoStack = useRef<UndoEntry[]>([])
   const revealTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  /** Guards against scoring the same card twice — once on answer, once on Continue. */
+  const recorded = useRef(false)
+  /** The live queue, so advancing can see a card requeued a moment earlier. */
+  const queueRef = useRef<Card[]>([])
+  const promptRef = useRef<Prompt | null>(null)
 
   const clearRevealTimer = useCallback(() => {
     if (revealTimer.current) {
@@ -181,6 +188,8 @@ export function useSession(deck: Deck): Session {
       startRank: level.startRank,
     })
     undoStack.current = []
+    queueRef.current = q.cards
+    recorded.current = false
     setQueue(q.cards)
     setIndex(0)
     setReviewed(0)
@@ -210,6 +219,8 @@ export function useSession(deck: Deck): Session {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [card?.id, note?.id, deck])
 
+  promptRef.current = prompt
+
   const correct = useMemo(() => {
     if (!prompt || prompt.shape !== 'choice' || picked === null) return null
     return picked === prompt.answer
@@ -217,32 +228,11 @@ export function useSession(deck: Deck): Session {
 
   const reveal = useCallback(() => setRevealed(true), [])
 
-  const choose = useCallback(
-    (value: string) => {
-      if (revealTimer.current) return // already answered
-      setPicked(value)
-      // Hold briefly so the option you pressed is visibly the one you pressed,
-      // before the answer takes its place.
-      revealTimer.current = setTimeout(() => {
-        revealTimer.current = null
-        setRevealed(true)
-      }, SELECT_DELAY)
-    },
-    [],
-  )
-
-  /**
-   * A multiple-choice answer is graded by the app, not by you — it already
-   * knows whether you were right. Wrong becomes Again, right becomes Good.
-   */
-  const autoGrade: Grade | null = useMemo(() => {
-    if (correct === null) return null
-    return correct ? Rating.Good : Rating.Again
-  }, [correct])
-
-  const grade = useCallback(
+  /** Records the answer: persists it, scores it, and requeues a failure. */
+  const record = useCallback(
     async (g: Grade) => {
-      if (!card) return
+      if (!card || recorded.current) return
+      recorded.current = true
       const previous = states.get(card.id)
       const base = previous ?? emptyState(card.id)
       const now = new Date()
@@ -258,7 +248,6 @@ export function useSession(deck: Deck): Session {
       })
       await db.states.put(next)
 
-      clearRevealTimer()
       undoStack.current.push({ previous, reviewId: reviewId as number, index, wasCorrect: correct })
 
       setStates((prev) => new Map(prev).set(card.id, next))
@@ -273,18 +262,62 @@ export function useSession(deck: Deck): Session {
       if (g !== Rating.Again) setCorrectCount((n) => n + 1)
 
       // A failed card comes back later in the same session.
-      setQueue((prev) => (g === Rating.Again ? [...prev, card] : prev))
-
-      setRevealed(false)
-      setPicked(null)
-      shownAt.current = Date.now()
-      setIndex((i) => {
-        const nextIndex = i + 1
-        if (nextIndex >= (g === Rating.Again ? queue.length + 1 : queue.length)) setStatus('done')
-        return nextIndex
-      })
+      if (g === Rating.Again) {
+        queueRef.current = [...queueRef.current, card]
+        setQueue(queueRef.current)
+      }
     },
-    [card, states, index, queue.length, correct],
+    [card, states, index, correct],
+  )
+
+  const choose = useCallback(
+    (value: string) => {
+      if (revealTimer.current || recorded.current) return // already answered
+      setPicked(value)
+      // The answer is known the instant it is given, so score it now — the
+      // points belong to the moment you got it right, not to pressing Continue
+      // afterwards.
+      void record(value === promptRef.current?.answer ? Rating.Good : Rating.Again)
+      // Then hold, so the option you pressed is visibly the one you pressed and
+      // the points have the screen, before the answer takes their place.
+      revealTimer.current = setTimeout(() => {
+        revealTimer.current = null
+        setRevealed(true)
+      }, SELECT_DELAY)
+    },
+    [record],
+  )
+
+  /**
+   * A multiple-choice answer is graded by the app, not by you — it already
+   * knows whether you were right. Wrong becomes Again, right becomes Good.
+   */
+  const autoGrade: Grade | null = useMemo(() => {
+    if (correct === null) return null
+    return correct ? Rating.Good : Rating.Again
+  }, [correct])
+
+  /** Moves to the next card. Separate, so recording can happen earlier. */
+  const advance = useCallback(() => {
+    clearRevealTimer()
+    recorded.current = false
+    setRevealed(false)
+    setPicked(null)
+    shownAt.current = Date.now()
+    setIndex((i) => {
+      const nextIndex = i + 1
+      if (nextIndex >= queueRef.current.length) setStatus('done')
+      return nextIndex
+    })
+  }, [clearRevealTimer])
+
+  /** Self-graded cards do both at once: you judge, then it moves on. */
+  const grade = useCallback(
+    async (g: Grade) => {
+      await record(g)
+      advance()
+    },
+    [record, advance],
   )
 
   const undo = useCallback(async () => {
@@ -332,6 +365,7 @@ export function useSession(deck: Deck): Session {
     reveal,
     choose,
     grade,
+    advance,
     undo,
     canUndo: undoStack.current.length > 0,
   }

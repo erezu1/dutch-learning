@@ -35,8 +35,12 @@ export const pressable = {
 /**
  * How long a tap's own result stays on screen before the view moves on.
  * Acting instantly reads as a glitch — you never see what you pressed.
+ *
+ * On a multiple-choice card this also gives the points their moment: the
+ * answer is scored the instant you choose, so the burst plays over the option
+ * you picked and has cleared by the time the answer takes the screen.
  */
-export const SELECT_DELAY = 420
+export const SELECT_DELAY = 780
 
 /** Whole screens. Quieter than the card motion, so they don't compete. */
 export const screenVariants: Variants = {

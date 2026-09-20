@@ -110,15 +110,13 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
 
       <div className="flex min-h-[7.5rem] items-end">
         {revealed &&
-        (session.autoGrade !== null ? (
-          // Multiple choice: already graded, just move on.
-          <ContinueBar
-            correct={correct === true}
-            onContinue={() => session.grade(session.autoGrade!)}
-          />
-        ) : (
-          <GradeBar onGrade={session.grade} />
-        ))}
+          (session.autoGrade !== null ? (
+            // Multiple choice: already graded, just move on.
+            // Already recorded when the option was chosen; this only moves on.
+            <ContinueBar correct={correct === true} onContinue={session.advance} />
+          ) : (
+            <GradeBar onGrade={session.grade} />
+          ))}
       </div>
     </div>
   )

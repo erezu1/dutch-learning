@@ -12,7 +12,7 @@ import type { Award } from '../core/score'
 // look at. It clears itself in under a second and never takes a tap.
 // ---------------------------------------------------------------------------
 
-const VISIBLE_MS = 1150
+const VISIBLE_MS = 840
 
 /** Spark directions, spread evenly and offset so they don't line up on axes. */
 function sparkOffsets(count: number, distance: number) {
@@ -50,7 +50,7 @@ export function ScorePop({ award }: { award: (Award & { key: number }) | null })
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: [0, 0.82, 0.82, 0] }}
-            transition={{ duration: VISIBLE_MS / 1000, times: [0, 0.14, 0.6, 1], ease: 'easeOut' }}
+            transition={{ duration: VISIBLE_MS / 1000, times: [0, 0.16, 0.55, 1], ease: 'easeOut' }}
             className="absolute inset-0 bg-surface backdrop-blur-[2px]"
           />
 
