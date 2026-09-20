@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { LEVELS, type LevelOption } from '../core/levels'
 import { glide, pressable, SELECT_DELAY } from './motion'
+import { TITLE } from './type'
 
 // ---------------------------------------------------------------------------
 // Asked once on first run, changeable any time. It sets where new words start
@@ -30,7 +31,7 @@ export function LevelPicker({ current, onPick, onCancel }: Props) {
   return (
     <div className="flex h-full flex-col justify-center gap-8 px-6 py-10">
       <div>
-        <h1 className="text-4xl font-bold tracking-tight">Where are you now?</h1>
+        <h1 className={`text-4xl ${TITLE}`}>Where are you now?</h1>
         <p className="mt-2 text-on-surface-dim">
           This decides which words you&rsquo;re given first. You can change it whenever you like.
         </p>
@@ -58,7 +59,7 @@ export function LevelPicker({ current, onPick, onCancel }: Props) {
                   : 'bg-surface-1'
               }`}
             >
-              <p className="text-xl font-bold tracking-tight">{option.name}</p>
+              <p className={`text-xl ${TITLE}`}>{option.name}</p>
               <p className={`mt-0.5 text-sm ${active ? 'opacity-70' : 'text-on-surface-dim'}`}>
                 {option.description}
               </p>

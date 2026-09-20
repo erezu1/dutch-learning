@@ -8,69 +8,22 @@ where almost all of its appearance lives. Colour schemes are blocks of the
 same tokens selected by `data-theme` on `<html>` — no component knows which
 one is active.
 
-**The serif is reserved for Dutch.** Fraunces carries the words and sentences
-being learned; everything else, including the app's own name and its numbers,
-is Bricolage Grotesque. When you see the serif, it is Dutch — which is why an
-English prompt on a recall card is set in the sans even though it sits in the
-same slot as a Dutch one.
+**Three type roles, defined in `src/ui/type.ts`.**
 
-The rule lives in one function, `fontFor(lang)` in `src/ui/PromptCard.tsx`, and
-every piece of text on a card goes through it. It was spread across four
-conditionals before and had already drifted: an English answer was being set in
-the serif. If you are adding text to a card, take the font from there rather
-than writing `font-display` again: surfaces, the accent, a four-level
-elevation scale and the motion curves. `src/ui/motion.ts` holds the animation
-vocabulary — components pick from it rather than inventing their own easing,
-since a different curve per component is what makes an interface feel
-homemade.
+| role | used for |
+|---|---|
+| `FOCUS` (serif) | the thing being taught right now: the word being asked about, the answer once revealed, the Dutch example sentence |
+| `TITLE` (sans, bold, tight) | the app's name and screen headings |
+| default (sans) | everything else: instructions, parts of speech, options, translations, buttons |
 
-See [ROADMAP.md](ROADMAP.md) for the plan and the reasoning behind it.
+The serif marks **what you are meant to be looking at**, not what language it
+is in. That is why the options are set in the sans even on a recall card where
+they are Dutch words — they are choices, not the subject — and why an English
+answer is set in the serif once revealed.
 
-## Run it
-
-```bash
-npm install
-npm run dev
-```
-
-## How it's put together
-
-The important thing about the layout is the seam between **logic** and
-**presentation**, because the UI is going to be rewritten (Phase 3) and the
-scheduling must not be disturbed when it is.
-
-```
-src/
-  content/       the Dutch language data — plain JSON, shipped with the build
-  core/          pure logic. No React, no DOM.
-    types.ts       what we know about a word (the source of truth)
-    cards.ts       one note -> several cards
-    scheduler.ts   the only file that talks to ts-fsrs
-    queue.ts       what to study now, and what's still locked
-    db.ts          progress storage (IndexedDB) — never leaves the phone
-    speech.ts      Dutch text-to-speech
-  session/
-    prompts.ts     card -> a Prompt: everything needed to ask a question,
-                   with nothing about how it looks
-    useSession.ts  all session state and behaviour, headless
-  ui/            rendering only. Reads Prompts, calls session callbacks.
-```
-
-Rules that keep it that way:
-
-- Nothing in `core/` or `session/` may import from `ui/`.
-- The UI never imports `ts-fsrs` or Dexie directly.
-- A new way to answer a question (swipe, typing, drag-to-order) is a new
-  `PromptShape` plus a renderer — not a change to the scheduler.
-
-## Data model in one paragraph
-
-A **Note** is a dictionary entry: the Dutch word, its meaning, and its grammar
-as *structured fields* (`gender`, `plural`, `verb.participle`, …). Every filled
-field is a question we can ask, so one note generates several **Cards** —
-nl→en, en→nl, de/het, plural, past participle. Card ids are derived from the
-note id and never change, so editing content never disturbs saved progress.
-Progress is a **CardState** per card plus an append-only **Review** log.
+If you are adding text, take its role from `type.ts` rather than writing
+`font-display` again. The rule was spread across four conditionals once and had
+already drifted without anyone noticing.
 
 ## Content
 

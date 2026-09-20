@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { Button } from './Button'
 import { glide } from './motion'
 import { Paw } from './Paw'
+import { TITLE } from './type'
 
 // ---------------------------------------------------------------------------
 // The first thing anyone sees. Opening on a question — "where are you now?" —
@@ -26,7 +27,7 @@ export function Welcome({ onBegin }: { onBegin: () => void }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ ...glide, delay: 0.18 }}
       >
-        <h1 className="text-5xl font-bold tracking-tight">Doei</h1>
+        <h1 className={`text-5xl ${TITLE}`}>Doei</h1>
         <p className="mt-3 text-lg text-balance text-on-surface-dim">
           Dutch, a few minutes a day.
         </p>

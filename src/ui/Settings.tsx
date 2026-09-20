@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { glide } from './motion'
 import { Switch } from './Switch'
+import { TITLE } from './type'
 
 interface Props {
   autoContinue: boolean
@@ -32,7 +33,7 @@ export function Settings({ autoContinue, onAutoContinue, onBack }: Props) {
             <path d="M15 5.5 8 12l7 6.5" />
           </svg>
         </motion.button>
-        <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+        <h1 className={`text-3xl ${TITLE}`}>Settings</h1>
       </div>
 
       <div className="mt-8 flex flex-col gap-3">

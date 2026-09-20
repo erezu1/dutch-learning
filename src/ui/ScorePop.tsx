@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import type { Award } from '../core/score'
+import { TITLE } from './type'
 
 // ---------------------------------------------------------------------------
 // The points a card just earned, bursting in the middle of the screen.
@@ -83,7 +84,7 @@ export function ScorePop({ award }: { award: (Award & { key: number }) | null })
               className="relative flex flex-col items-center"
             >
               <span
-                className={`leading-none font-bold tracking-tight text-primary ${
+                className={`leading-none text-primary ${TITLE} ${
                   big ? 'text-7xl' : 'text-6xl'
                 }`}
               >

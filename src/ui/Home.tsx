@@ -10,6 +10,7 @@ import { Paw } from './Paw'
 import { useCanInstall } from './useCanInstall'
 import { ThemePicker } from './ThemePicker'
 import { pressable, quiet } from './motion'
+import { TITLE } from './type'
 
 interface Props {
   stats: SessionStats
@@ -46,7 +47,7 @@ export function Home({
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
             <Paw className="h-8 w-8 text-primary" />
-            <h1 className="text-4xl font-bold tracking-tight">Doei</h1>
+            <h1 className={`text-4xl ${TITLE}`}>Doei</h1>
           </div>
 
           <div className="flex shrink-0 items-center gap-2">
@@ -140,7 +141,7 @@ export function Home({
               initial={{ scale: 0.86, opacity: 0.4 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={quiet}
-              className="text-5xl font-bold tracking-tight"
+              className={`text-5xl ${TITLE}`}
             >
               {score.toLocaleString()}
             </motion.p>

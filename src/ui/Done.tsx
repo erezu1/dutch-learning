@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import type { SessionStats } from '../session/useSession'
 import { Button } from './Button'
 import { glide } from './motion'
+import { TITLE } from './type'
 
 interface Props {
   stats: SessionStats
@@ -20,12 +21,12 @@ export function Done({ stats, points, onHome }: Props) {
         transition={glide}
       >
         <p className="text-6xl">🎉</p>
-        <h1 className="mt-4 text-4xl font-bold tracking-tight">Done for today</h1>
+        <h1 className={`mt-4 text-4xl ${TITLE}`}>Done for today</h1>
         <motion.p
           initial={{ scale: 0.7, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 240, damping: 18, delay: 0.15 }}
-          className="mt-3 text-5xl font-bold tracking-tight text-primary"
+          className={`mt-3 text-5xl text-primary ${TITLE}`}
         >
           +{points}
         </motion.p>
