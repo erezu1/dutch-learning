@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { eraseEverything } from '../core/db'
 import { onVoicesReady, speak, voiceReport, type VoiceReport } from '../core/speech'
 import { MODES, type Mode } from '../core/themes'
+import { DAY_NAMES, type WeekStartDay } from '../core/week'
 import { Button } from './Button'
 import { glide, pressable, swapVariants, tap } from './motion'
 import { Switch } from './Switch'
@@ -13,6 +14,8 @@ interface Props {
   onAutoContinue: (next: boolean) => void
   mode: Mode
   onMode: (next: Mode) => void
+  weekStartsOn: WeekStartDay
+  onWeekStartsOn: (day: WeekStartDay) => void
   onBack: () => void
 }
 
@@ -84,11 +87,9 @@ function DutchVoice() {
         </>
       ) : voice.supported ? (
         <p className="mt-0.5 text-sm text-on-surface-dim">
-          This phone has no Dutch voice installed, so the speaker buttons stay
-          quiet. On Android:{' '}
+          This phone has no Dutch voice installed, so the speaker buttons stay quiet. On Android:{' '}
           <span className="text-on-surface">
-            Settings → System → Languages &amp; input → Text-to-speech → install
-            Nederlands
+            Settings → System → Languages &amp; input → Text-to-speech → install Nederlands
           </span>
           . It downloads once and then works offline, like the rest of the app.
         </p>
@@ -98,6 +99,53 @@ function DutchVoice() {
         </p>
       )}
     </div>
+  )
+}
+
+/**
+ * Where to cut the week for the strip on the home screen. Seven initials in
+ * the order the days come in, drawn like the strip itself so it is obvious
+ * what is being set — and the line underneath names the day in full, because
+ * two of those letters are T and two are S.
+ */
+function WeekStartPicker({
+  value,
+  onChange,
+}: {
+  value: WeekStartDay
+  onChange: (day: WeekStartDay) => void
+}) {
+  return (
+    <>
+      <div className="mt-4 flex rounded-full bg-surface-2 p-1">
+        {DAY_NAMES.map((name, i) => {
+          const day = i as WeekStartDay
+          const active = day === value
+          return (
+            <motion.button
+              key={name}
+              {...pressable}
+              onClick={() => onChange(day)}
+              aria-label={name}
+              aria-pressed={active}
+              className="relative flex-1 rounded-full py-2 text-sm font-medium"
+            >
+              {active && (
+                <motion.span
+                  layoutId="week-start-pill"
+                  transition={tap}
+                  className="absolute inset-0 rounded-full bg-surface-1 shadow-1"
+                />
+              )}
+              <span className={`relative ${active ? '' : 'text-on-surface-dim'}`}>{name[0]}</span>
+            </motion.button>
+          )
+        })}
+      </div>
+      <p className="mt-3 text-sm text-on-surface-dim">
+        Weeks run {DAY_NAMES[value]} to {DAY_NAMES[(value + 6) % 7]}.
+      </p>
+    </>
   )
 }
 
@@ -184,7 +232,15 @@ function StartOver() {
   )
 }
 
-export function Settings({ autoContinue, onAutoContinue, mode, onMode, onBack }: Props) {
+export function Settings({
+  autoContinue,
+  onAutoContinue,
+  mode,
+  onMode,
+  weekStartsOn,
+  onWeekStartsOn,
+  onBack,
+}: Props) {
   return (
     <div className="flex h-full flex-col px-6 py-10">
       <div className="flex items-center gap-3">
@@ -224,11 +280,7 @@ export function Settings({ autoContinue, onAutoContinue, mode, onMode, onBack }:
               After a multiple-choice answer, move on by itself instead of waiting for a tap.
             </p>
           </div>
-          <Switch
-            checked={autoContinue}
-            onChange={onAutoContinue}
-            label="Continue automatically"
-          />
+          <Switch checked={autoContinue} onChange={onAutoContinue} label="Continue automatically" />
         </motion.div>
 
         <motion.div
@@ -248,6 +300,19 @@ export function Settings({ autoContinue, onAutoContinue, mode, onMode, onBack }:
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ ...glide, delay: 0.08 }}
+          className="rounded-3xl bg-surface-1 px-5 py-4 shadow-2"
+        >
+          <p className="font-semibold">Week starts on</p>
+          <p className="mt-0.5 text-sm text-on-surface-dim">
+            Where the seven dots under the Start button are cut.
+          </p>
+          <WeekStartPicker value={weekStartsOn} onChange={onWeekStartsOn} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...glide, delay: 0.11 }}
         >
           <DutchVoice />
         </motion.div>
@@ -257,7 +322,7 @@ export function Settings({ autoContinue, onAutoContinue, mode, onMode, onBack }:
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ ...glide, delay: 0.1 }}
+          transition={{ ...glide, delay: 0.14 }}
         >
           <StartOver />
         </motion.div>

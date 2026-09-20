@@ -35,14 +35,39 @@ export interface WeekDay {
   today: boolean
 }
 
-const LETTERS = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+/** A day of the week in JavaScript's own numbering: 0 is Sunday. */
+export type WeekStartDay = 0 | 1 | 2 | 3 | 4 | 5 | 6
 
-/** Monday of the week `now` falls in, at midnight. */
-export function weekStart(now: Date): Date {
+/** Sunday first, because that is the order `getDay` counts in. */
+const LETTERS = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+export const DAY_NAMES = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+]
+
+/**
+ * The Netherlands starts its weeks on Monday, so the app does too until told
+ * otherwise. Which day it is changes nothing but where the strip is cut: the
+ * days themselves are the same days.
+ */
+export const DEFAULT_WEEK_START: WeekStartDay = 1
+
+export function weekStartDay(value: unknown): WeekStartDay {
+  return typeof value === 'number' && value >= 0 && value <= 6
+    ? (Math.trunc(value) as WeekStartDay)
+    : DEFAULT_WEEK_START
+}
+
+/** The first day of the week `now` falls in, at midnight. */
+export function weekStart(now: Date, startsOn: WeekStartDay = DEFAULT_WEEK_START): Date {
   const start = new Date(now)
   start.setHours(0, 0, 0, 0)
-  // getDay is Sunday-first; the Netherlands, and the app, start on Monday.
-  start.setDate(start.getDate() - ((start.getDay() + 6) % 7))
+  start.setDate(start.getDate() - ((start.getDay() - startsOn + 7) % 7))
   return start
 }
 
@@ -56,10 +81,12 @@ export function weekDays(
   studied: Set<string>,
   finished: Set<string>,
   since?: string,
+  startsOn: WeekStartDay = DEFAULT_WEEK_START,
 ): WeekDay[] {
-  const start = weekStart(now)
+  const start = weekStart(now, startsOn)
   const todayKey = dayKey(now)
-  return LETTERS.map((letter, i) => {
+  return LETTERS.map((_, i) => {
+    const letter = LETTERS[(startsOn + i) % 7]
     const date = new Date(start)
     date.setDate(start.getDate() + i)
     const key = dayKey(date)
@@ -81,7 +108,9 @@ export function weekDays(
  * One line under the dots. It should read like someone who is pleased for you
  * and has not been keeping a ledger: a missed day is worth naming once, and
  * never worth naming twice. Nothing here scolds, because an app that scolds
- * gets deleted on the first bad week.
+ * gets deleted on the first bad week — and nothing here trails off into a
+ * full stop either, which is the punctuation of a status bar rather than of
+ * someone glad you turned up.
  */
 export function weekMessage(days: WeekDay[]): string {
   const index = days.findIndex((d) => d.today)
@@ -100,21 +129,23 @@ export function weekMessage(days: WeekDay[]): string {
   // of the week or of the app.
   // Vacuously true on a Monday, which is why the index is part of it.
   const firstDay = index > 0 && sofar.slice(0, index).every((d) => d.state === 'ahead')
-  if (index === 0 && !todayDone && started === 0) return 'A new week. Start it straight.'
-  if (firstDay && !todayDone) return 'Day one. The rest of the week is yours.'
-  if (firstDay && todayDone) return 'First day, done.'
+  if (index === 0 && !todayDone && started === 0) return 'A new week. Start it straight!'
+  if (firstDay && !todayDone) return 'Day one. The rest of the week is yours!'
+  if (firstDay && todayDone) return 'First day, done!'
   if (todayDone && missed === 0 && started === 0) {
-    if (index === 6) return 'Every day this week. All seven.'
-    return streak > 1 ? `${streak} days straight, and the week is clean.` : 'Day one, done.'
+    if (index === 6) return 'Every day this week. All seven!'
+    return streak > 1 ? `${streak} days straight, and the week is clean!` : 'Day one, done!'
   }
-  if (todayDone && streak > 1) return `${streak} days in a row.`
-  if (todayDone) return missed === 1 ? 'Back on it after one off day.' : 'Today is done.'
+  if (todayDone && streak > 1) return `${streak} days in a row!`
+  if (todayDone) return missed === 1 ? 'Back on it after one off day!' : 'Today is done!'
 
   if (missed === 0) {
-    if (started > 0) return 'Nothing missed yet — finish today and it stays that way.'
-    return done > 0 ? 'Clean week so far. Keep it.' : 'Nothing missed yet this week.'
+    if (started > 0) return 'Nothing missed yet — finish today and it stays that way!'
+    return done > 0
+      ? 'Clean week so far. Keep it up!'
+      : 'Nothing missed yet this week — off to a clean start!'
   }
-  if (missed === 1) return 'One day missed this week. Today evens it up.'
-  if (done > 0) return `${missed} days missed, ${done} done. Today decides which way it goes.`
-  return `${missed} days missed this week. The week can still turn around.`
+  if (missed === 1) return 'One day missed this week. Today evens it up!'
+  if (done > 0) return `${missed} days missed, ${done} done. Today decides which way it goes!`
+  return `${missed} days missed this week. Plenty of week left!`
 }

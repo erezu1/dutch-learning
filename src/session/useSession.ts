@@ -5,7 +5,14 @@ import { buildQueue, DEFAULTS, isUnlocked, type QueueOptions } from '../core/que
 import { applyGrade, emptyState, isNew, Rating, State, type Grade } from '../core/scheduler'
 import { awardFor, type Award } from '../core/score'
 import { DEFAULT_LEVEL, levelById, type LevelOption } from '../core/levels'
-import { dayKey, weekDays, weekStart, type WeekDay } from '../core/week'
+import {
+  DEFAULT_WEEK_START,
+  dayKey,
+  weekDays,
+  weekStartDay,
+  type WeekDay,
+  type WeekStartDay,
+} from '../core/week'
 import {
   applyAppearance,
   DEFAULT_MODE,
@@ -91,8 +98,11 @@ export interface Session {
   award: (Award & { key: number }) | null
   /** Set for a choice prompt once answered: the grade the app will apply. */
   autoGrade: Grade | null
-  /** This week, Monday first, for the strip under the button. */
+  /** This week, for the strip under the button. */
   week: WeekDay[]
+  /** Which day the strip starts on. 0 is Sunday. */
+  weekStartsOn: WeekStartDay
+  setWeekStartsOn: (day: WeekStartDay) => void
   level: LevelOption
   /** False until the level has been picked, so we can ask on first run. */
   levelChosen: boolean
@@ -162,6 +172,7 @@ export function useSession(deck: Deck): Session {
   const [finished, setFinished] = useState<Set<string>>(() => new Set())
   /** The day of the first ever answer. Days before it can't have been missed. */
   const [firstDay, setFirstDay] = useState<string | null>(null)
+  const [weekStartsOn, setWeekStartsOnState] = useState<WeekStartDay>(DEFAULT_WEEK_START)
 
   const shownAt = useRef<number>(Date.now())
   /**
@@ -197,8 +208,15 @@ export function useSession(deck: Deck): Session {
       db.states.toArray(),
       db.reviews.where('at').aboveOrEqual(startOfToday()).count(),
       getMeta<Intake>('intake', EMPTY_INTAKE),
-      db.reviews.where('at').aboveOrEqual(weekStart(new Date()).getTime()).toArray(),
+      // Nine days rather than this week: which day the week starts on is a
+      // setting, and it is loaded by this same call. Days outside the week on
+      // screen are simply never looked up.
+      db.reviews
+        .where('at')
+        .aboveOrEqual(Date.now() - 9 * 24 * 60 * 60 * 1000)
+        .toArray(),
       getMeta<string[]>('finishedDays', []),
+      getMeta<unknown>('weekStart', DEFAULT_WEEK_START),
       db.reviews.orderBy('at').first(),
       getMeta<string | null>('level', null),
       getMeta<string | null>('theme', null),
@@ -212,6 +230,7 @@ export function useSession(deck: Deck): Session {
         savedIntake,
         thisWeek,
         savedFinished,
+        savedWeekStart,
         earliest,
         savedLevel,
         savedTheme,
@@ -226,6 +245,7 @@ export function useSession(deck: Deck): Session {
         setStudied(new Set(thisWeek.map((r) => dayKey(new Date(r.at)))))
         setFinished(new Set(savedFinished))
         setFirstDay(earliest ? dayKey(new Date(earliest.at)) : null)
+        setWeekStartsOnState(weekStartDay(savedWeekStart))
         setLevelState(levelById(savedLevel))
         setLevelChosen(savedLevel !== null)
         setScore(savedScore)
@@ -363,10 +383,15 @@ export function useSession(deck: Deck): Session {
   // looked at, and put down, so midnight passing while it sits on screen is
   // not a case worth code.
   const week = useMemo(
-    () => weekDays(new Date(), studied, finished, firstDay ?? today()),
+    () => weekDays(new Date(), studied, finished, firstDay ?? today(), weekStartsOn),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [studied, finished, firstDay, doneToday],
+    [studied, finished, firstDay, weekStartsOn, doneToday],
   )
+
+  const setWeekStartsOn = useCallback((day: WeekStartDay) => {
+    setWeekStartsOnState(day)
+    void setMeta('weekStart', day).catch(() => {})
+  }, [])
 
   const start = useCallback(
     (extra = false) => {
@@ -606,6 +631,8 @@ export function useSession(deck: Deck): Session {
     award,
     autoGrade,
     week,
+    weekStartsOn,
+    setWeekStartsOn,
     level,
     levelChosen,
     setLevel,

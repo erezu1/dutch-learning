@@ -127,6 +127,8 @@ export default function App() {
         ) : screen === 'settings' ? (
           <Screen key="settings">
             <Settings
+              weekStartsOn={session.weekStartsOn}
+              onWeekStartsOn={session.setWeekStartsOn}
               autoContinue={session.autoContinue}
               onAutoContinue={session.setAutoContinue}
               mode={session.mode}

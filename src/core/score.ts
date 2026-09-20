@@ -5,12 +5,15 @@ import type { CardStateRow } from './db'
 // Points.
 //
 // Tied to what actually happened rather than invented: recalling something
-// earns more than failing it, and a word graduating out of learning — the
+// earns, failing it doesn't, and a word graduating out of learning — the
 // moment it genuinely entered your memory — earns much more than any single
-// answer. A wrong answer still scores, because turning up and being corrected
-// is how the thing works and shouldn't feel like a penalty.
+// answer.
 //
-// The total only ever goes up. It is a record of effort, not a judgement.
+// So the score is a record of what you know, and the ring on the home screen
+// is a record of turning up. They move independently on purpose, which is why
+// a day of wrong answers fills the ring and leaves the number where it was.
+//
+// The total only ever goes up.
 // ---------------------------------------------------------------------------
 
 export const POINTS = {
