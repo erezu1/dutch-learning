@@ -129,8 +129,14 @@ function Choices({
             transition={{ ...glide, delay: picked === null ? 0.04 * i : 0 }}
             onClick={() => onChoose(choice)}
             translate="no"
+            // The options are Dutch whenever the answer is — on a recall card
+            // they are the words themselves, so they take the serif too.
             className={`notranslate rounded-3xl shadow-2 transition-shadow active:shadow-press ${
-              pair ? 'flex-1 py-7 font-display text-3xl font-semibold' : 'px-5 py-4 text-xl'
+              pair
+                ? 'flex-1 py-7 font-display text-3xl font-semibold'
+                : prompt.answerLang === 'nl'
+                  ? 'px-5 py-4 font-display text-2xl font-semibold'
+                  : 'px-5 py-4 text-xl'
             } ${resultTone || choiceColor[choice] || 'bg-surface-1'}`}
           >
             <Gloss text={choice} />
