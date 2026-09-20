@@ -40,9 +40,9 @@ export const THEMES: Theme[] = [
     light: 51,
     dark: { light: 66, chroma: 0.17 },
   },
-  { id: 'klomp', name: 'Klomp', hue: 42, chroma: 0.173, light: 65 },
+  { id: 'klomp', name: 'Klomp', hue: 42, chroma: 0.173, light: 58 },
   { id: 'polder', name: 'Polder', hue: 158, chroma: 0.11, light: 55 },
-  { id: 'zee', name: 'Zee', hue: 200, chroma: 0.12, light: 57 },
+  { id: 'zee', name: 'Zee', hue: 200, chroma: 0.115, light: 54 },
   { id: 'lucht', name: 'Lucht', hue: 255, chroma: 0.16, light: 55 },
   { id: 'lavendel', name: 'Lavendel', hue: 310, chroma: 0.18, light: 54 },
 ]

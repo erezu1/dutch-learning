@@ -405,12 +405,14 @@ body::after {
   --accent-dark-h: 27;
 }
 
-/* Likewise #e2622a. Light enough that white on it is thin, so its ink is dark. */
+/* #e2622a, a shade deeper. Every scheme puts white on its accent, and white
+   on that orange as it was measured 3.5:1 — below what text needs. Rather
+   than give one scheme black ink and leave the app with two answers to the
+   same question, the orange comes down to where white works: 4.6:1. */
 :root[data-theme='klomp'] {
   --hue: 42;
   --chroma: 0.173;
-  --accent-l: 65%;
-  --color-on-primary: oklch(24% 0.05 42);
+  --accent-l: 58%;
 }
 
 :root[data-theme='polder'] {
@@ -419,11 +421,11 @@ body::after {
   --accent-l: 55%;
 }
 
+/* Same again: 4.1:1 as it was, 4.6:1 here. */
 :root[data-theme='zee'] {
   --hue: 200;
-  --chroma: 0.12;
-  --accent-l: 57%;
-  --color-on-primary: oklch(22% 0.04 200);
+  --chroma: 0.115;
+  --accent-l: 54%;
 }
 
 :root[data-theme='lucht'] {
