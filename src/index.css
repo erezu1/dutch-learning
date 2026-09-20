@@ -93,6 +93,12 @@
   --glow: 30 20 24;
   --glow-boost: 1;
 
+  /* How much of the accent the moving ground carries. Low enough that the
+     words never have to compete with it: at anything stronger the page starts
+     reading as decoration with text on it. */
+  --ambient-near: 13%;
+  --ambient-far: 9%;
+
   /* Every level opens with a 1px ring. White cards on a warm off-white page
      have very little edge contrast of their own, and pressing one draws its
      shadow in — without the ring the outline disappears at exactly the moment
@@ -187,11 +193,92 @@
   animation: speaker-wave 1.8s linear infinite;
 }
 
+/* ---------------------------------------------------------------------------
+   The ground.
+
+   Two soft lights crossing the page on long one-way circuits, like afternoon
+   sun moving across a wall. One way and not back: something that swings to and
+   fro reads as a thing oscillating, where this reads as time passing. Their
+   periods share no common factor, so the pattern the two make together comes
+   round about once every hour and a half — long enough that you never learn it.
+
+   Gradients on a transform and nothing else: no blur filter, which is the
+   expensive part of this effect and would be running the whole time the app is
+   open, on a phone.
+--------------------------------------------------------------------------- */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  /* Larger than the screen, so the far edge of the gradient never shows. */
+  inset: -28%;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+body::before {
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--color-primary) var(--ambient-near), transparent) 0%,
+    transparent 60%
+  );
+  animation: ambient-near 97s linear infinite;
+}
+
+body::after {
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--color-primary) var(--ambient-far), transparent) 0%,
+    transparent 56%
+  );
+  animation: ambient-far 61s linear infinite;
+}
+
+@keyframes ambient-near {
+  0% {
+    transform: translate(-21%, -15%);
+  }
+  25% {
+    transform: translate(19%, -21%);
+  }
+  50% {
+    transform: translate(25%, 15%);
+  }
+  75% {
+    transform: translate(-17%, 23%);
+  }
+  100% {
+    transform: translate(-21%, -15%);
+  }
+}
+
+@keyframes ambient-far {
+  0% {
+    transform: translate(17%, 19%);
+  }
+  33% {
+    transform: translate(-23%, 9%);
+  }
+  66% {
+    transform: translate(-5%, -21%);
+  }
+  100% {
+    transform: translate(17%, 19%);
+  }
+}
+
 @layer base {
   html,
   body,
   #root {
     height: 100%;
+  }
+
+  /* Above the ground, which sits at z-index 0 on the body itself. */
+  #root {
+    position: relative;
+    z-index: 1;
   }
 
   /* The canvas outside the body needs the colour too, or the area beyond the
@@ -361,4 +448,9 @@
      page where a shadow had a white card to fall away from. */
   --glow: 255 255 255;
   --glow-boost: 2;
+
+  /* The accent is a light colour in dark mode, so the same strength reads
+     brighter against the ground. */
+  --ambient-near: 10%;
+  --ambient-far: 7%;
 }
