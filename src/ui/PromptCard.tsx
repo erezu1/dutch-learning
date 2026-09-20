@@ -1,9 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { splitAroundWord } from '../core/cards'
 import type { Prompt } from '../session/prompts'
 import { speak as say } from '../core/speech'
-import { glide, pressable, swapVariants } from './motion'
+import { glide, pressable, swapVariants, tap } from './motion'
 import { SpeakButton } from './SpeakButton'
 
 // ---------------------------------------------------------------------------
@@ -125,23 +125,35 @@ function WithSpeaker({
   small?: boolean
   children: ReactNode
 }) {
+  // Counts each utterance so the icon can replay its ripple. Shared, so tapping
+  // the word animates the icon exactly as tapping the icon does.
+  const [pulse, setPulse] = useState(0)
+
   if (!phrase) return <>{children}</>
+
+  const trigger = () => {
+    say(phrase)
+    setPulse((n) => n + 1)
+  }
+
   return (
     <div className="flex justify-center">
       {/* The text itself is the button — tapping the word or the sentence is
           the obvious way to hear it, and the icon is only a hint that you can.
           Stops propagation so it doesn't also flip the card. */}
-      <div
+      <motion.div
         role="button"
         tabIndex={0}
+        whileTap={{ scale: 0.95 }}
+        transition={tap}
         onClick={(e) => {
           e.stopPropagation()
-          say(phrase)
+          trigger()
         }}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.stopPropagation()
-            say(phrase)
+            trigger()
           }
         }}
         className="relative cursor-pointer"
@@ -150,9 +162,11 @@ function WithSpeaker({
         <SpeakButton
           text={phrase}
           small={small}
+          pulse={pulse}
+          onActivate={trigger}
           className={`absolute top-1/2 -translate-y-1/2 ${small ? 'left-full ml-1.5' : 'left-full ml-2.5'}`}
         />
-      </div>
+      </motion.div>
     </div>
   )
 }
@@ -216,7 +230,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
               // interface, not material.
               className={`notranslate text-balance ${
                 prompt.questionLang === 'nl' ? 'font-display font-semibold' : 'font-bold tracking-tight'
-              } ${isSentence ? 'text-[1.9rem] leading-snug' : 'text-[3.4rem] leading-none'}`}
+              } ${isSentence ? 'text-[2.05rem] leading-snug' : 'text-[4rem] leading-none'}`}
             >
               {prompt.questionLang === 'en' ? <Gloss text={prompt.question} /> : prompt.question}
             </h1>
@@ -310,7 +324,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                     </p>
                   )
                 : prompt.detail && (
-                    <div className="mt-3 max-w-[16rem] space-y-1">
+                    <div className="mt-8 max-w-[16rem] space-y-1">
                       <WithSpeaker speak={prompt.detail} small>
                         <Sentence
                           sentence={prompt.detail}
