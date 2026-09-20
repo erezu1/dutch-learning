@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { THEMES, type Theme } from '../core/themes'
+import { swatch, THEMES, type Resolved, type Theme } from '../core/themes'
 import { pressable } from './motion'
 
 // ---------------------------------------------------------------------------
@@ -8,9 +8,17 @@ import { pressable } from './motion'
 // control and the name is only there for screen readers.
 // ---------------------------------------------------------------------------
 
-export function ThemePicker({ current, onPick }: { current: Theme; onPick: (t: Theme) => void }) {
+export function ThemePicker({
+  current,
+  resolved,
+  onPick,
+}: {
+  current: Theme
+  resolved: Resolved
+  onPick: (t: Theme) => void
+}) {
   return (
-    <div className="flex items-center justify-center gap-3">
+    <div className="flex flex-wrap items-center justify-center gap-2">
       {THEMES.map((theme) => {
         const active = theme.id === current.id
         return (
@@ -26,12 +34,12 @@ export function ThemePicker({ current, onPick }: { current: Theme; onPick: (t: T
             <span
               className="block h-5 w-5 rounded-full transition-[box-shadow]"
               style={{
-                background: theme.swatch,
+                background: swatch(theme, resolved),
                 // The active dot gets a ring drawn in the page colour, then a
                 // hairline, so it reads as selected on any background.
                 boxShadow: active
-                  ? `0 0 0 3px ${theme.ring}, 0 0 0 4.5px ${theme.swatch}`
-                  : '0 0 0 1px rgba(0,0,0,0.08)',
+                  ? `0 0 0 3px var(--color-surface), 0 0 0 4.5px ${swatch(theme, resolved)}`
+                  : '0 0 0 1px var(--edge-strong)',
               }}
             />
           </motion.button>

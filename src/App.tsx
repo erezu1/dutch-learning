@@ -122,6 +122,8 @@ export default function App() {
             <Settings
               autoContinue={session.autoContinue}
               onAutoContinue={session.setAutoContinue}
+              mode={session.mode}
+              onMode={session.setMode}
               onBack={() => setScreen('home')}
             />
           </Screen>
@@ -140,6 +142,7 @@ export default function App() {
               score={session.score}
               level={session.level}
               theme={session.theme}
+              resolvedMode={session.resolvedMode}
               onChangeTheme={session.setTheme}
               onChangeLevel={() => setScreen('level')}
               onOpenSettings={() => setScreen('settings')}

@@ -46,9 +46,7 @@ function fitSize(text: string | string[], max: string, min = '1.6rem', whole = f
   // may wrap is measured by its longest unbreakable run. For a single word
   // the two are the same.
   const run = Math.max(
-    ...texts.map((t) =>
-      whole ? t.length : Math.max(...t.split(/\s+/).map((w) => w.length), 1),
-    ),
+    ...texts.map((t) => (whole ? t.length : Math.max(...t.split(/\s+/).map((w) => w.length), 1))),
     1,
   )
   // 80vw, not the full width: the speaker hangs off the word's right edge
@@ -120,12 +118,15 @@ function Choices({
         // moves on.
         const isPicked = picked === choice
         const isAnswer = picked !== null && choice === prompt.answer
+        // Green and red are the verdict on what you pressed. The right answer
+        // you *didn't* press isn't a verdict on anything — it is the answer,
+        // so it wears the scheme's colour like every other answer does.
         const resultTone = isPicked
           ? correct
             ? 'bg-good text-good-ink'
             : 'bg-bad text-bad-ink'
           : isAnswer
-            ? 'bg-good text-good-ink'
+            ? 'bg-primary-container text-primary'
             : ''
 
         return (
@@ -154,15 +155,18 @@ function Choices({
 }
 
 /**
- * Centres the text on the frame and hangs the speaker off its right edge.
- * Putting the two in a row and centring the row centres the *pair*, which
- * leaves the word itself sitting left of centre — visible as soon as you line
- * it up against the label above and the buttons below.
+ * Centres the text on the frame and hands the caller a speaker to put at the
+ * end of its text.
  *
- * The caller says how its text is set, and the icon lands on the middle of
- * that text's *first* line. Centring on the block instead drops it into the
- * gutter as soon as a sentence runs to two lines, which is why it sat
- * differently on a word, a sentence and an answer.
+ * The icon rides in the text's own flow, in a marker with no width, with the
+ * icon itself overflowing to the right of it. That way it follows the end of
+ * the last line wherever it happens to fall — and contributes nothing to
+ * centring, so the word still sits in the middle of the frame rather than the
+ * word-and-icon pair sitting there with the word pushed left.
+ *
+ * Hanging it off the right edge of the text's *box* instead put it 60px clear
+ * of a centred sentence's short first line, while a single word got 8px:
+ * the same rule, but only because a word's box is its text.
  */
 function WithSpeaker({
   speak: phrase,
@@ -172,7 +176,7 @@ function WithSpeaker({
   speak?: string
   /** The font size of the text inside, so the icon can be placed in its terms. */
   size: string
-  children: ReactNode
+  children: (speaker: ReactNode) => ReactNode
 }) {
   // True while the voice is talking, so the waves run for the length of the
   // word or sentence instead of a fixed beat. Shared, so tapping the word
@@ -200,17 +204,32 @@ function WithSpeaker({
     })
   }
 
+  const speaker = phrase ? (
+    <span className="relative inline-block w-0 align-baseline">
+      {/* Fades rather than appearing: it follows the text, so it arrives
+          somewhere else on a question that has just been completed. */}
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { duration: 0.3, delay: 0.24 } }}
+        // Half an x-height above the baseline: the middle of the lower-case
+        // letters, which is where the eye puts the middle of a line. Half the
+        // line box sits lower, because most words leave the descender space
+        // empty. flex, so the box is the icon and not an inherited line.
+        style={{ bottom: `calc(0.5ex - ${ICON / 2}px)` }}
+        className="absolute left-2 flex"
+      >
+        <SpeakButton text={phrase} speaking={speaking} onActivate={trigger} />
+      </motion.span>
+    </span>
+  ) : null
+
   // The same elements whether or not there is anything to hear. Returning the
-  // children bare when there isn't moves everything inside up two levels of
-  // the tree, which unmounts whatever was animating in there — that is what
+  // children bare when there isn't moves everything inside up a level of the
+  // tree, which unmounts whatever was animating in there — that is what
   // stopped a gap-fill's sentence from ever animating, since the sentence only
   // becomes speakable at the moment it changes.
   return (
-    // Baseline alignment, so the marker beside the text sits on the text's
-    // first baseline — the line the icon belongs next to, whether the text is
-    // one line or three. The marker has no width, so centring the row still
-    // centres the text alone.
-    <div className="flex items-baseline justify-center" style={{ fontSize: size }}>
+    <div className="flex justify-center" style={{ fontSize: size }}>
       {/* The text itself is the button — tapping the word or the sentence is
           the obvious way to hear it, and the icon is only a hint that you can.
           Stops propagation so it doesn't also flip the card. */}
@@ -235,36 +254,8 @@ function WithSpeaker({
         transition={tap}
         className={phrase ? 'cursor-pointer' : undefined}
       >
-        {children}
+        {children(speaker)}
       </motion.div>
-
-      <span className="relative w-0">
-        {/* Fades rather than appearing: it hangs off the right edge of whatever
-            it belongs to, so it arrives somewhere else on a question that has
-            just been completed. */}
-        <AnimatePresence initial={false}>
-          {phrase && (
-            <motion.span
-              key="speaker"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { duration: 0.3, delay: 0.24 } }}
-              exit={{ opacity: 0, transition: { duration: 0.22 } }}
-              // Half an x-height above the baseline: the middle of the
-              // lower-case letters, which is where the eye puts the middle of
-              // a word. Half the em box — the line's own middle — sits lower,
-              // because most words leave the descender space empty.
-              style={{ bottom: `calc(0.5ex - ${ICON / 2}px)` }}
-              // flex, so the box is the icon and nothing else. As an inline
-              // box it inherits the text's line-height, which at a heading's
-              // size is a box several times the icon's height — and the icon
-              // then sits wherever that box's own baseline falls.
-              className="absolute left-2 flex"
-            >
-              <SpeakButton text={phrase} speaking={speaking} onActivate={trigger} />
-            </motion.span>
-          )}
-        </AnimatePresence>
-      </span>
     </div>
   )
 }
@@ -279,12 +270,15 @@ function Sentence({
   className = '',
   highlight = 'font-semibold text-on-surface',
   as: Tag = 'p',
+  trailing,
 }: {
   sentence: string
   word: string
   className?: string
   highlight?: string
   as?: 'p' | 'span'
+  /** Rides at the end of the last line — the speaker, when there is one. */
+  trailing?: ReactNode
 }) {
   const parts = splitAroundWord(sentence, word)
   return (
@@ -298,6 +292,7 @@ function Sentence({
       ) : (
         sentence
       )}
+      {trailing}
     </Tag>
   )
 }
@@ -374,7 +369,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
 
         <WithSpeaker
           size={focalSize}
-          
+
           // Speaking a gap-fill before it's answered would read out the answer.
           // A question that hasn't been completed yet must not be read out —
           // for a gap-fill that would speak the answer.
@@ -393,47 +388,50 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
               single grid cell, and the hidden one holds that cell at the size
               of the finished question for the whole card, so neither version
               has to move to make room for the other. */}
-          <div className="grid place-items-center [&>*]:col-start-1 [&>*]:row-start-1">
-            {prompt.completion && (
-              <span
-                aria-hidden="true"
-                style={{ fontSize: focalSize }}
-                className={`invisible ${headlineClass}`}
-              >
-                {prompt.completion}
-              </span>
-            )}
-            <AnimatePresence initial={false}>
-              <motion.h1
-                // Keyed on the words it shows: a question that changes is
-                // replaced by the new one, and a question that doesn't keeps
-                // its key and never animates at all.
-                key={headline}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { duration: 0.3, delay: 0.24 } }}
-                exit={{ opacity: 0, transition: { duration: 0.22 } }}
-                lang={prompt.questionLang}
-                translate="no"
-                style={{ fontSize: focalSize }}
-                className={headlineClass}
-              >
-                {completes && revealed ? (
-                  // Only the part that was missing is coloured: the article,
-                  // the helper, the word that went in the gap.
-                  <Sentence
-                    as="span"
-                    sentence={prompt.completion!}
-                    word={prompt.answer}
-                    highlight={ANSWER_COLOUR}
-                  />
-                ) : prompt.questionLang === 'en' ? (
-                  <Gloss text={prompt.question} stacked />
-                ) : (
-                  prompt.question
-                )}
-              </motion.h1>
-            </AnimatePresence>
-          </div>
+          {(speaker) => (
+            <div className="grid place-items-center [&>*]:col-start-1 [&>*]:row-start-1">
+              {prompt.completion && (
+                <span
+                  aria-hidden="true"
+                  style={{ fontSize: focalSize }}
+                  className={`invisible ${headlineClass}`}
+                >
+                  {prompt.completion}
+                </span>
+              )}
+              <AnimatePresence initial={false}>
+                <motion.h1
+                  // Keyed on the words it shows: a question that changes is
+                  // replaced by the new one, and a question that doesn't keeps
+                  // its key and never animates at all.
+                  key={headline}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, transition: { duration: 0.3, delay: 0.24 } }}
+                  exit={{ opacity: 0, transition: { duration: 0.22 } }}
+                  lang={prompt.questionLang}
+                  translate="no"
+                  style={{ fontSize: focalSize }}
+                  className={headlineClass}
+                >
+                  {completes && revealed ? (
+                    // Only the part that was missing is coloured: the article,
+                    // the helper, the word that went in the gap.
+                    <Sentence
+                      as="span"
+                      sentence={prompt.completion!}
+                      word={prompt.answer}
+                      highlight={ANSWER_COLOUR}
+                    />
+                  ) : prompt.questionLang === 'en' ? (
+                    <Gloss text={prompt.question} stacked />
+                  ) : (
+                    prompt.question
+                  )}
+                  {speaker}
+                </motion.h1>
+              </AnimatePresence>
+            </div>
+          )}
         </WithSpeaker>
 
         {prompt.subtitle && <p className="text-base text-on-surface-dim">{prompt.subtitle}</p>}
@@ -497,11 +495,14 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                       for a gap-fill — then it's already up there. */}
                   {prompt.detail && prompt.detail !== prompt.completion && (
                     <WithSpeaker speak={prompt.detail} size="1.125rem">
-                      <Sentence
-                        sentence={prompt.detail}
-                        word={prompt.note.nl}
-                        className={`max-w-[17rem] text-lg leading-snug text-on-surface/85 ${FOCUS}`}
-                      />
+                      {(speaker) => (
+                        <Sentence
+                          sentence={prompt.detail!}
+                          word={prompt.note.nl}
+                          trailing={speaker}
+                          className={`max-w-[17rem] text-lg leading-snug text-on-surface/85 ${FOCUS}`}
+                        />
+                      )}
                     </WithSpeaker>
                   )}
                   {prompt.detailTranslation && (
@@ -520,18 +521,21 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                     speak={prompt.answerLang === 'nl' ? answerShown : undefined}
                     size={focalSize}
                   >
-                    <p
-                      lang={prompt.answerLang}
-                      translate="no"
-                      style={{ fontSize: focalSize }}
-                      className={`notranslate leading-none ${FOCUS} ${ANSWER_COLOUR}`}
-                    >
-                      {prompt.answerLang === 'en' ? (
-                        <Gloss text={answerShown} stacked />
-                      ) : (
-                        answerShown
-                      )}
-                    </p>
+                    {(speaker) => (
+                      <p
+                        lang={prompt.answerLang}
+                        translate="no"
+                        style={{ fontSize: focalSize }}
+                        className={`notranslate leading-none ${FOCUS} ${ANSWER_COLOUR}`}
+                      >
+                        {prompt.answerLang === 'en' ? (
+                          <Gloss text={answerShown} stacked />
+                        ) : (
+                          answerShown
+                        )}
+                        {speaker}
+                      </p>
+                    )}
                   </WithSpeaker>
 
                   {correct === false && picked && <YouChose picked={picked} />}
@@ -545,11 +549,14 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                   {prompt.detail && (
                     <div className="mt-6 max-w-[17rem] space-y-1">
                       <WithSpeaker speak={prompt.detail} size="1.125rem">
-                        <Sentence
-                          sentence={prompt.detail}
-                          word={prompt.note.nl}
-                          className={`text-lg leading-snug text-on-surface/85 ${FOCUS}`}
-                        />
+                        {(speaker) => (
+                          <Sentence
+                            sentence={prompt.detail!}
+                            word={prompt.note.nl}
+                            trailing={speaker}
+                            className={`text-lg leading-snug text-on-surface/85 ${FOCUS}`}
+                          />
+                        )}
                       </WithSpeaker>
                       {prompt.detailTranslation && (
                         <p className="text-base text-on-surface-dim">{prompt.detailTranslation}</p>

@@ -1,7 +1,13 @@
 // ---------------------------------------------------------------------------
-// Colour schemes. Each one is a block of CSS custom properties in index.css,
-// selected by a data-theme attribute on <html>. Nothing in the components
-// knows which theme is active — they only ever reference the tokens.
+// Appearance: a colour and a mode, kept apart on purpose.
+//
+// The colour is a hue, how much of it there is, and how light its accent
+// wants to be; index.css derives every surface, ink and edge from those,
+// twice — once for light and once for dark. So every colour has a dark mode,
+// and adding a colour is three numbers rather than a block of hand-picked hex.
+//
+// Nothing in the components knows which theme is active. They only ever
+// reference the tokens.
 // ---------------------------------------------------------------------------
 
 import { pawSvg } from './paw'
@@ -9,32 +15,94 @@ import { pawSvg } from './paw'
 export interface Theme {
   id: string
   name: string
-  /** The dot shown in the picker. */
-  swatch: string
-  /** A contrasting ring for the dot, so pale swatches stay visible. */
-  ring: string
+  /** Where the colour sits on the wheel, in oklch degrees. */
+  hue: number
+  /** How saturated it is. Hues differ in how much chroma they can carry. */
+  chroma: number
+  /** How light the accent is. A yellow has to be light; a blue must not be. */
+  light: number
 }
 
+/**
+ * In wheel order, so the row of dots reads as a spectrum. These are the same
+ * numbers as the blocks in index.css — kept here only so the dots can be drawn
+ * without asking the browser to resolve seven stylesheets' worth of variables.
+ */
 export const THEMES: Theme[] = [
-  { id: 'tulip', name: 'Tulp', swatch: '#c2306b', ring: '#fdf6f8' },
-  { id: 'orange', name: 'Klomp', swatch: '#e2622a', ring: '#faf7f2' },
-  { id: 'delft', name: 'Delft', swatch: '#2a5fd0', ring: '#f4f6fb' },
-  { id: 'polder', name: 'Polder', swatch: '#2f7d5c', ring: '#f4f9f5' },
-  // The dot shows the scheme, not its accent — a pale dot for the dark scheme
-  // reads as another light option.
-  { id: 'night', name: 'Nacht', swatch: '#2a2a38', ring: '#14141b' },
+  { id: 'tulip', name: 'Tulp', hue: 1, chroma: 0.187, light: 55 },
+  { id: 'klomp', name: 'Klomp', hue: 42, chroma: 0.173, light: 65 },
+  { id: 'stroop', name: 'Stroop', hue: 88, chroma: 0.15, light: 74 },
+  { id: 'polder', name: 'Polder', hue: 158, chroma: 0.11, light: 55 },
+  { id: 'zee', name: 'Zee', hue: 200, chroma: 0.12, light: 57 },
+  { id: 'lucht', name: 'Lucht', hue: 255, chroma: 0.16, light: 55 },
+  { id: 'lavendel', name: 'Lavendel', hue: 310, chroma: 0.18, light: 54 },
 ]
 
 export const DEFAULT_THEME = THEMES[0]
 
+/**
+ * What the schemes that no longer exist under those names became. Nacht isn't
+ * here because it didn't become a colour — it became a mode, which is what
+ * `wasNightScheme` is for.
+ */
+const RENAMED: Record<string, string> = { orange: 'klomp', delft: 'lucht' }
+
 export function themeById(id: string | null): Theme {
-  return THEMES.find((t) => t.id === id) ?? DEFAULT_THEME
+  const wanted = id ? (RENAMED[id] ?? id) : null
+  return THEMES.find((t) => t.id === wanted) ?? DEFAULT_THEME
+}
+
+/** True for the old dark *scheme*, whose owner should land in dark *mode*. */
+export const wasNightScheme = (id: string | null): boolean => id === 'night'
+
+/** What the app was asked for. 'system' follows the phone. */
+export type Mode = 'system' | 'light' | 'dark'
+/** What it resolves to right now. */
+export type Resolved = 'light' | 'dark'
+
+export const MODES: { id: Mode; name: string }[] = [
+  { id: 'light', name: 'Light' },
+  { id: 'dark', name: 'Dark' },
+  { id: 'system', name: 'System' },
+]
+
+export const DEFAULT_MODE: Mode = 'system'
+
+export function modeById(id: string | null): Mode {
+  return MODES.some((m) => m.id === id) ? (id as Mode) : DEFAULT_MODE
+}
+
+const darkQuery = () =>
+  typeof matchMedia === 'function' ? matchMedia('(prefers-color-scheme: dark)') : null
+
+export function resolveMode(mode: Mode): Resolved {
+  if (mode !== 'system') return mode
+  return darkQuery()?.matches ? 'dark' : 'light'
+}
+
+/** Calls back whenever the phone's own setting changes. Returns an unsubscribe. */
+export function onSystemModeChange(fn: () => void): () => void {
+  const query = darkQuery()
+  if (!query) return () => {}
+  query.addEventListener('change', fn)
+  return () => query.removeEventListener('change', fn)
+}
+
+/**
+ * The swatch for one scheme's dot, at the lightness the accent has in the mode
+ * being shown. An accent dark enough to read on white is muddy on a dark page,
+ * and the dots should look like what choosing them will give you.
+ */
+export function swatch(theme: Theme, resolved: Resolved): string {
+  return resolved === 'dark'
+    ? `oklch(78% ${theme.chroma * 0.8} ${theme.hue})`
+    : `oklch(${theme.light}% ${theme.chroma} ${theme.hue})`
 }
 
 let settling: ReturnType<typeof setTimeout> | null = null
 
 /** Applied to <html>, which is where the CSS overrides hang. */
-export function applyTheme(theme: Theme, animate = false): void {
+export function applyAppearance(theme: Theme, mode: Mode, animate = false): void {
   const root = document.documentElement
 
   if (animate) {
@@ -50,13 +118,42 @@ export function applyTheme(theme: Theme, animate = false): void {
   }
 
   root.dataset.theme = theme.id
+  root.dataset.mode = resolveMode(mode)
 
   // Keep the phone's status bar in step with the page.
   const meta = document.querySelector('meta[name="theme-color"]')
   const bg = getComputedStyle(document.body).backgroundColor
   if (meta && bg) meta.setAttribute('content', bg)
 
-  setFavicon(theme)
+  setFavicon()
+}
+
+/**
+ * The accent as the browser has actually worked it out — an sRGB string, so it
+ * can go somewhere that isn't a stylesheet. The tokens are written in oklch
+ * and derived through calc, so there is nothing to read without asking the
+ * browser to resolve it.
+ */
+function resolvedAccent(): string {
+  const probe = document.createElement('span')
+  probe.style.cssText = 'display:none;color:var(--color-primary)'
+  document.body.appendChild(probe)
+  const value = getComputedStyle(probe).color
+  probe.remove()
+  if (!value) return '#c2306b'
+  // Chrome hands back the oklch as written. A canvas normalises any colour it
+  // accepts to plain sRGB, which is what belongs in an SVG that has to survive
+  // being a data URI in a <link rel=icon>.
+  try {
+    const ctx = document.createElement('canvas').getContext('2d')
+    if (ctx) {
+      ctx.fillStyle = value
+      return ctx.fillStyle as string
+    }
+  } catch {
+    /* Fall through to the raw value; a modern browser renders it anyway. */
+  }
+  return value
 }
 
 /**
@@ -64,8 +161,8 @@ export function applyTheme(theme: Theme, animate = false): void {
  * cannot — Android takes a copy of the PNG when you add it to the home screen
  * and never asks again — so that one stays the default orange.
  */
-function setFavicon(theme: Theme): void {
-  const svg = pawSvg('#ffffff', theme.swatch)
+function setFavicon(): void {
+  const svg = pawSvg('#ffffff', resolvedAccent())
   const href = `data:image/svg+xml,${encodeURIComponent(svg)}`
   let link = document.querySelector<HTMLLinkElement>('link[rel="icon"]')
   if (!link) {

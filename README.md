@@ -3,10 +3,16 @@
 A small spaced-repetition app for learning Dutch. Personal use, two phones,
 no server, no cost.
 
-The interface is light and warm, and the design tokens in `src/index.css` are
-where almost all of its appearance lives. Colour schemes are blocks of the
-same tokens selected by `data-theme` on `<html>` — no component knows which
-one is active.
+The design tokens in `src/index.css` are where almost all of the appearance
+lives. A colour scheme is three numbers — a hue, how much of it there is, and
+how light its accent wants to be — and every surface, ink, edge and shadow is
+derived from those on one lightness ramp, written in oklch because its
+lightness is perceptual. There are two ramps, light and dark, so every colour
+comes with a dark mode; `data-theme` picks the colour and `data-mode` picks
+the ramp, both on `<html>`, and no component knows which is active.
+
+In dark mode the shadows are cast in light rather than ink — the same
+geometry, so a card glows off the page instead of pressing into it.
 
 **Three type roles, defined in `src/ui/type.ts`.**
 

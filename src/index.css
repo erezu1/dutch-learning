@@ -30,58 +30,82 @@
 /* ---------------------------------------------------------------------------
    Design tokens. The UI layer restyles almost entirely by changing values here.
 
-   Light and warm rather than dark: shadows barely read on a dark background,
-   and shadow is what makes a card feel like an object you could pick up.
+   A scheme is two numbers: a hue and how saturated it is. Everything else —
+   every surface, ink, edge and accent, in light and in dark — is derived from
+   those on one lightness ramp, written in oklch because its lightness is
+   perceptual: 52% is equally light whether the hue is yellow or blue, which is
+   what makes a single ramp work across every scheme. Adding a colour is two
+   numbers, and it arrives with a dark mode already made.
 
    Surfaces are off-white, never pure white — pure white glares, especially on
    a phone at night, and leaves no room for a card to sit *above* the page.
 --------------------------------------------------------------------------- */
 @theme {
-  /* --- surfaces: the default scheme, Tulp --- */
-  --color-surface: #fdf6f8;
-  --color-surface-1: #ffffff;
-  --color-surface-2: #f8e8ed;
-  --color-surface-3: #eed6de;
-  --color-on-surface: #241419;
-  --color-on-surface-dim: #715a62;
+  /* Tulp, the default. Overridden per scheme further down.
+
+     Three numbers, not two: hues reach their strongest at different
+     lightnesses — a yellow is only yellow when it is light, a blue only blue
+     when it is not — so pinning every accent to one lightness makes half of
+     them muddy. The ink that goes on the accent follows from how light it is,
+     which is the one thing a scheme has to state for itself. */
+  --hue: 1;
+  --chroma: 0.187;
+  --accent-l: 55%;
+
+  /* --- surfaces --- */
+  --color-surface: oklch(98% calc(var(--chroma) * 0.1) var(--hue));
+  --color-surface-1: oklch(100% 0 var(--hue));
+  --color-surface-2: oklch(94% calc(var(--chroma) * 0.28) var(--hue));
+  --color-surface-3: oklch(89% calc(var(--chroma) * 0.4) var(--hue));
+  --color-on-surface: oklch(22% calc(var(--chroma) * 0.3) var(--hue));
+  --color-on-surface-dim: oklch(50% calc(var(--chroma) * 0.2) var(--hue));
 
   /* Hairline edge used by every elevation level. */
-  --edge: rgba(36, 20, 25, 0.07);
-  --edge-strong: rgba(36, 20, 25, 0.14);
+  --edge: oklch(22% calc(var(--chroma) * 0.3) var(--hue) / 0.08);
+  --edge-strong: oklch(22% calc(var(--chroma) * 0.3) var(--hue) / 0.15);
 
-  --color-primary: #c2306b;
-  --color-on-primary: #ffffff;
-  --color-primary-container: #fbdde8;
-  --color-on-primary-container: #6d0f37;
+  --color-primary: oklch(var(--accent-l) var(--chroma) var(--hue));
+  --color-on-primary: oklch(100% 0 var(--hue));
+  --color-primary-container: oklch(92% calc(var(--chroma) * 0.34) var(--hue));
+  --color-on-primary-container: oklch(38% calc(var(--chroma) * 0.85) var(--hue));
 
-  /* --- feedback. The "ink" variants are for text, which needs more contrast
-         against a light background than a fill does. --- */
-  --color-good: #dff2e5;
-  --color-good-ink: #1f7a4c;
-  --color-bad: #fde4e1;
-  --color-bad-ink: #b3382a;
+  /* --- feedback. Right and wrong are the same green and red in every scheme:
+         they mean something, so they can't be the decoration. The "ink"
+         variants are for text, which needs more contrast than a fill. --- */
+  --color-good: oklch(94% 0.05 155);
+  --color-good-ink: oklch(50% 0.13 155);
+  --color-bad: oklch(93% 0.05 25);
+  --color-bad-ink: oklch(52% 0.17 25);
 
   /* --- elevation ---
      Cast evenly on every side: no vertical offset, so nothing implies a light
-     source above. Each level still uses two layers — a tight one that defines
-     the edge and a wide, soft one that gives it room — because a single blur
-     reads as a flat halo. Tinted with the text colour rather than pure black,
-     so shadows stay warm instead of turning grey. */
+     source above. Each level uses two layers — a tight one that defines the
+     edge and a wide, soft one that gives it room — because a single blur reads
+     as a flat halo.
+
+     In dark mode the same shapes are cast in light instead of ink, so a card
+     glows off the page rather than pressing into it: a dark shadow on a dark
+     page is invisible, and that is what makes a dark interface look flat.
+     Only the colour and the strength change; the geometry is the same. */
+  --glow: 30 20 24;
+  --glow-boost: 1;
+
   /* Every level opens with a 1px ring. White cards on a warm off-white page
      have very little edge contrast of their own, and pressing one draws its
      shadow in — without the ring the outline disappears at exactly the moment
      you are looking at it. */
-  --shadow-1: 0 0 0 1px var(--edge), 0 0 3px rgba(30, 20, 24, 0.05),
-    0 0 9px rgba(30, 20, 24, 0.04);
-  --shadow-2: 0 0 0 1px var(--edge), 0 0 6px rgba(30, 20, 24, 0.06),
-    0 0 20px rgba(30, 20, 24, 0.06);
-  --shadow-3: 0 0 0 1px var(--edge), 0 0 10px rgba(30, 20, 24, 0.07),
-    0 0 36px rgba(30, 20, 24, 0.09);
-  --shadow-4: 0 0 0 1px var(--edge), 0 0 16px rgba(30, 20, 24, 0.08),
-    0 0 64px rgba(30, 20, 24, 0.11);
+  --shadow-1: 0 0 0 1px var(--edge), 0 0 3px rgb(var(--glow) / calc(0.05 * var(--glow-boost))),
+    0 0 9px rgb(var(--glow) / calc(0.04 * var(--glow-boost)));
+  --shadow-2: 0 0 0 1px var(--edge), 0 0 6px rgb(var(--glow) / calc(0.06 * var(--glow-boost))),
+    0 0 20px rgb(var(--glow) / calc(0.06 * var(--glow-boost)));
+  --shadow-3: 0 0 0 1px var(--edge), 0 0 10px rgb(var(--glow) / calc(0.07 * var(--glow-boost))),
+    0 0 36px rgb(var(--glow) / calc(0.09 * var(--glow-boost)));
+  --shadow-4: 0 0 0 1px var(--edge), 0 0 16px rgb(var(--glow) / calc(0.08 * var(--glow-boost))),
+    0 0 64px rgb(var(--glow) / calc(0.11 * var(--glow-boost)));
   /* Pressed: the object sits closer to the page, so its shadow draws in — but
      the ring stays, and strengthens, so the edge never vanishes. */
-  --shadow-press: 0 0 0 1px var(--edge-strong), 0 0 4px rgba(30, 20, 24, 0.09);
+  --shadow-press: 0 0 0 1px var(--edge-strong),
+    0 0 4px rgb(var(--glow) / calc(0.09 * var(--glow-boost)));
 
   --font-display: 'Fraunces', ui-serif, Georgia, serif;
   --font-sans: 'Bricolage', ui-rounded, system-ui, -apple-system, sans-serif;
@@ -178,7 +202,7 @@
     color-scheme: light;
   }
 
-  :root[data-theme='night'] {
+  :root[data-mode='dark'] {
     color-scheme: dark;
   }
 
@@ -249,69 +273,91 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Colour schemes, selected by data-theme on <html>. Each one restates only
-   what changes: the accent, the surface tints that carry it, and — for the
-   dark scheme — the inks and edges too.
+   Colour schemes, selected by data-theme on <html>. Two numbers each: where
+   the colour sits on the wheel, and how much of it there is. Everything else
+   comes off the ramps above and below.
 --------------------------------------------------------------------------- */
-:root[data-theme='delft'] {
-  --color-surface: #f5f7fb;
-  --color-surface-1: #ffffff;
-  --color-surface-2: #e9eef7;
-  --color-surface-3: #d8e0ee;
-  --color-on-surface: #161b25;
-  --color-on-surface-dim: #5d6779;
-  --color-primary: #2a5fd0;
-  --color-primary-container: #dbe5fb;
-  --color-on-primary-container: #10306f;
-  --edge: rgba(22, 27, 37, 0.07);
-  --edge-strong: rgba(22, 27, 37, 0.14);
+/* The original #c2306b, to the digit: this is that colour written in oklch. */
+:root[data-theme='tulip'] {
+  --hue: 1;
+  --chroma: 0.187;
+  --accent-l: 55%;
 }
 
-:root[data-theme='orange'] {
-  --color-surface: #faf7f2;
-  --color-surface-1: #ffffff;
-  --color-surface-2: #f2ece3;
-  --color-surface-3: #e6ddd0;
-  --color-on-surface: #1f1b16;
-  --color-on-surface-dim: #6f665a;
-  --color-primary: #e2622a;
-  --color-primary-container: #ffe5d6;
-  --color-on-primary-container: #7c2d06;
-  --edge: rgba(31, 27, 22, 0.07);
-  --edge-strong: rgba(31, 27, 22, 0.13);
+/* Likewise #e2622a. Light enough that white on it is thin, so its ink is dark. */
+:root[data-theme='klomp'] {
+  --hue: 42;
+  --chroma: 0.173;
+  --accent-l: 65%;
+  --color-on-primary: oklch(24% 0.05 42);
+}
+
+/* Stroop is the one that has to be light to be itself at all. */
+:root[data-theme='stroop'] {
+  --hue: 88;
+  --chroma: 0.15;
+  --accent-l: 74%;
+  --color-on-primary: oklch(26% 0.06 88);
 }
 
 :root[data-theme='polder'] {
-  --color-surface: #f5faf6;
-  --color-surface-1: #ffffff;
-  --color-surface-2: #e6f1e9;
-  --color-surface-3: #d3e5d8;
-  --color-on-surface: #16211a;
-  --color-on-surface-dim: #5a6b60;
-  --color-primary: #2f7d5c;
-  --color-primary-container: #d8f0e2;
-  --color-on-primary-container: #0e4430;
-  --edge: rgba(22, 33, 26, 0.07);
-  --edge-strong: rgba(22, 33, 26, 0.14);
+  --hue: 158;
+  --chroma: 0.11;
+  --accent-l: 55%;
 }
 
-/* For studying at night. Shadows barely read on a dark page, so the edge
-   ring does the work instead and is lightened rather than darkened. */
-:root[data-theme='night'] {
-  --color-surface: #14141b;
-  --color-surface-1: #1e1e28;
-  --color-surface-2: #272733;
-  --color-surface-3: #343442;
-  --color-on-surface: #eceaf2;
-  --color-on-surface-dim: #9b97ab;
-  --color-primary: #8fa4ff;
-  --color-on-primary: #14183a;
-  --color-primary-container: #2e3466;
-  --color-on-primary-container: #d7ddff;
-  --color-good: #1d3b2c;
-  --color-good-ink: #7fd8a6;
-  --color-bad: #40231f;
-  --color-bad-ink: #ff9d92;
-  --edge: rgba(255, 255, 255, 0.09);
-  --edge-strong: rgba(255, 255, 255, 0.18);
+:root[data-theme='zee'] {
+  --hue: 200;
+  --chroma: 0.12;
+  --accent-l: 57%;
+  --color-on-primary: oklch(22% 0.04 200);
+}
+
+:root[data-theme='lucht'] {
+  --hue: 255;
+  --chroma: 0.16;
+  --accent-l: 55%;
+}
+
+:root[data-theme='lavendel'] {
+  --hue: 310;
+  --chroma: 0.18;
+  --accent-l: 54%;
+}
+
+/* ---------------------------------------------------------------------------
+   Dark mode, selected by data-mode on <html>. Not a scheme of its own: the
+   same seven colours, on the other end of the ramp. A dark option that was one
+   more swatch in the row meant choosing between the colour you liked and
+   studying at night.
+
+   Everything inverts except right and wrong, which have to keep meaning green
+   and red, and the accent, which moves up the ramp rather than down: a colour
+   dark enough to read on white disappears on a dark page.
+--------------------------------------------------------------------------- */
+:root[data-mode='dark'] {
+  --color-surface: oklch(17% calc(var(--chroma) * 0.22) var(--hue));
+  --color-surface-1: oklch(23% calc(var(--chroma) * 0.2) var(--hue));
+  --color-surface-2: oklch(28% calc(var(--chroma) * 0.22) var(--hue));
+  --color-surface-3: oklch(34% calc(var(--chroma) * 0.24) var(--hue));
+  --color-on-surface: oklch(94% calc(var(--chroma) * 0.12) var(--hue));
+  --color-on-surface-dim: oklch(70% calc(var(--chroma) * 0.14) var(--hue));
+
+  --edge: oklch(100% 0 var(--hue) / 0.1);
+  --edge-strong: oklch(100% 0 var(--hue) / 0.2);
+
+  --color-primary: oklch(78% calc(var(--chroma) * 0.8) var(--hue));
+  --color-on-primary: oklch(22% calc(var(--chroma) * 0.4) var(--hue));
+  --color-primary-container: oklch(33% calc(var(--chroma) * 0.5) var(--hue));
+  --color-on-primary-container: oklch(90% calc(var(--chroma) * 0.3) var(--hue));
+
+  --color-good: oklch(28% 0.06 155);
+  --color-good-ink: oklch(80% 0.14 155);
+  --color-bad: oklch(28% 0.07 25);
+  --color-bad-ink: oklch(78% 0.13 25);
+
+  /* Light, not ink — and stronger, because a glow has to carry across a dark
+     page where a shadow had a white card to fall away from. */
+  --glow: 255 255 255;
+  --glow-boost: 2;
 }

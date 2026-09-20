@@ -5,7 +5,19 @@ import { buildQueue, DEFAULTS, isUnlocked, type QueueOptions } from '../core/que
 import { applyGrade, emptyState, isNew, Rating, State, type Grade } from '../core/scheduler'
 import { awardFor, type Award } from '../core/score'
 import { DEFAULT_LEVEL, levelById, type LevelOption } from '../core/levels'
-import { applyTheme, DEFAULT_THEME, themeById, type Theme } from '../core/themes'
+import {
+  applyAppearance,
+  DEFAULT_MODE,
+  DEFAULT_THEME,
+  modeById,
+  onSystemModeChange,
+  resolveMode,
+  themeById,
+  wasNightScheme,
+  type Mode,
+  type Resolved,
+  type Theme,
+} from '../core/themes'
 import type { Deck, Note } from '../core/types'
 import { SELECT_DELAY } from '../ui/motion'
 import { buildPrompt, type Prompt } from './prompts'
@@ -59,6 +71,11 @@ export interface Session {
   setLevel: (option: LevelOption) => void
   theme: Theme
   setTheme: (theme: Theme) => void
+  /** What was asked for: light, dark, or whatever the phone is doing. */
+  mode: Mode
+  /** What that comes out as right now. */
+  resolvedMode: Resolved
+  setMode: (mode: Mode) => void
   autoContinue: boolean
   setAutoContinue: (next: boolean) => void
 
@@ -94,6 +111,8 @@ export function useSession(deck: Deck): Session {
   const [level, setLevelState] = useState<LevelOption>(DEFAULT_LEVEL)
   const [levelChosen, setLevelChosen] = useState(false)
   const [theme, setThemeState] = useState<Theme>(DEFAULT_THEME)
+  const [mode, setModeState] = useState<Mode>(DEFAULT_MODE)
+  const [resolvedMode, setResolvedMode] = useState<Resolved>(() => resolveMode(DEFAULT_MODE))
   const [score, setScore] = useState(0)
   /** Off by default: moving on by itself is a preference, not an assumption. */
   const [autoContinue, setAutoContinueState] = useState(false)
@@ -144,9 +163,10 @@ export function useSession(deck: Deck): Session {
       db.reviews.where('at').aboveOrEqual(startOfToday()).count(),
       getMeta<string | null>('level', null),
       getMeta<string | null>('theme', null),
+      getMeta<string | null>('mode', null),
       getMeta<number>('score', 0),
       getMeta<boolean>('autoContinue', false),
-    ]).then(([rows, today, savedLevel, savedTheme, savedScore, savedAuto]) => {
+    ]).then(([rows, today, savedLevel, savedTheme, savedMode, savedScore, savedAuto]) => {
       if (cancelled) return
       setStates(new Map(rows.map((r) => [r.cardId, r] as const)))
       setDoneToday(today)
@@ -155,8 +175,13 @@ export function useSession(deck: Deck): Session {
       setScore(savedScore)
       setAutoContinueState(savedAuto)
       const t = themeById(savedTheme)
+      // Nacht used to be one of the colours. Anyone who was using it wanted a
+      // dark app, so that is what they get — in whichever colour they land on.
+      const m = savedMode === null && wasNightScheme(savedTheme) ? 'dark' : modeById(savedMode)
       setThemeState(t)
-      applyTheme(t)
+      setModeState(m)
+      setResolvedMode(resolveMode(m))
+      applyAppearance(t, m)
       setStatus('idle')
     })
     return () => {
@@ -169,11 +194,33 @@ export function useSession(deck: Deck): Session {
     void setMeta('autoContinue', next).catch(() => {})
   }, [])
 
-  const setTheme = useCallback((next: Theme) => {
-    setThemeState(next)
-    applyTheme(next, true)
-    void setMeta('theme', next.id).catch(() => {})
-  }, [])
+  const setTheme = useCallback(
+    (next: Theme) => {
+      setThemeState(next)
+      applyAppearance(next, mode, true)
+      void setMeta('theme', next.id).catch(() => {})
+    },
+    [mode],
+  )
+
+  const setMode = useCallback(
+    (next: Mode) => {
+      setModeState(next)
+      setResolvedMode(resolveMode(next))
+      applyAppearance(theme, next, true)
+      void setMeta('mode', next).catch(() => {})
+    },
+    [theme],
+  )
+
+  // Following the phone means following it as it changes, not only at startup.
+  useEffect(() => {
+    if (mode !== 'system') return
+    return onSystemModeChange(() => {
+      setResolvedMode(resolveMode('system'))
+      applyAppearance(theme, 'system', true)
+    })
+  }, [mode, theme])
 
   const setLevel = useCallback((option: LevelOption) => {
     // Update first, persist after. Waiting on the write means a storage
@@ -444,6 +491,9 @@ export function useSession(deck: Deck): Session {
     setLevel,
     theme,
     setTheme,
+    mode,
+    resolvedMode,
+    setMode,
     autoContinue,
     setAutoContinue,
     start,

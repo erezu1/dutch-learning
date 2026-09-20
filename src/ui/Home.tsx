@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { onVoicesReady, speak, voiceReport, type VoiceReport } from '../core/speech'
 import type { LevelOption } from '../core/levels'
-import type { Theme } from '../core/themes'
+import type { Resolved, Theme } from '../core/themes'
 import type { SessionStats } from '../session/useSession'
 import { Button } from './Button'
 import { promptInstall } from '../core/install'
@@ -18,6 +18,7 @@ interface Props {
   level: LevelOption
   onOpenSettings: () => void
   theme: Theme
+  resolvedMode: Resolved
   onStart: () => void
   onChangeLevel: () => void
   onChangeTheme: (theme: Theme) => void
@@ -28,6 +29,7 @@ export function Home({
   score,
   level,
   theme,
+  resolvedMode,
   onStart,
   onChangeLevel,
   onChangeTheme,
@@ -173,7 +175,7 @@ export function Home({
       </div>
 
       <div className="flex flex-col items-center gap-5">
-        <ThemePicker current={theme} onPick={onChangeTheme} />
+        <ThemePicker current={theme} resolved={resolvedMode} onPick={onChangeTheme} />
 
         {/* Phase 0 diagnostic: does this phone actually have a Dutch voice? */}
         <motion.button
