@@ -61,6 +61,8 @@ const BAD_GLOSS = [
   /\bparticle\b/i,
   /\babbreviation\b/i,
   /\bletter of the\b/i,
+  // Template leftovers: "as .. as", "to ... something".
+  /\.\.|…/,
 ]
 
 /**
@@ -120,6 +122,15 @@ async function loadFrequency() {
 
 // --- 2. wiktionary ---------------------------------------------------------
 
+/** Removes punctuation left behind by stripping parentheticals and splitting. */
+function tidy(text) {
+  return text
+    .replace(/[()[\]]/g, ' ') // strays left by an unbalanced parenthetical
+    .replace(/\s+/g, ' ')
+    .replace(/^[\s,;:.\-]+|[\s,;:.\-]+$/g, '')
+    .trim()
+}
+
 function cleanGloss(gloss) {
   const g = gloss
     .replace(/\([^)]*\)/g, ' ') // parenthetical asides
@@ -127,19 +138,34 @@ function cleanGloss(gloss) {
     .replace(/\s+/g, ' ')
     .trim()
     .replace(/[;:.]$/, '')
-  // Dictionaries pile up near-synonyms — "to lead, to take the lead" — and
-  // keeping them turns a flashcard answer into a list. But commas also
-  // separate modifiers sharing one head noun, as in "destructive,
-  // uncontrolled fire", where taking the first part leaves "destructive" and
-  // loses the meaning entirely. Only split when the parts are alternatives:
-  // all verbs, or all single words.
-  const parts = g.split(/[,;]/).map((x) => x.trim()).filter(Boolean)
-  if (parts.length > 1) {
-    const allVerbs = parts.every((x) => /^to /.test(x))
-    const allSingleWords = parts.every((x) => !x.includes(' '))
-    if (allVerbs || allSingleWords) return parts[0].length > 38 ? '' : parts[0]
+  // Dictionaries pile up near-synonyms — "sometime, someday, at some point" —
+  // and keeping them turns a flashcard answer into a list. Take the first
+  // term, which is the one to recall.
+  //
+  // The exception is a comma separating modifiers that share one head noun,
+  // as in brand: "destructive, catastrophic fire", where the first part alone
+  // is an adjective and the meaning is lost. That shape is rare and
+  // recognisable: a bare adjective followed by a longer phrase carrying the
+  // noun.
+  const parts = g.split(/[,;]/).map((x) => tidy(x)).filter(Boolean)
+  if (parts.length < 2) {
+    const only = tidy(g)
+    return only.length > 34 ? '' : only
   }
-  return g.length > 34 ? '' : g
+
+  // Strongly adjectival endings only. "al", "ic" and "ary" were catching
+  // ordinary nouns — deal, music, library — and keeping their whole gloss.
+  const adjectiveLike = /(ive|ous|ful|less|ish|able)$/
+  const sharedHead =
+    !parts[0].includes(' ') &&
+    adjectiveLike.test(parts[0]) &&
+    parts[parts.length - 1].includes(' ')
+  if (sharedHead) {
+    const whole = tidy(g)
+    return whole.length > 34 ? '' : whole
+  }
+
+  return parts[0].length > 34 ? '' : parts[0]
 }
 
 /** Two senses are only worth showing if they mean noticeably different things. */

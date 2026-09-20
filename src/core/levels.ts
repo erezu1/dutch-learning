@@ -14,7 +14,7 @@ export interface LevelOption {
 
 export const LEVELS: LevelOption[] = [
   { id: 'beginner', name: 'New', description: 'Little or no Dutch', startRank: 0 },
-  { id: 'a1', name: 'Basics', description: 'A few hundred words', startRank: 250 },
+  { id: 'a1', name: 'Basic', description: 'A few hundred words', startRank: 250 },
   { id: 'a2', name: 'Everyday', description: 'Simple conversations', startRank: 750 },
   { id: 'b1', name: 'Confident', description: 'Comfortable day to day', startRank: 1500 },
 ]

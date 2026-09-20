@@ -1,8 +1,8 @@
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import type { ReactNode } from 'react'
 import { splitAroundWord } from '../core/cards'
 import type { Prompt } from '../session/prompts'
-import { glide, pressable } from './motion'
+import { glide, pressable, swapVariants } from './motion'
 import { SpeakButton } from './SpeakButton'
 
 // ---------------------------------------------------------------------------
@@ -45,7 +45,17 @@ function Gloss({ text }: { text: string }) {
   )
 }
 
-function Choices({ prompt, onChoose }: { prompt: Prompt; onChoose: (v: string) => void }) {
+function Choices({
+  prompt,
+  picked,
+  correct,
+  onChoose,
+}: {
+  prompt: Prompt
+  picked: string | null
+  correct: boolean | null
+  onChoose: (v: string) => void
+}) {
   const choices = prompt.choices!
   // Two options are the grammar pairs (de/het, hebben/zijn) and deserve to be
   // big and side by side. Four vocabulary options stack, so longer glosses fit.
@@ -53,22 +63,41 @@ function Choices({ prompt, onChoose }: { prompt: Prompt; onChoose: (v: string) =
 
   return (
     <div className={`w-full ${pair ? 'flex gap-3' : 'flex flex-col gap-2.5'}`}>
-      {choices.map((choice, i) => (
-        <motion.button
-          key={choice}
-          {...pressable}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ ...glide, delay: 0.04 * i }}
-          onClick={() => onChoose(choice)}
-          translate="no"
-          className={`notranslate rounded-3xl shadow-2 transition-shadow active:shadow-press ${
-            pair ? 'flex-1 py-7 font-display text-3xl font-semibold' : 'px-5 py-4 text-xl'
-          } ${choiceColor[choice] ?? 'bg-surface-1'}`}
-        >
-          <Gloss text={choice} />
-        </motion.button>
-      ))}
+      {choices.map((choice, i) => {
+        // Between the tap and the answer appearing, the option you pressed
+        // shows its own result, so you see what you chose before the view
+        // moves on.
+        const isPicked = picked === choice
+        const isAnswer = picked !== null && choice === prompt.answer
+        const resultTone = isPicked
+          ? correct
+            ? 'bg-good text-good-ink'
+            : 'bg-bad text-bad-ink'
+          : isAnswer
+            ? 'bg-good text-good-ink'
+            : ''
+
+        return (
+          <motion.button
+            key={choice}
+            {...(picked === null ? pressable : {})}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{
+              opacity: picked !== null && !isPicked && !isAnswer ? 0.35 : 1,
+              y: 0,
+              scale: isPicked ? 1.03 : 1,
+            }}
+            transition={{ ...glide, delay: picked === null ? 0.04 * i : 0 }}
+            onClick={() => onChoose(choice)}
+            translate="no"
+            className={`notranslate rounded-3xl shadow-2 transition-shadow active:shadow-press ${
+              pair ? 'flex-1 py-7 font-display text-3xl font-semibold' : 'px-5 py-4 text-xl'
+            } ${resultTone || choiceColor[choice] || 'bg-surface-1'}`}
+          >
+            <Gloss text={choice} />
+          </motion.button>
+        )
+      })}
     </div>
   )
 }
@@ -174,16 +203,42 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
 
       {/* Lower zone: the options, or the answer once it is given. */}
       <div className="flex flex-col items-center gap-3 overflow-y-auto">
+        <AnimatePresence mode="wait" initial={false}>
         {!revealed && !isChoice && (
-          <p className="pt-4 text-base text-on-surface-dim/70">tap to reveal</p>
+          <motion.p
+            key="hint"
+            variants={swapVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={glide}
+            className="pt-4 text-base text-on-surface-dim/70"
+          >
+            tap to reveal
+          </motion.p>
         )}
 
-        {!revealed && isChoice && <Choices prompt={prompt} onChoose={onChoose} />}
+        {!revealed && isChoice && (
+          <motion.div
+            key="choices"
+            className="w-full"
+            variants={swapVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={glide}
+          >
+            <Choices prompt={prompt} picked={picked} correct={correct} onChoose={onChoose} />
+          </motion.div>
+        )}
 
         {revealed && (
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+            key="answer"
+            variants={swapVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
             transition={glide}
             className="flex flex-col items-center gap-3"
           >
@@ -238,6 +293,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                 )}
           </motion.div>
         )}
+        </AnimatePresence>
       </div>
     </div>
   )

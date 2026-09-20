@@ -5,6 +5,7 @@ import { buildQueue, DEFAULTS, type QueueOptions } from '../core/queue'
 import { applyGrade, emptyState, isNew, Rating, State, type Grade } from '../core/scheduler'
 import { DEFAULT_LEVEL, levelById, type LevelOption } from '../core/levels'
 import type { Deck, Note } from '../core/types'
+import { SELECT_DELAY } from '../ui/motion'
 import { buildPrompt, type Prompt } from './prompts'
 
 // ---------------------------------------------------------------------------
@@ -78,6 +79,16 @@ export function useSession(deck: Deck): Session {
 
   const shownAt = useRef<number>(Date.now())
   const undoStack = useRef<UndoEntry[]>([])
+  const revealTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const clearRevealTimer = useCallback(() => {
+    if (revealTimer.current) {
+      clearTimeout(revealTimer.current)
+      revealTimer.current = null
+    }
+  }, [])
+
+  useEffect(() => clearRevealTimer, [clearRevealTimer])
 
   // Load saved progress and the chosen level once.
   useEffect(() => {
@@ -96,10 +107,14 @@ export function useSession(deck: Deck): Session {
     }
   }, [])
 
-  const setLevel = useCallback(async (option: LevelOption) => {
-    await setMeta('level', option.id)
+  const setLevel = useCallback((option: LevelOption) => {
+    // Update first, persist after. Waiting on the write means a storage
+    // hiccup leaves the app stuck on the level screen with no way forward.
     setLevelState(option)
     setLevelChosen(true)
+    void setMeta('level', option.id).catch(() => {
+      /* The choice still applies this session; it just won't be remembered. */
+    })
   }, [])
 
   const options: QueueOptions = useMemo(
@@ -130,6 +145,7 @@ export function useSession(deck: Deck): Session {
   }, [deck, states, preview, reviewed, correctCount])
 
   const start = useCallback(() => {
+    clearRevealTimer()
     const q = buildQueue(cards, states, {
       ...DEFAULTS,
       now: new Date(),
@@ -145,7 +161,7 @@ export function useSession(deck: Deck): Session {
     setPicked(null)
     shownAt.current = Date.now()
     setStatus(q.cards.length ? 'reviewing' : 'done')
-  }, [cards, states, rankOf, level])
+  }, [cards, states, rankOf, level, clearRevealTimer])
 
   const card = queue[index] ?? null
   const note: Note | null = card ? notes.get(card.noteId) ?? null : null
@@ -171,10 +187,19 @@ export function useSession(deck: Deck): Session {
 
   const reveal = useCallback(() => setRevealed(true), [])
 
-  const choose = useCallback((value: string) => {
-    setPicked(value)
-    setRevealed(true)
-  }, [])
+  const choose = useCallback(
+    (value: string) => {
+      if (revealTimer.current) return // already answered
+      setPicked(value)
+      // Hold briefly so the option you pressed is visibly the one you pressed,
+      // before the answer takes its place.
+      revealTimer.current = setTimeout(() => {
+        revealTimer.current = null
+        setRevealed(true)
+      }, SELECT_DELAY)
+    },
+    [],
+  )
 
   /**
    * A multiple-choice answer is graded by the app, not by you — it already
@@ -201,6 +226,7 @@ export function useSession(deck: Deck): Session {
       })
       await db.states.put(next)
 
+      clearRevealTimer()
       undoStack.current.push({ previous, reviewId: reviewId as number, index, wasCorrect: correct })
 
       setStates((prev) => new Map(prev).set(card.id, next))
@@ -223,6 +249,7 @@ export function useSession(deck: Deck): Session {
   )
 
   const undo = useCallback(async () => {
+    clearRevealTimer()
     const last = undoStack.current.pop()
     if (!last) return
     await db.reviews.delete(last.reviewId)

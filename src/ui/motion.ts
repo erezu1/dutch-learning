@@ -27,3 +27,23 @@ export const pressable = {
   whileTap: { scale: 0.96 },
   transition: tap,
 } as const
+
+/**
+ * How long a tap's own result stays on screen before the view moves on.
+ * Acting instantly reads as a glitch — you never see what you pressed.
+ */
+export const SELECT_DELAY = 420
+
+/** Whole screens. Quieter than the card motion, so they don't compete. */
+export const screenVariants: Variants = {
+  enter: { opacity: 0, y: 12 },
+  center: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -8 },
+}
+
+/** The swap between a question's options and its answer. */
+export const swapVariants: Variants = {
+  enter: { opacity: 0, y: 14 },
+  center: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -10 },
+}

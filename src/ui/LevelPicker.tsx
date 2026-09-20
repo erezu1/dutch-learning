@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
 import { LEVELS, type LevelOption } from '../core/levels'
-import { glide, pressable } from './motion'
+import { glide, pressable, SELECT_DELAY } from './motion'
 
 // ---------------------------------------------------------------------------
 // Asked once on first run, changeable any time. It sets where new words start
@@ -14,6 +15,18 @@ interface Props {
 }
 
 export function LevelPicker({ current, onPick, onCancel }: Props) {
+  // Leaving the instant you tap means you never see which one you chose.
+  const [chosen, setChosen] = useState<LevelOption | null>(null)
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => () => void (timer.current && clearTimeout(timer.current)), [])
+
+  const pick = (option: LevelOption) => {
+    if (timer.current) return
+    setChosen(option)
+    timer.current = setTimeout(() => onPick(option), SELECT_DELAY)
+  }
+
   return (
     <div className="flex h-full flex-col justify-center gap-8 px-6 py-10">
       <div>
@@ -25,15 +38,20 @@ export function LevelPicker({ current, onPick, onCancel }: Props) {
 
       <div className="flex flex-col gap-3">
         {LEVELS.map((option) => {
-          const active = current?.id === option.id
+          const active = chosen ? chosen.id === option.id : current?.id === option.id
+          const dimmed = chosen !== null && chosen.id !== option.id
           return (
             <motion.button
               key={option.id}
-              {...pressable}
+              {...(chosen === null ? pressable : {})}
               initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...glide, delay: 0.05 * LEVELS.indexOf(option) }}
-              onClick={() => onPick(option)}
+              animate={{
+                opacity: dimmed ? 0.4 : 1,
+                y: 0,
+                scale: chosen?.id === option.id ? 1.03 : 1,
+              }}
+              transition={{ ...glide, delay: chosen ? 0 : 0.05 * LEVELS.indexOf(option) }}
+              onClick={() => pick(option)}
               className={`rounded-3xl px-5 py-4 text-left shadow-2 transition-shadow active:shadow-press ${
                 active
                   ? 'bg-primary-container text-on-primary-container'

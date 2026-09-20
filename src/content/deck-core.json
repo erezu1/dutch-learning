@@ -93,7 +93,7 @@
    "nl": "van",
    "en": [
     "from",
-    "of, out of, from, with"
+    "like"
    ],
    "pos": "prep",
    "level": "A1",
@@ -157,7 +157,7 @@
    "id": "nl-te-p",
    "nl": "te",
    "en": [
-    "located at, in, on"
+    "located at"
    ],
    "pos": "prep",
    "level": "A1",
@@ -212,8 +212,8 @@
    "id": "nl-op-p",
    "nl": "op",
    "en": [
-    "on; referencing a date",
-    "after"
+    "after",
+    "bar"
    ],
    "pos": "prep",
    "level": "A1",
@@ -261,7 +261,7 @@
    "id": "nl-met-p",
    "nl": "met",
    "en": [
-    "with, along with"
+    "with"
    ],
    "pos": "prep",
    "level": "A1",
@@ -377,6 +377,7 @@
    "id": "nl-aan-p",
    "nl": "aan",
    "en": [
+    "from",
     "about"
    ],
    "pos": "prep",
@@ -460,8 +461,7 @@
    "id": "nl-zo-adv",
    "nl": "zo",
    "en": [
-    "so, thus, like that/this",
-    "as .. as"
+    "right away"
    ],
    "pos": "adv",
    "level": "A1",
@@ -753,7 +753,7 @@
    "id": "nl-uit-p",
    "nl": "uit",
    "en": [
-    "out of, from"
+    "out of"
    ],
    "pos": "prep",
    "level": "A1",
@@ -821,12 +821,12 @@
    "rank": 66
   },
   {
-   "id": "nl-bij-p",
+   "id": "nl-bij-adv",
    "nl": "bij",
    "en": [
-    "by, close to"
+    "alongside"
    ],
-   "pos": "prep",
+   "pos": "adv",
    "level": "A1",
    "rank": 67,
    "examples": [
@@ -1190,8 +1190,8 @@
    "id": "nl-eens-adv",
    "nl": "eens",
    "en": [
-    "once, one time",
-    "even"
+    "once",
+    "sometime"
    ],
    "pos": "adv",
    "level": "A1",
@@ -1281,11 +1281,27 @@
    "rank": 103
   },
   {
+   "id": "nl-nou-adv",
+   "nl": "nou",
+   "en": [
+    "come on"
+   ],
+   "pos": "adv",
+   "level": "A1",
+   "rank": 104,
+   "examples": [
+    {
+     "nl": "Nou, laten we gaan.",
+     "en": "Well, let's go."
+    }
+   ]
+  },
+  {
    "id": "nl-terug-adv",
    "nl": "terug",
    "en": [
     "backwards",
-    "back, in return"
+    "ago"
    ],
    "pos": "adv",
    "level": "A1",
@@ -1511,7 +1527,6 @@
    "id": "nl-tot-p",
    "nl": "tot",
    "en": [
-    "to, up to",
     "until"
    ],
    "pos": "prep",
@@ -1748,6 +1763,22 @@
     }
    ],
    "rank": 133
+  },
+  {
+   "id": "nl-hou-a",
+   "nl": "hou",
+   "en": [
+    "friendly"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "rank": 137,
+   "examples": [
+    {
+     "nl": "Hou ze bij.",
+     "en": "Keep them."
+    }
+   ]
   },
   {
    "id": "nl-heel",
@@ -2077,28 +2108,6 @@
    ]
   },
   {
-   "id": "nl-waren-v",
-   "nl": "waren",
-   "en": [
-    "to wander"
-   ],
-   "pos": "verb",
-   "level": "A1",
-   "rank": 168,
-   "verb": {
-    "past": "waarde",
-    "participle": "gewaard",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "We waren hier.",
-     "en": "We were here."
-    }
-   ]
-  },
-  {
    "id": "nl-willen",
    "nl": "willen",
    "en": [
@@ -2220,7 +2229,7 @@
    "id": "nl-beter-a",
    "nl": "beter",
    "en": [
-    "not sick anymore; recovered",
+    "not sick anymore",
     "of high quality"
    ],
    "pos": "adj",
@@ -2375,7 +2384,8 @@
    "id": "nl-na-p",
    "nl": "na",
    "en": [
-    "after"
+    "after",
+    "bar"
    ],
    "pos": "prep",
    "level": "A1",
@@ -2589,7 +2599,7 @@
    "id": "nl-toe-adv",
    "nl": "toe",
    "en": [
-    "due for, ready for, in need of",
+    "due for",
     "after"
    ],
    "pos": "adv",
@@ -2694,7 +2704,8 @@
    "id": "nl-steeds-adv",
    "nl": "steeds",
    "en": [
-    "increasingly, more and more, ever"
+    "always",
+    "increasingly"
    ],
    "pos": "adv",
    "level": "A1",
@@ -2726,7 +2737,7 @@
    "id": "nl-houden-v",
    "nl": "houden",
    "en": [
-    "to keep, preserve",
+    "to keep",
     "to hold"
    ],
    "pos": "verb",
@@ -2853,7 +2864,7 @@
    "nl": "helemaal",
    "en": [
     "completely",
-    "especially, even more so"
+    "all the way"
    ],
    "pos": "adv",
    "level": "A1",
@@ -2991,7 +3002,7 @@
    "id": "nl-ooit-adv",
    "nl": "ooit",
    "en": [
-    "sometime , someday, at some point",
+    "sometime",
     "ever"
    ],
    "pos": "adv",
@@ -3031,7 +3042,7 @@
    "nl": "paar",
    "en": [
     "pair",
-    "a few, a couple, some"
+    "a few"
    ],
    "pos": "noun",
    "level": "A1",
@@ -3124,7 +3135,7 @@
    "id": "nl-beetje-adv",
    "nl": "beetje",
    "en": [
-    "a bit, a little bit, somewhat"
+    "a bit"
    ],
    "pos": "adv",
    "level": "A1",
@@ -3235,17 +3246,16 @@
    ]
   },
   {
-   "id": "nl-bang-a",
+   "id": "nl-bang-n",
    "nl": "bang",
    "en": [
-    "scared",
-    "fearful"
+    "a sharp"
    ],
-   "pos": "adj",
+   "pos": "noun",
    "level": "A1",
    "rank": 272,
-   "comparative": "banger",
-   "superlative": "bangst",
+   "gender": "de",
+   "plural": "bangen",
    "examples": [
     {
      "nl": "Ik ben bang.",
@@ -3337,7 +3347,7 @@
    "id": "nl-zelf-adv",
    "nl": "zelf",
    "en": [
-    "oneself, by oneself, alone"
+    "oneself"
    ],
    "pos": "adv",
    "level": "A1",
@@ -3370,28 +3380,6 @@
     {
      "nl": "Ik zal staan.",
      "en": "I'll stand."
-    }
-   ]
-  },
-  {
-   "id": "nl-jongen-v",
-   "nl": "jongen",
-   "en": [
-    "to multiply, grow"
-   ],
-   "pos": "verb",
-   "level": "A1",
-   "rank": 282,
-   "verb": {
-    "past": "jongde",
-    "participle": "gejongd",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Ik ben een jongen.",
-     "en": "I'm a boy."
     }
    ]
   },
@@ -3471,7 +3459,8 @@
    "id": "nl-heen-adv",
    "nl": "heen",
    "en": [
-    "away"
+    "away",
+    "gone"
    ],
    "pos": "adv",
    "level": "A1",
@@ -3503,8 +3492,8 @@
    "id": "nl-eerst-adv",
    "nl": "eerst",
    "en": [
-    "at first, before, earlier",
-    "only, not until"
+    "first",
+    "at first"
    ],
    "pos": "adv",
    "level": "A1",
@@ -3574,7 +3563,7 @@
    "id": "nl-buiten-p",
    "nl": "buiten",
    "en": [
-    "outside, out of"
+    "outside"
    ],
    "pos": "prep",
    "level": "A1",
@@ -3754,12 +3743,12 @@
    "rank": 312
   },
   {
-   "id": "nl-eigenlijk-a",
+   "id": "nl-eigenlijk-adv",
    "nl": "eigenlijk",
    "en": [
-    "actual"
+    "actually"
    ],
-   "pos": "adj",
+   "pos": "adv",
    "level": "A2",
    "rank": 314,
    "examples": [
@@ -3817,7 +3806,7 @@
    "nl": "manier",
    "en": [
     "way",
-    "manner, good behaviour"
+    "manner"
    ],
    "pos": "noun",
    "level": "A2",
@@ -3926,8 +3915,8 @@
    "id": "nl-stop-n",
    "nl": "stop",
    "en": [
-    "an action of stopping, cessation",
-    "an electric fuse"
+    "an action of stopping",
+    "a plug for a sink"
    ],
    "pos": "noun",
    "level": "A2",
@@ -4005,8 +3994,8 @@
    "id": "nl-daarom-adv",
    "nl": "daarom",
    "en": [
-    "therefore, so, that's why",
-    "thereby, because of that"
+    "therefore",
+    "thereby"
    ],
    "pos": "adv",
    "level": "A2",
@@ -4073,8 +4062,7 @@
    "id": "nl-open-a",
    "nl": "open",
    "en": [
-    "open, not closed",
-    "open for business"
+    "open"
    ],
    "pos": "adj",
    "level": "A2",
@@ -4092,8 +4080,8 @@
    "id": "nl-zaak-n",
    "nl": "zaak",
    "en": [
-    "a thing, matter",
-    "a court case, law suit"
+    "a thing",
+    "a matter"
    ],
    "pos": "noun",
    "level": "A2",
@@ -4112,6 +4100,7 @@
    "id": "nl-blij-a",
    "nl": "blij",
    "en": [
+    "happy",
     "glad"
    ],
    "pos": "adj",
@@ -4158,6 +4147,22 @@
     {
      "nl": "Geef me een kans!",
      "en": "Give me a chance!"
+    }
+   ]
+  },
+  {
+   "id": "nl-vanavond-adv",
+   "nl": "vanavond",
+   "en": [
+    "tonight"
+   ],
+   "pos": "adv",
+   "level": "A2",
+   "rank": 355,
+   "examples": [
+    {
+     "nl": "Wie werkt vanavond?",
+     "en": "Who's working tonight?"
     }
    ]
   },
@@ -4275,7 +4280,8 @@
    "id": "nl-plaats-n",
    "nl": "plaats",
    "en": [
-    "place"
+    "place",
+    "a settlement"
    ],
    "pos": "noun",
    "level": "A2",
@@ -4500,6 +4506,7 @@
    "id": "nl-plan-n",
    "nl": "plan",
    "en": [
+    "a set of intended actions",
     "a technical drawing"
    ],
    "pos": "noun",
@@ -4603,7 +4610,7 @@
    "id": "nl-juist-adv",
    "nl": "juist",
    "en": [
-    "just, at that moment",
+    "just",
     "exactly"
    ],
    "pos": "adv",
@@ -4657,7 +4664,8 @@
    "id": "nl-ergens-adv",
    "nl": "ergens",
    "en": [
-    "somewhere"
+    "somewhere",
+    "somehow"
    ],
    "pos": "adv",
    "level": "A2",
@@ -4745,7 +4753,7 @@
    "nl": "agent",
    "en": [
     "a police officer",
-    "an agent"
+    "an undercover agent"
    ],
    "pos": "noun",
    "level": "A2",
@@ -4814,7 +4822,8 @@
    "id": "nl-dochter-n",
    "nl": "dochter",
    "en": [
-    "daughter"
+    "daughter",
+    "offshoot"
    ],
    "pos": "noun",
    "level": "A2",
@@ -5172,7 +5181,8 @@
    "id": "nl-schat-n",
    "nl": "schat",
    "en": [
-    "a treasure, amassed valuables"
+    "a treasure",
+    "honey"
    ],
    "pos": "noun",
    "level": "A2",
@@ -5244,7 +5254,8 @@
    "id": "nl-bloed-n",
    "nl": "bloed",
    "en": [
-    "blood"
+    "blood",
+    "a grave consequence"
    ],
    "pos": "noun",
    "level": "A2",
@@ -5456,7 +5467,7 @@
    "nl": "bezig",
    "en": [
     "busy",
-    "in progress, on"
+    "in progress"
    ],
    "pos": "adj",
    "level": "A2",
@@ -5543,7 +5554,7 @@
    "id": "nl-schuld-n",
    "nl": "schuld",
    "en": [
-    "debt, account payable",
+    "debt",
     "blame"
    ],
    "pos": "noun",
@@ -5578,8 +5589,8 @@
    "id": "nl-redden-v",
    "nl": "redden",
    "en": [
-    "to save, rescue",
-    "to manage, cope, be fine"
+    "to save",
+    "to manage"
    ],
    "pos": "verb",
    "level": "A2",
@@ -5600,7 +5611,7 @@
    "id": "nl-hart-n",
    "nl": "hart",
    "en": [
-    "compassionate or similar feelings"
+    "heart"
    ],
    "pos": "noun",
    "level": "A2",
@@ -5727,7 +5738,7 @@
    "nl": "rond",
    "en": [
     "around",
-    "concerning, related to"
+    "concerning"
    ],
    "pos": "prep",
    "level": "A2",
@@ -5756,6 +5767,24 @@
     {
      "nl": "Hij is mijn baas.",
      "en": "He is my boss."
+    }
+   ]
+  },
+  {
+   "id": "nl-moord-n",
+   "nl": "moord",
+   "en": [
+    "murder"
+   ],
+   "pos": "noun",
+   "level": "A2",
+   "rank": 500,
+   "gender": "de",
+   "plural": "moorden",
+   "examples": [
+    {
+     "nl": "Ik weet niks over de moord.",
+     "en": "I don't know anything about the murder."
     }
    ]
   },
@@ -5837,7 +5866,7 @@
    "nl": "lichaam",
    "en": [
     "body",
-    "corpse, dead body"
+    "corpse"
    ],
    "pos": "noun",
    "level": "A2",
@@ -5995,7 +6024,7 @@
    "id": "nl-per-p",
    "nl": "per",
    "en": [
-    "for each; for every; per",
+    "for each",
     "by means of"
    ],
    "pos": "prep",
@@ -6069,7 +6098,7 @@
    "nl": "mogen",
    "en": [
     "to be allowed",
-    "may, can, be allowed to"
+    "may"
    ],
    "pos": "verb",
    "level": "A2",
@@ -6129,7 +6158,7 @@
    "id": "nl-zeer-n",
    "nl": "zeer",
    "en": [
-    "a physical pain, ache, hurt",
+    "a physical pain",
     "grief"
    ],
    "pos": "noun",
@@ -6317,7 +6346,7 @@
    "id": "nl-buurt-n",
    "nl": "buurt",
    "en": [
-    "neighborhood, part of town",
+    "neighborhood",
     "vicinity"
    ],
    "pos": "noun",
@@ -6443,8 +6472,8 @@
    "id": "nl-baan-n",
    "nl": "baan",
    "en": [
-    "a road, way, path",
-    "a track, lane"
+    "a road",
+    "a track"
    ],
    "pos": "noun",
    "level": "A2",
@@ -6533,7 +6562,7 @@
    "id": "nl-kennen-v",
    "nl": "kennen",
    "en": [
-    "to know, experience"
+    "to know"
    ],
    "pos": "verb",
    "level": "A2",
@@ -6555,7 +6584,7 @@
    "id": "nl-geluk-n",
    "nl": "geluk",
    "en": [
-    "luck, good luck",
+    "luck",
     "happiness"
    ],
    "pos": "noun",
@@ -6712,8 +6741,8 @@
    "id": "nl-recht-n",
    "nl": "recht",
    "en": [
-    "justice",
-    "jurisprudence, the law"
+    "a right",
+    "justice"
    ],
    "pos": "noun",
    "level": "A2",
@@ -6781,7 +6810,7 @@
    "id": "nl-tweede-a",
    "nl": "tweede",
    "en": [
-    "second, number two"
+    "second"
    ],
    "pos": "adj",
    "level": "A2",
@@ -6833,7 +6862,7 @@
    "nl": "hard",
    "en": [
     "hard",
-    "unquestionable"
+    "strong"
    ],
    "pos": "adj",
    "level": "A2",
@@ -6887,6 +6916,7 @@
    "id": "nl-vanaf-p",
    "nl": "vanaf",
    "en": [
+    "starting from",
     "from the top of"
    ],
    "pos": "prep",
@@ -6922,8 +6952,8 @@
    "id": "nl-stuk-n",
    "nl": "stuk",
    "en": [
-    "a piece, part, share",
-    "a document"
+    "a piece",
+    "a theatrical piece"
    ],
    "pos": "noun",
    "level": "A2",
@@ -6983,7 +7013,7 @@
    "nl": "zin",
    "en": [
     "meaning",
-    "sentence"
+    "point"
    ],
    "pos": "noun",
    "level": "A2",
@@ -7104,6 +7134,7 @@
    "id": "nl-lieverd-n",
    "nl": "lieverd",
    "en": [
+    "a person who is kind or sweet",
     "dear"
    ],
    "pos": "noun",
@@ -7140,7 +7171,8 @@
    "id": "nl-ontmoeten-v",
    "nl": "ontmoeten",
    "en": [
-    "to meet"
+    "to meet",
+    "to encounter"
    ],
    "pos": "verb",
    "level": "A2",
@@ -7161,7 +7193,7 @@
    "id": "nl-minder-a",
    "nl": "minder",
    "en": [
-    "worse, not as good",
+    "worse",
     "less fortunate"
    ],
    "pos": "adj",
@@ -7268,7 +7300,7 @@
    "id": "nl-miljoen-n",
    "nl": "miljoen",
    "en": [
-    "a million, 10⁶"
+    "a million"
    ],
    "pos": "noun",
    "level": "A2",
@@ -7286,8 +7318,8 @@
    "id": "nl-film-n",
    "nl": "film",
    "en": [
-    "a film production, movie",
-    "the movie sector, cinema"
+    "a film",
+    "the movie sector"
    ],
    "pos": "noun",
    "level": "A2",
@@ -7385,7 +7417,7 @@
    "id": "nl-stil-a",
    "nl": "stil",
    "en": [
-    "still, not moving",
+    "still",
     "silent"
    ],
    "pos": "adj",
@@ -7475,7 +7507,8 @@
    "id": "nl-licht-n",
    "nl": "licht",
    "en": [
-    "light"
+    "light",
+    "inspiration"
    ],
    "pos": "noun",
    "level": "A2",
@@ -7658,7 +7691,7 @@
    "id": "nl-eindelijk-adv",
    "nl": "eindelijk",
    "en": [
-    "at last, finally"
+    "at last"
    ],
    "pos": "adv",
    "level": "A2",
@@ -7822,6 +7855,25 @@
    ]
   },
   {
+   "id": "nl-gevangenis-n",
+   "nl": "gevangenis",
+   "en": [
+    "a jail"
+   ],
+   "pos": "noun",
+   "level": "A2",
+   "rank": 664,
+   "gender": "de",
+   "plural": "gevangenissen",
+   "irregularPlural": true,
+   "examples": [
+    {
+     "nl": "Ik zit in de gevangenis.",
+     "en": "I'm in jail."
+    }
+   ]
+  },
+  {
    "id": "nl-prachtig-a",
    "nl": "prachtig",
    "en": [
@@ -7843,7 +7895,7 @@
    "id": "nl-hoezo-adv",
    "nl": "hoezo",
    "en": [
-    "in what way, in what respect",
+    "in what way",
     "why"
    ],
    "pos": "adv",
@@ -7942,7 +7994,7 @@
    "id": "nl-contact-n",
    "nl": "contact",
    "en": [
-    "physical contact, touching",
+    "physical contact",
     "contact"
    ],
    "pos": "noun",
@@ -8114,7 +8166,7 @@
    "id": "nl-heer-n",
    "nl": "heer",
    "en": [
-    "a lord; master",
+    "a lord",
     "a gentleman"
    ],
    "pos": "noun",
@@ -8161,6 +8213,22 @@
     {
      "nl": "Ik ben serieus.",
      "en": "I'm serious."
+    }
+   ]
+  },
+  {
+   "id": "nl-zomaar-adv",
+   "nl": "zomaar",
+   "en": [
+    "just because"
+   ],
+   "pos": "adv",
+   "level": "A2",
+   "rank": 696,
+   "examples": [
+    {
+     "nl": "Het gebeurde zomaar.",
+     "en": "It simply happened."
     }
    ]
   },
@@ -8243,8 +8311,7 @@
    "id": "nl-koning-n",
    "nl": "koning",
    "en": [
-    "a king, monarch",
-    "a king, top-dog"
+    "a king"
    ],
    "pos": "noun",
    "level": "A2",
@@ -8281,8 +8348,8 @@
    "id": "nl-waard-n",
    "nl": "waard",
    "en": [
-    "an innkeeper, a publican",
-    "a landlord, a host"
+    "an innkeeper",
+    "a landlord"
    ],
    "pos": "noun",
    "level": "A2",
@@ -8427,7 +8494,7 @@
    "id": "nl-schieten-v",
    "nl": "schieten",
    "en": [
-    "to shoot, fire",
+    "to shoot",
     "to rush"
    ],
    "pos": "verb",
@@ -8520,6 +8587,7 @@
    "id": "nl-stuur-n",
    "nl": "stuur",
    "en": [
+    "a steering device",
     "Control"
    ],
    "pos": "noun",
@@ -8539,7 +8607,7 @@
    "id": "nl-leger-n",
    "nl": "leger",
    "en": [
-    "army, armed forces",
+    "army",
     "form"
    ],
    "pos": "noun",
@@ -8558,7 +8626,7 @@
    "id": "nl-zeven-v",
    "nl": "zeven",
    "en": [
-    "to sift, sieve, strain"
+    "to sift"
    ],
    "pos": "verb",
    "level": "A2",
@@ -8597,7 +8665,7 @@
    "id": "nl-hierheen-adv",
    "nl": "hierheen",
    "en": [
-    "hither, towards here"
+    "hither"
    ],
    "pos": "adv",
    "level": "A2",
@@ -8846,7 +8914,7 @@
    "nl": "val",
    "en": [
     "a fall",
-    "a downfall, demise"
+    "a downfall"
    ],
    "pos": "noun",
    "level": "A2",
@@ -8907,7 +8975,7 @@
    "id": "nl-via-p",
    "nl": "via",
    "en": [
-    "via, through, by way of"
+    "via"
    ],
    "pos": "prep",
    "level": "A2",
@@ -9174,6 +9242,7 @@
    "id": "nl-jawel-adv",
    "nl": "jawel",
    "en": [
+    "an emphatic yes",
     "yessir"
    ],
    "pos": "adv",
@@ -9320,8 +9389,8 @@
    "id": "nl-sterk-a",
    "nl": "sterk",
    "en": [
-    "strong, having physical strength",
-    "implausible"
+    "strong",
+    "concentrated"
    ],
    "pos": "adj",
    "level": "A2",
@@ -9395,10 +9464,29 @@
    "rank": 827
   },
   {
+   "id": "nl-zwarte-n",
+   "nl": "zwarte",
+   "en": [
+    "a black person"
+   ],
+   "pos": "noun",
+   "level": "A2",
+   "rank": 828,
+   "gender": "de",
+   "plural": "zwarten",
+   "irregularPlural": true,
+   "examples": [
+    {
+     "nl": "De zwarte is van mij.",
+     "en": "The black one is mine."
+    }
+   ]
+  },
+  {
    "id": "nl-vanwege-p",
    "nl": "vanwege",
    "en": [
-    "because of, due to"
+    "because of"
    ],
    "pos": "prep",
    "level": "A2",
@@ -9430,10 +9518,26 @@
    ]
   },
   {
+   "id": "nl-ene-num",
+   "nl": "ene",
+   "en": [
+    "a-one"
+   ],
+   "pos": "num",
+   "level": "A2",
+   "rank": 834,
+   "examples": [
+    {
+     "nl": "De ene is Japanner, de andere Italiaan.",
+     "en": "One is Japanese and the other is Italian."
+    }
+   ]
+  },
+  {
    "id": "nl-naast-p",
    "nl": "naast",
    "en": [
-    "beside, next to",
+    "beside",
     "in addition to"
    ],
    "pos": "prep",
@@ -9450,7 +9554,7 @@
    "id": "nl-vooral-adv",
    "nl": "vooral",
    "en": [
-    "especially, above all",
+    "especially",
     "most of the time"
    ],
    "pos": "adv",
@@ -9486,7 +9590,7 @@
    "id": "nl-trouwens-adv",
    "nl": "trouwens",
    "en": [
-    "besides; by the way"
+    "besides"
    ],
    "pos": "adv",
    "level": "A2",
@@ -9540,7 +9644,7 @@
    "id": "nl-bedrijf-n",
    "nl": "bedrijf",
    "en": [
-    "business, economic activity",
+    "business",
     "profession"
    ],
    "pos": "noun",
@@ -9596,7 +9700,7 @@
    "id": "nl-zolang-adv",
    "nl": "zolang",
    "en": [
-    "as long as, so long as"
+    "as long as"
    ],
    "pos": "adv",
    "level": "A2",
@@ -9633,8 +9737,8 @@
    "id": "nl-geest-n",
    "nl": "geest",
    "en": [
-    "ghost, spirit, immaterial being",
-    "mindset"
+    "ghost",
+    "mind"
    ],
    "pos": "noun",
    "level": "A2",
@@ -9740,7 +9844,7 @@
    "nl": "jammer",
    "en": [
     "unfortunate",
-    "too bad, a pity"
+    "too bad"
    ],
    "pos": "adj",
    "level": "A2",
@@ -9816,7 +9920,7 @@
    "nl": "slaan",
    "en": [
     "to hit",
-    "to beat, overcome"
+    "to beat"
    ],
    "pos": "verb",
    "level": "A2",
@@ -9959,8 +10063,8 @@
    "id": "nl-stom-a",
    "nl": "stom",
    "en": [
-    "speechless",
-    "wordless"
+    "mute",
+    "speechless"
    ],
    "pos": "adj",
    "level": "A2",
@@ -9975,17 +10079,16 @@
    ]
   },
   {
-   "id": "nl-jong-a",
+   "id": "nl-jong-n",
    "nl": "jong",
    "en": [
-    "young",
-    "new"
+    "a young: a young being"
    ],
-   "pos": "adj",
+   "pos": "noun",
    "level": "A2",
    "rank": 893,
-   "comparative": "jonger",
-   "superlative": "jongst",
+   "gender": "het",
+   "plural": "jongen",
    "examples": [
     {
      "nl": "Ik ben jong.",
@@ -9997,7 +10100,7 @@
    "id": "nl-zover-adv",
    "nl": "zover",
    "en": [
-    "so far, as far as"
+    "so far"
    ],
    "pos": "adv",
    "level": "A2",
@@ -10013,7 +10116,7 @@
    "id": "nl-gesprek-n",
    "nl": "gesprek",
    "en": [
-    "talk, verbal conversation"
+    "talk"
    ],
    "pos": "noun",
    "level": "A2",
@@ -10110,7 +10213,8 @@
    "id": "nl-herinneren-v",
    "nl": "herinneren",
    "en": [
-    "to remind, prompt"
+    "to remind",
+    "to remember"
    ],
    "pos": "verb",
    "level": "B1",
@@ -10132,7 +10236,7 @@
    "id": "nl-vliegtuig-n",
    "nl": "vliegtuig",
    "en": [
-    "aeroplane, winged aircraft"
+    "aeroplane"
    ],
    "pos": "noun",
    "level": "B1",
@@ -10150,7 +10254,7 @@
    "id": "nl-onderweg-adv",
    "nl": "onderweg",
    "en": [
-    "en route, on the way"
+    "en route"
    ],
    "pos": "adv",
    "level": "B1",
@@ -10167,7 +10271,7 @@
    "nl": "shit",
    "en": [
     "stuff",
-    "trouble"
+    "shit"
    ],
    "pos": "noun",
    "level": "B1",
@@ -10178,8 +10282,8 @@
    "id": "nl-zak-n",
    "nl": "zak",
    "en": [
-    "a pocket",
-    "a scrotum"
+    "sack or sack-like container",
+    "a pocket"
    ],
    "pos": "noun",
    "level": "B1",
@@ -10198,7 +10302,7 @@
    "id": "nl-vanuit-p",
    "nl": "vanuit",
    "en": [
-    "from , out of"
+    "from"
    ],
    "pos": "prep",
    "level": "B1",
@@ -10214,8 +10318,8 @@
    "id": "nl-stem-n",
    "nl": "stem",
    "en": [
-    "the ability to speak",
-    "vote"
+    "voice",
+    "the ability to speak"
    ],
    "pos": "noun",
    "level": "B1",
@@ -10332,7 +10436,8 @@
    "id": "nl-dom-n",
    "nl": "dom",
    "en": [
-    "a dome, cupola"
+    "a duomo",
+    "a dome"
    ],
    "pos": "noun",
    "level": "B1",
@@ -10404,8 +10509,7 @@
    "id": "nl-deal-n",
    "nl": "deal",
    "en": [
-    "deal, a transaction or arrangement",
-    "a deal, a bargain"
+    "deal"
    ],
    "pos": "noun",
    "level": "B1",
@@ -10520,7 +10624,8 @@
    "id": "nl-raad-n",
    "nl": "raad",
    "en": [
-    "an advice, counsel"
+    "an advice",
+    "a council"
    ],
    "pos": "noun",
    "level": "B1",
@@ -10594,7 +10699,7 @@
    "nl": "gast",
    "en": [
     "guest",
-    "dude"
+    "knave"
    ],
    "pos": "noun",
    "level": "B1",
@@ -10647,7 +10752,7 @@
    "nl": "bureau",
    "en": [
     "desk",
-    "office, office building"
+    "office"
    ],
    "pos": "noun",
    "level": "B1",
@@ -10665,7 +10770,7 @@
    "id": "nl-macht-n",
    "nl": "macht",
    "en": [
-    "political power, control",
+    "political power",
     "power"
    ],
    "pos": "noun",
@@ -10703,7 +10808,8 @@
    "id": "nl-regel-n",
    "nl": "regel",
    "en": [
-    "narrow slat; especially a ruler"
+    "line of writing",
+    "rule"
    ],
    "pos": "noun",
    "level": "B1",
@@ -10721,7 +10827,7 @@
    "id": "nl-kolonel-n",
    "nl": "kolonel",
    "en": [
-    "colonel, the military rank"
+    "colonel"
    ],
    "pos": "noun",
    "level": "B1",
@@ -10783,7 +10889,7 @@
    "nl": "tuurlijk",
    "en": [
     "of course",
-    "yeah, right, sure, as if"
+    "yeah"
    ],
    "pos": "adv",
    "level": "B1",
@@ -10841,7 +10947,7 @@
    "nl": "vlucht",
    "en": [
     "flight",
-    "a flock, a swarm"
+    "a flock"
    ],
    "pos": "noun",
    "level": "B1",
@@ -10879,7 +10985,7 @@
    "id": "nl-hel-n",
    "nl": "hel",
    "en": [
-    "hell, an infernal afterlife"
+    "hell"
    ],
    "pos": "noun",
    "level": "B1",
@@ -11119,7 +11225,7 @@
    "nl": "aantal",
    "en": [
     "countable amount",
-    "a number, a plurality"
+    "a number"
    ],
    "pos": "noun",
    "level": "B1",
@@ -11135,19 +11241,39 @@
    ]
   },
   {
-   "id": "nl-extra-a",
+   "id": "nl-extra-n",
    "nl": "extra",
    "en": [
-    "extra",
-    "on purpose"
+    "something extra"
    ],
-   "pos": "adj",
+   "pos": "noun",
    "level": "B1",
    "rank": 1006,
+   "gender": "de",
+   "plural": "extra's",
    "examples": [
     {
      "nl": "Ik heb een extra kussen nodig.",
      "en": "I need an extra pillow."
+    }
+   ]
+  },
+  {
+   "id": "nl-zweer-n",
+   "nl": "zweer",
+   "en": [
+    "a purulent boil"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1007,
+   "gender": "de",
+   "plural": "zweren",
+   "irregularPlural": true,
+   "examples": [
+    {
+     "nl": "Ik zweer dat ik niet daar was.",
+     "en": "I swear I wasn't there."
     }
    ]
   },
@@ -11178,7 +11304,7 @@
    "id": "nl-lijk-n",
    "nl": "lijk",
    "en": [
-    "leech"
+    "the dead but otherwise intact body"
    ],
    "pos": "noun",
    "level": "B1",
@@ -11253,7 +11379,7 @@
    "id": "nl-kerk-n",
    "nl": "kerk",
    "en": [
-    "church, house of Christian worship"
+    "church"
    ],
    "pos": "noun",
    "level": "B1",
@@ -11271,7 +11397,8 @@
    "id": "nl-dode-n",
    "nl": "dode",
    "en": [
-    "a deceased person"
+    "a deceased person",
+    "a casualty"
    ],
    "pos": "noun",
    "level": "B1",
@@ -11362,7 +11489,7 @@
    "nl": "gebied",
    "en": [
     "area",
-    "domain, subject area"
+    "domain"
    ],
    "pos": "noun",
    "level": "B1",
@@ -11381,7 +11508,7 @@
    "nl": "eind",
    "en": [
     "end",
-    "a considerable distance"
+    "a length of something"
    ],
    "pos": "noun",
    "level": "B1",
@@ -11417,6 +11544,7 @@
    "id": "nl-diep-n",
    "nl": "diep",
    "en": [
+    "the deep",
     "a canal"
    ],
    "pos": "noun",
@@ -11526,7 +11654,7 @@
    "id": "nl-steek-n",
    "nl": "steek",
    "en": [
-    "a prick , a stab, a thrust",
+    "a prick",
     "a hitch"
    ],
    "pos": "noun",
@@ -11619,7 +11747,7 @@
    "nl": "kost",
    "en": [
     "cost",
-    "food"
+    "board"
    ],
    "pos": "noun",
    "level": "B1",
@@ -11713,8 +11841,8 @@
    "id": "nl-raak-a",
    "nl": "raak",
    "en": [
-    "hitting; to the point",
-    "pregnant"
+    "hitting",
+    "on target"
    ],
    "pos": "adj",
    "level": "B1",
@@ -11732,8 +11860,8 @@
    "id": "nl-rijk-n",
    "nl": "rijk",
    "en": [
-    "the state, notably in a monarchy",
-    "kingdom"
+    "a realm",
+    "the state"
    ],
    "pos": "noun",
    "level": "B1",
@@ -11752,7 +11880,7 @@
    "nl": "rij",
    "en": [
     "row",
-    "sequence"
+    "line"
    ],
    "pos": "noun",
    "level": "B1",
@@ -11785,10 +11913,26 @@
    ]
   },
   {
+   "id": "nl-meestal-adv",
+   "nl": "meestal",
+   "en": [
+    "most of the time"
+   ],
+   "pos": "adv",
+   "level": "B1",
+   "rank": 1058,
+   "examples": [
+    {
+     "nl": "Meestal loop ik.",
+     "en": "I usually walk."
+    }
+   ]
+  },
+  {
    "id": "nl-getuige-n",
    "nl": "getuige",
    "en": [
-    "a witness, person who observed"
+    "a witness"
    ],
    "pos": "noun",
    "level": "B1",
@@ -11823,10 +11967,22 @@
    ]
   },
   {
+   "id": "nl-rechercheur-n",
+   "nl": "rechercheur",
+   "en": [
+    "police detective"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1062,
+   "gender": "de",
+   "plural": "rechercheurs"
+  },
+  {
    "id": "nl-bar-n",
    "nl": "bar",
    "en": [
-    "a bar, counter, drink cabinet"
+    "a bar"
    ],
    "pos": "noun",
    "level": "B1",
@@ -11940,6 +12096,26 @@
     {
      "nl": "Waar is mijn bal?",
      "en": "Where's my ball?"
+    }
+   ]
+  },
+  {
+   "id": "nl-aanval-n",
+   "nl": "aanval",
+   "en": [
+    "an act of aggression",
+    "a sudden convulsion"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1075,
+   "gender": "de",
+   "plural": "aanvallen",
+   "irregularPlural": true,
+   "examples": [
+    {
+     "nl": "Tom was ook getuige van de aanval.",
+     "en": "Tom also witnessed the attack."
     }
    ]
   },
@@ -12175,8 +12351,8 @@
    "id": "nl-interessant-a",
    "nl": "interessant",
    "en": [
-    "notable",
-    "profitable"
+    "interesting",
+    "notable"
    ],
    "pos": "adj",
    "level": "B1",
@@ -12194,8 +12370,8 @@
    "id": "nl-slag-n",
    "nl": "slag",
    "en": [
-    "a blow, knock, strike",
-    "a twist, turn"
+    "a blow",
+    "a stroke"
    ],
    "pos": "noun",
    "level": "B1",
@@ -12213,7 +12389,8 @@
    "id": "nl-zelfmoord-n",
    "nl": "zelfmoord",
    "en": [
-    "suicide"
+    "suicide",
+    "self-destruction"
    ],
    "pos": "noun",
    "level": "B1",
@@ -12287,8 +12464,8 @@
    "id": "nl-laatst-a",
    "nl": "laatst",
    "en": [
-    "latest, most recent, newest",
-    "last, furthest behind"
+    "latest",
+    "last"
    ],
    "pos": "adj",
    "level": "B1",
@@ -12540,28 +12717,6 @@
    ]
   },
   {
-   "id": "nl-rennen-v",
-   "nl": "rennen",
-   "en": [
-    "to run"
-   ],
-   "pos": "verb",
-   "level": "B1",
-   "rank": 1133,
-   "verb": {
-    "past": "rende",
-    "participle": "gerend",
-    "auxiliary": "both",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Ik moet rennen.",
-     "en": "I must run."
-    }
-   ]
-  },
-  {
    "id": "nl-sergeant-n",
    "nl": "sergeant",
    "en": [
@@ -12650,8 +12805,8 @@
    "id": "nl-meester-n",
    "nl": "meester",
    "en": [
-    "a master, boss, superior",
-    "a train driver"
+    "a master",
+    "a schoolteacher"
    ],
    "pos": "noun",
    "level": "B1",
@@ -12691,7 +12846,8 @@
    "id": "nl-tante-n",
    "nl": "tante",
    "en": [
-    "aunt"
+    "aunt",
+    "a woman"
    ],
    "pos": "noun",
    "level": "B1",
@@ -12772,7 +12928,7 @@
    "id": "nl-broek-n",
    "nl": "broek",
    "en": [
-    "a pair of trousers, pair of pants"
+    "a pair of trousers"
    ],
    "pos": "noun",
    "level": "B1",
@@ -12790,7 +12946,7 @@
    "id": "nl-verdienen-v",
    "nl": "verdienen",
    "en": [
-    "to earn, get paid, have an income",
+    "to earn",
     "to deserve"
    ],
    "pos": "verb",
@@ -12841,6 +12997,25 @@
     {
      "nl": "Wat een verrassing!",
      "en": "What a surprise!"
+    }
+   ]
+  },
+  {
+   "id": "nl-vreemde-n",
+   "nl": "vreemde",
+   "en": [
+    "nominalization of vreemd: stranger"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1169,
+   "gender": "de",
+   "plural": "vreemden",
+   "irregularPlural": true,
+   "examples": [
+    {
+     "nl": "Tom is een vreemde man.",
+     "en": "Tom is a strange man."
     }
    ]
   },
@@ -13198,7 +13373,7 @@
    "id": "nl-belt-n",
    "nl": "belt",
    "en": [
-    "A belt"
+    "a dumpsite"
    ],
    "pos": "noun",
    "level": "B1",
@@ -13297,7 +13472,7 @@
    "id": "nl-drink-n",
    "nl": "drink",
    "en": [
-    "a beverage, a drink"
+    "a beverage"
    ],
    "pos": "noun",
    "level": "B1",
@@ -13315,8 +13490,8 @@
    "id": "nl-ring-n",
    "nl": "ring",
    "en": [
-    "ring, hollow circular object",
-    "beltway, ring road"
+    "ring",
+    "beltway"
    ],
    "pos": "noun",
    "level": "B1",
@@ -13334,7 +13509,7 @@
    "id": "nl-donker-n",
    "nl": "donker",
    "en": [
-    "darkness, the dark"
+    "darkness"
    ],
    "pos": "noun",
    "level": "B1",
@@ -13462,8 +13637,8 @@
    "id": "nl-alweer-adv",
    "nl": "alweer",
    "en": [
-    "once again, once more",
-    "already, already again"
+    "once again",
+    "already"
    ],
    "pos": "adv",
    "level": "B1",
@@ -13575,8 +13750,8 @@
    "id": "nl-lift-n",
    "nl": "lift",
    "en": [
-    "a lift, an elevator",
-    "a free ride, a lift"
+    "a lift",
+    "a free ride"
    ],
    "pos": "noun",
    "level": "B1",
@@ -13682,6 +13857,24 @@
    "rank": 1247
   },
   {
+   "id": "nl-monster-n",
+   "nl": "monster",
+   "en": [
+    "a monster"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1249,
+   "gender": "het",
+   "plural": "monsters",
+   "examples": [
+    {
+     "nl": "Ik ben geen monster!",
+     "en": "I'm not a monster."
+    }
+   ]
+  },
+  {
    "id": "nl-opa-n",
    "nl": "opa",
    "en": [
@@ -13783,7 +13976,7 @@
    "id": "nl-duren-v",
    "nl": "duren",
    "en": [
-    "to take, last"
+    "to take"
    ],
    "pos": "verb",
    "level": "B1",
@@ -13804,7 +13997,8 @@
    "id": "nl-speciaal-a",
    "nl": "speciaal",
    "en": [
-    "special"
+    "special",
+    "served with mayonnaise"
    ],
    "pos": "adj",
    "level": "B1",
@@ -13856,6 +14050,23 @@
    ]
   },
   {
+   "id": "nl-vannacht-adv",
+   "nl": "vannacht",
+   "en": [
+    "tonight",
+    "last night"
+   ],
+   "pos": "adv",
+   "level": "B1",
+   "rank": 1269,
+   "examples": [
+    {
+     "nl": "Ik zag dat vannacht.",
+     "en": "I saw that tonight."
+    }
+   ]
+  },
+  {
    "id": "nl-ijs-n",
    "nl": "ijs",
    "en": [
@@ -13894,7 +14105,7 @@
    "id": "nl-koop-n",
    "nl": "koop",
    "en": [
-    "a purchase, bought acquisition"
+    "a purchase"
    ],
    "pos": "noun",
    "level": "B1",
@@ -13989,7 +14200,8 @@
    "id": "nl-strijd-n",
    "nl": "strijd",
    "en": [
-    "conflict"
+    "conflict",
+    "battle"
    ],
    "pos": "noun",
    "level": "B1",
@@ -14150,8 +14362,8 @@
    "id": "nl-ophouden-v",
    "nl": "ophouden",
    "en": [
-    "to finish, end",
-    "to cease, stop"
+    "to finish",
+    "to cease"
    ],
    "pos": "verb",
    "level": "B1",
@@ -14208,6 +14420,24 @@
     {
      "nl": "Kennis is macht.",
      "en": "Knowledge is power."
+    }
+   ]
+  },
+  {
+   "id": "nl-patint-n",
+   "nl": "patiënt",
+   "en": [
+    "patient"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1296,
+   "gender": "de",
+   "plural": "patiënten",
+   "examples": [
+    {
+     "nl": "Tom is mijn patiënt.",
+     "en": "Tom is my patient."
     }
    ]
   },
@@ -14379,7 +14609,8 @@
    "id": "nl-bos-n",
    "nl": "bos",
    "en": [
-    "wood"
+    "wood",
+    "jungle"
    ],
    "pos": "noun",
    "level": "B1",
@@ -14391,6 +14622,25 @@
     {
      "nl": "We zijn in het bos.",
      "en": "We're in the forest."
+    }
+   ]
+  },
+  {
+   "id": "nl-godsnaam-n",
+   "nl": "godsnaam",
+   "en": [
+    "the name of a god"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1313,
+   "gender": "de",
+   "plural": "godsnamen",
+   "irregularPlural": true,
+   "examples": [
+    {
+     "nl": "Wat is dat in godsnaam?",
+     "en": "What in the world is that?"
     }
    ]
   },
@@ -14414,7 +14664,8 @@
    "id": "nl-huilen-v",
    "nl": "huilen",
    "en": [
-    "to cry"
+    "to cry",
+    "to howl"
    ],
    "pos": "verb",
    "level": "B1",
@@ -14598,7 +14849,8 @@
    "id": "nl-kogel-n",
    "nl": "kogel",
    "en": [
-    "projectile: bullet, shot"
+    "projectile: bullet",
+    "sphere"
    ],
    "pos": "noun",
    "level": "B1",
@@ -14616,8 +14868,8 @@
    "id": "nl-vlak-n",
    "nl": "vlak",
    "en": [
-    "a plain, a flat surface",
-    "face"
+    "a plain",
+    "a domain"
    ],
    "pos": "noun",
    "level": "B1",
@@ -14735,7 +14987,7 @@
    "nl": "ouwe",
    "en": [
     "man",
-    "father, old man"
+    "father"
    ],
    "pos": "noun",
    "level": "B1",
@@ -14849,8 +15101,8 @@
    "id": "nl-opschieten-v",
    "nl": "opschieten",
    "en": [
-    "to hasten, hurry",
-    "to get along"
+    "to hasten",
+    "to make progress"
    ],
    "pos": "verb",
    "level": "B1",
@@ -15021,7 +15273,7 @@
    "id": "nl-gratis-a",
    "nl": "gratis",
    "en": [
-    "free, without charge"
+    "free"
    ],
    "pos": "adj",
    "level": "B1",
@@ -15030,28 +15282,6 @@
     {
      "nl": "Is het gratis?",
      "en": "Is it free?"
-    }
-   ]
-  },
-  {
-   "id": "nl-moorden-v",
-   "nl": "moorden",
-   "en": [
-    "to murder"
-   ],
-   "pos": "verb",
-   "level": "B1",
-   "rank": 1368,
-   "verb": {
-    "past": "moordde",
-    "participle": "gemoord",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Er moet een verbinding tussen deze moorden zijn.",
-     "en": "There must be a connection between these murders."
     }
    ]
   },
@@ -15105,10 +15335,35 @@
    ]
   },
   {
+   "id": "nl-doorgaan-v",
+   "nl": "doorgaan",
+   "en": [
+    "to go through",
+    "to take place"
+   ],
+   "pos": "verb",
+   "level": "B1",
+   "rank": 1375,
+   "verb": {
+    "separable": true,
+    "past": "ging door",
+    "participle": "doorgegaan",
+    "irregular": true,
+    "auxiliary": "zijn"
+   },
+   "examples": [
+    {
+     "nl": "Moet ik doorgaan?",
+     "en": "Shall I continue?"
+    }
+   ]
+  },
+  {
    "id": "nl-boom-n",
    "nl": "boom",
    "en": [
-    "tree"
+    "tree",
+    "any solid"
    ],
    "pos": "noun",
    "level": "B1",
@@ -15169,7 +15424,7 @@
    "id": "nl-lunch-n",
    "nl": "lunch",
    "en": [
-    "a lunch, a meal eaten around noon"
+    "a lunch"
    ],
    "pos": "noun",
    "level": "B1",
@@ -15245,7 +15500,7 @@
    "id": "nl-dorp-n",
    "nl": "dorp",
    "en": [
-    "village, small settlement"
+    "village"
    ],
    "pos": "noun",
    "level": "B1",
@@ -15282,7 +15537,8 @@
    "id": "nl-dossier-n",
    "nl": "dossier",
    "en": [
-    "dossier"
+    "dossier",
+    "file"
    ],
    "pos": "noun",
    "level": "B1",
@@ -15294,6 +15550,7 @@
    "id": "nl-code-n",
    "nl": "code",
    "en": [
+    "book or body of laws",
     "code"
    ],
    "pos": "noun",
@@ -15305,28 +15562,6 @@
     {
      "nl": "De code is niet te kraken.",
      "en": "The code cannot be cracked."
-    }
-   ]
-  },
-  {
-   "id": "nl-vieren-v",
-   "nl": "vieren",
-   "en": [
-    "to celebrate"
-   ],
-   "pos": "verb",
-   "level": "B1",
-   "rank": 1399,
-   "verb": {
-    "past": "vierde",
-    "participle": "gevierd",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Je zou feest moeten vieren.",
-     "en": "You should be celebrating."
     }
    ]
   },
@@ -15453,7 +15688,8 @@
    "id": "nl-gat-n",
    "nl": "gat",
    "en": [
-    "gap"
+    "gap",
+    "godforsaken place"
    ],
    "pos": "noun",
    "level": "B1",
@@ -15464,6 +15700,24 @@
     {
      "nl": "Het is een gat.",
      "en": "It's a hole."
+    }
+   ]
+  },
+  {
+   "id": "nl-ouder-n",
+   "nl": "ouder",
+   "en": [
+    "parent"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1416,
+   "gender": "de",
+   "plural": "ouders",
+   "examples": [
+    {
+     "nl": "Hij wordt ouder.",
+     "en": "He's getting old."
     }
    ]
   },
@@ -15502,6 +15756,24 @@
    ]
   },
   {
+   "id": "nl-toevallig-a",
+   "nl": "toevallig",
+   "en": [
+    "by chance"
+   ],
+   "pos": "adj",
+   "level": "B1",
+   "rank": 1423,
+   "comparative": "toevalliger",
+   "superlative": "toevalligst",
+   "examples": [
+    {
+     "nl": "Dit is toevallig gebeurd.",
+     "en": "It happened by accident."
+    }
+   ]
+  },
+  {
    "id": "nl-leiding-n",
    "nl": "leiding",
    "en": [
@@ -15524,7 +15796,7 @@
    "id": "nl-edelachtbare-n",
    "nl": "edelachtbare",
    "en": [
-    "honourable one, Your Honour"
+    "honourable one"
    ],
    "pos": "noun",
    "level": "B1",
@@ -15690,11 +15962,33 @@
    ]
   },
   {
+   "id": "nl-nadenken-v",
+   "nl": "nadenken",
+   "en": [
+    "to ponder"
+   ],
+   "pos": "verb",
+   "level": "B1",
+   "rank": 1441,
+   "verb": {
+    "separable": true,
+    "past": "dacht na",
+    "participle": "nagedacht",
+    "auxiliary": "hebben"
+   },
+   "examples": [
+    {
+     "nl": "Ik zal erover nadenken.",
+     "en": "I'll think about it."
+    }
+   ]
+  },
+  {
    "id": "nl-vakantie-n",
    "nl": "vakantie",
    "en": [
-    "a holiday, vacation",
-    "an easy, carefree time"
+    "a holiday",
+    "an easy"
    ],
    "pos": "noun",
    "level": "B1",
@@ -15784,7 +16078,8 @@
    "id": "nl-proces-n",
    "nl": "proces",
    "en": [
-    "a process, sequential proceeding"
+    "a process",
+    "a trial"
    ],
    "pos": "noun",
    "level": "B1",
@@ -15803,8 +16098,8 @@
    "id": "nl-opdracht-n",
    "nl": "opdracht",
    "en": [
-    "order",
-    "dedication"
+    "task",
+    "commission"
    ],
    "pos": "noun",
    "level": "B1",
@@ -15888,7 +16183,7 @@
    "id": "nl-bruiloft-n",
    "nl": "bruiloft",
    "en": [
-    "wedding reception, wedding feast",
+    "wedding reception",
     "wedding anniversary"
    ],
    "pos": "noun",
@@ -15907,8 +16202,7 @@
    "id": "nl-vorm-n",
    "nl": "vorm",
    "en": [
-    "a form, shape",
-    "a format"
+    "a form"
    ],
    "pos": "noun",
    "level": "B1",
@@ -16009,7 +16303,8 @@
    "id": "nl-majoor-n",
    "nl": "majoor",
    "en": [
-    "major, a rank above captain"
+    "major",
+    "in compounds"
    ],
    "pos": "noun",
    "level": "B1",
@@ -16274,7 +16569,8 @@
    "id": "nl-beweging-n",
    "nl": "beweging",
    "en": [
-    "movement"
+    "movement",
+    "physical activity"
    ],
    "pos": "noun",
    "level": "B1",
@@ -16488,7 +16784,7 @@
    "id": "nl-terecht-a",
    "nl": "terecht",
    "en": [
-    "just, right, for good reason"
+    "just"
    ],
    "pos": "adj",
    "level": "B1",
@@ -16524,7 +16820,8 @@
    "id": "nl-geweer-n",
    "nl": "geweer",
    "en": [
-    "rifle"
+    "rifle",
+    "gun"
    ],
    "pos": "noun",
    "level": "B1",
@@ -16714,6 +17011,24 @@
    ]
   },
   {
+   "id": "nl-ontbijt-n",
+   "nl": "ontbijt",
+   "en": [
+    "a breakfast"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1537,
+   "gender": "het",
+   "plural": "ontbijten",
+   "examples": [
+    {
+     "nl": "Ik maakte ontbijt.",
+     "en": "I made breakfast."
+    }
+   ]
+  },
+  {
    "id": "nl-lol-n",
    "nl": "lol",
    "en": [
@@ -16820,7 +17135,8 @@
    "id": "nl-chef-n",
    "nl": "chef",
    "en": [
-    "a boss, chief, head, leader"
+    "a boss",
+    "a culinary chef"
    ],
    "pos": "noun",
    "level": "B1",
@@ -16875,7 +17191,8 @@
    "id": "nl-geweld-n",
    "nl": "geweld",
    "en": [
-    "violence"
+    "violence",
+    "strong or violent force"
    ],
    "pos": "noun",
    "level": "B1",
@@ -17004,30 +17321,6 @@
    ]
   },
   {
-   "id": "nl-aanvallen-v",
-   "nl": "aanvallen",
-   "en": [
-    "to attack"
-   ],
-   "pos": "verb",
-   "level": "B1",
-   "rank": 1575,
-   "verb": {
-    "separable": true,
-    "past": "viel aan",
-    "participle": "aangevallen",
-    "irregular": true,
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Ik denk dat we onmiddellijk moeten aanvallen.",
-     "en": "I think we should attack immediately."
-    }
-   ]
-  },
-  {
    "id": "nl-leer-n",
    "nl": "leer",
    "en": [
@@ -17072,7 +17365,7 @@
    "id": "nl-schade-n",
    "nl": "schade",
    "en": [
-    "damage, detrimental effect"
+    "damage"
    ],
    "pos": "noun",
    "level": "B1",
@@ -17289,7 +17582,7 @@
    "id": "nl-knul-n",
    "nl": "knul",
    "en": [
-    "a boy or young man, guy, kid, dude"
+    "a boy or young man"
    ],
    "pos": "noun",
    "level": "B1",
@@ -17411,7 +17704,7 @@
    "nl": "ster",
    "en": [
     "star",
-    "an asterisk "
+    "an asterisk"
    ],
    "pos": "noun",
    "level": "B1",
@@ -17423,25 +17716,6 @@
     {
      "nl": "Tom is een ster.",
      "en": "Tom is a star."
-    }
-   ]
-  },
-  {
-   "id": "nl-wezen-n",
-   "nl": "wezen",
-   "en": [
-    "a being, creature",
-    "system"
-   ],
-   "pos": "noun",
-   "level": "B1",
-   "rank": 1622,
-   "gender": "het",
-   "plural": "wezens",
-   "examples": [
-    {
-     "nl": "Ik zei in wezen hetzelfde.",
-     "en": "I said essentially the same thing."
     }
    ]
   },
@@ -17621,7 +17895,7 @@
    "id": "nl-carrire-n",
    "nl": "carrière",
    "en": [
-    "career, a person's occupation"
+    "career"
    ],
    "pos": "noun",
    "level": "B1",
@@ -17673,7 +17947,7 @@
    "id": "nl-opeens-adv",
    "nl": "opeens",
    "en": [
-    "suddenly, all of a sudden"
+    "suddenly"
    ],
    "pos": "adv",
    "level": "B1",
@@ -17689,7 +17963,8 @@
    "id": "nl-beest-n",
    "nl": "beest",
    "en": [
-    "an animal, a beast"
+    "an animal",
+    "a cruel"
    ],
    "pos": "noun",
    "level": "B1",
@@ -17789,8 +18064,8 @@
    "id": "nl-boel-n",
    "nl": "boel",
    "en": [
-    "a lot, bunch",
-    "mess, disorderly heap"
+    "a lot",
+    "mess"
    ],
    "pos": "noun",
    "level": "B1",
@@ -17826,6 +18101,7 @@
    "id": "nl-magie-n",
    "nl": "magie",
    "en": [
+    "magic",
     "the art of illusionism"
    ],
    "pos": "noun",
@@ -17854,6 +18130,24 @@
     {
      "nl": "Ik heb de oplossing.",
      "en": "I have the solution."
+    }
+   ]
+  },
+  {
+   "id": "nl-type-n",
+   "nl": "type",
+   "en": [
+    "type: a class"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1671,
+   "gender": "het",
+   "plural": "types",
+   "examples": [
+    {
+     "nl": "Zij is mijn type.",
+     "en": "She's my type."
     }
    ]
   },
@@ -17918,7 +18212,7 @@
    "id": "nl-voeren-v",
    "nl": "voeren",
    "en": [
-    "to guide, lead",
+    "to guide",
     "to wage"
    ],
    "pos": "verb",
@@ -17992,7 +18286,7 @@
    "id": "nl-pond-n",
    "nl": "pond",
    "en": [
-    "one of several monetary units"
+    "unit of mass"
    ],
    "pos": "noun",
    "level": "B1",
@@ -18216,7 +18510,7 @@
    "nl": "ziekte",
    "en": [
     "the state of sickness",
-    "an illness, disease"
+    "an illness"
    ],
    "pos": "noun",
    "level": "B1",
@@ -18293,7 +18587,7 @@
    "id": "nl-verwachten-v",
    "nl": "verwachten",
    "en": [
-    "to expect, await"
+    "to expect"
    ],
    "pos": "verb",
    "level": "B1",
@@ -18368,7 +18662,7 @@
    "nl": "verslaan",
    "en": [
     "to defeat",
-    "to report on, cover"
+    "to report on"
    ],
    "pos": "verb",
    "level": "B1",
@@ -18387,31 +18681,10 @@
    ]
   },
   {
-   "id": "nl-vangen-v",
-   "nl": "vangen",
-   "en": [
-    "to catch"
-   ],
-   "pos": "verb",
-   "level": "B1",
-   "rank": 1735,
-   "verb": {
-    "past": "ving",
-    "participle": "gevangen",
-    "irregular": true,
-    "auxiliary": "hebben"
-   },
-   "examples": [
-    {
-     "nl": "Ik heb Tom me laten vangen.",
-     "en": "I let Tom catch me."
-    }
-   ]
-  },
-  {
    "id": "nl-grens-n",
    "nl": "grens",
    "en": [
+    "physical",
     "boundary"
    ],
    "pos": "noun",
@@ -18501,8 +18774,8 @@
    "id": "nl-kleur-n",
    "nl": "kleur",
    "en": [
-    "a color, colour",
-    "a suit"
+    "a color",
+    "a party obedience"
    ],
    "pos": "noun",
    "level": "B1",
@@ -18578,7 +18851,8 @@
    "id": "nl-drank-n",
    "nl": "drank",
    "en": [
-    "beverage"
+    "beverage",
+    "alcoholic drinks"
    ],
    "pos": "noun",
    "level": "B1",
@@ -18611,10 +18885,29 @@
    ]
   },
   {
+   "id": "nl-meerdere-n",
+   "nl": "meerdere",
+   "en": [
+    "someone higher in rank"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1759,
+   "gender": "de",
+   "plural": "meerderen",
+   "irregularPlural": true,
+   "examples": [
+    {
+     "nl": "Tom heeft meerdere kinderen.",
+     "en": "Tom has several children."
+    }
+   ]
+  },
+  {
    "id": "nl-ondanks-p",
    "nl": "ondanks",
    "en": [
-    "despite, in spite of"
+    "despite"
    ],
    "pos": "prep",
    "level": "B1",
@@ -18667,7 +18960,7 @@
    "id": "nl-lijden-v",
    "nl": "lijden",
    "en": [
-    "to undergo, endure, suffer",
+    "to undergo",
     "to suffer"
    ],
    "pos": "verb",
@@ -18766,7 +19059,8 @@
    "id": "nl-harde-n",
    "nl": "harde",
    "en": [
-    "a stiffy, hard-on, erected phallus"
+    "a hard one",
+    "a stiffy"
    ],
    "pos": "noun",
    "level": "B1",
@@ -18804,7 +19098,7 @@
    "id": "nl-veld-n",
    "nl": "veld",
    "en": [
-    "field, open country",
+    "field",
     "an agricultural field"
    ],
    "pos": "noun",
@@ -18823,8 +19117,8 @@
    "id": "nl-straf-n",
    "nl": "straf",
    "en": [
-    "a punishment, penalty, sanction",
-    "a discomfort, misfortune"
+    "a punishment",
+    "a discomfort"
    ],
    "pos": "noun",
    "level": "B1",
@@ -18900,7 +19194,7 @@
    "id": "nl-schot-n",
    "nl": "schot",
    "en": [
-    "shot, act of shooting",
+    "shot",
     "missile"
    ],
    "pos": "noun",
@@ -18978,7 +19272,7 @@
    "id": "nl-taart-n",
    "nl": "taart",
    "en": [
-    "a pie, large cake, or cobbler"
+    "a pie"
    ],
    "pos": "noun",
    "level": "B1",
@@ -19056,7 +19350,7 @@
    "id": "nl-pers-n",
    "nl": "pers",
    "en": [
-    "the press, media"
+    "a press"
    ],
    "pos": "noun",
    "level": "B1",
@@ -19146,7 +19440,7 @@
    "id": "nl-zwaard-n",
    "nl": "zwaard",
    "en": [
-    "a sword, heavy blade weapon",
+    "a sword",
     "a leeboard"
    ],
    "pos": "noun",
@@ -19166,7 +19460,7 @@
    "nl": "aandoen",
    "en": [
     "to turn on",
-    "to put on , don"
+    "to put on"
    ],
    "pos": "verb",
    "level": "B1",
@@ -19224,7 +19518,7 @@
    "id": "nl-gezond-a",
    "nl": "gezond",
    "en": [
-    "healthy, being in good health"
+    "healthy"
    ],
    "pos": "adj",
    "level": "B1",
@@ -19688,7 +19982,8 @@
    "id": "nl-moed-n",
    "nl": "moed",
    "en": [
-    "courage"
+    "courage",
+    "mood"
    ],
    "pos": "noun",
    "level": "B1",
@@ -19742,7 +20037,8 @@
    "id": "nl-broeder-n",
    "nl": "broeder",
    "en": [
-    "male medical nurse"
+    "friar",
+    "member of a brotherhood"
    ],
    "pos": "noun",
    "level": "B1",
@@ -19754,7 +20050,7 @@
    "id": "nl-ruim-n",
    "nl": "ruim",
    "en": [
-    "the wide, open space",
+    "the wide",
     "a cargo hold"
    ],
    "pos": "noun",
@@ -19850,7 +20146,7 @@
    "id": "nl-gaaf-a",
    "nl": "gaaf",
    "en": [
-    "whole, complete, not injured",
+    "whole",
     "smooth"
    ],
    "pos": "adj",
@@ -19903,7 +20199,7 @@
    "id": "nl-opzij-adv",
    "nl": "opzij",
    "en": [
-    "aside, to the side"
+    "aside"
    ],
    "pos": "adv",
    "level": "B1",
@@ -19919,7 +20215,8 @@
    "id": "nl-omgeving-n",
    "nl": "omgeving",
    "en": [
-    "surroundings"
+    "surroundings",
+    "social circle"
    ],
    "pos": "noun",
    "level": "B1",
@@ -19937,7 +20234,8 @@
    "id": "nl-kip-n",
    "nl": "kip",
    "en": [
-    "a female chicken, a hen"
+    "a chicken",
+    "a female chicken"
    ],
    "pos": "noun",
    "level": "B1",
@@ -19949,6 +20247,22 @@
     {
      "nl": "Dat is kip.",
      "en": "That's chicken."
+    }
+   ]
+  },
+  {
+   "id": "nl-vanochtend-adv",
+   "nl": "vanochtend",
+   "en": [
+    "this morning"
+   ],
+   "pos": "adv",
+   "level": "B1",
+   "rank": 1899,
+   "examples": [
+    {
+     "nl": "Tom heeft Mary vanochtend gebeld.",
+     "en": "Tom called Mary this morning."
     }
    ]
   },
@@ -20011,7 +20325,8 @@
    "id": "nl-sms-n",
    "nl": "sms",
    "en": [
-    "a text message, an SMS message"
+    "SMS",
+    "a text message"
    ],
    "pos": "noun",
    "level": "B1",
@@ -20146,7 +20461,7 @@
    "nl": "vloer",
    "en": [
     "a floor",
-    "any ground, surface"
+    "any ground"
    ],
    "pos": "noun",
    "level": "B1",
@@ -20222,6 +20537,38 @@
    ]
   },
   {
+   "id": "nl-blanke-n",
+   "nl": "blanke",
+   "en": [
+    "a white person"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1934,
+   "gender": "de",
+   "plural": "blanken",
+   "irregularPlural": true
+  },
+  {
+   "id": "nl-harder-n",
+   "nl": "harder",
+   "en": [
+    "a mullet",
+    "a flathead mullet"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1936,
+   "gender": "de",
+   "plural": "harders",
+   "examples": [
+    {
+     "nl": "Praat alsjeblieft harder.",
+     "en": "Speak louder, please."
+    }
+   ]
+  },
+  {
    "id": "nl-vasthouden-v",
    "nl": "vasthouden",
    "en": [
@@ -20272,7 +20619,8 @@
    "id": "nl-berg-n",
    "nl": "berg",
    "en": [
-    "mountain"
+    "mountain",
+    "a large amount"
    ],
    "pos": "noun",
    "level": "B1",
@@ -20307,7 +20655,8 @@
    "id": "nl-opgeven-v",
    "nl": "opgeven",
    "en": [
-    "to give up, relinquish"
+    "to give up",
+    "to report"
    ],
    "pos": "verb",
    "level": "B1",
@@ -20330,7 +20679,7 @@
    "id": "nl-maatje-n",
    "nl": "maatje",
    "en": [
-    "maatjesharing, a young herring",
+    "maatjesharing",
     "a small maat"
    ],
    "pos": "noun",
@@ -20368,7 +20717,8 @@
    "id": "nl-koken-v",
    "nl": "koken",
    "en": [
-    "to cook, boil"
+    "to cook",
+    "to seethe"
    ],
    "pos": "verb",
    "level": "B1",
@@ -20610,6 +20960,24 @@
    ]
   },
   {
+   "id": "nl-kerst-n",
+   "nl": "kerst",
+   "en": [
+    "Christmas"
+   ],
+   "pos": "noun",
+   "level": "B1",
+   "rank": 1979,
+   "gender": "de",
+   "plural": "kersten",
+   "examples": [
+    {
+     "nl": "Ik hou van kerst.",
+     "en": "I love Christmas."
+    }
+   ]
+  },
+  {
    "id": "nl-invloed-n",
    "nl": "invloed",
    "en": [
@@ -20687,8 +21055,8 @@
    "id": "nl-vogel-n",
    "nl": "vogel",
    "en": [
-    "bird, any member of the class Aves",
-    "a dude, a cat"
+    "bird",
+    "a dude"
    ],
    "pos": "noun",
    "level": "B1",
@@ -20815,7 +21183,7 @@
    "id": "nl-juffrouw-n",
    "nl": "juffrouw",
    "en": [
-    "young woman, normally unmarried"
+    "young woman"
    ],
    "pos": "noun",
    "level": "B1",
@@ -20864,8 +21232,8 @@
    "id": "nl-bak-n",
    "nl": "bak",
    "en": [
-    "a large amount, lots",
-    "a vehicle, a car"
+    "container",
+    "a large amount"
    ],
    "pos": "noun",
    "level": "B2",
@@ -20903,7 +21271,7 @@
    "id": "nl-zojuist-adv",
    "nl": "zojuist",
    "en": [
-    "just now, just a moment ago"
+    "just now"
    ],
    "pos": "adv",
    "level": "B2",
@@ -20916,9 +21284,21 @@
    ]
   },
   {
+   "id": "nl-vaarwel-n",
+   "nl": "vaarwel",
+   "en": [
+    "a farewell"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2010,
+   "gender": "het"
+  },
+  {
    "id": "nl-storm-n",
    "nl": "storm",
    "en": [
+    "storm",
     "assault"
    ],
    "pos": "noun",
@@ -20937,7 +21317,8 @@
    "id": "nl-hoed-n",
    "nl": "hoed",
    "en": [
-    "a hat, worn on the head"
+    "a hat",
+    "a cover"
    ],
    "pos": "noun",
    "level": "B2",
@@ -21046,10 +21427,28 @@
    ]
   },
   {
+   "id": "nl-verzoek-n",
+   "nl": "verzoek",
+   "en": [
+    "request"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2021,
+   "gender": "het",
+   "plural": "verzoeken",
+   "examples": [
+    {
+     "nl": "Ik heb slechts één verzoek.",
+     "en": "I have but one wish."
+    }
+   ]
+  },
+  {
    "id": "nl-overtuigen-v",
    "nl": "overtuigen",
    "en": [
-    "to convince, persuade"
+    "to convince"
    ],
    "pos": "verb",
    "level": "B2",
@@ -21110,6 +21509,37 @@
    ]
   },
   {
+   "id": "nl-cent-n",
+   "nl": "cent",
+   "en": [
+    "cent"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2032,
+   "gender": "de",
+   "plural": "centen",
+   "examples": [
+    {
+     "nl": "Het is elke cent waard.",
+     "en": "It's worth every penny."
+    }
+   ]
+  },
+  {
+   "id": "nl-reet-n",
+   "nl": "reet",
+   "en": [
+    "a ripped-up spot"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2034,
+   "gender": "de",
+   "plural": "reten",
+   "irregularPlural": true
+  },
+  {
    "id": "nl-garage-n",
    "nl": "garage",
    "en": [
@@ -21150,7 +21580,7 @@
    "id": "nl-big-n",
    "nl": "big",
    "en": [
-    "piglet, little pig"
+    "piglet"
    ],
    "pos": "noun",
    "level": "B2",
@@ -21265,7 +21695,7 @@
    "nl": "vervelend",
    "en": [
     "boring",
-    "troublesome"
+    "annoying"
    ],
    "pos": "adj",
    "level": "B2",
@@ -21420,7 +21850,7 @@
    "id": "nl-jazeker-adv",
    "nl": "jazeker",
    "en": [
-    "certainly, for sure"
+    "certainly"
    ],
    "pos": "adv",
    "level": "B2",
@@ -21431,7 +21861,7 @@
    "nl": "blauw",
    "en": [
     "the colour blue",
-    "police )"
+    "police"
    ],
    "pos": "noun",
    "level": "B2",
@@ -21616,7 +22046,7 @@
    "nl": "kust",
    "en": [
     "the shoreline",
-    "the coast, seaside"
+    "the coast"
    ],
    "pos": "noun",
    "level": "B2",
@@ -21729,7 +22159,7 @@
    "id": "nl-aanklacht-n",
    "nl": "aanklacht",
    "en": [
-    "indictment, charge against a crime"
+    "indictment"
    ],
    "pos": "noun",
    "level": "B2",
@@ -21747,7 +22177,7 @@
    "id": "nl-overheid-n",
    "nl": "overheid",
    "en": [
-    "the government, the authorities"
+    "the government"
    ],
    "pos": "noun",
    "level": "B2",
@@ -21766,7 +22196,7 @@
    "id": "nl-wed-n",
    "nl": "wed",
    "en": [
-    "ford, shallow river crossing"
+    "ford"
    ],
    "pos": "noun",
    "level": "B2",
@@ -21801,7 +22231,7 @@
    "id": "nl-manager-n",
    "nl": "manager",
    "en": [
-    "a manager, someone in management"
+    "a manager"
    ],
    "pos": "noun",
    "level": "B2",
@@ -21951,8 +22381,8 @@
    "id": "nl-stroom-n",
    "nl": "stroom",
    "en": [
-    "a smaller stream",
-    "an electrical current"
+    "a flow",
+    "a major river"
    ],
    "pos": "noun",
    "level": "B2",
@@ -21971,7 +22401,8 @@
    "id": "nl-wetenschap-n",
    "nl": "wetenschap",
    "en": [
-    "knowledge"
+    "knowledge",
+    "science"
    ],
    "pos": "noun",
    "level": "B2",
@@ -21990,7 +22421,7 @@
    "id": "nl-momenteel-adv",
    "nl": "momenteel",
    "en": [
-    "at the moment, currently"
+    "at the moment"
    ],
    "pos": "adv",
    "level": "B2",
@@ -22007,7 +22438,7 @@
    "nl": "vals",
    "en": [
     "fake",
-    "off-key, out of tune"
+    "off-key"
    ],
    "pos": "adj",
    "level": "B2",
@@ -22044,7 +22475,7 @@
    "id": "nl-gouden-a",
    "nl": "gouden",
    "en": [
-    "golden, made of gold"
+    "golden"
    ],
    "pos": "adj",
    "level": "B2",
@@ -22157,7 +22588,8 @@
    "id": "nl-eeuw-n",
    "nl": "eeuw",
    "en": [
-    "a century, 100 years"
+    "a century",
+    "many years"
    ],
    "pos": "noun",
    "level": "B2",
@@ -22333,7 +22765,7 @@
    "id": "nl-plus-n",
    "nl": "plus",
    "en": [
-    "plus sign; +"
+    "plus sign"
    ],
    "pos": "noun",
    "level": "B2",
@@ -22352,7 +22784,8 @@
    "id": "nl-groene-n",
    "nl": "groene",
    "en": [
-    "ecologist, member of the greens"
+    "a green one",
+    "ecologist"
    ],
    "pos": "noun",
    "level": "B2",
@@ -22471,7 +22904,7 @@
    "id": "nl-erheen-adv",
    "nl": "erheen",
    "en": [
-    "thither, to there"
+    "thither"
    ],
    "pos": "adv",
    "level": "B2",
@@ -22487,7 +22920,7 @@
    "id": "nl-smaak-n",
    "nl": "smaak",
    "en": [
-    "taste, sense of taste"
+    "taste"
    ],
    "pos": "noun",
    "level": "B2",
@@ -22522,7 +22955,8 @@
    "id": "nl-leraar-n",
    "nl": "leraar",
    "en": [
-    "a Protestant clergyman, a reverend"
+    "a teacher",
+    "a Protestant clergyman"
    ],
    "pos": "noun",
    "level": "B2",
@@ -22753,6 +23187,7 @@
    "id": "nl-melden-v",
    "nl": "melden",
    "en": [
+    "to report",
     "to inform"
    ],
    "pos": "verb",
@@ -22843,7 +23278,8 @@
    "id": "nl-koffer-n",
    "nl": "koffer",
    "en": [
-    "a suitcase"
+    "a suitcase",
+    "a trunk"
    ],
    "pos": "noun",
    "level": "B2",
@@ -22878,10 +23314,28 @@
    ]
   },
   {
+   "id": "nl-naakt-n",
+   "nl": "naakt",
+   "en": [
+    "a nude"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2230,
+   "gender": "het",
+   "plural": "naakten",
+   "examples": [
+    {
+     "nl": "Ik ben naakt.",
+     "en": "I'm naked."
+    }
+   ]
+  },
+  {
    "id": "nl-plegen-v",
    "nl": "plegen",
    "en": [
-    "to do habitually, customarily",
+    "to do habitually",
     "to usually happen"
    ],
    "pos": "verb",
@@ -22904,7 +23358,7 @@
    "id": "nl-excuus-n",
    "nl": "excuus",
    "en": [
-    "an excuse, pretext"
+    "an excuse"
    ],
    "pos": "noun",
    "level": "B2",
@@ -22923,7 +23377,8 @@
    "id": "nl-dienen-v",
    "nl": "dienen",
    "en": [
-    "to serve"
+    "to serve",
+    "to ought to"
    ],
    "pos": "verb",
    "level": "B2",
@@ -23041,7 +23496,7 @@
    "nl": "bord",
    "en": [
     "plate",
-    "sign"
+    "plank"
    ],
    "pos": "noun",
    "level": "B2",
@@ -23059,8 +23514,8 @@
    "id": "nl-herstellen-v",
    "nl": "herstellen",
    "en": [
-    "to restore, repair",
-    "to recover, recuperate"
+    "to restore",
+    "to recover"
    ],
    "pos": "verb",
    "level": "B2",
@@ -23101,6 +23556,7 @@
    "id": "nl-behandeling-n",
    "nl": "behandeling",
    "en": [
+    "medical or therapeutic treatment",
     "judicial treatment"
    ],
    "pos": "noun",
@@ -23150,6 +23606,22 @@
    ]
   },
   {
+   "id": "nl-vanmiddag-adv",
+   "nl": "vanmiddag",
+   "en": [
+    "this afternoon"
+   ],
+   "pos": "adv",
+   "level": "B2",
+   "rank": 2262,
+   "examples": [
+    {
+     "nl": "Bel me vanmiddag.",
+     "en": "Call me this afternoon."
+    }
+   ]
+  },
+  {
    "id": "nl-ruil-n",
    "nl": "ruil",
    "en": [
@@ -23171,7 +23643,7 @@
    "id": "nl-verklaren-v",
    "nl": "verklaren",
    "en": [
-    "to declare, state",
+    "to declare",
     "to explain"
    ],
    "pos": "verb",
@@ -23207,7 +23679,7 @@
    "id": "nl-tegelijk-adv",
    "nl": "tegelijk",
    "en": [
-    "simultaneously, at the same time",
+    "simultaneously",
     "at a time"
    ],
    "pos": "adv",
@@ -23237,6 +23709,7 @@
    "id": "nl-champagne-n",
    "nl": "champagne",
    "en": [
+    "a brand",
     "the color champagne"
    ],
    "pos": "noun",
@@ -23311,7 +23784,7 @@
    "id": "nl-wegens-p",
    "nl": "wegens",
    "en": [
-    "because of, for"
+    "because of"
    ],
    "pos": "prep",
    "level": "B2",
@@ -23479,7 +23952,7 @@
    "nl": "ronde",
    "en": [
     "round",
-    "tour, stage race"
+    "tour"
    ],
    "pos": "noun",
    "level": "B2",
@@ -23492,7 +23965,7 @@
    "id": "nl-verloofde-n",
    "nl": "verloofde",
    "en": [
-    "a betrothed, a fiancée or fiancé"
+    "a betrothed"
    ],
    "pos": "noun",
    "level": "B2",
@@ -23511,7 +23984,7 @@
    "id": "nl-pot-n",
    "nl": "pot",
    "en": [
-    "jar, pot, solid container",
+    "jar",
     "cooking pot"
    ],
    "pos": "noun",
@@ -23757,6 +24230,7 @@
    "id": "nl-verstoppen-v",
    "nl": "verstoppen",
    "en": [
+    "to hide",
     "to clog"
    ],
    "pos": "verb",
@@ -23814,7 +24288,7 @@
    "id": "nl-dief-n",
    "nl": "dief",
    "en": [
-    "a thief, one who steals"
+    "a thief"
    ],
    "pos": "noun",
    "level": "B2",
@@ -23852,7 +24326,8 @@
    "id": "nl-geur-n",
    "nl": "geur",
    "en": [
-    "a scent, smell, odour, odor"
+    "a scent",
+    "An appearance"
    ],
    "pos": "noun",
    "level": "B2",
@@ -23928,8 +24403,8 @@
    "id": "nl-centrum-n",
    "nl": "centrum",
    "en": [
-    "the centre, middle of focal part",
-    "city centre, town centre"
+    "the centre",
+    "city centre"
    ],
    "pos": "noun",
    "level": "B2",
@@ -23966,8 +24441,7 @@
    "id": "nl-beer-n",
    "nl": "beer",
    "en": [
-    "boar",
-    "a male badger"
+    "a bear"
    ],
    "pos": "noun",
    "level": "B2",
@@ -24074,7 +24548,7 @@
    "id": "nl-daarheen-adv",
    "nl": "daarheen",
    "en": [
-    "thither, to there"
+    "thither"
    ],
    "pos": "adv",
    "level": "B2",
@@ -24110,7 +24584,7 @@
    "id": "nl-britse-n",
    "nl": "britse",
    "en": [
-    "female Briton; British woman"
+    "female Briton"
    ],
    "pos": "noun",
    "level": "B2",
@@ -24160,7 +24634,7 @@
    "id": "nl-assistent-n",
    "nl": "assistent",
    "en": [
-    "assistant, person who assists, aid"
+    "assistant"
    ],
    "pos": "noun",
    "level": "B2",
@@ -24272,6 +24746,60 @@
    ]
   },
   {
+   "id": "nl-shirt-n",
+   "nl": "shirt",
+   "en": [
+    "a T-shirt or other shirt"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2365,
+   "gender": "het",
+   "plural": "shirts",
+   "examples": [
+    {
+     "nl": "Wiens shirt is dit?",
+     "en": "Whose shirt is this?"
+    }
+   ]
+  },
+  {
+   "id": "nl-priester-n",
+   "nl": "priester",
+   "en": [
+    "male priest"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2369,
+   "gender": "de",
+   "plural": "priesters",
+   "examples": [
+    {
+     "nl": "Ik ben een priester.",
+     "en": "I'm a priest."
+    }
+   ]
+  },
+  {
+   "id": "nl-meent-n",
+   "nl": "meent",
+   "en": [
+    "communal pasture"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2370,
+   "gender": "de",
+   "plural": "meenten",
+   "examples": [
+    {
+     "nl": "Meent Tom het serieus?",
+     "en": "Is Tom serious?"
+    }
+   ]
+  },
+  {
    "id": "nl-proost-n",
    "nl": "proost",
    "en": [
@@ -24316,7 +24844,7 @@
    "nl": "opzoeken",
    "en": [
     "to visit",
-    "to seek, look for"
+    "to seek"
    ],
    "pos": "verb",
    "level": "B2",
@@ -24339,7 +24867,7 @@
    "id": "nl-optreden-v",
    "nl": "optreden",
    "en": [
-    "to act, perform",
+    "to act",
     "to appear"
    ],
    "pos": "verb",
@@ -24403,7 +24931,7 @@
    "nl": "motief",
    "en": [
     "a motive",
-    "a motif, a pattern"
+    "a motif"
    ],
    "pos": "noun",
    "level": "B2",
@@ -24509,7 +25037,7 @@
    "id": "nl-kerstman-n",
    "nl": "kerstman",
    "en": [
-    "Father Christmas, Santa Claus"
+    "Father Christmas"
    ],
    "pos": "noun",
    "level": "B2",
@@ -24601,7 +25129,7 @@
    "nl": "bovendien",
    "en": [
     "moreover",
-    "besides, in addition"
+    "besides"
    ],
    "pos": "adv",
    "level": "B2",
@@ -24611,8 +25139,8 @@
    "id": "nl-bewaren-v",
    "nl": "bewaren",
    "en": [
-    "to preserve, keep",
-    "to guard, watch over"
+    "to preserve",
+    "to guard"
    ],
    "pos": "verb",
    "level": "B2",
@@ -24668,6 +25196,23 @@
    ]
   },
   {
+   "id": "nl-medelijden-n",
+   "nl": "medelijden",
+   "en": [
+    "compassion"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2413,
+   "gender": "het",
+   "examples": [
+    {
+     "nl": "Ik verdien geen medelijden.",
+     "en": "I don't deserve sympathy."
+    }
+   ]
+  },
+  {
    "id": "nl-ramp-n",
    "nl": "ramp",
    "en": [
@@ -24687,10 +25232,29 @@
    ]
   },
   {
+   "id": "nl-ren-n",
+   "nl": "ren",
+   "en": [
+    "a run"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2418,
+   "gender": "de",
+   "plural": "rennen",
+   "irregularPlural": true,
+   "examples": [
+    {
+     "nl": "Waarom ren je?",
+     "en": "Why are you running?"
+    }
+   ]
+  },
+  {
    "id": "nl-richten-v",
    "nl": "richten",
    "en": [
-    "to direct, aim"
+    "to direct"
    ],
    "pos": "verb",
    "level": "B2",
@@ -24731,6 +25295,7 @@
    "id": "nl-dwars-a",
    "nl": "dwars",
    "en": [
+    "in a crosswise direction",
     "slantwise"
    ],
    "pos": "adj",
@@ -24749,7 +25314,7 @@
    "id": "nl-oefenen-v",
    "nl": "oefenen",
    "en": [
-    "to practice, train"
+    "to practice"
    ],
    "pos": "verb",
    "level": "B2",
@@ -24790,7 +25355,7 @@
    "id": "nl-bevestigen-v",
    "nl": "bevestigen",
    "en": [
-    "to fasten, attach",
+    "to fasten",
     "to confirm"
    ],
    "pos": "verb",
@@ -24925,7 +25490,8 @@
    "id": "nl-min-n",
    "nl": "min",
    "en": [
-    "wetnurse"
+    "wetnurse",
+    "maid"
    ],
    "pos": "noun",
    "level": "B2",
@@ -24980,7 +25546,7 @@
    "id": "nl-koers-n",
    "nl": "koers",
    "en": [
-    "a course of action, approach",
+    "a course of action",
     "a circulation of money"
    ],
    "pos": "noun",
@@ -25016,7 +25582,7 @@
    "id": "nl-waarheen-adv",
    "nl": "waarheen",
    "en": [
-    "whither, to where"
+    "whither"
    ],
    "pos": "adv",
    "level": "B2",
@@ -25032,7 +25598,7 @@
    "id": "nl-uniform-n",
    "nl": "uniform",
    "en": [
-    "uniform; a distinctive outfit"
+    "uniform"
    ],
    "pos": "noun",
    "level": "B2",
@@ -25178,7 +25744,7 @@
    "id": "nl-samenwerken-v",
    "nl": "samenwerken",
    "en": [
-    "to cooperate, collaborate"
+    "to cooperate"
    ],
    "pos": "verb",
    "level": "B2",
@@ -25298,7 +25864,8 @@
    "id": "nl-overwinning-n",
    "nl": "overwinning",
    "en": [
-    "victory"
+    "victory",
+    "individual win"
    ],
    "pos": "noun",
    "level": "B2",
@@ -25447,7 +26014,7 @@
    "id": "nl-beantwoorden-v",
    "nl": "beantwoorden",
    "en": [
-    "to answer, reply to"
+    "to answer"
    ],
    "pos": "verb",
    "level": "B2",
@@ -25468,7 +26035,7 @@
    "id": "nl-wandelen-v",
    "nl": "wandelen",
    "en": [
-    "to stroll, be on a walk",
+    "to stroll",
     "to hike"
    ],
    "pos": "verb",
@@ -25509,7 +26076,7 @@
    "id": "nl-kist-n",
    "nl": "kist",
    "en": [
-    "a box, chest",
+    "a box",
     "a coffin"
    ],
    "pos": "noun",
@@ -25547,7 +26114,7 @@
    "nl": "pik",
    "en": [
     "penis",
-    "mate"
+    "a down"
    ],
    "pos": "noun",
    "level": "B2",
@@ -25560,7 +26127,7 @@
    "id": "nl-race-n",
    "nl": "race",
    "en": [
-    "a speed contest, a race"
+    "a speed contest"
    ],
    "pos": "noun",
    "level": "B2",
@@ -25691,8 +26258,7 @@
    "id": "nl-gave-n",
    "nl": "gave",
    "en": [
-    "a gift, donation, present",
-    "a gift, talent"
+    "a gift"
    ],
    "pos": "noun",
    "level": "B2",
@@ -25705,7 +26271,8 @@
    "id": "nl-model-n",
    "nl": "model",
    "en": [
-    "model"
+    "model",
+    "shape"
    ],
    "pos": "noun",
    "level": "B2",
@@ -25744,7 +26311,7 @@
    "id": "nl-meedoen-v",
    "nl": "meedoen",
    "en": [
-    "to take part, participate"
+    "to take part"
    ],
    "pos": "verb",
    "level": "B2",
@@ -25825,7 +26392,7 @@
    "id": "nl-daarop-adv",
    "nl": "daarop",
    "en": [
-    "thereupon, following that"
+    "thereupon"
    ],
    "pos": "adv",
    "level": "B2",
@@ -25897,8 +26464,8 @@
    "id": "nl-verpesten-v",
    "nl": "verpesten",
    "en": [
-    "to infect, poison",
-    "to spoil, ruin"
+    "to infect",
+    "to spoil"
    ],
    "pos": "verb",
    "level": "B2",
@@ -26184,7 +26751,7 @@
    "id": "nl-seizoen-n",
    "nl": "seizoen",
    "en": [
-    "a season, major part of the year"
+    "a season"
    ],
    "pos": "noun",
    "level": "B2",
@@ -26311,8 +26878,8 @@
    "id": "nl-herinnering-n",
    "nl": "herinnering",
    "en": [
-    "the act of remembering",
-    "a souvenir, a keepsake"
+    "a memory",
+    "the act of remembering"
    ],
    "pos": "noun",
    "level": "B2",
@@ -26324,7 +26891,7 @@
    "id": "nl-kaartje-n",
    "nl": "kaartje",
    "en": [
-    "ticket, especially a train ticket"
+    "ticket"
    ],
    "pos": "noun",
    "level": "B2",
@@ -26450,6 +27017,24 @@
    ]
   },
   {
+   "id": "nl-walgelijk-a",
+   "nl": "walgelijk",
+   "en": [
+    "noisome"
+   ],
+   "pos": "adj",
+   "level": "B2",
+   "rank": 2619,
+   "comparative": "walgelijker",
+   "superlative": "walgelijkst",
+   "examples": [
+    {
+     "nl": "Dat is echt walgelijk.",
+     "en": "This is really gross."
+    }
+   ]
+  },
+  {
    "id": "nl-smerig-a",
    "nl": "smerig",
    "en": [
@@ -26494,7 +27079,7 @@
    "nl": "uitzien",
    "en": [
     "to look forward to",
-    "to seem, look like"
+    "to seem"
    ],
    "pos": "verb",
    "level": "B2",
@@ -26515,10 +27100,22 @@
    ]
   },
   {
+   "id": "nl-mannetje-n",
+   "nl": "mannetje",
+   "en": [
+    "a man who flaunts his masculinity"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2626,
+   "gender": "het",
+   "plural": "mannetjes"
+  },
+  {
    "id": "nl-genie-n",
    "nl": "genie",
    "en": [
-    "genius, mental brilliance"
+    "genius"
    ],
    "pos": "noun",
    "level": "B2",
@@ -26574,7 +27171,7 @@
    "nl": "lef",
    "en": [
     "courage",
-    "arrogance"
+    "temerity"
    ],
    "pos": "noun",
    "level": "B2",
@@ -26607,7 +27204,7 @@
    "id": "nl-gedag-n",
    "nl": "gedag",
    "en": [
-    "a goodbye, adieu, farewell"
+    "a goodbye"
    ],
    "pos": "noun",
    "level": "B2",
@@ -26706,7 +27303,7 @@
    "id": "nl-house-n",
    "nl": "house",
    "en": [
-    "house music, house"
+    "house music"
    ],
    "pos": "noun",
    "level": "B2",
@@ -26776,7 +27373,7 @@
    "id": "nl-ondertussen-adv",
    "nl": "ondertussen",
    "en": [
-    "meanwhile, in the meantime"
+    "meanwhile"
    ],
    "pos": "adv",
    "level": "B2",
@@ -26805,6 +27402,7 @@
    "id": "nl-verplaatsen-v",
    "nl": "verplaatsen",
    "en": [
+    "to move",
     "to remove"
    ],
    "pos": "verb",
@@ -26827,7 +27425,7 @@
    "id": "nl-starten-v",
    "nl": "starten",
    "en": [
-    "to start, begin"
+    "to start"
    ],
    "pos": "verb",
    "level": "B2",
@@ -27040,6 +27638,25 @@
    ]
   },
   {
+   "id": "nl-aap-n",
+   "nl": "aap",
+   "en": [
+    "monkey"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2677,
+   "gender": "de",
+   "plural": "apen",
+   "irregularPlural": true,
+   "examples": [
+    {
+     "nl": "Je ziet eruit als een aap.",
+     "en": "You look like a monkey."
+    }
+   ]
+  },
+  {
    "id": "nl-dringend-a",
    "nl": "dringend",
    "en": [
@@ -27061,7 +27678,7 @@
    "id": "nl-teruggaan-v",
    "nl": "teruggaan",
    "en": [
-    "to return, go back"
+    "to return"
    ],
    "pos": "verb",
    "level": "B2",
@@ -27276,7 +27893,8 @@
    "id": "nl-cheque-n",
    "nl": "cheque",
    "en": [
-    "check"
+    "check",
+    "voucher"
    ],
    "pos": "noun",
    "level": "B2",
@@ -27306,6 +27924,26 @@
     {
      "nl": "Bomen zorgen voor schaduw.",
      "en": "Trees provide shade."
+    }
+   ]
+  },
+  {
+   "id": "nl-kasteel-n",
+   "nl": "kasteel",
+   "en": [
+    "castle",
+    "any large"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2707,
+   "gender": "het",
+   "plural": "kastelen",
+   "irregularPlural": true,
+   "examples": [
+    {
+     "nl": "Is dat een kasteel?",
+     "en": "Is that a castle?"
     }
    ]
   },
@@ -27377,6 +28015,24 @@
     {
      "nl": "Tom klonk wanhopig.",
      "en": "Tom sounded desperate."
+    }
+   ]
+  },
+  {
+   "id": "nl-winnaar-n",
+   "nl": "winnaar",
+   "en": [
+    "winner"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2721,
+   "gender": "de",
+   "plural": "winnaars",
+   "examples": [
+    {
+     "nl": "Tom is de winnaar.",
+     "en": "Tom is the winner."
     }
    ]
   },
@@ -27453,8 +28109,8 @@
    "id": "nl-opruimen-v",
    "nl": "opruimen",
    "en": [
-    "to clean up,",
-    "to tidy up, get in order"
+    "to clean up",
+    "to tidy up"
    ],
    "pos": "verb",
    "level": "B2",
@@ -27476,7 +28132,7 @@
    "id": "nl-gsm-n",
    "nl": "gsm",
    "en": [
-    "mobile phone, cellphone"
+    "mobile phone"
    ],
    "pos": "noun",
    "level": "B2",
@@ -27565,6 +28221,26 @@
    ]
   },
   {
+   "id": "nl-onbekende-n",
+   "nl": "onbekende",
+   "en": [
+    "stranger",
+    "The unknown"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2744,
+   "gender": "de",
+   "plural": "onbekenden",
+   "irregularPlural": true,
+   "examples": [
+    {
+     "nl": "De hond blafte naar de onbekende.",
+     "en": "The dog barked at the stranger."
+    }
+   ]
+  },
+  {
    "id": "nl-vervolgens-adv",
    "nl": "vervolgens",
    "en": [
@@ -27643,7 +28319,7 @@
    "id": "nl-handelen-v",
    "nl": "handelen",
    "en": [
-    "to trade, do business",
+    "to trade",
     "to act"
    ],
    "pos": "verb",
@@ -27666,8 +28342,8 @@
    "id": "nl-dwingen-v",
    "nl": "dwingen",
    "en": [
-    "to force, coerce",
-    "to insist forcefully"
+    "to force",
+    "to constrain"
    ],
    "pos": "verb",
    "level": "B2",
@@ -27708,6 +28384,7 @@
    "id": "nl-slang-n",
    "nl": "slang",
    "en": [
+    "snake",
     "hose"
    ],
    "pos": "noun",
@@ -27774,6 +28451,18 @@
    ]
   },
   {
+   "id": "nl-makker-n",
+   "nl": "makker",
+   "en": [
+    "a mate"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2766,
+   "gender": "de",
+   "plural": "makkers"
+  },
+  {
    "id": "nl-duisternis-n",
    "nl": "duisternis",
    "en": [
@@ -27832,7 +28521,7 @@
    "id": "nl-dwaas-n",
    "nl": "dwaas",
    "en": [
-    "a stupid person, fool"
+    "a stupid person"
    ],
    "pos": "noun",
    "level": "B2",
@@ -27906,7 +28595,7 @@
    "id": "nl-spion-n",
    "nl": "spion",
    "en": [
-    "a dog breed for the partridge hunt",
+    "spy",
     "peephole"
    ],
    "pos": "noun",
@@ -28175,7 +28864,7 @@
    "id": "nl-stront-n",
    "nl": "stront",
    "en": [
-    "a huge shit, dung"
+    "a huge shit"
    ],
    "pos": "noun",
    "level": "B2",
@@ -28306,7 +28995,7 @@
    "id": "nl-sport-n",
    "nl": "sport",
    "en": [
-    "a sport; sports"
+    "a sport"
    ],
    "pos": "noun",
    "level": "B2",
@@ -28392,7 +29081,7 @@
    "id": "nl-illegaal-n",
    "nl": "illegaal",
    "en": [
-    "an illegal, illegal immigrant"
+    "an illegal"
    ],
    "pos": "noun",
    "level": "B2",
@@ -28500,7 +29189,8 @@
    "id": "nl-bovenop-adv",
    "nl": "bovenop",
    "en": [
-    "on top, above"
+    "on top",
+    "in addition"
    ],
    "pos": "adv",
    "level": "B2",
@@ -28676,7 +29366,7 @@
    "id": "nl-tip-n",
    "nl": "tip",
    "en": [
-    "tip, extreme end of something"
+    "tip"
    ],
    "pos": "noun",
    "level": "B2",
@@ -28917,7 +29607,8 @@
    "id": "nl-zuurstof-n",
    "nl": "zuurstof",
    "en": [
-    "oxygen"
+    "oxygen",
+    "dioxygen"
    ],
    "pos": "noun",
    "level": "B2",
@@ -29047,7 +29738,8 @@
    "id": "nl-organisatie-n",
    "nl": "organisatie",
    "en": [
-    "an organization"
+    "an organization",
+    "organisation"
    ],
    "pos": "noun",
    "level": "B2",
@@ -29081,6 +29773,7 @@
    "id": "nl-meekomen-v",
    "nl": "meekomen",
    "en": [
+    "to come along with",
     "to keep up with rhythm"
    ],
    "pos": "verb",
@@ -29126,7 +29819,8 @@
    "id": "nl-puur-a",
    "nl": "puur",
    "en": [
-    "pure"
+    "pure",
+    "neat"
    ],
    "pos": "adj",
    "level": "B2",
@@ -29181,7 +29875,7 @@
    "id": "nl-oudere-n",
    "nl": "oudere",
    "en": [
-    "elderly person, senior citizen"
+    "elderly person"
    ],
    "pos": "noun",
    "level": "B2",
@@ -29264,6 +29958,25 @@
    ]
   },
   {
+   "id": "nl-nicht-n",
+   "nl": "nicht",
+   "en": [
+    "female cousin",
+    "niece"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2923,
+   "gender": "de",
+   "plural": "nichten",
+   "examples": [
+    {
+     "nl": "Maria is mijn nicht.",
+     "en": "Mary's my niece."
+    }
+   ]
+  },
+  {
    "id": "nl-podium-n",
    "nl": "podium",
    "en": [
@@ -29288,7 +30001,7 @@
    "nl": "effect",
    "en": [
     "effect",
-    "spin"
+    "security"
    ],
    "pos": "noun",
    "level": "B2",
@@ -29436,7 +30149,7 @@
    "id": "nl-hut-n",
    "nl": "hut",
    "en": [
-    "a small wooden shed, hut",
+    "a small wooden shed",
     "a primitive dwelling"
    ],
    "pos": "noun",
@@ -29508,8 +30221,8 @@
    "id": "nl-scherp-a",
    "nl": "scherp",
    "en": [
-    "sharp, able to cut easily",
-    "alert, on the ball"
+    "sharp",
+    "alert"
    ],
    "pos": "adj",
    "level": "B2",
@@ -29527,6 +30240,7 @@
    "id": "nl-trainen-v",
    "nl": "trainen",
    "en": [
+    "to train an animal",
     "to train oneself"
    ],
    "pos": "verb",
@@ -29621,7 +30335,7 @@
    "id": "nl-veroorloven-v",
    "nl": "veroorloven",
    "en": [
-    "to afford, allow oneself"
+    "to afford"
    ],
    "pos": "verb",
    "level": "B2",
@@ -29661,7 +30375,7 @@
    "id": "nl-miljard-n",
    "nl": "miljard",
    "en": [
-    "a billion, a milliard, 10⁹"
+    "a billion"
    ],
    "pos": "noun",
    "level": "B2",
@@ -29698,7 +30412,7 @@
    "id": "nl-geintje-n",
    "nl": "geintje",
    "en": [
-    "a prank, a joke"
+    "a prank"
    ],
    "pos": "noun",
    "level": "B2",
@@ -29849,6 +30563,24 @@
    ]
   },
   {
+   "id": "nl-uitnodiging-n",
+   "nl": "uitnodiging",
+   "en": [
+    "invitation"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2981,
+   "gender": "de",
+   "plural": "uitnodigingen",
+   "examples": [
+    {
+     "nl": "Was dat een uitnodiging?",
+     "en": "Was that an invitation?"
+    }
+   ]
+  },
+  {
    "id": "nl-ketting-n",
    "nl": "ketting",
    "en": [
@@ -29902,6 +30634,24 @@
     {
      "nl": "Ik kan het niet met zekerheid zeggen.",
      "en": "I can't say for sure."
+    }
+   ]
+  },
+  {
+   "id": "nl-kliniek-n",
+   "nl": "kliniek",
+   "en": [
+    "a clinic"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 2990,
+   "gender": "de",
+   "plural": "klinieken",
+   "examples": [
+    {
+     "nl": "De aardbeving heeft de kliniek beschadigd.",
+     "en": "The earthquake damaged the clinic."
     }
    ]
   },
@@ -30030,7 +30780,8 @@
    "id": "nl-zegen-n",
    "nl": "zegen",
    "en": [
-    "blessing"
+    "blessing",
+    "boon"
    ],
    "pos": "noun",
    "level": "B2",
@@ -30048,7 +30799,7 @@
    "id": "nl-rommel-n",
    "nl": "rommel",
    "en": [
-    "junk, low-quality stuff",
+    "junk",
     "mess"
    ],
    "pos": "noun",
@@ -30059,6 +30810,24 @@
     {
      "nl": "Sorry voor de rommel.",
      "en": "Sorry about the mess."
+    }
+   ]
+  },
+  {
+   "id": "nl-mijl-n",
+   "nl": "mijl",
+   "en": [
+    "English or American mile"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3012,
+   "gender": "de",
+   "plural": "mijlen",
+   "examples": [
+    {
+     "nl": "Een mijl is ongeveer 1600 meter.",
+     "en": "A mile is equal to about 1,600 meters."
     }
    ]
   },
@@ -30131,7 +30900,8 @@
    "id": "nl-pech-n",
    "nl": "pech",
    "en": [
-    "bad luck; misfortune"
+    "bad luck",
+    "breakdown"
    ],
    "pos": "noun",
    "level": "B2",
@@ -30254,8 +31024,8 @@
    "id": "nl-opname-n",
    "nl": "opname",
    "en": [
-    "the act of recording",
-    "an intake, admission"
+    "a recording",
+    "the act of recording"
    ],
    "pos": "noun",
    "level": "B2",
@@ -30314,7 +31084,7 @@
    "nl": "hartslag",
    "en": [
     "a heartbeat",
-    "a moving force, 'engine'"
+    "the heart rate"
    ],
    "pos": "noun",
    "level": "B2",
@@ -30411,8 +31181,8 @@
    "id": "nl-rat-n",
    "nl": "rat",
    "en": [
-    "a traitor; a scoundrel; a quisling",
-    "an informant or snitch"
+    "a rat",
+    "any of the numerous"
    ],
    "pos": "noun",
    "level": "B2",
@@ -30631,7 +31401,7 @@
    "id": "nl-ogenblik-n",
    "nl": "ogenblik",
    "en": [
-    "moment, blink of an eye"
+    "moment"
    ],
    "pos": "noun",
    "level": "B2",
@@ -30724,7 +31494,7 @@
    "nl": "kleed",
    "en": [
     "cloth",
-    "rug"
+    "long cloth garment"
    ],
    "pos": "noun",
    "level": "B2",
@@ -30796,30 +31566,6 @@
    ]
   },
   {
-   "id": "nl-aanpakken-v",
-   "nl": "aanpakken",
-   "en": [
-    "to take",
-    "to deal with"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3100,
-   "verb": {
-    "separable": true,
-    "past": "pakte aan",
-    "participle": "aangepakt",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Hoe moeten we dit aanpakken?",
-     "en": "How should we be doing this?"
-    }
-   ]
-  },
-  {
    "id": "nl-namens-p",
    "nl": "namens",
    "en": [
@@ -30839,7 +31585,7 @@
    "id": "nl-afhandelen-v",
    "nl": "afhandelen",
    "en": [
-    "to argue out, settle"
+    "to argue out"
    ],
    "pos": "verb",
    "level": "B2",
@@ -30930,7 +31676,7 @@
    "id": "nl-vers-n",
    "nl": "vers",
    "en": [
-    "a verse, a stanza",
+    "a verse",
     "a short poem"
    ],
    "pos": "noun",
@@ -31060,7 +31806,8 @@
    "id": "nl-staart-n",
    "nl": "staart",
    "en": [
-    "a tail on an animal"
+    "a tail on an animal",
+    "a tailpiece"
    ],
    "pos": "noun",
    "level": "B2",
@@ -31231,7 +31978,8 @@
    "id": "nl-soep-n",
    "nl": "soep",
    "en": [
-    "soup, liquid dish"
+    "soup",
+    "a mirky mess"
    ],
    "pos": "noun",
    "level": "B2",
@@ -31265,7 +32013,7 @@
    "id": "nl-green-n",
    "nl": "green",
    "en": [
-    "green, putting green"
+    "green"
    ],
    "pos": "noun",
    "level": "B2",
@@ -31382,6 +32130,19 @@
      "en": "It's probably just a phase."
     }
    ]
+  },
+  {
+   "id": "nl-teef-n",
+   "nl": "teef",
+   "en": [
+    "a bitch"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3163,
+   "gender": "de",
+   "plural": "teven",
+   "irregularPlural": true
   },
   {
    "id": "nl-bot-n",
@@ -31514,7 +32275,7 @@
    "id": "nl-maagd-n",
    "nl": "maagd",
    "en": [
-    "a maiden, a virgin",
+    "a maiden",
     "a virgin of any gender"
    ],
    "pos": "noun",
@@ -31617,8 +32378,8 @@
    "id": "nl-kreng-n",
    "nl": "kreng",
    "en": [
-    "a bitch, shrew, hateful female",
-    "an annoying object"
+    "a cadaver",
+    "a bitch"
    ],
    "pos": "noun",
    "level": "B2",
@@ -31807,7 +32568,8 @@
    "id": "nl-telkens-adv",
    "nl": "telkens",
    "en": [
-    "in each case, each time"
+    "in each case",
+    "repeatedly"
    ],
    "pos": "adv",
    "level": "B2",
@@ -31856,10 +32618,22 @@
    ]
   },
   {
+   "id": "nl-dominee-n",
+   "nl": "dominee",
+   "en": [
+    "minister"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3216,
+   "gender": "de",
+   "plural": "dominees"
+  },
+  {
    "id": "nl-bekennen-v",
    "nl": "bekennen",
    "en": [
-    "to acknowledge, confess",
+    "to acknowledge",
     "to see"
    ],
    "pos": "verb",
@@ -31969,7 +32743,7 @@
    "id": "nl-uitvoeren-v",
    "nl": "uitvoeren",
    "en": [
-    "to execute, carry out; perform",
+    "to execute",
     "to output"
    ],
    "pos": "verb",
@@ -32011,7 +32785,8 @@
    "id": "nl-tank-n",
    "nl": "tank",
    "en": [
-    "tank"
+    "tank",
+    "a muscular"
    ],
    "pos": "noun",
    "level": "B2",
@@ -32045,7 +32820,7 @@
    "id": "nl-schone-n",
    "nl": "schone",
    "en": [
-    "a beauty, beau/belle"
+    "a beauty"
    ],
    "pos": "noun",
    "level": "B2",
@@ -32064,7 +32839,7 @@
    "id": "nl-verbranden-v",
    "nl": "verbranden",
    "en": [
-    "to burn, consume/kill in fire",
+    "to burn",
     "to be consumed by fire"
    ],
    "pos": "verb",
@@ -32140,11 +32915,28 @@
    ]
   },
   {
+   "id": "nl-theater-n",
+   "nl": "theater",
+   "en": [
+    "theater"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3253,
+   "gender": "het",
+   "plural": "theaters",
+   "examples": [
+    {
+     "nl": "Ik was in het theater.",
+     "en": "I was at the theater."
+    }
+   ]
+  },
+  {
    "id": "nl-koorts-n",
    "nl": "koorts",
    "en": [
-    "fever, illness or symptom",
-    "feverish obsession"
+    "fever"
    ],
    "pos": "noun",
    "level": "B2",
@@ -32200,7 +32992,7 @@
    "id": "nl-noodgeval-n",
    "nl": "noodgeval",
    "en": [
-    "emergency, emergency case"
+    "emergency"
    ],
    "pos": "noun",
    "level": "B2",
@@ -32464,6 +33256,18 @@
    ]
   },
   {
+   "id": "nl-achterkant-n",
+   "nl": "achterkant",
+   "en": [
+    "the backside"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3301,
+   "gender": "de",
+   "plural": "achterkanten"
+  },
+  {
    "id": "nl-schudden-v",
    "nl": "schudden",
    "en": [
@@ -32511,7 +33315,7 @@
    "id": "nl-negatief-n",
    "nl": "negatief",
    "en": [
-    "a negative, a negative image"
+    "a negative"
    ],
    "pos": "noun",
    "level": "B2",
@@ -32630,7 +33434,8 @@
    "id": "nl-langskomen-v",
    "nl": "langskomen",
    "en": [
-    "to pass by"
+    "to pass by",
+    "to drop in"
    ],
    "pos": "verb",
    "level": "B2",
@@ -32690,7 +33495,8 @@
    "id": "nl-knop-n",
    "nl": "knop",
    "en": [
-    "a bud of a plant"
+    "a knob",
+    "a button"
    ],
    "pos": "noun",
    "level": "B2",
@@ -32749,6 +33555,7 @@
    "id": "nl-creren-v",
    "nl": "creëren",
    "en": [
+    "to create",
     "to design creatively"
    ],
    "pos": "verb",
@@ -32784,7 +33591,8 @@
    "id": "nl-doodsbang-a",
    "nl": "doodsbang",
    "en": [
-    "fearing death, scared of dying"
+    "fearing death",
+    "scared to death"
    ],
    "pos": "adj",
    "level": "B2",
@@ -32800,7 +33608,7 @@
    "id": "nl-casino-n",
    "nl": "casino",
    "en": [
-    "casino, gambling house"
+    "casino"
    ],
    "pos": "noun",
    "level": "B2",
@@ -33030,7 +33838,7 @@
    "id": "nl-zieke-n",
    "nl": "zieke",
    "en": [
-    "patient, sick person"
+    "patient"
    ],
    "pos": "noun",
    "level": "B2",
@@ -33126,7 +33934,7 @@
    "nl": "loslaten",
    "en": [
     "to let go",
-    "to free, release"
+    "to free"
    ],
    "pos": "verb",
    "level": "B2",
@@ -33151,7 +33959,7 @@
    "nl": "portemonnee",
    "en": [
     "wallet",
-    "purse, coin purse"
+    "purse"
    ],
    "pos": "noun",
    "level": "B2",
@@ -33228,7 +34036,7 @@
    "id": "nl-weghalen-v",
    "nl": "weghalen",
    "en": [
-    "to take away, remove"
+    "to take away"
    ],
    "pos": "verb",
    "level": "B2",
@@ -33435,7 +34243,8 @@
    "id": "nl-verzekering-n",
    "nl": "verzekering",
    "en": [
-    "insurance"
+    "insurance",
+    "assurance"
    ],
    "pos": "noun",
    "level": "B2",
@@ -33453,7 +34262,8 @@
    "id": "nl-koelkast-n",
    "nl": "koelkast",
    "en": [
-    "a refrigerator, a fridge"
+    "a refrigerator",
+    "an unfashionable"
    ],
    "pos": "noun",
    "level": "B2",
@@ -33471,7 +34281,7 @@
    "id": "nl-pest-n",
    "nl": "pest",
    "en": [
-    "a plague, pest, pestilence",
+    "a plague",
     "a specific bovine plague"
    ],
    "pos": "noun",
@@ -33615,7 +34425,7 @@
    "nl": "vak",
    "en": [
     "a compartment",
-    "a profession"
+    "a subject"
    ],
    "pos": "noun",
    "level": "B2",
@@ -33646,6 +34456,35 @@
      "en": "I'm thirsty."
     }
    ]
+  },
+  {
+   "id": "nl-koe-n",
+   "nl": "koe",
+   "en": [
+    "cow"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3437,
+   "gender": "de",
+   "plural": "koeien",
+   "irregularPlural": true,
+   "examples": [
+    {
+     "nl": "Tom heeft een koe.",
+     "en": "Tom has a cow."
+    }
+   ]
+  },
+  {
+   "id": "nl-tenslotte-adv",
+   "nl": "tenslotte",
+   "en": [
+    "in the end"
+   ],
+   "pos": "adv",
+   "level": "B2",
+   "rank": 3438
   },
   {
    "id": "nl-vandaar-adv",
@@ -33815,7 +34654,7 @@
    "id": "nl-hol-n",
    "nl": "hol",
    "en": [
-    "a hole, hollow, cavity",
+    "a hole",
     "a cargo hold"
    ],
    "pos": "noun",
@@ -33953,6 +34792,24 @@
    ]
   },
   {
+   "id": "nl-overkant-n",
+   "nl": "overkant",
+   "en": [
+    "the other side"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3468,
+   "gender": "de",
+   "plural": "overkanten",
+   "examples": [
+    {
+     "nl": "Het is aan de overkant van de straat.",
+     "en": "It's across the street."
+    }
+   ]
+  },
+  {
    "id": "nl-premier-n",
    "nl": "premier",
    "en": [
@@ -34052,7 +34909,7 @@
    "id": "nl-tevoorschijn-adv",
    "nl": "tevoorschijn",
    "en": [
-    "visible, at sight"
+    "visible"
    ],
    "pos": "adv",
    "level": "B2",
@@ -34136,7 +34993,7 @@
    "id": "nl-plat-n",
    "nl": "plat",
    "en": [
-    "dialect; one’s local dialect"
+    "dialect"
    ],
    "pos": "noun",
    "level": "B2",
@@ -34218,7 +35075,8 @@
    "id": "nl-karakter-n",
    "nl": "karakter",
    "en": [
-    "a nature, a character"
+    "a character",
+    "a nature"
    ],
    "pos": "noun",
    "level": "B2",
@@ -34255,7 +35113,8 @@
    "id": "nl-college-n",
    "nl": "college",
    "en": [
-    "an academic lecture, class"
+    "a collegial board",
+    "a secondary school"
    ],
    "pos": "noun",
    "level": "B2",
@@ -34273,7 +35132,7 @@
    "id": "nl-boy-n",
    "nl": "boy",
    "en": [
-    "boy, young man"
+    "boy"
    ],
    "pos": "noun",
    "level": "B2",
@@ -34304,7 +35163,7 @@
    "id": "nl-toestaan-v",
    "nl": "toestaan",
    "en": [
-    "to permit, allow"
+    "to permit"
    ],
    "pos": "verb",
    "level": "B2",
@@ -34327,7 +35186,7 @@
    "id": "nl-paspoort-n",
    "nl": "paspoort",
    "en": [
-    "dismissal from military service",
+    "passport",
     "ticket"
    ],
    "pos": "noun",
@@ -34467,7 +35326,8 @@
    "id": "nl-link-n",
    "nl": "link",
    "en": [
-    "hyperlink"
+    "physical connection",
+    "logical connection"
    ],
    "pos": "noun",
    "level": "B2",
@@ -34485,7 +35345,8 @@
    "id": "nl-puinhoop-n",
    "nl": "puinhoop",
    "en": [
-    "a pile of rubble; a ruin"
+    "a pile of rubble",
+    "a terrible mess"
    ],
    "pos": "noun",
    "level": "B2",
@@ -34504,6 +35365,7 @@
    "id": "nl-agenda-n",
    "nl": "agenda",
    "en": [
+    "a calendar",
     "an agenda"
    ],
    "pos": "noun",
@@ -34522,7 +35384,7 @@
    "id": "nl-nazi-n",
    "nl": "nazi",
    "en": [
-    "Nazi, member of the NSDAP"
+    "Nazi"
    ],
    "pos": "noun",
    "level": "B2",
@@ -34714,6 +35576,25 @@
    ]
   },
   {
+   "id": "nl-tijdstip-n",
+   "nl": "tijdstip",
+   "en": [
+    "moment in time"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3549,
+   "gender": "het",
+   "plural": "tijdstippen",
+   "irregularPlural": true,
+   "examples": [
+    {
+     "nl": "Op welk tijdstip gaat de winkel open?",
+     "en": "What time does the store open?"
+    }
+   ]
+  },
+  {
    "id": "nl-overste-n",
    "nl": "overste",
    "en": [
@@ -34754,7 +35635,7 @@
    "id": "nl-knuffel-n",
    "nl": "knuffel",
    "en": [
-    "a hug, cuddle"
+    "a hug"
    ],
    "pos": "noun",
    "level": "B2",
@@ -35141,7 +36022,7 @@
    "id": "nl-tweeling-n",
    "nl": "tweeling",
    "en": [
-    "each of two twin siblings"
+    "a pair of twins"
    ],
    "pos": "noun",
    "level": "B2",
@@ -35197,7 +36078,7 @@
    "id": "nl-favoriet-n",
    "nl": "favoriet",
    "en": [
-    "favourite, preferred one"
+    "favourite"
    ],
    "pos": "noun",
    "level": "B2",
@@ -35392,6 +36273,7 @@
    "id": "nl-centimeter-n",
    "nl": "centimeter",
    "en": [
+    "centimetre",
     "tape measure"
    ],
    "pos": "noun",
@@ -35476,7 +36358,7 @@
    "id": "nl-zender-n",
    "nl": "zender",
    "en": [
-    "sender, a person who sends",
+    "sender",
     "transmitter"
    ],
    "pos": "noun",
@@ -35546,6 +36428,7 @@
    "id": "nl-symbool-n",
    "nl": "symbool",
    "en": [
+    "a symbol",
     "a creed"
    ],
    "pos": "noun",
@@ -35731,6 +36614,24 @@
    "irregularPlural": true
   },
   {
+   "id": "nl-benieuwd-a",
+   "nl": "benieuwd",
+   "en": [
+    "longing to see"
+   ],
+   "pos": "adj",
+   "level": "B2",
+   "rank": 3685,
+   "comparative": "benieuwder",
+   "superlative": "benieuwdst",
+   "examples": [
+    {
+     "nl": "Ik ben benieuwd.",
+     "en": "I'm curious."
+    }
+   ]
+  },
+  {
    "id": "nl-aangeven-v",
    "nl": "aangeven",
    "en": [
@@ -35808,6 +36709,24 @@
    "rank": 3691,
    "gender": "de",
    "plural": "sets"
+  },
+  {
+   "id": "nl-maling-n",
+   "nl": "maling",
+   "en": [
+    "the direction towards which"
+   ],
+   "pos": "noun",
+   "level": "B2",
+   "rank": 3692,
+   "gender": "de",
+   "plural": "malingen",
+   "examples": [
+    {
+     "nl": "Je neemt me in de maling.",
+     "en": "You're kidding me."
+    }
+   ]
   },
   {
    "id": "nl-wade-n",
@@ -35924,957 +36843,6 @@
     {
      "nl": "Het paleis heeft een hoge toren.",
      "en": "The palace has a tall tower."
-    }
-   ]
-  },
-  {
-   "id": "nl-werkelijkheid-n",
-   "nl": "werkelijkheid",
-   "en": [
-    "reality"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3706,
-   "gender": "de",
-   "plural": "werkelijkheden",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Onze dromen zijn werkelijkheid geworden.",
-     "en": "Our dreams came true."
-    }
-   ]
-  },
-  {
-   "id": "nl-gewapend-a",
-   "nl": "gewapend",
-   "en": [
-    "armed",
-    "reinforced"
-   ],
-   "pos": "adj",
-   "level": "B2",
-   "rank": 3709,
-   "examples": [
-    {
-     "nl": "Ik ben gewapend.",
-     "en": "I'm armed."
-    }
-   ]
-  },
-  {
-   "id": "nl-toespraak-n",
-   "nl": "toespraak",
-   "en": [
-    "a speech, an address"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3712,
-   "gender": "de",
-   "plural": "toespraken",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Hoe ging je toespraak?",
-     "en": "How did your speech go?"
-    }
-   ]
-  },
-  {
-   "id": "nl-recept-n",
-   "nl": "recept",
-   "en": [
-    "recipe",
-    "prescription"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3713,
-   "gender": "het",
-   "plural": "recepten",
-   "examples": [
-    {
-     "nl": "Ik heb het recept gevolgd.",
-     "en": "I followed the recipe."
-    }
-   ]
-  },
-  {
-   "id": "nl-enthousiast-a",
-   "nl": "enthousiast",
-   "en": [
-    "enthusiastic"
-   ],
-   "pos": "adj",
-   "level": "B2",
-   "rank": 3715,
-   "comparative": "enthousiaster",
-   "superlative": "meest enthousiast",
-   "examples": [
-    {
-     "nl": "Tom is enthousiast.",
-     "en": "Tom is excited."
-    }
-   ]
-  },
-  {
-   "id": "nl-scherm-n",
-   "nl": "scherm",
-   "en": [
-    "screen",
-    "awning"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3716,
-   "gender": "het",
-   "plural": "schermen"
-  },
-  {
-   "id": "nl-actief-n",
-   "nl": "actief",
-   "en": [
-    "active voice"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3719,
-   "gender": "het",
-   "examples": [
-    {
-     "nl": "Ze is actief.",
-     "en": "She is active."
-    }
-   ]
-  },
-  {
-   "id": "nl-politieagent-n",
-   "nl": "politieagent",
-   "en": [
-    "police officer"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3720,
-   "gender": "de",
-   "plural": "politieagenten",
-   "examples": [
-    {
-     "nl": "Ik ben politieagent.",
-     "en": "I'm a policeman."
-    }
-   ]
-  },
-  {
-   "id": "nl-joch-n",
-   "nl": "joch",
-   "en": [
-    "a young boy"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3723,
-   "gender": "het"
-  },
-  {
-   "id": "nl-oefening-n",
-   "nl": "oefening",
-   "en": [
-    "practice",
-    "exercise"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3725,
-   "gender": "de",
-   "plural": "oefeningen",
-   "examples": [
-    {
-     "nl": "Je hebt meer oefening nodig.",
-     "en": "You need more practice."
-    }
-   ]
-  },
-  {
-   "id": "nl-varen-v",
-   "nl": "varen",
-   "en": [
-    "to sail",
-    "to ascend or descend"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3728,
-   "verb": {
-    "past": "voer",
-    "participle": "gevaren",
-    "irregular": true,
-    "auxiliary": "both",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "We varen naar het zuiden.",
-     "en": "We're sailing southward."
-    }
-   ]
-  },
-  {
-   "id": "nl-kwart-n",
-   "nl": "kwart",
-   "en": [
-    "a quarter, one of four parts"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3729,
-   "gender": "het",
-   "plural": "kwarten",
-   "examples": [
-    {
-     "nl": "Het is kwart voor drie.",
-     "en": "It's a quarter to three."
-    }
-   ]
-  },
-  {
-   "id": "nl-commissie-n",
-   "nl": "commissie",
-   "en": [
-    "commission"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3730,
-   "gender": "de",
-   "plural": "commissies",
-   "examples": [
-    {
-     "nl": "Het is aan de commissie.",
-     "en": "It's up to the committee."
-    }
-   ]
-  },
-  {
-   "id": "nl-stiekem-a",
-   "nl": "stiekem",
-   "en": [
-    "secretive"
-   ],
-   "pos": "adj",
-   "level": "B2",
-   "rank": 3731,
-   "comparative": "stiekemer",
-   "superlative": "stiekemst",
-   "examples": [
-    {
-     "nl": "Hij moest zijn reis stiekem voortzetten.",
-     "en": "He had to continue his trip in secret."
-    }
-   ]
-  },
-  {
-   "id": "nl-afsluiten-v",
-   "nl": "afsluiten",
-   "en": [
-    "to close off, seal",
-    "to conclude"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3732,
-   "verb": {
-    "separable": true,
-    "past": "sloot af",
-    "participle": "afgesloten",
-    "irregular": true,
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Ik kan het niet afsluiten.",
-     "en": "I can't shut it down."
-    }
-   ]
-  },
-  {
-   "id": "nl-inpakken-v",
-   "nl": "inpakken",
-   "en": [
-    "to pack up",
-    "to leave"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3733,
-   "verb": {
-    "separable": true,
-    "past": "pakte in",
-    "participle": "ingepakt",
-    "auxiliary": "hebben"
-   },
-   "examples": [
-    {
-     "nl": "Je moet het niet inpakken.",
-     "en": "You don't have to wrap it up."
-    }
-   ]
-  },
-  {
-   "id": "nl-winkelen-v",
-   "nl": "winkelen",
-   "en": [
-    "to shop"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3736,
-   "verb": {
-    "past": "winkelde",
-    "participle": "gewinkeld",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Hij ging winkelen.",
-     "en": "He went shopping."
-    }
-   ]
-  },
-  {
-   "id": "nl-vrijen-v",
-   "nl": "vrijen",
-   "en": [
-    "to make love",
-    "to make out"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3738,
-   "verb": {
-    "past": "vree",
-    "participle": "gevreeën",
-    "irregular": true,
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   }
-  },
-  {
-   "id": "nl-techniek-n",
-   "nl": "techniek",
-   "en": [
-    "technique, technical skill",
-    "technics"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3739,
-   "gender": "de",
-   "plural": "technieken",
-   "examples": [
-    {
-     "nl": "Die pianist staat bekend om zijn techniek.",
-     "en": "That pianist is known for his technique."
-    }
-   ]
-  },
-  {
-   "id": "nl-blok-n",
-   "nl": "blok",
-   "en": [
-    "a block",
-    "a street block"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3749,
-   "gender": "het",
-   "plural": "blokken",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Gisterenavond sliep Tom als een blok.",
-     "en": "Tom slept like a log last night."
-    }
-   ]
-  },
-  {
-   "id": "nl-generatie-n",
-   "nl": "generatie",
-   "en": [
-    "generation"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3752,
-   "gender": "de",
-   "plural": "generaties",
-   "examples": [
-    {
-     "nl": "Ik begrijp jullie generatie niet.",
-     "en": "I don't understand your generation."
-    }
-   ]
-  },
-  {
-   "id": "nl-verlangen-v",
-   "nl": "verlangen",
-   "en": [
-    "to long for, desire, yearn",
-    "to expect"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3753,
-   "verb": {
-    "past": "verlangde",
-    "participle": "verlangd",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "We verlangen allemaal naar succes.",
-     "en": "We all desire success."
-    }
-   ]
-  },
-  {
-   "id": "nl-revolutie-n",
-   "nl": "revolutie",
-   "en": [
-    "revolution"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3755,
-   "gender": "de",
-   "plural": "revoluties",
-   "examples": [
-    {
-     "nl": "De Franse Revolutie vond plaats in 1789.",
-     "en": "The French Revolution took place in 1789."
-    }
-   ]
-  },
-  {
-   "id": "nl-pastoor-n",
-   "nl": "pastoor",
-   "en": [
-    "parish priest"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3756,
-   "gender": "de",
-   "plural": "pastoors",
-   "examples": [
-    {
-     "nl": "De pastoor is in de kerk.",
-     "en": "The pastor is in the church."
-    }
-   ]
-  },
-  {
-   "id": "nl-drama-n",
-   "nl": "drama",
-   "en": [
-    "drama"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3757,
-   "gender": "het",
-   "plural": "drama's",
-   "examples": [
-    {
-     "nl": "Hij is een drama queen.",
-     "en": "He's a drama queen."
-    }
-   ]
-  },
-  {
-   "id": "nl-maal-n",
-   "nl": "maal",
-   "en": [
-    "meal"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3758,
-   "gender": "het",
-   "plural": "malen",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Twee maal twee is vier.",
-     "en": "Two times two is four."
-    }
-   ]
-  },
-  {
-   "id": "nl-bedrag-n",
-   "nl": "bedrag",
-   "en": [
-    "amount of money"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3761,
-   "gender": "het",
-   "plural": "bedragen",
-   "examples": [
-    {
-     "nl": "We betalen altijd hetzelfde bedrag.",
-     "en": "We always pay the same amount."
-    }
-   ]
-  },
-  {
-   "id": "nl-schoft-n",
-   "nl": "schoft",
-   "en": [
-    "withers"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3765,
-   "gender": "de",
-   "plural": "schoften"
-  },
-  {
-   "id": "nl-lawaai-n",
-   "nl": "lawaai",
-   "en": [
-    "racket"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3766,
-   "gender": "het",
-   "examples": [
-    {
-     "nl": "Maak geen lawaai.",
-     "en": "Don't make noise."
-    }
-   ]
-  },
-  {
-   "id": "nl-attentie-n",
-   "nl": "attentie",
-   "en": [
-    "attention",
-    "courteousness"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3770,
-   "gender": "de"
-  },
-  {
-   "id": "nl-plant-n",
-   "nl": "plant",
-   "en": [
-    "cabbage"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3771,
-   "gender": "de",
-   "plural": "planten",
-   "examples": [
-    {
-     "nl": "Kan ik deze plant eten?",
-     "en": "Can I eat this plant?"
-    }
-   ]
-  },
-  {
-   "id": "nl-staren-v",
-   "nl": "staren",
-   "en": [
-    "to gaze, stare"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3772,
-   "verb": {
-    "past": "staarde",
-    "participle": "gestaard",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Stop met staren.",
-     "en": "Stop gawking."
-    }
-   ]
-  },
-  {
-   "id": "nl-huren-v",
-   "nl": "huren",
-   "en": [
-    "to rent, hire"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3777,
-   "verb": {
-    "past": "huurde",
-    "participle": "gehuurd",
-    "auxiliary": "hebben"
-   },
-   "examples": [
-    {
-     "nl": "Ik moest een auto huren.",
-     "en": "I had to rent a car."
-    }
-   ]
-  },
-  {
-   "id": "nl-misdrijf-n",
-   "nl": "misdrijf",
-   "en": [
-    "felony",
-    "crime"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3778,
-   "gender": "het",
-   "plural": "misdrijven",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Ik ging naar de plaats van het misdrijf.",
-     "en": "I went to the scene of the crime."
-    }
-   ]
-  },
-  {
-   "id": "nl-overlijden-v",
-   "nl": "overlijden",
-   "en": [
-    "to die"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3780,
-   "verb": {
-    "past": "overleed",
-    "participle": "overleden",
-    "irregular": true,
-    "auxiliary": "zijn"
-   },
-   "examples": [
-    {
-     "nl": "Tien jaar zijn voorbijgegaan sinds zijn overlijden.",
-     "en": "Ten years have passed since he died."
-    }
-   ]
-  },
-  {
-   "id": "nl-procedure-n",
-   "nl": "procedure",
-   "en": [
-    "procedure"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3783,
-   "gender": "de",
-   "plural": "procedures",
-   "examples": [
-    {
-     "nl": "Dit is een illegale procedure.",
-     "en": "This is an illegal procedure."
-    }
-   ]
-  },
-  {
-   "id": "nl-douchen-v",
-   "nl": "douchen",
-   "en": [
-    "to shower"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3785,
-   "verb": {
-    "past": "douchte",
-    "participle": "gedoucht",
-    "auxiliary": "hebben"
-   },
-   "examples": [
-    {
-     "nl": "Ik ga douchen.",
-     "en": "I'll take a shower."
-    }
-   ]
-  },
-  {
-   "id": "nl-thanksgiving-n",
-   "nl": "thanksgiving",
-   "en": [
-    "Thanksgiving"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3790,
-   "gender": "de",
-   "examples": [
-    {
-     "nl": "Heb je een goede Thanksgiving gehad?",
-     "en": "Did you have a good Thanksgiving?"
-    }
-   ]
-  },
-  {
-   "id": "nl-fruit-n",
-   "nl": "fruit",
-   "en": [
-    "fruit"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3795,
-   "gender": "het",
-   "examples": [
-    {
-     "nl": "Ik eet fruit.",
-     "en": "I eat fruit."
-    }
-   ]
-  },
-  {
-   "id": "nl-vloot-n",
-   "nl": "vloot",
-   "en": [
-    "fleet"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3802,
-   "gender": "de",
-   "plural": "vloten",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "De Romeinen bouwden een vloot van driehonderd schepen.",
-     "en": "The Romans built a fleet of three hundred ships."
-    }
-   ]
-  },
-  {
-   "id": "nl-uiterlijk-n",
-   "nl": "uiterlijk",
-   "en": [
-    "appearance"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3803,
-   "gender": "het",
-   "plural": "uiterlijken",
-   "examples": [
-    {
-     "nl": "Dat meisje heeft haar uiterlijk veranderd.",
-     "en": "This girl changed her look."
-    }
-   ]
-  },
-  {
-   "id": "nl-doof-a",
-   "nl": "doof",
-   "en": [
-    "deaf"
-   ],
-   "pos": "adj",
-   "level": "B2",
-   "rank": 3808,
-   "comparative": "dover",
-   "superlative": "doofst",
-   "examples": [
-    {
-     "nl": "Tom is doof.",
-     "en": "Tom's deaf."
-    }
-   ]
-  },
-  {
-   "id": "nl-terugbrengen-v",
-   "nl": "terugbrengen",
-   "en": [
-    "to bring back, return",
-    "to reduce"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3811,
-   "verb": {
-    "separable": true,
-    "past": "bracht terug",
-    "participle": "teruggebracht",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Ik moet dit boek vandaag terugbrengen.",
-     "en": "I have to return this book today."
-    }
-   ]
-  },
-  {
-   "id": "nl-schamen-v",
-   "nl": "schamen",
-   "en": [
-    "to be ashamed"
-   ],
-   "pos": "verb",
-   "level": "B2",
-   "rank": 3812,
-   "verb": {
-    "past": "schaamde",
-    "participle": "geschaamd",
-    "auxiliary": "hebben",
-    "auxiliaryUnknown": true
-   },
-   "examples": [
-    {
-     "nl": "Tom zou zich moeten schamen.",
-     "en": "Tom should be ashamed."
-    }
-   ]
-  },
-  {
-   "id": "nl-wetenschapper-n",
-   "nl": "wetenschapper",
-   "en": [
-    "scientist",
-    "scholar"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3819,
-   "gender": "de",
-   "plural": "wetenschappers",
-   "examples": [
-    {
-     "nl": "Hij is wetenschapper.",
-     "en": "He is a scientist."
-    }
-   ]
-  },
-  {
-   "id": "nl-weduwe-n",
-   "nl": "weduwe",
-   "en": [
-    "widow, surviving wife"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3820,
-   "gender": "de",
-   "plural": "weduwen",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Maria is weduwe.",
-     "en": "Mary is a widow."
-    }
-   ]
-  },
-  {
-   "id": "nl-kanaal-n",
-   "nl": "kanaal",
-   "en": [
-    "canal",
-    "channel"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3821,
-   "gender": "het",
-   "plural": "kanalen",
-   "irregularPlural": true
-  },
-  {
-   "id": "nl-watje-n",
-   "nl": "watje",
-   "en": [
-    "a piece of cotton wool"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3823,
-   "gender": "het",
-   "plural": "watjes",
-   "examples": [
-    {
-     "nl": "Wees niet zo'n watje.",
-     "en": "Don't be such a wimp."
-    }
-   ]
-  },
-  {
-   "id": "nl-speech-n",
-   "nl": "speech",
-   "en": [
-    "speech"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3825,
-   "gender": "de",
-   "plural": "speechen",
-   "examples": [
-    {
-     "nl": "Haar speech was uitstekend.",
-     "en": "Her speech was excellent."
-    }
-   ]
-  },
-  {
-   "id": "nl-versterking-n",
-   "nl": "versterking",
-   "en": [
-    "strengthening",
-    "amplification"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3827,
-   "gender": "de",
-   "plural": "versterkingen",
-   "examples": [
-    {
-     "nl": "Laat ons versterking vragen.",
-     "en": "Let's call for backup."
-    }
-   ]
-  },
-  {
-   "id": "nl-voorraad-n",
-   "nl": "voorraad",
-   "en": [
-    "stock"
-   ],
-   "pos": "noun",
-   "level": "B2",
-   "rank": 3828,
-   "gender": "de",
-   "plural": "voorraden",
-   "irregularPlural": true,
-   "examples": [
-    {
-     "nl": "Hoeveel heb je er op voorraad?",
-     "en": "How many do you have in stock?"
     }
    ]
   },

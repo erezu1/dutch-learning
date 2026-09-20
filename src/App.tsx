@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import deckCore from './content/deck-core.json'
 import type { Deck } from './core/types'
@@ -5,9 +6,27 @@ import { useSession } from './session/useSession'
 import { Done } from './ui/Done'
 import { Home } from './ui/Home'
 import { LevelPicker } from './ui/LevelPicker'
+import { glide, screenVariants } from './ui/motion'
 import { ReviewScreen } from './ui/ReviewScreen'
 
 const deck = deckCore as Deck
+
+/** Every screen enters and leaves the same way, so no change is abrupt. */
+function Screen({ name, children }: { name: string; children: React.ReactNode }) {
+  return (
+    <motion.div
+      key={name}
+      variants={screenVariants}
+      initial="enter"
+      animate="center"
+      exit="exit"
+      transition={glide}
+      className="h-full"
+    >
+      {children}
+    </motion.div>
+  )
+}
 
 export default function App() {
   const session = useSession(deck)
@@ -18,40 +37,44 @@ export default function App() {
   }
 
   // Asked once, before anything else.
-  if (!session.levelChosen) {
-    return <LevelPicker onPick={session.setLevel} />
-  }
-
-  if (screen === 'level') {
-    return (
-      <LevelPicker
-        current={session.level}
-        onPick={(option) => {
-          session.setLevel(option)
-          setScreen('home')
-        }}
-        onCancel={() => setScreen('home')}
-      />
-    )
-  }
-
-  if (screen === 'review' && session.status === 'reviewing') {
-    return <ReviewScreen session={session} onExit={() => setScreen('home')} />
-  }
-
-  if (screen === 'review' && session.status === 'done') {
-    return <Done stats={session.stats} onHome={() => setScreen('home')} />
-  }
+  const showLevel = !session.levelChosen || screen === 'level'
+  const reviewing = !showLevel && screen === 'review' && session.status === 'reviewing'
+  const finished = !showLevel && screen === 'review' && session.status === 'done'
 
   return (
-    <Home
-      stats={session.stats}
-      level={session.level}
-      onChangeLevel={() => setScreen('level')}
-      onStart={() => {
-        session.start()
-        setScreen('review')
-      }}
-    />
+    <AnimatePresence mode="wait" initial={false}>
+      {showLevel ? (
+        <Screen name="level">
+          <LevelPicker
+            current={session.levelChosen ? session.level : undefined}
+            onPick={(option) => {
+              session.setLevel(option)
+              setScreen('home')
+            }}
+            onCancel={session.levelChosen ? () => setScreen('home') : undefined}
+          />
+        </Screen>
+      ) : reviewing ? (
+        <Screen name="review">
+          <ReviewScreen session={session} onExit={() => setScreen('home')} />
+        </Screen>
+      ) : finished ? (
+        <Screen name="done">
+          <Done stats={session.stats} onHome={() => setScreen('home')} />
+        </Screen>
+      ) : (
+        <Screen name="home">
+          <Home
+            stats={session.stats}
+            level={session.level}
+            onChangeLevel={() => setScreen('level')}
+            onStart={() => {
+              session.start()
+              setScreen('review')
+            }}
+          />
+        </Screen>
+      )}
+    </AnimatePresence>
   )
 }
