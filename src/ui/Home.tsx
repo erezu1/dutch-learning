@@ -151,21 +151,26 @@ export function Home({
                 stroke="var(--color-surface-3)"
                 strokeWidth="8"
               />
-              <motion.circle
-                cx="50"
-                cy="50"
-                r="45"
-                fill="none"
-                stroke="var(--color-primary)"
-                strokeWidth="8"
-                strokeLinecap="round"
-                // Drawn in from nothing every time the screen arrives, rather
-                // than being there already. The ring is the day, and watching
-                // it close is the closest the app gets to a reward.
-                initial={false}
-                animate={{ strokeDasharray: arrived ? `${progress * 283} 283` : '0 283' }}
-                transition={ringGrow}
-              />
+              {/* Nothing at all when nothing has been done: a round cap on an
+                  arc of zero length still draws a dot, and a dot on the ring
+                  reads as a score. */}
+              {progress > 0 && (
+                <motion.circle
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  fill="none"
+                  stroke="var(--color-primary)"
+                  strokeWidth="8"
+                  strokeLinecap="round"
+                  // Drawn in from nothing every time the screen arrives, rather
+                  // than being there already. The ring is the day, and watching
+                  // it close is the closest the app gets to a reward.
+                  initial={false}
+                  animate={{ strokeDasharray: arrived ? `${progress * 283} 283` : '0 283' }}
+                  transition={ringGrow}
+                />
+              )}
             </svg>
             {/* The numbers wait for the ring: arriving together, the eye has
                 nowhere to start. */}
