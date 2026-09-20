@@ -171,11 +171,17 @@ function WithSpeaker({
     void say(phrase).finally(() => {
       // Don't cut a wave off mid-flight. The icon is exactly its resting self
       // every STEP seconds — one wave on the inner arc, one on the outer — so
-      // let the animation run on to the next of those and stop there.
+      // run on to the next of those and stop there.
+      //
+      // The remaining time is read from the animation's own clock rather than
+      // from when the tap happened: the element mounts a render later, and
+      // that drift is enough to stop it short of the boundary.
       const step = STEP * 1000
-      const elapsed = performance.now() - startedAt.current
-      const remaining = step - (elapsed % step)
-      setTimeout(() => setSpeaking(false), remaining)
+      const wave = document.querySelector('.speaker-wave')
+      const clock = wave?.getAnimations?.()[0]?.currentTime
+      const elapsed =
+        typeof clock === 'number' ? clock : performance.now() - startedAt.current
+      setTimeout(() => setSpeaking(false), step - (elapsed % step))
     })
   }
 

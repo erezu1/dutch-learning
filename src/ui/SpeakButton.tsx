@@ -3,10 +3,10 @@ import { supported } from '../core/speech'
 // ---------------------------------------------------------------------------
 // The speaker, with its own waves as the animation.
 //
-// While the voice is talking the two arcs propagate outwards, each replaced by
-// the one behind it. The second wave runs on a negative delay so it starts
-// already halfway along: from the first frame one wave is on the inner arc and
-// the other on the outer, and the mark never stops looking like itself.
+// While the voice is talking the arcs propagate outwards, each replaced by the
+// one growing behind it. The waves run on negative delays so they are already
+// spread along their path on the first frame: one on the inner arc, one on the
+// outer, one forming at the mouth. The mark never stops looking like itself.
 //
 // The strokes keep their width while they grow: scaling a path scales its
 // stroke too, which made a wave thicken as it travelled out. vector-effect
@@ -20,12 +20,13 @@ const WAVE_INNER = 'M15.27 9.47A3.4 3.4 0 0 1 15.27 14.53'
 const WAVE_OUTER = 'M17.42 7.1A6.6 6.6 0 0 1 17.42 16.9'
 
 /**
- * A wave's whole life, matching the CSS. It passes the outer arc at the
- * halfway mark, so the icon returns to exactly its resting shape every STEP
- * seconds — which is when the animation can be stopped without a jump.
+ * A wave's whole life, matching the CSS: three equal steps, from forming at
+ * the mouth, through the inner arc, through the outer, and away. Three waves
+ * one step apart mean the icon is exactly its resting self every STEP seconds,
+ * which is when the animation can be stopped without a jump.
  */
-const LIFETIME = 2.2
-const WAVES = 2
+const LIFETIME = 1.8
+const WAVES = 3
 export const STEP = LIFETIME / WAVES
 
 const wave = {

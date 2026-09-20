@@ -105,18 +105,27 @@
 
 /* The speaker's waves, propagating.
 
-   A wave's whole life is two steps: from the inner arc to the outer, then from
-   the outer out of sight. The 50% keyframe is what makes that exact — at the
-   halfway point a wave sits precisely where the outer arc is drawn, rather
-   than passing through some arbitrary size on a straight run outwards.
+   The resting icon is two arcs: one at scale 1 and one at 1.94. A wave's life
+   is three equal steps of that same ratio, so it passes through both of those
+   sizes exactly:
 
-   Two waves run one step apart, so every half of the cycle the icon is exactly
-   itself again: one wave on the inner arc, one on the outer. That is also why
-   it can be stopped cleanly — see SpeakButton, which waits for the next of
-   those moments before it lets the animation end.
+       0%    0.515   forming at the cone's mouth, fading in
+       33%   1       the inner arc
+       66%   1.94    the outer arc
+       100%  3.76    travelled on, faded out
 
-   vector-effect keeps the stroke at its drawn width as the wave grows; without
-   it a scale of 3.76 multiplies the line thickness too and the waves swell
+   Three waves run one step apart. At every step boundary one wave is exactly
+   on the inner arc and another exactly on the outer — the resting icon,
+   reproduced rather than approximated — while a third is forming at the mouth
+   and a fourth has just gone. Between boundaries the wave that has left the
+   inner arc is replaced by the one growing in behind it, so the mouth is never
+   empty; with only two waves there was a gap there for most of every cycle.
+
+   Because the icon is exactly itself at each boundary, the animation can be
+   stopped at one without a jump — see SpeakButton, which waits for the next.
+
+   vector-effect keeps the stroke at its drawn width as a wave grows; without
+   it a scale of 3.76 multiplies the line thickness too, and the waves swell
    into each other.
 
    Written in CSS because the motion library would not tween these SVG paths at
@@ -124,12 +133,25 @@
 --------------------------------------------------------------------------- */
 @keyframes speaker-wave {
   0% {
+    transform: scale(0.515);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.5;
+  }
+  33% {
     transform: scale(1);
     opacity: 1;
   }
-  50% {
+  66% {
     transform: scale(1.94);
     opacity: 1;
+  }
+  /* Fully gone before the step boundary, not still half there as it crosses
+     it: a linear fade to the very end leaves the outermost wave visible at
+     the moment the icon is supposed to be back to just its two arcs. */
+  88% {
+    opacity: 0;
   }
   100% {
     transform: scale(3.76);
@@ -141,7 +163,7 @@
   transform-box: view-box;
   transform-origin: 13px 12px;
   vector-effect: non-scaling-stroke;
-  animation: speaker-wave 2.2s linear infinite;
+  animation: speaker-wave 1.8s linear infinite;
 }
 
 @layer base {
