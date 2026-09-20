@@ -285,6 +285,16 @@ body::after {
     height: 100%;
   }
 
+  /* The page draws edge to edge, but `100%` is the layout viewport — which on
+     a phone with gesture navigation can stop short of the physical display.
+     What is left over is a strip along the bottom the app never paints, and
+     the rounded corners are in it. The dynamic viewport unit measures the
+     screen rather than the layout, so this reaches the bottom of the glass. */
+  html,
+  body {
+    min-height: 100dvh;
+  }
+
   /* Above the ground, which sits at z-index 0 on the body itself. */
   #root {
     position: relative;
