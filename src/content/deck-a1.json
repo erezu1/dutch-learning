@@ -1,0 +1,2648 @@
+{
+ "id": "a1-core",
+ "name": "A1 — de basis",
+ "level": "A1",
+ "notes": [
+  {
+   "id": "nl-man",
+   "nl": "man",
+   "en": [
+    "man"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "mannen",
+   "tags": [
+    "mensen"
+   ],
+   "examples": [
+    {
+     "nl": "De man leest de krant.",
+     "en": "The man is reading the newspaper."
+    }
+   ]
+  },
+  {
+   "id": "nl-vrouw",
+   "nl": "vrouw",
+   "en": [
+    "woman",
+    "wife"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "vrouwen",
+   "tags": [
+    "mensen"
+   ],
+   "examples": [
+    {
+     "nl": "De vrouw drinkt koffie.",
+     "en": "The woman is drinking coffee."
+    }
+   ]
+  },
+  {
+   "id": "nl-kind",
+   "nl": "kind",
+   "en": [
+    "child"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "kinderen",
+   "irregularPlural": true,
+   "tags": [
+    "mensen"
+   ],
+   "examples": [
+    {
+     "nl": "Het kind speelt buiten.",
+     "en": "The child is playing outside."
+    }
+   ]
+  },
+  {
+   "id": "nl-mens",
+   "nl": "mens",
+   "en": [
+    "person",
+    "human"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "mensen",
+   "irregularPlural": true,
+   "tags": [
+    "mensen"
+   ],
+   "examples": [
+    {
+     "nl": "Er zijn veel mensen op straat.",
+     "en": "There are many people in the street."
+    }
+   ]
+  },
+  {
+   "id": "nl-meisje",
+   "nl": "meisje",
+   "en": [
+    "girl"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "meisjes",
+   "tags": [
+    "mensen"
+   ],
+   "examples": [
+    {
+     "nl": "Het meisje heet Anna.",
+     "en": "The girl is called Anna."
+    }
+   ]
+  },
+  {
+   "id": "nl-moeder",
+   "nl": "moeder",
+   "en": [
+    "mother"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "moeders",
+   "tags": [
+    "familie"
+   ],
+   "examples": [
+    {
+     "nl": "Mijn moeder woont in Utrecht.",
+     "en": "My mother lives in Utrecht."
+    }
+   ]
+  },
+  {
+   "id": "nl-vader",
+   "nl": "vader",
+   "en": [
+    "father"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "vaders",
+   "tags": [
+    "familie"
+   ],
+   "examples": [
+    {
+     "nl": "Zijn vader werkt hier.",
+     "en": "His father works here."
+    }
+   ]
+  },
+  {
+   "id": "nl-zus",
+   "nl": "zus",
+   "en": [
+    "sister"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "zussen",
+   "tags": [
+    "familie"
+   ],
+   "examples": [
+    {
+     "nl": "Ik heb twee zussen.",
+     "en": "I have two sisters."
+    }
+   ]
+  },
+  {
+   "id": "nl-broer",
+   "nl": "broer",
+   "en": [
+    "brother"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "broers",
+   "tags": [
+    "familie"
+   ],
+   "examples": [
+    {
+     "nl": "Mijn broer is ouder.",
+     "en": "My brother is older."
+    }
+   ]
+  },
+  {
+   "id": "nl-vriend",
+   "nl": "vriend",
+   "en": [
+    "friend",
+    "boyfriend"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "vrienden",
+   "tags": [
+    "mensen"
+   ],
+   "examples": [
+    {
+     "nl": "Hij is een goede vriend.",
+     "en": "He is a good friend."
+    }
+   ]
+  },
+  {
+   "id": "nl-hond",
+   "nl": "hond",
+   "en": [
+    "dog"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "honden",
+   "tags": [
+    "dieren"
+   ],
+   "examples": [
+    {
+     "nl": "De hond slaapt op de bank.",
+     "en": "The dog is sleeping on the sofa."
+    }
+   ]
+  },
+  {
+   "id": "nl-kat",
+   "nl": "kat",
+   "en": [
+    "cat"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "katten",
+   "tags": [
+    "dieren"
+   ],
+   "examples": [
+    {
+     "nl": "De kat is heel klein.",
+     "en": "The cat is very small."
+    }
+   ]
+  },
+  {
+   "id": "nl-paard",
+   "nl": "paard",
+   "en": [
+    "horse"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "paarden",
+   "tags": [
+    "dieren"
+   ],
+   "examples": [
+    {
+     "nl": "Het paard staat in de wei.",
+     "en": "The horse is standing in the field."
+    }
+   ]
+  },
+  {
+   "id": "nl-dier",
+   "nl": "dier",
+   "en": [
+    "animal"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "dieren",
+   "tags": [
+    "dieren"
+   ],
+   "examples": [
+    {
+     "nl": "Welk dier is dat?",
+     "en": "What animal is that?"
+    }
+   ]
+  },
+  {
+   "id": "nl-huis",
+   "nl": "huis",
+   "en": [
+    "house",
+    "home"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "huizen",
+   "irregularPlural": true,
+   "tags": [
+    "wonen"
+   ],
+   "examples": [
+    {
+     "nl": "Ons huis is niet groot.",
+     "en": "Our house is not big."
+    }
+   ]
+  },
+  {
+   "id": "nl-kamer",
+   "nl": "kamer",
+   "en": [
+    "room"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "kamers",
+   "tags": [
+    "wonen"
+   ],
+   "examples": [
+    {
+     "nl": "De kamer is heel licht.",
+     "en": "The room is very light."
+    }
+   ]
+  },
+  {
+   "id": "nl-keuken",
+   "nl": "keuken",
+   "en": [
+    "kitchen"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "keukens",
+   "tags": [
+    "wonen"
+   ],
+   "examples": [
+    {
+     "nl": "Ik kook in de keuken.",
+     "en": "I cook in the kitchen."
+    }
+   ]
+  },
+  {
+   "id": "nl-tuin",
+   "nl": "tuin",
+   "en": [
+    "garden"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "tuinen",
+   "tags": [
+    "wonen"
+   ],
+   "examples": [
+    {
+     "nl": "We zitten in de tuin.",
+     "en": "We are sitting in the garden."
+    }
+   ]
+  },
+  {
+   "id": "nl-deur",
+   "nl": "deur",
+   "en": [
+    "door"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "deuren",
+   "tags": [
+    "wonen"
+   ],
+   "examples": [
+    {
+     "nl": "Doe de deur dicht.",
+     "en": "Close the door."
+    }
+   ]
+  },
+  {
+   "id": "nl-raam",
+   "nl": "raam",
+   "en": [
+    "window"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "ramen",
+   "irregularPlural": true,
+   "tags": [
+    "wonen"
+   ],
+   "examples": [
+    {
+     "nl": "Het raam staat open.",
+     "en": "The window is open."
+    }
+   ]
+  },
+  {
+   "id": "nl-tafel",
+   "nl": "tafel",
+   "en": [
+    "table"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "tafels",
+   "tags": [
+    "wonen"
+   ],
+   "examples": [
+    {
+     "nl": "Het boek ligt op de tafel.",
+     "en": "The book is on the table."
+    }
+   ]
+  },
+  {
+   "id": "nl-stoel",
+   "nl": "stoel",
+   "en": [
+    "chair"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "stoelen",
+   "tags": [
+    "wonen"
+   ],
+   "examples": [
+    {
+     "nl": "Ga op die stoel zitten.",
+     "en": "Sit on that chair."
+    }
+   ]
+  },
+  {
+   "id": "nl-bed",
+   "nl": "bed",
+   "en": [
+    "bed"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "bedden",
+   "tags": [
+    "wonen"
+   ],
+   "examples": [
+    {
+     "nl": "Ik ga naar bed.",
+     "en": "I am going to bed."
+    }
+   ]
+  },
+  {
+   "id": "nl-sleutel",
+   "nl": "sleutel",
+   "en": [
+    "key"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "sleutels",
+   "tags": [
+    "wonen"
+   ],
+   "examples": [
+    {
+     "nl": "Waar is mijn sleutel?",
+     "en": "Where is my key?"
+    }
+   ]
+  },
+  {
+   "id": "nl-stad",
+   "nl": "stad",
+   "en": [
+    "city",
+    "town"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "steden",
+   "irregularPlural": true,
+   "tags": [
+    "plaatsen"
+   ],
+   "examples": [
+    {
+     "nl": "Amsterdam is een mooie stad.",
+     "en": "Amsterdam is a beautiful city."
+    }
+   ]
+  },
+  {
+   "id": "nl-straat",
+   "nl": "straat",
+   "en": [
+    "street"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "straten",
+   "tags": [
+    "plaatsen"
+   ],
+   "examples": [
+    {
+     "nl": "Ik woon in deze straat.",
+     "en": "I live in this street."
+    }
+   ]
+  },
+  {
+   "id": "nl-land",
+   "nl": "land",
+   "en": [
+    "country"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "landen",
+   "tags": [
+    "plaatsen"
+   ],
+   "examples": [
+    {
+     "nl": "Nederland is een klein land.",
+     "en": "The Netherlands is a small country."
+    }
+   ]
+  },
+  {
+   "id": "nl-school",
+   "nl": "school",
+   "en": [
+    "school"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "scholen",
+   "irregularPlural": true,
+   "tags": [
+    "plaatsen"
+   ],
+   "examples": [
+    {
+     "nl": "De school begint om acht uur.",
+     "en": "School starts at eight o'clock."
+    }
+   ]
+  },
+  {
+   "id": "nl-winkel",
+   "nl": "winkel",
+   "en": [
+    "shop",
+    "store"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "winkels",
+   "tags": [
+    "plaatsen"
+   ],
+   "examples": [
+    {
+     "nl": "De winkel is nog open.",
+     "en": "The shop is still open."
+    }
+   ]
+  },
+  {
+   "id": "nl-markt",
+   "nl": "markt",
+   "en": [
+    "market"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "markten",
+   "tags": [
+    "plaatsen"
+   ],
+   "examples": [
+    {
+     "nl": "Op zaterdag is er markt.",
+     "en": "There is a market on Saturday."
+    }
+   ]
+  },
+  {
+   "id": "nl-station",
+   "nl": "station",
+   "en": [
+    "station"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "stations",
+   "irregularPlural": true,
+   "tags": [
+    "plaatsen"
+   ],
+   "examples": [
+    {
+     "nl": "Het station is dichtbij.",
+     "en": "The station is nearby."
+    }
+   ]
+  },
+  {
+   "id": "nl-ziekenhuis",
+   "nl": "ziekenhuis",
+   "en": [
+    "hospital"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "ziekenhuizen",
+   "irregularPlural": true,
+   "tags": [
+    "plaatsen"
+   ],
+   "examples": [
+    {
+     "nl": "Zij werkt in het ziekenhuis.",
+     "en": "She works in the hospital."
+    }
+   ]
+  },
+  {
+   "id": "nl-cafe",
+   "nl": "café",
+   "en": [
+    "café",
+    "pub"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "cafés",
+   "irregularPlural": true,
+   "tags": [
+    "plaatsen"
+   ],
+   "examples": [
+    {
+     "nl": "We gaan naar het café.",
+     "en": "We are going to the café."
+    }
+   ]
+  },
+  {
+   "id": "nl-fiets",
+   "nl": "fiets",
+   "en": [
+    "bicycle"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "fietsen",
+   "tags": [
+    "reizen"
+   ],
+   "examples": [
+    {
+     "nl": "Mijn fiets is kapot.",
+     "en": "My bicycle is broken."
+    }
+   ]
+  },
+  {
+   "id": "nl-trein",
+   "nl": "trein",
+   "en": [
+    "train"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "treinen",
+   "tags": [
+    "reizen"
+   ],
+   "examples": [
+    {
+     "nl": "De trein is te laat.",
+     "en": "The train is late."
+    }
+   ]
+  },
+  {
+   "id": "nl-auto",
+   "nl": "auto",
+   "en": [
+    "car"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "auto's",
+   "irregularPlural": true,
+   "tags": [
+    "reizen"
+   ],
+   "examples": [
+    {
+     "nl": "De auto staat buiten.",
+     "en": "The car is outside."
+    }
+   ]
+  },
+  {
+   "id": "nl-bus",
+   "nl": "bus",
+   "en": [
+    "bus"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "bussen",
+   "tags": [
+    "reizen"
+   ],
+   "examples": [
+    {
+     "nl": "Ik neem de bus.",
+     "en": "I take the bus."
+    }
+   ]
+  },
+  {
+   "id": "nl-water",
+   "nl": "water",
+   "en": [
+    "water"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "tags": [
+    "eten"
+   ],
+   "examples": [
+    {
+     "nl": "Mag ik een glas water?",
+     "en": "May I have a glass of water?"
+    }
+   ]
+  },
+  {
+   "id": "nl-koffie",
+   "nl": "koffie",
+   "en": [
+    "coffee"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "tags": [
+    "eten"
+   ],
+   "examples": [
+    {
+     "nl": "Wil je koffie?",
+     "en": "Do you want coffee?"
+    }
+   ]
+  },
+  {
+   "id": "nl-melk",
+   "nl": "melk",
+   "en": [
+    "milk"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "tags": [
+    "eten"
+   ],
+   "examples": [
+    {
+     "nl": "Ik drink melk bij het ontbijt.",
+     "en": "I drink milk at breakfast."
+    }
+   ]
+  },
+  {
+   "id": "nl-bier",
+   "nl": "bier",
+   "en": [
+    "beer"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "bieren",
+   "tags": [
+    "eten"
+   ],
+   "examples": [
+    {
+     "nl": "Twee bier, alsjeblieft.",
+     "en": "Two beers, please."
+    }
+   ]
+  },
+  {
+   "id": "nl-brood",
+   "nl": "brood",
+   "en": [
+    "bread"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "broden",
+   "tags": [
+    "eten"
+   ],
+   "examples": [
+    {
+     "nl": "Ik koop brood bij de bakker.",
+     "en": "I buy bread at the baker's."
+    }
+   ]
+  },
+  {
+   "id": "nl-kaas",
+   "nl": "kaas",
+   "en": [
+    "cheese"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "kazen",
+   "irregularPlural": true,
+   "tags": [
+    "eten"
+   ],
+   "examples": [
+    {
+     "nl": "Nederlandse kaas is lekker.",
+     "en": "Dutch cheese is tasty."
+    }
+   ]
+  },
+  {
+   "id": "nl-appel",
+   "nl": "appel",
+   "en": [
+    "apple"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "appels",
+   "tags": [
+    "eten"
+   ],
+   "examples": [
+    {
+     "nl": "Ik eet een appel.",
+     "en": "I am eating an apple."
+    }
+   ]
+  },
+  {
+   "id": "nl-ei",
+   "nl": "ei",
+   "en": [
+    "egg"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "eieren",
+   "irregularPlural": true,
+   "tags": [
+    "eten"
+   ],
+   "examples": [
+    {
+     "nl": "Ik wil graag een ei.",
+     "en": "I would like an egg."
+    }
+   ]
+  },
+  {
+   "id": "nl-eten-n",
+   "nl": "eten",
+   "en": [
+    "food"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "tags": [
+    "eten"
+   ],
+   "examples": [
+    {
+     "nl": "Het eten is klaar.",
+     "en": "The food is ready."
+    }
+   ]
+  },
+  {
+   "id": "nl-glas",
+   "nl": "glas",
+   "en": [
+    "glass"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "glazen",
+   "irregularPlural": true,
+   "tags": [
+    "eten"
+   ],
+   "examples": [
+    {
+     "nl": "Het glas is leeg.",
+     "en": "The glass is empty."
+    }
+   ]
+  },
+  {
+   "id": "nl-mes",
+   "nl": "mes",
+   "en": [
+    "knife"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "messen",
+   "tags": [
+    "eten"
+   ],
+   "examples": [
+    {
+     "nl": "Dit mes is scherp.",
+     "en": "This knife is sharp."
+    }
+   ]
+  },
+  {
+   "id": "nl-dag",
+   "nl": "dag",
+   "en": [
+    "day"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "dagen",
+   "tags": [
+    "tijd"
+   ],
+   "examples": [
+    {
+     "nl": "Het is een mooie dag.",
+     "en": "It is a beautiful day."
+    }
+   ]
+  },
+  {
+   "id": "nl-week",
+   "nl": "week",
+   "en": [
+    "week"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "weken",
+   "tags": [
+    "tijd"
+   ],
+   "examples": [
+    {
+     "nl": "Volgende week ben ik vrij.",
+     "en": "Next week I am free."
+    }
+   ]
+  },
+  {
+   "id": "nl-maand",
+   "nl": "maand",
+   "en": [
+    "month"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "maanden",
+   "tags": [
+    "tijd"
+   ],
+   "examples": [
+    {
+     "nl": "Over een maand verhuizen we.",
+     "en": "In a month we are moving."
+    }
+   ]
+  },
+  {
+   "id": "nl-jaar",
+   "nl": "jaar",
+   "en": [
+    "year"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "jaren",
+   "tags": [
+    "tijd"
+   ],
+   "examples": [
+    {
+     "nl": "Ik woon hier al een jaar.",
+     "en": "I have lived here for a year."
+    }
+   ]
+  },
+  {
+   "id": "nl-uur",
+   "nl": "uur",
+   "en": [
+    "hour",
+    "o'clock"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "uren",
+   "irregularPlural": true,
+   "tags": [
+    "tijd"
+   ],
+   "examples": [
+    {
+     "nl": "We beginnen om negen uur.",
+     "en": "We start at nine o'clock."
+    }
+   ]
+  },
+  {
+   "id": "nl-ochtend",
+   "nl": "ochtend",
+   "en": [
+    "morning"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "ochtenden",
+   "tags": [
+    "tijd"
+   ],
+   "examples": [
+    {
+     "nl": "In de ochtend drink ik thee.",
+     "en": "In the morning I drink tea."
+    }
+   ]
+  },
+  {
+   "id": "nl-avond",
+   "nl": "avond",
+   "en": [
+    "evening"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "avonden",
+   "tags": [
+    "tijd"
+   ],
+   "examples": [
+    {
+     "nl": "Vanavond eten we thuis.",
+     "en": "Tonight we are eating at home."
+    }
+   ]
+  },
+  {
+   "id": "nl-nacht",
+   "nl": "nacht",
+   "en": [
+    "night"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "nachten",
+   "tags": [
+    "tijd"
+   ],
+   "examples": [
+    {
+     "nl": "Het was een lange nacht.",
+     "en": "It was a long night."
+    }
+   ]
+  },
+  {
+   "id": "nl-tijd",
+   "nl": "tijd",
+   "en": [
+    "time"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "tijden",
+   "tags": [
+    "tijd"
+   ],
+   "examples": [
+    {
+     "nl": "Ik heb geen tijd.",
+     "en": "I have no time."
+    }
+   ]
+  },
+  {
+   "id": "nl-zomer",
+   "nl": "zomer",
+   "en": [
+    "summer"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "zomers",
+   "tags": [
+    "tijd"
+   ],
+   "examples": [
+    {
+     "nl": "In de zomer fietsen we veel.",
+     "en": "In summer we cycle a lot."
+    }
+   ]
+  },
+  {
+   "id": "nl-winter",
+   "nl": "winter",
+   "en": [
+    "winter"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "winters",
+   "tags": [
+    "tijd"
+   ],
+   "examples": [
+    {
+     "nl": "De winter is hier nat.",
+     "en": "The winter is wet here."
+    }
+   ]
+  },
+  {
+   "id": "nl-weer",
+   "nl": "weer",
+   "en": [
+    "weather"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "tags": [
+    "natuur"
+   ],
+   "examples": [
+    {
+     "nl": "Het weer is slecht vandaag.",
+     "en": "The weather is bad today."
+    }
+   ]
+  },
+  {
+   "id": "nl-regen",
+   "nl": "regen",
+   "en": [
+    "rain"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "tags": [
+    "natuur"
+   ],
+   "examples": [
+    {
+     "nl": "We fietsen in de regen.",
+     "en": "We cycle in the rain."
+    }
+   ]
+  },
+  {
+   "id": "nl-zon",
+   "nl": "zon",
+   "en": [
+    "sun"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "tags": [
+    "natuur"
+   ],
+   "examples": [
+    {
+     "nl": "De zon schijnt eindelijk.",
+     "en": "The sun is finally shining."
+    }
+   ]
+  },
+  {
+   "id": "nl-werk",
+   "nl": "werk",
+   "en": [
+    "work",
+    "job"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "tags": [
+    "dagelijks"
+   ],
+   "examples": [
+    {
+     "nl": "Ik ga naar mijn werk.",
+     "en": "I am going to work."
+    }
+   ]
+  },
+  {
+   "id": "nl-geld",
+   "nl": "geld",
+   "en": [
+    "money"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "tags": [
+    "dagelijks"
+   ],
+   "examples": [
+    {
+     "nl": "Ik heb geen geld bij me.",
+     "en": "I have no money on me."
+    }
+   ]
+  },
+  {
+   "id": "nl-boek",
+   "nl": "boek",
+   "en": [
+    "book"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "boeken",
+   "tags": [
+    "dagelijks"
+   ],
+   "examples": [
+    {
+     "nl": "Dit boek is heel goed.",
+     "en": "This book is very good."
+    }
+   ]
+  },
+  {
+   "id": "nl-krant",
+   "nl": "krant",
+   "en": [
+    "newspaper"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "kranten",
+   "tags": [
+    "dagelijks"
+   ],
+   "examples": [
+    {
+     "nl": "Hij leest elke dag de krant.",
+     "en": "He reads the newspaper every day."
+    }
+   ]
+  },
+  {
+   "id": "nl-telefoon",
+   "nl": "telefoon",
+   "en": [
+    "telephone",
+    "phone"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "telefoons",
+   "tags": [
+    "dagelijks"
+   ],
+   "examples": [
+    {
+     "nl": "Mijn telefoon is leeg.",
+     "en": "My phone is out of battery."
+    }
+   ]
+  },
+  {
+   "id": "nl-naam",
+   "nl": "naam",
+   "en": [
+    "name"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "namen",
+   "irregularPlural": true,
+   "tags": [
+    "dagelijks"
+   ],
+   "examples": [
+    {
+     "nl": "Wat is je naam?",
+     "en": "What is your name?"
+    }
+   ]
+  },
+  {
+   "id": "nl-vraag",
+   "nl": "vraag",
+   "en": [
+    "question"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "vragen",
+   "irregularPlural": true,
+   "tags": [
+    "dagelijks"
+   ],
+   "examples": [
+    {
+     "nl": "Ik heb een vraag.",
+     "en": "I have a question."
+    }
+   ]
+  },
+  {
+   "id": "nl-feest",
+   "nl": "feest",
+   "en": [
+    "party",
+    "celebration"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "feesten",
+   "tags": [
+    "dagelijks"
+   ],
+   "examples": [
+    {
+     "nl": "Het feest begint om acht uur.",
+     "en": "The party starts at eight."
+    }
+   ]
+  },
+  {
+   "id": "nl-hand",
+   "nl": "hand",
+   "en": [
+    "hand"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "handen",
+   "tags": [
+    "lichaam"
+   ],
+   "examples": [
+    {
+     "nl": "Geef me je hand.",
+     "en": "Give me your hand."
+    }
+   ]
+  },
+  {
+   "id": "nl-voet",
+   "nl": "voet",
+   "en": [
+    "foot"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "de",
+   "plural": "voeten",
+   "tags": [
+    "lichaam"
+   ],
+   "examples": [
+    {
+     "nl": "Ik ga te voet.",
+     "en": "I am going on foot."
+    }
+   ]
+  },
+  {
+   "id": "nl-oog",
+   "nl": "oog",
+   "en": [
+    "eye"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "ogen",
+   "irregularPlural": true,
+   "tags": [
+    "lichaam"
+   ],
+   "examples": [
+    {
+     "nl": "Zij heeft blauwe ogen.",
+     "en": "She has blue eyes."
+    }
+   ]
+  },
+  {
+   "id": "nl-hoofd",
+   "nl": "hoofd",
+   "en": [
+    "head"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "hoofden",
+   "tags": [
+    "lichaam"
+   ],
+   "examples": [
+    {
+     "nl": "Mijn hoofd doet pijn.",
+     "en": "My head hurts."
+    }
+   ]
+  },
+  {
+   "id": "nl-been",
+   "nl": "been",
+   "en": [
+    "leg"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "benen",
+   "irregularPlural": true,
+   "tags": [
+    "lichaam"
+   ],
+   "examples": [
+    {
+     "nl": "Hij heeft zijn been gebroken.",
+     "en": "He has broken his leg."
+    }
+   ]
+  },
+  {
+   "id": "nl-gezicht",
+   "nl": "gezicht",
+   "en": [
+    "face"
+   ],
+   "pos": "noun",
+   "level": "A1",
+   "gender": "het",
+   "plural": "gezichten",
+   "tags": [
+    "lichaam"
+   ],
+   "examples": [
+    {
+     "nl": "Ik ken dat gezicht.",
+     "en": "I know that face."
+    }
+   ]
+  },
+  {
+   "id": "nl-zijn",
+   "nl": "zijn",
+   "en": [
+    "to be"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "was",
+    "participle": "geweest",
+    "auxiliary": "zijn",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Ik ben moe.",
+     "en": "I am tired."
+    }
+   ]
+  },
+  {
+   "id": "nl-hebben",
+   "nl": "hebben",
+   "en": [
+    "to have"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "had",
+    "participle": "gehad",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Wij hebben honger.",
+     "en": "We are hungry."
+    }
+   ]
+  },
+  {
+   "id": "nl-gaan",
+   "nl": "gaan",
+   "en": [
+    "to go"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "ging",
+    "participle": "gegaan",
+    "auxiliary": "zijn",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Ik ga naar huis.",
+     "en": "I am going home."
+    }
+   ]
+  },
+  {
+   "id": "nl-komen",
+   "nl": "komen",
+   "en": [
+    "to come"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "kwam",
+    "participle": "gekomen",
+    "auxiliary": "zijn",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Kom je morgen?",
+     "en": "Are you coming tomorrow?"
+    }
+   ]
+  },
+  {
+   "id": "nl-doen",
+   "nl": "doen",
+   "en": [
+    "to do"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "deed",
+    "participle": "gedaan",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Wat doe je?",
+     "en": "What are you doing?"
+    }
+   ]
+  },
+  {
+   "id": "nl-zien",
+   "nl": "zien",
+   "en": [
+    "to see"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "zag",
+    "participle": "gezien",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Ik zie je morgen.",
+     "en": "I will see you tomorrow."
+    }
+   ]
+  },
+  {
+   "id": "nl-weten",
+   "nl": "weten",
+   "en": [
+    "to know (a fact)"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "wist",
+    "participle": "geweten",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Ik weet het niet.",
+     "en": "I don't know."
+    }
+   ]
+  },
+  {
+   "id": "nl-maken",
+   "nl": "maken",
+   "en": [
+    "to make"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "maakte",
+    "participle": "gemaakt",
+    "auxiliary": "hebben"
+   },
+   "examples": [
+    {
+     "nl": "Ik maak het eten.",
+     "en": "I am making the food."
+    }
+   ]
+  },
+  {
+   "id": "nl-werken",
+   "nl": "werken",
+   "en": [
+    "to work"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "werkte",
+    "participle": "gewerkt",
+    "auxiliary": "hebben"
+   },
+   "examples": [
+    {
+     "nl": "Zij werkt in Amsterdam.",
+     "en": "She works in Amsterdam."
+    }
+   ]
+  },
+  {
+   "id": "nl-wonen",
+   "nl": "wonen",
+   "en": [
+    "to live",
+    "to reside"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "woonde",
+    "participle": "gewoond",
+    "auxiliary": "hebben"
+   },
+   "examples": [
+    {
+     "nl": "Wij wonen in Rotterdam.",
+     "en": "We live in Rotterdam."
+    }
+   ]
+  },
+  {
+   "id": "nl-spreken",
+   "nl": "spreken",
+   "en": [
+    "to speak"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "sprak",
+    "participle": "gesproken",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Spreek je Nederlands?",
+     "en": "Do you speak Dutch?"
+    }
+   ]
+  },
+  {
+   "id": "nl-eten-v",
+   "nl": "eten",
+   "en": [
+    "to eat"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "at",
+    "participle": "gegeten",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "We eten om zes uur.",
+     "en": "We eat at six o'clock."
+    }
+   ]
+  },
+  {
+   "id": "nl-drinken",
+   "nl": "drinken",
+   "en": [
+    "to drink"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "dronk",
+    "participle": "gedronken",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Hij drinkt geen bier.",
+     "en": "He doesn't drink beer."
+    }
+   ]
+  },
+  {
+   "id": "nl-slapen",
+   "nl": "slapen",
+   "en": [
+    "to sleep"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "sliep",
+    "participle": "geslapen",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Ik heb slecht geslapen.",
+     "en": "I slept badly."
+    }
+   ]
+  },
+  {
+   "id": "nl-lopen",
+   "nl": "lopen",
+   "en": [
+    "to walk"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "liep",
+    "participle": "gelopen",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "We lopen naar het station.",
+     "en": "We are walking to the station."
+    }
+   ]
+  },
+  {
+   "id": "nl-lezen",
+   "nl": "lezen",
+   "en": [
+    "to read"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "las",
+    "participle": "gelezen",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Ik lees een boek.",
+     "en": "I am reading a book."
+    }
+   ]
+  },
+  {
+   "id": "nl-schrijven",
+   "nl": "schrijven",
+   "en": [
+    "to write"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "schreef",
+    "participle": "geschreven",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Zij schrijft een brief.",
+     "en": "She is writing a letter."
+    }
+   ]
+  },
+  {
+   "id": "nl-kopen",
+   "nl": "kopen",
+   "en": [
+    "to buy"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "kocht",
+    "participle": "gekocht",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Ik koop brood.",
+     "en": "I am buying bread."
+    }
+   ]
+  },
+  {
+   "id": "nl-geven",
+   "nl": "geven",
+   "en": [
+    "to give"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "gaf",
+    "participle": "gegeven",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Geef mij het zout.",
+     "en": "Give me the salt."
+    }
+   ]
+  },
+  {
+   "id": "nl-nemen",
+   "nl": "nemen",
+   "en": [
+    "to take"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "nam",
+    "participle": "genomen",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Ik neem de trein.",
+     "en": "I am taking the train."
+    }
+   ]
+  },
+  {
+   "id": "nl-zeggen",
+   "nl": "zeggen",
+   "en": [
+    "to say"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "zei",
+    "participle": "gezegd",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Wat zei je?",
+     "en": "What did you say?"
+    }
+   ]
+  },
+  {
+   "id": "nl-vragen",
+   "nl": "vragen",
+   "en": [
+    "to ask"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "vroeg",
+    "participle": "gevraagd",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Mag ik iets vragen?",
+     "en": "May I ask something?"
+    }
+   ]
+  },
+  {
+   "id": "nl-begrijpen",
+   "nl": "begrijpen",
+   "en": [
+    "to understand"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "begreep",
+    "participle": "begrepen",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Ik begrijp het niet.",
+     "en": "I don't understand."
+    }
+   ]
+  },
+  {
+   "id": "nl-leren",
+   "nl": "leren",
+   "en": [
+    "to learn",
+    "to teach"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "leerde",
+    "participle": "geleerd",
+    "auxiliary": "hebben"
+   },
+   "examples": [
+    {
+     "nl": "Ik leer Nederlands.",
+     "en": "I am learning Dutch."
+    }
+   ]
+  },
+  {
+   "id": "nl-helpen",
+   "nl": "helpen",
+   "en": [
+    "to help"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "hielp",
+    "participle": "geholpen",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Kun je me helpen?",
+     "en": "Can you help me?"
+    }
+   ]
+  },
+  {
+   "id": "nl-blijven",
+   "nl": "blijven",
+   "en": [
+    "to stay",
+    "to remain"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "bleef",
+    "participle": "gebleven",
+    "auxiliary": "zijn",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Ik blijf thuis.",
+     "en": "I am staying home."
+    }
+   ]
+  },
+  {
+   "id": "nl-worden",
+   "nl": "worden",
+   "en": [
+    "to become"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "werd",
+    "participle": "geworden",
+    "auxiliary": "zijn",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Het wordt koud.",
+     "en": "It is getting cold."
+    }
+   ]
+  },
+  {
+   "id": "nl-vinden",
+   "nl": "vinden",
+   "en": [
+    "to find",
+    "to think (an opinion)"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "vond",
+    "participle": "gevonden",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Ik vind het mooi.",
+     "en": "I think it's beautiful."
+    }
+   ]
+  },
+  {
+   "id": "nl-denken",
+   "nl": "denken",
+   "en": [
+    "to think"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "dacht",
+    "participle": "gedacht",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Ik denk van wel.",
+     "en": "I think so."
+    }
+   ]
+  },
+  {
+   "id": "nl-kunnen",
+   "nl": "kunnen",
+   "en": [
+    "can",
+    "to be able to"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "kon",
+    "participle": "gekund",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Ik kan niet komen.",
+     "en": "I can't come."
+    }
+   ]
+  },
+  {
+   "id": "nl-moeten",
+   "nl": "moeten",
+   "en": [
+    "must",
+    "to have to"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "moest",
+    "participle": "gemoeten",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Ik moet werken.",
+     "en": "I have to work."
+    }
+   ]
+  },
+  {
+   "id": "nl-willen",
+   "nl": "willen",
+   "en": [
+    "to want"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "past": "wilde",
+    "participle": "gewild",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Wil je thee?",
+     "en": "Do you want tea?"
+    }
+   ]
+  },
+  {
+   "id": "nl-opbellen",
+   "nl": "opbellen",
+   "en": [
+    "to phone",
+    "to call up"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "separable": true,
+    "particle": "op",
+    "past": "belde op",
+    "participle": "opgebeld",
+    "auxiliary": "hebben"
+   },
+   "examples": [
+    {
+     "nl": "Ik bel je morgen op.",
+     "en": "I'll phone you tomorrow."
+    }
+   ]
+  },
+  {
+   "id": "nl-opstaan",
+   "nl": "opstaan",
+   "en": [
+    "to get up"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "separable": true,
+    "particle": "op",
+    "past": "stond op",
+    "participle": "opgestaan",
+    "auxiliary": "zijn",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Ik sta om zeven uur op.",
+     "en": "I get up at seven."
+    }
+   ]
+  },
+  {
+   "id": "nl-meegaan",
+   "nl": "meegaan",
+   "en": [
+    "to come along"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "separable": true,
+    "particle": "mee",
+    "past": "ging mee",
+    "participle": "meegegaan",
+    "auxiliary": "zijn",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Ga je mee naar de stad?",
+     "en": "Are you coming along to town?"
+    }
+   ]
+  },
+  {
+   "id": "nl-aankomen",
+   "nl": "aankomen",
+   "en": [
+    "to arrive"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "separable": true,
+    "particle": "aan",
+    "past": "kwam aan",
+    "participle": "aangekomen",
+    "auxiliary": "zijn",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "De trein komt om drie uur aan.",
+     "en": "The train arrives at three."
+    }
+   ]
+  },
+  {
+   "id": "nl-meenemen",
+   "nl": "meenemen",
+   "en": [
+    "to bring along",
+    "to take with"
+   ],
+   "pos": "verb",
+   "level": "A1",
+   "verb": {
+    "separable": true,
+    "particle": "mee",
+    "past": "nam mee",
+    "participle": "meegenomen",
+    "auxiliary": "hebben",
+    "irregular": true
+   },
+   "examples": [
+    {
+     "nl": "Neem je paraplu mee.",
+     "en": "Bring your umbrella."
+    }
+   ]
+  },
+  {
+   "id": "nl-groot",
+   "nl": "groot",
+   "en": [
+    "big",
+    "large"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "comparative": "groter",
+   "superlative": "grootst",
+   "examples": [
+    {
+     "nl": "Het is een groot huis.",
+     "en": "It is a big house."
+    }
+   ]
+  },
+  {
+   "id": "nl-klein",
+   "nl": "klein",
+   "en": [
+    "small"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "comparative": "kleiner",
+   "superlative": "kleinst",
+   "examples": [
+    {
+     "nl": "Mijn kamer is klein.",
+     "en": "My room is small."
+    }
+   ]
+  },
+  {
+   "id": "nl-goed",
+   "nl": "goed",
+   "en": [
+    "good",
+    "well"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "comparative": "beter",
+   "superlative": "best",
+   "examples": [
+    {
+     "nl": "Dat is een goed idee.",
+     "en": "That is a good idea."
+    }
+   ]
+  },
+  {
+   "id": "nl-slecht",
+   "nl": "slecht",
+   "en": [
+    "bad"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "comparative": "slechter",
+   "superlative": "slechtst",
+   "examples": [
+    {
+     "nl": "Het weer is slecht.",
+     "en": "The weather is bad."
+    }
+   ]
+  },
+  {
+   "id": "nl-nieuw",
+   "nl": "nieuw",
+   "en": [
+    "new"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "comparative": "nieuwer",
+   "superlative": "nieuwst",
+   "examples": [
+    {
+     "nl": "Ik heb een nieuwe fiets.",
+     "en": "I have a new bicycle."
+    }
+   ]
+  },
+  {
+   "id": "nl-oud",
+   "nl": "oud",
+   "en": [
+    "old"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "comparative": "ouder",
+   "superlative": "oudst",
+   "examples": [
+    {
+     "nl": "Dit huis is heel oud.",
+     "en": "This house is very old."
+    }
+   ]
+  },
+  {
+   "id": "nl-mooi",
+   "nl": "mooi",
+   "en": [
+    "beautiful",
+    "nice"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "comparative": "mooier",
+   "superlative": "mooist",
+   "examples": [
+    {
+     "nl": "Wat een mooie dag!",
+     "en": "What a beautiful day!"
+    }
+   ]
+  },
+  {
+   "id": "nl-duur",
+   "nl": "duur",
+   "en": [
+    "expensive"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "comparative": "duurder",
+   "superlative": "duurst",
+   "examples": [
+    {
+     "nl": "Dat is te duur.",
+     "en": "That is too expensive."
+    }
+   ]
+  },
+  {
+   "id": "nl-snel",
+   "nl": "snel",
+   "en": [
+    "fast",
+    "quick"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "comparative": "sneller",
+   "superlative": "snelst",
+   "examples": [
+    {
+     "nl": "De trein is snel.",
+     "en": "The train is fast."
+    }
+   ]
+  },
+  {
+   "id": "nl-warm",
+   "nl": "warm",
+   "en": [
+    "warm",
+    "hot"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "comparative": "warmer",
+   "superlative": "warmst",
+   "examples": [
+    {
+     "nl": "Het is warm vandaag.",
+     "en": "It is warm today."
+    }
+   ]
+  },
+  {
+   "id": "nl-koud",
+   "nl": "koud",
+   "en": [
+    "cold"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "comparative": "kouder",
+   "superlative": "koudst",
+   "examples": [
+    {
+     "nl": "Mijn koffie is koud.",
+     "en": "My coffee is cold."
+    }
+   ]
+  },
+  {
+   "id": "nl-moeilijk",
+   "nl": "moeilijk",
+   "en": [
+    "difficult"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "comparative": "moeilijker",
+   "superlative": "moeilijkst",
+   "examples": [
+    {
+     "nl": "Nederlands is niet moeilijk.",
+     "en": "Dutch is not difficult."
+    }
+   ]
+  },
+  {
+   "id": "nl-makkelijk",
+   "nl": "makkelijk",
+   "en": [
+    "easy"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "comparative": "makkelijker",
+   "superlative": "makkelijkst",
+   "examples": [
+    {
+     "nl": "Dat is makkelijk.",
+     "en": "That is easy."
+    }
+   ]
+  },
+  {
+   "id": "nl-leuk",
+   "nl": "leuk",
+   "en": [
+    "nice",
+    "fun"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "comparative": "leuker",
+   "superlative": "leukst",
+   "examples": [
+    {
+     "nl": "Het was een leuke avond.",
+     "en": "It was a fun evening."
+    }
+   ]
+  },
+  {
+   "id": "nl-gezellig",
+   "nl": "gezellig",
+   "en": [
+    "cosy",
+    "convivial"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "examples": [
+    {
+     "nl": "Het is hier gezellig.",
+     "en": "It is cosy here."
+    }
+   ]
+  },
+  {
+   "id": "nl-druk",
+   "nl": "druk",
+   "en": [
+    "busy"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "comparative": "drukker",
+   "superlative": "drukst",
+   "examples": [
+    {
+     "nl": "Het is druk in de stad.",
+     "en": "It is busy in town."
+    }
+   ]
+  },
+  {
+   "id": "nl-laat",
+   "nl": "laat",
+   "en": [
+    "late"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "comparative": "later",
+   "superlative": "laatst",
+   "examples": [
+    {
+     "nl": "Ik ben te laat.",
+     "en": "I am late."
+    }
+   ]
+  },
+  {
+   "id": "nl-vroeg",
+   "nl": "vroeg",
+   "en": [
+    "early"
+   ],
+   "pos": "adj",
+   "level": "A1",
+   "comparative": "vroeger",
+   "superlative": "vroegst",
+   "examples": [
+    {
+     "nl": "Hij staat vroeg op.",
+     "en": "He gets up early."
+    }
+   ]
+  }
+ ]
+}

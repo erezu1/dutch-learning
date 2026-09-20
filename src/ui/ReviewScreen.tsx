@@ -1,0 +1,47 @@
+import type { Session } from '../session/useSession'
+import { GradeBar } from './GradeBar'
+import { PromptCard } from './PromptCard'
+
+export function ReviewScreen({ session, onExit }: { session: Session; onExit: () => void }) {
+  const { prompt, revealed, picked, correct, position, length } = session
+  if (!prompt) return null
+
+  return (
+    <div className="flex h-full flex-col">
+      <header className="flex items-center gap-3 px-4 pt-3">
+        <button
+          onClick={onExit}
+          aria-label="Stoppen"
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-on-surface-dim active:scale-90"
+        >
+          ✕
+        </button>
+        <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-2">
+          <div
+            className="h-full rounded-full bg-primary transition-[width] duration-300"
+            style={{ width: `${length ? (position / length) * 100 : 0}%` }}
+          />
+        </div>
+        <button
+          onClick={session.undo}
+          disabled={!session.canUndo}
+          aria-label="Ongedaan maken"
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-on-surface-dim active:scale-90 disabled:opacity-25"
+        >
+          ↺
+        </button>
+      </header>
+
+      <PromptCard
+        prompt={prompt}
+        revealed={revealed}
+        picked={picked}
+        correct={correct}
+        onReveal={session.reveal}
+        onChoose={session.choose}
+      />
+
+      {revealed && <GradeBar onGrade={session.grade} intervals={session.intervals} />}
+    </div>
+  )
+}

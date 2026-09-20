@@ -1,0 +1,53 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Design tokens. Phase 3 restyles the app largely by changing values here.
+   Roughly Material 3 colour roles, dark by default.
+--------------------------------------------------------------------------- */
+@theme {
+  --color-surface: #12121a;
+  --color-surface-1: #1b1b25;
+  --color-surface-2: #23232f;
+  --color-surface-3: #2d2d3b;
+  --color-on-surface: #e8e8f0;
+  --color-on-surface-dim: #9a9aae;
+
+  --color-primary: #b9c3ff;
+  --color-on-primary: #1a2050;
+  --color-primary-container: #323a75;
+
+  --color-good: #7ddba0;
+  --color-bad: #ff8f8f;
+  --color-de: #7fc8ff;
+  --color-het: #ffc27f;
+
+  --radius-card: 1.75rem;
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-surface);
+    color: var(--color-on-surface);
+    font-family: ui-rounded, 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+    /* Respect the phone's notch and gesture bar. */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+      env(safe-area-inset-left);
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+}
