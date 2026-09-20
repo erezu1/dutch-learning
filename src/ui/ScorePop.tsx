@@ -3,17 +3,16 @@ import { useEffect, useState } from 'react'
 import type { Award } from '../core/score'
 
 // ---------------------------------------------------------------------------
-// The points a card just earned.
+// The points a card just earned, bursting in the middle of the screen.
 //
-// Anchored near the progress bar rather than the middle of the card: the
-// centre is where the answer appears at exactly the same moment, so a number
-// floating there lands on top of the thing you are trying to read.
-//
-// A word graduating is worth much more than an ordinary answer, so it arrives
-// with a wider, brighter burst and says what happened.
+// The centre is also where the answer appears, so the rest of the page is
+// briefly washed out behind it rather than competing. The wash is drawn in the
+// page's own surface colour, which lightens a light scheme and darkens a dark
+// one — either way the content recedes and the number is the only thing to
+// look at. It clears itself in under a second and never takes a tap.
 // ---------------------------------------------------------------------------
 
-const VISIBLE_MS = 1250
+const VISIBLE_MS = 1150
 
 /** Spark directions, spread evenly and offset so they don't line up on axes. */
 function sparkOffsets(count: number, distance: number) {
@@ -34,26 +33,34 @@ export function ScorePop({ award }: { award: (Award & { key: number }) | null })
   }, [award])
 
   const big = shown?.milestone ?? false
-  const sparks = sparkOffsets(big ? 10 : 6, big ? 46 : 28)
+  const sparks = sparkOffsets(big ? 12 : 8, big ? 92 : 62)
 
   return (
-    <div className="pointer-events-none absolute top-11 right-8 z-20">
-      <AnimatePresence>
-        {shown && (
+    <AnimatePresence>
+      {shown && (
+        <motion.div
+          key={shown.key}
+          className="pointer-events-none fixed inset-0 z-40 grid place-items-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.22 }}
+        >
+          {/* The wash. Fades in fast, holds briefly, leaves. */}
           <motion.div
-            key={shown.key}
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.25 }}
-            className="relative"
-          >
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 0.82, 0.82, 0] }}
+            transition={{ duration: VISIBLE_MS / 1000, times: [0, 0.14, 0.6, 1], ease: 'easeOut' }}
+            className="absolute inset-0 bg-surface backdrop-blur-[2px]"
+          />
+
+          <div className="relative">
             {/* A ring that snaps outward and vanishes — the flash of the hit. */}
             <motion.span
-              initial={{ scale: 0.2, opacity: 0.55 }}
-              animate={{ scale: big ? 3 : 2, opacity: 0 }}
-              transition={{ duration: 0.55, ease: 'easeOut' }}
-              className="absolute top-1/2 left-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-primary"
+              initial={{ scale: 0.2, opacity: 0.6 }}
+              animate={{ scale: big ? 4.5 : 3, opacity: 0 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+              className="absolute top-1/2 left-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-primary"
             />
 
             {sparks.map((s, i) => (
@@ -61,23 +68,23 @@ export function ScorePop({ award }: { award: (Award & { key: number }) | null })
                 key={i}
                 initial={{ x: 0, y: 0, scale: 0.3, opacity: 0 }}
                 animate={{ x: s.x, y: s.y, scale: [0.3, 1, 0.2], opacity: [0, 1, 0] }}
-                transition={{ duration: 0.62, ease: 'easeOut', delay: 0.015 * i }}
+                transition={{ duration: 0.68, ease: 'easeOut', delay: 0.015 * i }}
                 className={`absolute top-1/2 left-1/2 rounded-full bg-primary ${
-                  big ? 'h-2 w-2' : 'h-1.5 w-1.5'
+                  big ? 'h-2.5 w-2.5' : 'h-2 w-2'
                 }`}
               />
             ))}
 
-            {/* The number itself overshoots before settling. */}
+            {/* The number overshoots before settling. */}
             <motion.div
               initial={{ scale: 0.3, opacity: 0, rotate: -8 }}
               animate={{ scale: 1, opacity: 1, rotate: 0 }}
               transition={{ type: 'spring', stiffness: 520, damping: 13, mass: 0.7 }}
-              className="relative flex flex-col items-end"
+              className="relative flex flex-col items-center"
             >
               <span
                 className={`font-display leading-none font-semibold text-primary ${
-                  big ? 'text-5xl' : 'text-3xl'
+                  big ? 'text-7xl' : 'text-6xl'
                 }`}
               >
                 +{shown.amount}
@@ -87,15 +94,15 @@ export function ScorePop({ award }: { award: (Award & { key: number }) | null })
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.16 }}
-                  className="mt-1 text-xs font-semibold tracking-wide text-primary/80"
+                  className="mt-2 text-sm font-semibold tracking-wide text-primary/80"
                 >
                   word learned
                 </motion.span>
               )}
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }
