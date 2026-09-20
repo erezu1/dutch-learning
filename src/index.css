@@ -103,24 +103,29 @@
   --duration-move: 320ms;
 }
 
-/* A wave leaving the speaker's mouth: out from the cone and fading as it goes.
-   Written as a CSS animation rather than in the motion library, which would
-   not tween these SVG paths at all — it jumped them straight to their final
-   scale. Three copies run at a third of a cycle apart, so one is always
-   departing while another is still travelling. */
+/* The speaker's waves, propagating.
+
+   Each wave starts exactly at the inner arc and travels outwards. The timing
+   is chosen so that a third of the way through its life a wave sits precisely
+   where the outer arc is drawn: the scale runs 1 -> 3.82, so at t = 1/3 it is
+   at 1.94, which is the outer arc's size. With three waves a third of a cycle
+   apart, at every instant one sits at the inner arc and one at the outer —
+   the resting icon — while a third travels on and fades.
+
+   So the icon keeps its shape the whole time it is speaking, rather than
+   dissolving into pulses. Written in CSS because the motion library would not
+   tween these SVG paths at all; it jumped them straight to their final scale.
+--------------------------------------------------------------------------- */
 @keyframes speaker-wave {
   0% {
-    transform: scale(0.55);
-    opacity: 0;
+    transform: scale(1);
+    opacity: 1;
   }
-  18% {
-    opacity: 0.95;
-  }
-  60% {
-    opacity: 0.75;
+  66% {
+    opacity: 1;
   }
   100% {
-    transform: scale(2.35);
+    transform: scale(3.82);
     opacity: 0;
   }
 }
@@ -128,7 +133,7 @@
 .speaker-wave {
   transform-box: view-box;
   transform-origin: 13px 12px;
-  animation: speaker-wave 0.9s linear infinite;
+  animation: speaker-wave 1.05s linear infinite;
 }
 
 @layer base {
