@@ -302,6 +302,16 @@ function Sentence({
   )
 }
 
+/**
+ * The answer wears the colour of the scheme you chose, not green. It is shown
+ * whether you got the card right or wrong, so it isn't a verdict — it is the
+ * thing the card is pointing at, which is exactly what the accent is for.
+ *
+ * Green and red stay where a verdict is actually being given: on the option
+ * you pressed, and on the line saying what you pressed.
+ */
+const ANSWER_COLOUR = 'text-primary'
+
 /** What you picked, when it wasn't the answer. */
 function YouChose({ picked }: { picked: string }) {
   return (
@@ -414,7 +424,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                     as="span"
                     sentence={prompt.completion!}
                     word={prompt.answer}
-                    highlight="text-good-ink"
+                    highlight={ANSWER_COLOUR}
                   />
                 ) : prompt.questionLang === 'en' ? (
                   <Gloss text={prompt.question} stacked />
@@ -514,10 +524,7 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
                       lang={prompt.answerLang}
                       translate="no"
                       style={{ fontSize: focalSize }}
-                      // Always green: this is the right answer, whether you
-                      // found it, missed it, or were never asked to choose.
-                      // Red belongs to what you chose, below.
-                      className={`notranslate leading-none ${FOCUS} text-good-ink`}
+                      className={`notranslate leading-none ${FOCUS} ${ANSWER_COLOUR}`}
                     >
                       {prompt.answerLang === 'en' ? (
                         <Gloss text={answerShown} stacked />
