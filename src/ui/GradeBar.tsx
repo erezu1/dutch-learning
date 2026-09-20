@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useEffect, useRef } from 'react'
 import { Rating, type Grade } from '../core/scheduler'
 import { Button } from './Button'
 
@@ -34,6 +35,8 @@ function fillGradient(correct: boolean): string {
 const READ_PAUSE = 3
 /** Then the button fills, and carries on by itself when it is full. */
 const COUNTDOWN = 5
+/** A beat at the end, so the button is seen full before the card leaves. */
+const SETTLE = 300
 
 /**
  * Shown after a multiple-choice answer. The app already knows whether you were
@@ -47,6 +50,15 @@ const COUNTDOWN = 5
  * only you can make, so it waits as long as it takes.
  */
 export function ContinueBar({ onContinue, correct }: { onContinue: () => void; correct: boolean }) {
+  const settle = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(
+    () => () => {
+      if (settle.current) clearTimeout(settle.current)
+    },
+    [],
+  )
+
   return (
     <div className="w-full px-4 pb-4">
       <Button
@@ -63,7 +75,11 @@ export function ContinueBar({ onContinue, correct }: { onContinue: () => void; c
           initial={{ width: 0 }}
           animate={{ width: '100%' }}
           transition={{ duration: COUNTDOWN, delay: READ_PAUSE, ease: 'linear' }}
-          onAnimationComplete={onContinue}
+          // Not straight into the next card: the bar reaching the end and the
+          // card leaving at the same instant reads as a jump cut.
+          onAnimationComplete={() => {
+            settle.current = setTimeout(onContinue, SETTLE)
+          }}
           className="absolute inset-y-0 left-0"
           style={{ background: fillGradient(correct) }}
         />
