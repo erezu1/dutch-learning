@@ -11,11 +11,16 @@ import { ReviewScreen } from './ui/ReviewScreen'
 
 const deck = deckCore as Deck
 
-/** Every screen enters and leaves the same way, so no change is abrupt. */
-function Screen({ name, children }: { name: string; children: React.ReactNode }) {
+/**
+ * Every screen enters and leaves the same way, so no change is abrupt.
+ *
+ * The key belongs on this component where it is used, not on the motion.div
+ * inside it: AnimatePresence tracks the identity of its own direct children,
+ * so a key hidden one level down is invisible to it and no exit ever runs.
+ */
+function Screen({ children }: { children: React.ReactNode }) {
   return (
     <motion.div
-      key={name}
       variants={screenVariants}
       initial="enter"
       animate="center"
@@ -44,7 +49,7 @@ export default function App() {
   return (
     <AnimatePresence mode="wait" initial={false}>
       {showLevel ? (
-        <Screen name="level">
+        <Screen key="level">
           <LevelPicker
             current={session.levelChosen ? session.level : undefined}
             onPick={(option) => {
@@ -55,15 +60,15 @@ export default function App() {
           />
         </Screen>
       ) : reviewing ? (
-        <Screen name="review">
+        <Screen key="review">
           <ReviewScreen session={session} onExit={() => setScreen('home')} />
         </Screen>
       ) : finished ? (
-        <Screen name="done">
+        <Screen key="done">
           <Done stats={session.stats} onHome={() => setScreen('home')} />
         </Screen>
       ) : (
-        <Screen name="home">
+        <Screen key="home">
           <Home
             stats={session.stats}
             level={session.level}

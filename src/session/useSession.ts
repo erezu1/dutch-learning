@@ -118,7 +118,7 @@ export function useSession(deck: Deck): Session {
 
   const setTheme = useCallback((next: Theme) => {
     setThemeState(next)
-    applyTheme(next)
+    applyTheme(next, true)
     void setMeta('theme', next.id).catch(() => {})
   }, [])
 

@@ -140,6 +140,29 @@
   }
 }
 
+/* While a scheme is changing, let every colour ease to its new value instead
+   of snapping. Switched on only for the length of the change — leaving it on
+   permanently would make presses and hovers fade too. */
+:root[data-theme-changing] *,
+:root[data-theme-changing] *::before,
+:root[data-theme-changing] *::after {
+  transition:
+    background-color 400ms var(--ease-out),
+    color 400ms var(--ease-out),
+    box-shadow 400ms var(--ease-out),
+    border-color 400ms var(--ease-out),
+    fill 400ms var(--ease-out),
+    stroke 400ms var(--ease-out) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme-changing] *,
+  :root[data-theme-changing] *::before,
+  :root[data-theme-changing] *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* ---------------------------------------------------------------------------
    Colour schemes, selected by data-theme on <html>. Each one restates only
    what changes: the accent, the surface tints that carry it, and — for the

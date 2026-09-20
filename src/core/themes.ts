@@ -27,11 +27,31 @@ export function themeById(id: string | null): Theme {
   return THEMES.find((t) => t.id === id) ?? DEFAULT_THEME
 }
 
+let settling: ReturnType<typeof setTimeout> | null = null
+
 /** Applied to <html>, which is where the CSS overrides hang. */
-export function applyTheme(theme: Theme): void {
-  document.documentElement.dataset.theme = theme.id
+export function applyTheme(theme: Theme, animate = false): void {
+  const root = document.documentElement
+
+  if (animate) {
+    // Colour transitions are switched on only for the length of the change.
+    // Leaving them on permanently would make every press and hover fade in
+    // too, which is exactly the sludge that makes an interface feel slow.
+    root.dataset.themeChanging = ''
+    if (settling) clearTimeout(settling)
+    settling = setTimeout(() => {
+      delete root.dataset.themeChanging
+      settling = null
+    }, THEME_FADE)
+  }
+
+  root.dataset.theme = theme.id
+
   // Keep the phone's status bar in step with the page.
   const meta = document.querySelector('meta[name="theme-color"]')
   const bg = getComputedStyle(document.body).backgroundColor
   if (meta && bg) meta.setAttribute('content', bg)
 }
+
+/** Kept in step with the CSS transition duration. */
+export const THEME_FADE = 420
