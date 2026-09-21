@@ -18,7 +18,7 @@
 //               and drop every scheduled beat of the idle loop.
 // ---------------------------------------------------------------------------
 
-import { HEART, lidPaths, MOODS, EAR_TURN, ZED, type Mood } from './cat'
+import { HEART, lidPaths, MOODS, EAR_TURN, STAR, ZED, type Mood } from './cat'
 
 // --- what each mood is FOR -------------------------------------------------
 // Three jobs, and every mood holds at least one. A mood with no job is a
@@ -219,6 +219,15 @@ export class CatRig {
   /** How many times she has been made cross without once cooling off. */
   cross = 0
   steady: ReturnType<typeof setTimeout> | null = null
+  /**
+   * Stars are on, so hearts are off.
+   *
+   * Both mean "she is pleased", and running them together would say it twice
+   * in the same corner of the frame. Hearts are for being fussed over; stars
+   * are for having finished something, which is the bigger of the two and
+   * gets the moment to itself.
+   */
+  starring = false
   lastWrong = ''
 
   constructor(
@@ -325,7 +334,7 @@ export class CatRig {
       this.dozeMark = setTimeout(() => this.#emit('z'), 2950)
     } else {
       this.dozeMark = null
-      this.#emit(name === 'celebrate' ? 'heart' : null)
+      this.#emit(name === 'celebrate' && !this.starring ? 'heart' : null)
     }
     // A gesture the mood cannot carry itself. Arriving at curious is a sniff:
     // she has noticed something and is checking it, which the face alone only
@@ -754,6 +763,60 @@ export class CatRig {
     )
   }
 
+  /**
+   * Three gold stars off the top of her head — one left, one straight up,
+   * one right.
+   *
+   * A burst, not an emitter: it happens once, at a moment, and is gone. The
+   * zzz and the hearts are weather and go on for as long as the mood does;
+   * this is punctuation on a thing that just finished.
+   *
+   * They start above her crown rather than on it, between the ears and clear
+   * of both, and every one of them travels further up than out — so nothing
+   * ever crosses her, and the burst reads as coming off her head rather than
+   * as three stars that happen to be nearby.
+   */
+  spark() {
+    const host = this.svg.querySelector<SVGElement>('.cat-emit')
+    if (!host) return
+    // From just above the crown, out to the upper left, straight up, and out
+    // to the upper right.
+    const flight: [number, number][] = [[-40, -18], [0, -32], [40, -18]]
+    flight.forEach(([dx, dy], i) => {
+      const g = document.createElementNS(SVG_NS, 'g')
+      const path = document.createElementNS(SVG_NS, 'path')
+      path.setAttribute('d', STAR)
+      path.setAttribute('fill', '#F0B429')
+      g.append(path)
+      g.style.transformBox = 'fill-box'
+      g.style.transformOrigin = 'center'
+      host.append(g)
+
+      // The star is ten units across and drawn from its own corner, so half
+      // of it comes off both numbers to put its centre where it is aimed.
+      const x0 = 60 - 5, y0 = 2 - 5
+      const spin = rand(-70, 70)
+      const at = (px: number, py: number, sc: number, rot: number) =>
+        `translate(${px.toFixed(2)}px, ${py.toFixed(2)}px) rotate(${rot.toFixed(1)}deg) scale(${sc.toFixed(3)})`
+      const anim = g.animate(
+        [
+          { opacity: 0, transform: at(x0, y0, 0.25, 0) },
+          { opacity: 1, offset: 0.3, transform: at(x0 + dx * 0.45, y0 + dy * 0.45, 1.9, spin * 0.45) },
+          { opacity: 0, transform: at(x0 + dx, y0 + dy, 0.8, spin) },
+        ],
+        {
+          duration: rand(720, 840),
+          // Thrown, not carried: most of the distance is covered early.
+          easing: 'cubic-bezier(.16,.85,.34,1)',
+          // Staggered, so it sparkles rather than pops.
+          delay: i * 70,
+          fill: 'none',
+        },
+      )
+      anim.finished.then(() => g.remove()).catch(() => g.remove())
+    })
+  }
+
   gesture(name: string) {
     this.svg.dispatchEvent(new CustomEvent(`cat:${name}`))
   }
@@ -805,7 +868,18 @@ export const SCENE: Record<SceneName, (r: CatRig) => void> = {
   // left for the end of the round.
   finished: (r: CatRig) => {
     r.hop()
-    r.react('celebrate', { ms: 2800, min: 1600 })
+    // Set before the react, because posing celebrate is what decides whether
+    // hearts start, and the react is what poses it.
+    r.starring = true
+    r.react('celebrate', {
+      ms: 2800, min: 1600,
+      then: () => {
+        r.starring = false
+        r.pose(r.base)
+      },
+    })
+    // On the way up, not on the way down.
+    setTimeout(() => r.spark(), 150)
   },
   levelUp: (r: CatRig) => {
     r.hop()

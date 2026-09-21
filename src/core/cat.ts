@@ -124,6 +124,13 @@ export const HEART =
   'M0 2.1C0 0.7 1.2 0 2.1 0.6C2.5 0.85 2.8 1.2 3 1.5C3.2 1.2 3.5 0.85 3.9 0.6' +
   'C4.8 0 6 0.7 6 2.1C6 3.9 3.9 5.5 3 6.2C2.1 5.5 0 3.9 0 2.1Z'
 
+// A five-pointed star, ten units across, drawn from its own centre outward:
+// outer points at 5 from the middle, inner at 2.1. Not a four-pointed
+// sparkle, which is the shape everything uses for "magic" and reads as a
+// glint on glass rather than as a star.
+export const STAR =
+  'M5 0L6.23 3.3L9.76 3.45L7 5.65L7.94 9.05L5 7.1L2.06 9.05L3 5.65L0.24 3.45L3.77 3.3Z'
+
 const WHISKERS = 'M44 67q-17-4-28-6M44 72q-18 1-29 1M44 77q-17 5-27 7M76 67q17-4 28-6M76 72q18 1 29 1M76 77q17 5 27 7'
 
 // --- coats -----------------------------------------------------------------
@@ -198,6 +205,18 @@ export interface Coat {
   pupil: string
   line: string
   /**
+   * The colour of every line drawn INSIDE her: mouth, whiskers, lash, brows,
+   * toes. Defaults to the outline's colour, which is right for six of the
+   * seven coats — a darkened version of the fur, on fur pale enough to take
+   * it.
+   *
+   * A black cat is the exception and needs the opposite. Her outline still
+   * has to be dark, because its job is to separate her from the page; her
+   * mouth and whiskers have to be pale, because their job is to separate
+   * themselves from her, and there is no darker than she already is.
+   */
+  ink?: string
+  /**
    * The line on a dark page, where one is needed. A coat's outline is normally
    * a darkened version of its own fur, which works because the page is pale —
    * but on a dark page a dark cat's outline is darker than both her and the
@@ -263,6 +282,8 @@ export const COATS: Record<string, Coat> = {
   black: {
     lineDark: '#7C726B', // the only coat that is dark everywhere
     name: 'Black', who: 'Roet', base: '#3A3533', muzzle: '#454038', ear: '#6E5350',
+    // Pale, because there is no darker than she already is.
+    ink: '#8C817A',
     iris: '#F2CB64', pupil: '#1C1815', line: '#211E1D', dark: true, paw: '#443E3B',
   },
   ginger: {
@@ -412,7 +433,7 @@ function eye(cx: number, cy: number, rx: number, ry: number, c: Coat, id: string
           </g>
         </g>
       </g>
-      <path class="cat-lash" ${geo} d="${d0.lash}" fill="none" stroke="${c.line}"
+      <path class="cat-lash" ${geo} d="${d0.lash}" fill="none" stroke="${c.ink ?? c.line}"
         stroke-width="2.6" stroke-linecap="round"/>`
 
   if (!lid) return inner
@@ -431,7 +452,7 @@ function eye(cx: number, cy: number, rx: number, ry: number, c: Coat, id: string
   return `<clipPath id="${id}k"><polygon points="${a[0]},${a[1]} ${b[0]},${b[1]}
       ${b[0]},${foot} ${a[0]},${foot}"/></clipPath>
     <g clip-path="url(#${id}k)">${inner}</g>
-    <path d="M${a[0]} ${a[1]}L${b[0]} ${b[1]}" stroke="${c.line}" stroke-width="2.2"
+    <path d="M${a[0]} ${a[1]}L${b[0]} ${b[1]}" stroke="${c.ink ?? c.line}" stroke-width="2.2"
       stroke-linecap="round" fill="none"/>`
 }
 
@@ -491,9 +512,9 @@ const EYES: Record<string, EyeFn> = {
 const MOUTHS: Record<string, (c: Coat) => string> = {
   // The default is a small w hung off the nose: two arcs, not a curve.
   neutral: (c) => `<path d="M60 80.4v2.9M60 83.3q-2.1 4.4-6.3 3.3M60 83.3q2.1 4.4 6.3 3.3" fill="none"
-      stroke="${c.line}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`,
+      stroke="${c.ink ?? c.line}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`,
   smile: (c) => `<path d="M60 80.4v3.1M60 83.5q-3.4 5.8-8.8 4.1M60 83.5q3.4 5.8 8.8 4.1" fill="none"
-      stroke="${c.line}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`,
+      stroke="${c.ink ?? c.line}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`,
   open: (c) => `<path d="M60 80.8c5.9 0 9.2 1.1 9.2 3.5 0 4.3-4.1 7.8-9.2 7.8s-9.2-3.5-9.2-7.8c0-2.4 3.3-3.5 9.2-3.5Z"
       fill="${c.pupil}"/><path d="M60 91.8c2.7-.2 4.4-1.8 4.4-3.3 0-1.3-2-2.1-4.4-2.1s-4.4.8-4.4 2.1c0 1.5 1.7 3.1 4.4 3.3Z"
       fill="#EE8E96"/>`,
@@ -506,7 +527,7 @@ const MOUTHS: Record<string, (c: Coat) => string> = {
   yawn: (c) => `<path d="M60 79.4C63.98 79.4 67.2 83.12 67.2 87.7C67.2 92.28 63.98 96 60 96C56.02 96 52.8 92.28 52.8 87.7C52.8 83.12 56.02 79.4 60 79.4Z"
       fill="${c.pupil}"/><path d="M60 94.6c2.7-.3 4.5-2.4 4.5-4.1 0-1.4-2-2.3-4.5-2.3s-4.5.9-4.5 2.3c0 1.7 1.8 3.8 4.5 4.1Z"
       fill="#EE8E96"/>`,
-  frown: (c) => `<path d="M60 80.4v2.9M53.8 87.8q6.2-4.8 12.4 0" fill="none" stroke="${c.line}"
+  frown: (c) => `<path d="M60 80.4v2.9M53.8 87.8q6.2-4.8 12.4 0" fill="none" stroke="${c.ink ?? c.line}"
       stroke-width="2.4" stroke-linecap="round"/>`,
 }
 
@@ -864,7 +885,7 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
     ${c.chin ? `<ellipse class="cat-chin" clip-path="url(#${id}s)" cx="${c.chin.cx}"
       cy="${c.chin.cy}" rx="${c.chin.rx}" ry="${c.chin.ry}" fill="${c.chin.fill}"/>` : ''}
     <g class="cat-whiskers" transform="translate(0 ${faceDy})" style="transform-box:view-box;transform-origin:60px 78px;transform:rotate(calc(var(--huff,0) * -2.2deg + var(--whisk,0) * 2.1deg)) scaleX(calc(1 + var(--huff,0) * 0.035 + var(--whisk,0) * 0.022))">
-      <path d="${WHISKERS}" fill="none" stroke="${c.line}" stroke-width="1.8"
+      <path d="${WHISKERS}" fill="none" stroke="${c.ink ?? c.line}" stroke-width="1.8"
         stroke-linecap="round" opacity=".45"/>
     </g>
     <g class="cat-face" style="${pin('60px 100px', 0, 0, faceDy)}">
@@ -883,11 +904,11 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
   <g class="cat-emit" data-ink="${rim ? '#ffffff' : c.line}"></g>
   <g class="cat-paw cat-paw-l" style="${pin(PIVOT.pawL, 0, 0, 0, POSE_PAW('l'))}">
 <path d="${PAW_L}" ${pawFur}/><path d="${PAW_L}" ${pawVolume}/>
-    <path d="${TOES_L}" fill="none" stroke="${c.line}" stroke-width="2" stroke-linecap="round" opacity=".45"/>
+    <path d="${TOES_L}" fill="none" stroke="${c.ink ?? c.line}" stroke-width="2" stroke-linecap="round" opacity=".45"/>
   </g>
   <g class="cat-paw cat-paw-r" style="${pin(PIVOT.pawR, 0, 0, 0, POSE_PAW('r'))}">
 <path d="${PAW_R}" ${pawFur}/><path d="${PAW_R}" ${pawVolume}/>
-    <path d="${TOES_R}" fill="none" stroke="${c.line}" stroke-width="2" stroke-linecap="round" opacity=".45"/>
+    <path d="${TOES_R}" fill="none" stroke="${c.ink ?? c.line}" stroke-width="2" stroke-linecap="round" opacity=".45"/>
   </g>
 </svg>`
 }
