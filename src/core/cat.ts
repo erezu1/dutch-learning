@@ -158,6 +158,14 @@ export interface Coat {
   iris: string
   pupil: string
   line: string
+  /**
+   * The line on a dark page, where one is needed. A coat's outline is normally
+   * a darkened version of its own fur, which works because the page is pale —
+   * but on a dark page a dark cat's outline is darker than both her and the
+   * ground, so it does nothing and she loses her edge entirely. The coats that
+   * carry a lot of black say what to use instead.
+   */
+  lineDark?: string
   paw: string
   dark?: boolean
   nose?: string
@@ -184,6 +192,7 @@ export interface Mood {
 
 export const COATS: Record<string, Coat> = {
   calico: {
+    lineDark: '#6E5C4C', // her black side would otherwise have no edge
     name: 'Calico', base: '#FBF2E3', muzzle: '#FFFCF6', ear: '#F2B3AA',
     iris: '#FFFFFF', pupil: PUPIL, line: '#5A4A3E', paw: '#FFFCF6',
     patches: [{ d: P.left, fill: '#3C3430' }, { d: P.right, fill: '#E39A4C' }],
@@ -191,6 +200,7 @@ export const COATS: Record<string, Coat> = {
   // The same two patches as the calico, both in black. A tuxedo is not a
   // different animal, it is the same animal with the ginger taken out.
   tuxedo: {
+    lineDark: '#6B615B', // light enough to clear the page, dark enough to show on her chin
     name: 'Tuxedo', base: '#FCF7EF', muzzle: '#FFFFFF', ear: '#EFAEA6',
     iris: '#FFFFFF', pupil: PUPIL, line: '#4A423E', paw: '#FFFFFF',
     patches: [{ d: P.left, fill: '#2F2B29' }, { d: P.right, fill: '#2F2B29' }],
@@ -203,6 +213,7 @@ export const COATS: Record<string, Coat> = {
     chin: { cx: 60, cy: FLOOR, rx: 11, ry: 9, fill: '#2F2B29' },
   },
   black: {
+    lineDark: '#7C726B', // the only coat that is dark everywhere
     name: 'Black', base: '#3A3533', muzzle: '#454038', ear: '#6E5350',
     iris: '#F2CB64', pupil: '#1C1815', line: '#211E1D', dark: true, paw: '#443E3B',
   },
@@ -602,7 +613,11 @@ const EAR_TURN: Record<string, number> = { perk: -6, flat: 10 }
 let uid = 0
 
 export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = true, size = 160, rig = false } = {}) {
-  const c = COATS[coat]
+  const base = COATS[coat]
+  // Resolved once, here, rather than at each of the twenty places that draw a
+  // line. Everything downstream — the silhouette, the whiskers, the mouth, the
+  // lash, the toes, the z's — reads c.line and gets the right one.
+  const c = rim && base.lineDark ? { ...base, line: base.lineDark } : base
   const m = MOODS[mood]
   const id = `c${uid++}`
   // The variant's own lid, then the mood's bias on top of what is still open —
