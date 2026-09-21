@@ -795,9 +795,11 @@ export class CatRig {
       // The star is ten units across and drawn from its own corner, so half
       // of it comes off both numbers to put its centre where it is aimed.
       const x0 = 60 - 5, y0 = 2 - 5
-      // Out quickly, then hang. A star that is still travelling when it fades
-      // was never seen — there has to be a stretch in the middle where it is
-      // simply there, turning, for the eye to arrive at it.
+      // Out quickly, then slower, but never stopped. Something thrown that
+      // comes to a dead halt in mid-air is the one thing that cannot happen,
+      // and holding still for most of the shot read as exactly that. It keeps
+      // going the whole way — a fifth of the speed by the end, and turning —
+      // which is also the stretch of time the eye needs to arrive at it.
       const [jx, jy] = [rand(-5, 5), rand(-4, 4)]
       const tx = x0 + dx + jx, ty = y0 + dy + jy
       const spin = rand(150, 260) * (dx < 0 ? -1 : 1)
@@ -806,10 +808,10 @@ export class CatRig {
       const anim = g.animate(
         [
           { opacity: 0, transform: at(x0, y0, 0.25, 0) },
-          { opacity: 1, offset: 0.14, transform: at(x0 + dx * 0.6, y0 + dy * 0.6, 1.95, spin * 0.2) },
-          { opacity: 1, offset: 0.3, transform: at(tx, ty, 1.75, spin * 0.36) },
-          { opacity: 1, offset: 0.72, transform: at(tx, ty - 3, 1.6, spin * 0.78) },
-          { opacity: 0, transform: at(tx, ty - 7, 1.1, spin) },
+          { opacity: 1, offset: 0.14, transform: at(x0 + dx * 0.62, y0 + dy * 0.62, 1.95, spin * 0.12) },
+          { opacity: 1, offset: 0.32, transform: at(tx, ty, 1.8, spin * 0.28) },
+          { opacity: 1, offset: 0.66, transform: at(tx + dx * 0.2, ty + dy * 0.22 - 2, 1.62, spin * 0.62) },
+          { opacity: 0, transform: at(tx + dx * 0.38, ty + dy * 0.42 - 5, 1.15, spin) },
         ],
         {
           duration: rand(1450, 1600),
