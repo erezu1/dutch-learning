@@ -292,7 +292,10 @@ export const COATS: Record<string, Coat> = {
     stripes: { d: STRIPES, fill: '#D5823C' },
   },
   gray: {
-    name: 'Gray', who: 'Mist', base: '#A9AEB0', muzzle: '#E4E6E6', ear: '#E0A9A2',
+    // Deeper than the pale coats' pink. Grey fur is the one background that
+    // is neither warm nor dark, so a soft salmon has nothing to be different
+    // from — it read as a slightly warmer grey rather than as pink.
+    name: 'Gray', who: 'Mist', base: '#A9AEB0', muzzle: '#E4E6E6', ear: '#D4837E',
     iris: '#FFFFFF', pupil: PUPIL, line: '#6B7073', paw: '#E8EAEA',
     stripes: { d: STRIPES, fill: '#868D90' },
   },
