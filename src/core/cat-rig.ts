@@ -49,7 +49,7 @@ export const ROLE = {
   lookDownR: { jobs: ['drift'],             when: 'glancing across what she is reading' },
   sleepy:    { jobs: ['base'],              when: 'nothing is due' },
   yawn:      { jobs: ['drift'],             when: 'on the way down, just before she settles' },
-  stretch:   { jobs: ['drift'],             when: 'on the way back up, without waking' },
+  stretch:   { jobs: ['drift'],             when: 'the end of a nap, and sometimes only most of one' },
   lookUpL:   { jobs: ['drift', 'reaction'], when: 'an idle glance up; the first run' },
   lookUpR:   { jobs: ['drift'],             when: 'an idle glance up' },
   curious:   { jobs: ['drift', 'reaction'], when: 'an idle glance; a wrong answer' },
@@ -145,7 +145,9 @@ const SLEEP_AFTER = [2800, 5000] as const  // ~7s all in
 // mind. Gating them as a group meant waking her deleted the thought she was
 // halfway through having.
 const SVG_NS = 'http://www.w3.org/2000/svg'
-const LANES = [-3.5, 3.5, 0]
+// Narrower than they were: the column has moved out past her ear, and the
+// spread has to fit between her and the edge of what the frame can show.
+const LANES = [-2.2, 2.2, 0]
 
 interface Mark {
   d: string
@@ -168,8 +170,18 @@ interface Mark {
 // how large they can get: a heart at 2.4 is fourteen units across, and that is
 // the whole of the room there is.
 const MARKS: Record<string, Mark> = {
-  z: { d: ZED, at: [112, 12], scale: [1.1, 1.55], rise: -26, drift: 6, ms: [2400, 3000], peak: 0.7, stroke: 1.8 },
-  heart: { d: HEART, at: [117, 26], scale: [1.9, 2.4], rise: -30, drift: 3, ms: [1900, 2400], peak: 0.92, fill: '#EE8E96' },
+  // Both start clear of her and stay clear of her.
+  //
+  // Her rightmost point is the tip of the right ear at x 113.9, and the
+  // outline puts another 2.6 outside that — so nothing may begin left of
+  // about 119, once the lane offset, the jitter and the centred scale have
+  // all been taken off the starting x. They used to begin at 112 and 117,
+  // which is inside the ear, and the ear is at its widest at exactly the
+  // height the marks are born. They rise away from her afterwards, so only
+  // the first moment of one was ever in danger — and the first moment is
+  // the one you notice, because it is the one that appears.
+  z: { d: ZED, at: [124, 10], scale: [1.1, 1.55], rise: -26, drift: 4, ms: [2400, 3000], peak: 0.7, stroke: 1.8 },
+  heart: { d: HEART, at: [124, 24], scale: [1.9, 2.4], rise: -30, drift: 2, ms: [1900, 2400], peak: 0.92, fill: '#EE8E96' },
 }
 
 /** Which brow set a mood wants. Only two moods have any. */
@@ -328,15 +340,34 @@ export class CatRig {
     this.svg.dataset.mood = name
   }
 
+  /**
+   * Awake, under her own steam. Not `setBase`, because the screen has not
+   * changed its mind about anything — she has. If the screen wanted her
+   * asleep she comes up to idle anyway, and the wind-down that follows will
+   * put her back in its own time.
+   */
+  #rouse() {
+    this.base = this.wanted === 'sleepy' ? 'idle' : this.wanted
+    this.pose(this.base)
+    this.#scheduleDoze()
+  }
+
   /** The mood she falls back to. Takes effect at the end of any current hold. */
   setBase(name: string) {
+    // Sent somewhere awake while she is asleep. She stretches on the way,
+    // rather than simply being a different cat in the next frame — this is
+    // the other half of the same gesture, and it is the half you see when
+    // you come back to the app and she is where you left her.
+    const rousing = this.current === 'sleepy' && name !== 'sleepy'
     this.wanted = this.base = name
     this.lastActive = performance.now()
     // A new situation restarts the wind-down: arriving at a card should give
     // her the full three seconds before she starts yawning at you, not
     // whatever was left over from the last one.
     this.#scheduleDoze()
-    if (!this.holding) this.pose(name)
+    if (this.holding) return
+    if (rousing) this.react('stretch', { ms: 1500, quiet: true, min: 0 })
+    else this.pose(name)
   }
 
   /** Anything that means she is being paid attention to. Wakes her up. */
@@ -450,14 +481,18 @@ export class CatRig {
    */
   #scheduleDoze() {
     clearTimeout(this.dozing ?? undefined)
-    if (this.wanted === 'sleepy') return
+    // Already down. The test is what she is doing, not what the screen asked
+    // for: a cat who has woken herself up out of a nap on a screen that still
+    // wants her asleep has to be able to wind back down, and testing `wanted`
+    // left her sitting up for good.
+    if (this.base === 'sleepy') return
     this.dozing = setTimeout(() => {
       // `quiet`, so a yawn does not count as being paid attention to and reset
       // the very clock that produced it.
       if (!this.holding) this.react('yawn', { ms: 2400, quiet: true, min: 0 })
       this.dozing = setTimeout(() => {
         this.dozing = null
-        if (this.wanted === 'sleepy') return
+        if (this.base === 'sleepy') return
         // Mid-reaction. Falling asleep behind it would mean opening her eyes
         // on a face she never chose — wait, and start the clock over.
         if (this.holdLoud) return this.#scheduleDoze()
@@ -496,7 +531,16 @@ export class CatRig {
           } else {
             const options = DRIFT[this.base]
             if (options && chance(DRIFT_CHANCE[this.base] ?? 1)) {
-              this.react(pickOne(options), { ms: rand(1400, 2800), quiet: true, min: 0 })
+              const to = pickOne(options)
+              // A stretch is mostly how a nap ends. Not always — a cat who
+              // stretches, thinks better of it and goes back under is the
+              // most cat thing in here — but a stretch that never once led
+              // anywhere made the whole gesture punctuation.
+              const up = to === 'stretch' && chance(0.7)
+              this.react(to, {
+                ms: rand(1400, 2800), quiet: true, min: 0,
+                then: up ? () => this.#rouse() : undefined,
+              })
             }
           }
         }
