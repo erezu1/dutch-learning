@@ -141,6 +141,7 @@ const SLEEP_AFTER = [2800, 5000] as const  // ~7s all in
 // mind. Gating them as a group meant waking her deleted the thought she was
 // halfway through having.
 const SVG_NS = 'http://www.w3.org/2000/svg'
+const LANES = [-3.5, 3.5, 0]
 
 interface Mark {
   d: string
@@ -156,9 +157,15 @@ interface Mark {
   fill?: string
 }
 
+// `at` is where a mark is born, and it has to be clear of her. Her ear reaches
+// x = 116 near the top and her head x = 112 at its widest, so anything
+// starting left of about 117 begins inside her and looks stuck to her face
+// rather than rising off it. The frame's right edge is 134, which is what caps
+// how large they can get: a heart at 2.4 is fourteen units across, and that is
+// the whole of the room there is.
 const MARKS: Record<string, Mark> = {
-  z: { d: ZED, at: [106, 14], scale: [1.05, 1.5], rise: -26, drift: 7, ms: [2400, 3000], peak: 0.7, stroke: 1.8 },
-  heart: { d: HEART, at: [106, 10], scale: [1.5, 2.1], rise: -24, drift: 5, ms: [1800, 2300], peak: 0.92, fill: '#EE8E96' },
+  z: { d: ZED, at: [112, 12], scale: [1.1, 1.55], rise: -26, drift: 6, ms: [2400, 3000], peak: 0.7, stroke: 1.8 },
+  heart: { d: HEART, at: [117, 26], scale: [1.9, 2.4], rise: -30, drift: 3, ms: [1900, 2400], peak: 0.92, fill: '#EE8E96' },
 }
 
 /** Which brow set a mood wants. Only two moods have any. */
@@ -181,6 +188,7 @@ export class CatRig {
   dozeMark: ReturnType<typeof setTimeout> | null = null
   emitter: ReturnType<typeof setInterval> | null = null
   emitting: string | null = null
+  emitSeq = 0
   groups: Record<string, SVGElement[]>
   pokes = 0
   lastPoke = 0
@@ -490,9 +498,18 @@ export class CatRig {
     g.style.transformOrigin = 'center'
     host.append(g)
 
-    // Jittered, so no two are launched from the same spot on the same arc.
-    const x = m.at[0] + rand(-3, 3)
-    const y = m.at[1] + rand(-3, 3)
+    // Consecutive marks take turns across three lanes rather than each
+    // picking at random. Random placement in a space this narrow keeps
+    // producing pairs that sit on top of each other, and two z's overlapping
+    // read as one badly drawn z. Taking turns guarantees the separation that
+    // randomness only tends towards.
+    //
+    // The timing does the other half: each is spawned after the one before it
+    // has risen further than a mark is tall, so they are apart vertically even
+    // when the lanes bring them back into line.
+    const lane = LANES[this.emitSeq++ % LANES.length]
+    const x = m.at[0] + lane + rand(-0.8, 0.8)
+    const y = m.at[1] + rand(-2, 2)
     const s = rand(m.scale[0], m.scale[1])
     const at = (px: number, py: number, ps: number) =>
       `translate(${px.toFixed(2)}px, ${py.toFixed(2)}px) scale(${ps.toFixed(3)})`
@@ -515,7 +532,9 @@ export class CatRig {
     this.emitter = null
     if (!kind || matchMedia('(prefers-reduced-motion: reduce)').matches) return
     this.#spawn(kind)
-    this.emitter = setInterval(() => this.#spawn(kind), kind === 'heart' ? 760 : 1150)
+    // Long enough that the last one has climbed clear. Below that they stack
+    // up in the same few units of sky and stop reading as separate marks.
+    this.emitter = setInterval(() => this.#spawn(kind), kind === 'heart' ? 1150 : 1500)
   }
 
   /** A gesture the idle loop owns. It may not be listening. */
