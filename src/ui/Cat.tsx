@@ -62,13 +62,17 @@ export function Cat({ coat, scene, beat, rim = false, className = '', size = 96,
   // Rebuilt only when the drawing itself changes — a different cat, or a
   // different ramp to stand on. Never for a mood.
   //
-  // Changing coat cross-fades rather than cutting. The old cat stays for a
-  // quarter of a second, lifted out of flow and fading, while the new one
-  // arrives underneath it — so the swap reads as the same animal in different
-  // markings rather than one being deleted and another appearing. The old one
-  // goes out of flow rather than the new one, because the new one has to hold
-  // the layout open: absolutely positioning the incoming cat would collapse
-  // the row and everything below it would jump.
+  // Changing coat fades out and then in, rather than cutting or crossing.
+  //
+  // Crossing was the obvious thing and it was wrong: two cats at half opacity
+  // on top of each other show through one another, and every line that does
+  // not line up between two coats — an ear patch, a goatee, a nose — is
+  // briefly visible twice. One out, then one in, and only ever one cat on
+  // screen.
+  //
+  // The old one goes out of flow rather than the new one, because the new one
+  // has to hold the layout open: absolutely positioning the incoming cat
+  // would collapse the row and everything below it would jump.
   useEffect(() => {
     const box = host.current
     if (!box) return
@@ -86,12 +90,19 @@ export function Cat({ coat, scene, beat, rim = false, className = '', size = 96,
     if (outgoing) {
       outgoing.style.cssText = 'position:absolute;inset:0;margin:auto;pointer-events:none'
       const fade = outgoing.animate([{ opacity: 1 }, { opacity: 0 }], {
-        duration: 240,
+        duration: 150,
         easing: 'ease-out',
         fill: 'forwards',
       })
       fade.finished.then(() => outgoing.remove()).catch(() => outgoing.remove())
-      svg.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 240, easing: 'ease-in' })
+      // `backwards`, so she holds at nought through the delay instead of
+      // sitting there at full strength waiting for her turn.
+      svg.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 190,
+        delay: 150,
+        easing: 'ease-in',
+        fill: 'backwards',
+      })
     }
 
     const r = new CatRig(svg)
