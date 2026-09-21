@@ -349,29 +349,36 @@
    taking a little of the ground away, so the shape sits on the ramp's own base
    tone whatever is sweeping past underneath.
 
-   Painted, not filtered. A `filter` is recomputed whenever the element it sits
-   on changes, and both of these have something moving INSIDE them — the bar
-   holds the fill whose width animates, the ring holds the arc that draws
-   itself in — so three large blurs were being redone every frame of every
-   animation on the screen. A box-shadow is composited once and does not care
-   what the element contains.
+   A painted gradient, not a blur and not a shadow. Both of the earlier
+   attempts were asking the compositor to manufacture a soft edge that a
+   gradient simply has: a `filter` had to be recomputed on every frame because
+   each of these elements holds something that animates, and a box-shadow
+   needed a hard collar to carry any weight. A gradient is one paint, it never
+   re-runs, and every stop is a number you can see rather than a blur radius
+   you have to guess at.
 
-   The ring wants the same treatment on both sides of its stroke, which is the
-   only difference between the two: it gets the inset copy as well. */
-:root {
-  --clearing: 0 0 0 5px var(--color-surface), 0 0 14px 7px var(--color-surface),
-    0 0 32px 15px color-mix(in oklab, var(--color-surface) 72%, transparent);
-  --clearing-inset: inset 0 0 0 5px var(--color-surface),
-    inset 0 0 14px 7px var(--color-surface),
-    inset 0 0 32px 15px color-mix(in oklab, var(--color-surface) 72%, transparent);
+   Each is its own element behind the thing it clears, so nothing that moves
+   ever sits inside it. */
+.clearing {
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in oklab, var(--color-surface) 62%, transparent) 0%,
+    color-mix(in oklab, var(--color-surface) 44%, transparent) 40%,
+    transparent 74%
+  );
 }
 
-.clear-of-ground {
-  box-shadow: var(--clearing);
-}
-
-.clear-of-ground-ring {
-  box-shadow: var(--clearing), var(--clearing-inset);
+/* The ring wants the same thing bent into a band: cleared on both sides of the
+   stroke rather than out from a centre, since its middle is where the score
+   goes and there is nothing there to lift. */
+.clearing-ring {
+  background: radial-gradient(
+    circle closest-side,
+    transparent 56%,
+    color-mix(in oklab, var(--color-surface) 76%, transparent) 76%,
+    color-mix(in oklab, var(--color-surface) 76%, transparent) 99%,
+    transparent 116%
+  );
 }
 
 @layer base {
