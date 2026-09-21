@@ -201,6 +201,8 @@ export class CatRig {
   lastPoke = 0
   locked = 0
   sulkUntil = 0
+  /** How many times she has been made cross without once cooling off. */
+  cross = 0
   lastWrong = ''
 
   constructor(
@@ -268,7 +270,13 @@ export class CatRig {
     // Read before the clock is reset, because resetting it is what would make
     // every temper look like a second one.
     const again = name === 'grumpy' && performance.now() < this.sulkUntil
-    if (name === 'grumpy') this.sulkUntil = performance.now() + SULK
+    if (name === 'grumpy') {
+      // Lapse and it starts over. She forgives you for stopping, which is the
+      // only thing that keeps an escalating mascot from being an unpleasant
+      // one — every step up is undone by leaving her alone for five seconds.
+      this.cross = again ? this.cross + 1 : 0
+      this.sulkUntil = performance.now() + SULK
+    }
     // Two moods reach the paws. Toggled by class rather than written into the
     // pose, because they are loops and the pose is a destination.
     this.svg.classList.toggle('cat-delighted', name === 'celebrate')
@@ -277,6 +285,10 @@ export class CatRig {
     // her paws perfectly still under a furious face is what made the anger
     // read as a mask.
     this.svg.classList.toggle('cat-shake', name === 'yawn' || again)
+    // Past shaking. Three tempers inside one sulk and it comes out of her
+    // paws — a face and a tremble have both already been spent by then, and
+    // a mood with no further step reads as a mood that was never listening.
+    if (name === 'grumpy' && this.cross >= 2) this.stamp()
     // Only while she is actually settled — a yawn is a moment on the way there
     // and on the way back, and zzz flickering on either side of it would read
     // as a fault — and not until she has been settled a second.
@@ -586,33 +598,87 @@ export class CatRig {
    * and a one-shot that returns to zero leaves nothing behind for the next
    * mood to undo.
    */
+  /**
+   * One vertical move, as a shape both halves of her follow at their own
+   * size and their own moment.
+   *
+   * The shape says when; the gains say how much of it each half takes; the
+   * delays say which half goes first. That is the whole difference between
+   * being startled and losing your temper — a start is the body going and
+   * the legs being dragged after it, and a stamp is the legs going first and
+   * the body arriving on top of them.
+   */
+  #leap(
+    shape: { v: number; at: number; ease?: string }[],
+    duration: number,
+    head: { gain: number; delay: number },
+    paw: { gain: number; delay: number },
+  ) {
+    const frames = (prop: string, gain: number) =>
+      shape.map((k) => ({ [prop]: k.v * gain, offset: k.at, easing: k.ease })) as Keyframe[]
+    this.svg.animate(frames('--hop', head.gain), {
+      duration, easing: 'linear', delay: head.delay,
+    })
+    this.svg.animate(frames('--hop-paw', paw.gain), {
+      duration, easing: 'linear', delay: paw.delay,
+    })
+  }
+
+  /**
+   * A start: she comes off the ledge and settles back onto it.
+   *
+   * Up is muscle and down is gravity, so up is the shorter half — about
+   * 130ms of rise against 220ms of fall, decelerating into the apex and
+   * accelerating out of it. Equal halves read as a bounce on a spring rather
+   * than as something that jumped.
+   *
+   * She crouches before she goes and absorbs when she lands. Neither is the
+   * jump, and both are small, but without them she arrives at the top of the
+   * move with nothing having led up to it — which is the whole of what
+   * "abrupt" means in a drawing that is otherwise this soft. The whole thing
+   * is over in six hundred milliseconds: a start is something that has
+   * happened to her, not something she is doing.
+   */
   hop() {
-    // Up is muscle and down is gravity, so up is the shorter half: about
-    // 130ms of rise against 220ms of fall, the rise decelerating into the
-    // apex and the fall accelerating out of it. Equal halves read as a
-    // bounce on a spring rather than as something that jumped.
-    //
-    // The whole thing is over in six hundred milliseconds. A start is a
-    // thing that has happened to her, not a thing she is doing.
-    //
-    // She crouches before she goes and absorbs when she lands. Neither is
-    // the jump, and both are small, but without them she arrives at the top
-    // of the move with nothing having led up to it — which is the whole of
-    // what "abrupt" means in a drawing that is otherwise this soft.
-    const arc = [
-      { v: 0, at: 0, ease: 'ease-out' },
-      { v: -0.12, at: 0.13, ease: 'cubic-bezier(.18,.9,.36,1)' },
-      { v: 1, at: 0.34, ease: 'cubic-bezier(.45,0,.75,.62)' },
-      { v: 0, at: 0.7, ease: 'ease-out' },
-      { v: -0.09, at: 0.82, ease: 'ease-out' },
-      { v: 0, at: 1 },
-    ]
-    const frames = (prop: string) =>
-      arc.map((k) => ({ [prop]: k.v, offset: k.at, easing: k.ease })) as Keyframe[]
-    const timing = { duration: 600, easing: 'linear' } as const
-    this.svg.animate(frames('--hop'), timing)
-    // The same curve, late. The body goes first and drags the legs after it.
-    this.svg.animate(frames('--hop-paw'), { ...timing, delay: 60 })
+    this.#leap(
+      [
+        { v: 0, at: 0, ease: 'ease-out' },
+        { v: -0.12, at: 0.13, ease: 'cubic-bezier(.18,.9,.36,1)' },
+        { v: 1, at: 0.34, ease: 'cubic-bezier(.45,0,.75,.62)' },
+        { v: 0, at: 0.7, ease: 'ease-out' },
+        { v: -0.09, at: 0.82, ease: 'ease-out' },
+        { v: 0, at: 1 },
+      ],
+      600,
+      { gain: 1, delay: 0 },
+      { gain: 1, delay: 60 },
+    )
+  }
+
+  /**
+   * Temper, once shaking has stopped being enough: she comes down on the
+   * ledge twice, hard.
+   *
+   * The same shape as the jump turned inside out. It is the paws that carry
+   * it — two and a half times what the head does, where a start gives them a
+   * fifth — and they go first, with the body following. Every beat ends
+   * below the line she started on rather than back at it, because a stamp is
+   * a thing that finishes downward.
+   */
+  stamp() {
+    this.#leap(
+      [
+        { v: 0, at: 0, ease: 'cubic-bezier(.2,.85,.3,1)' },
+        { v: 0.55, at: 0.16, ease: 'cubic-bezier(.7,0,.9,.4)' },
+        { v: -0.42, at: 0.32, ease: 'cubic-bezier(.2,.85,.3,1)' },
+        { v: 0.34, at: 0.5, ease: 'cubic-bezier(.7,0,.9,.4)' },
+        { v: -0.26, at: 0.64, ease: 'ease-out' },
+        { v: 0, at: 1 },
+      ],
+      560,
+      { gain: 0.38, delay: 55 },
+      { gain: 2.5, delay: 0 },
+    )
   }
 
   gesture(name: string) {
