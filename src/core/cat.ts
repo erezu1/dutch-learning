@@ -52,8 +52,8 @@ export function headPath(q = 1): string {
 // Big triangles off the top corners. The ear is the silhouette — it is what
 // still says "cat" at 36px, when the whole face has become four grey pixels.
 //
-// Scaled to just under two thirds about the pivot each one turns on, so the
-// base stays exactly where it met the skull and only the ear got smaller. Scaling the
+// Scaled to four fifths about the pivot each one turns on, so the base stays
+// exactly where it met the skull and only the ear got smaller. Scaling the
 // group instead would have been one number, and would also have scaled the
 // outline's stroke — a thinner line around the ears than around the head.
 //
@@ -77,8 +77,8 @@ export function headPath(q = 1): string {
 // swung out past the skull and you could see where the ear stopped. It now
 // runs fourteen units deeper, to y 74, which is still well inside a head
 // whose edge at that height is out at 110.
-const EAR_L = 'M17.8 45.1C14.6 35.5 12.6 22.1 15.2 17.6C16.8 14.8 37 22.7 40.8 29.8C44.6 42.6 39.5 60.5 28 61.8C20.3 62.4 17.8 54.1 17.8 45.1Z'
-const EAR_R = 'M102.2 45.1C105.4 35.5 107.4 22.1 104.8 17.6C103.2 14.8 83 22.7 79.2 29.8C75.4 42.6 80.5 60.5 92 61.8C99.7 62.4 102.2 54.1 102.2 45.1Z'
+const EAR_L = 'M15.2 46.4C11.2 34.4 8.8 17.6 12 12C14 8.5 39.2 18.4 44 27.2C48.8 43.2 42.4 65.6 28 67.2C18.4 68 15.2 57.6 15.2 46.4Z'
+const EAR_R = 'M104.8 46.4C108.8 34.4 111.2 17.6 108 12C106 8.5 80.8 18.4 76 27.2C71.2 43.2 77.6 65.6 92 67.2C101.6 68 104.8 57.6 104.8 46.4Z'
 
 // The pink sits inside the ear, hard over toward the OUTER edge: a little
 // over two units of fur along the outside against a dozen along the inside.
@@ -94,8 +94,8 @@ const EAR_R = 'M102.2 45.1C105.4 35.5 107.4 22.1 104.8 17.6C103.2 14.8 83 22.7 7
 // opposite curvature to the ear around it reads as a sticker on the ear
 // rather than as the inside of one. It leaves its own tip along the tangent
 // it arrived on, for the same reason the ear does.
-const EAR_L_IN = 'M19.4 44.5C15.8 35.2 14.2 22.4 16.8 18.4C17.8 16.8 33.1 27.2 35.7 34.9C31.2 40 22.9 43.2 19.4 44.5Z'
-const EAR_R_IN = 'M100.6 44.5C104.2 35.2 105.8 22.4 103.2 18.4C102.2 16.8 86.9 27.2 84.3 34.9C88.8 40 97.1 43.2 100.6 44.5Z'
+const EAR_L_IN = 'M17.2 45.6C12.8 34 10.8 18 14 13C15.3 11 34.4 24 37.6 33.6C32 40 21.6 44 17.2 45.6Z'
+const EAR_R_IN = 'M102.8 45.6C107.2 34 109.2 18 106 13C104.7 11 85.6 24 82.4 33.6C88 40 98.4 44 102.8 45.6Z'
 
 // A squircle, not a rectangle: the same four arcs an ellipse has, but pulled
 // with a fatter handle (0.72 of the radius instead of 0.552) so the top,
@@ -133,7 +133,7 @@ const EYE = { l: 40, r: 80, y: 58, rx: 11.5, ry: 12 }
  * does it for all of them rather than five sets of coordinates being nudged
  * out of agreement with each other.
  */
-export const SNOUT = -3
+export const SNOUT = -6
 
 const NOSE = 'M60 80.4C56.6 80.4 53.5 78.1 53.5 75.5C53.5 73.5 56.5 72.4 60 72.4C63.5 72.4 66.5 73.5 66.5 75.5C66.5 78.1 63.4 80.4 60 80.4Z'
 // Long, and deliberately outside the silhouette. Clipping them to the head
@@ -167,7 +167,20 @@ export const HEART =
 export const STAR =
   'M5 0L6.23 3.3L9.76 3.45L7 5.65L7.94 9.05L5 7.1L2.06 9.05L3 5.65L0.24 3.45L3.77 3.3Z'
 
-const WHISKERS = 'M44 67q-17-4-28-6M44 72q-18 1-29 1M44 77q-17 5-27 7M76 67q17-4 28-6M76 72q18 1 29 1M76 77q17 5 27 7'
+// Short arcs at the edge of her face, not long lines across it. They begin
+// just inside the silhouette rather than out by the muzzle, and each one runs
+// a few units past the outline — which is what a whisker does, and the reason
+// they are not part of the shape the outline is traced from: a line drawn
+// around them would make them furniture rather than hair.
+//
+// All three droop. Every one leaves her face level and falls away as it goes,
+// because that is what a hair of that length does under its own weight — the
+// top one used to curl upward, which reads as a wire rather than a whisker.
+// They end left of x 11 and right of 109, clear of where a paw can reach, so
+// a paw never swallows one.
+const WHISKERS =
+  'M19 63C13 63.5 7 65 3.5 68M19 69C13 69.5 7 71 3 74M19 75C13 75.5 7 77 3.5 80' +
+  'M101 63C107 63.5 113 65 116.5 68M101 69C107 69.5 113 71 117 74M101 75C107 75.5 113 77 116.5 80'
 
 // --- coats -----------------------------------------------------------------
 // Independent of the theme on purpose: this is which cat you have, not which
@@ -922,7 +935,7 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
       cy="${c.chin.cy}" rx="${c.chin.rx}" ry="${c.chin.ry}" fill="${c.chin.fill}"/>` : ''}
     <g class="cat-whiskers" transform="translate(0 ${faceDy})" style="transform-box:view-box;transform-origin:60px 78px;transform:rotate(calc(var(--huff,0) * -2.2deg + var(--whisk,0) * 2.1deg)) scaleX(calc(1 + var(--huff,0) * 0.035 + var(--whisk,0) * 0.022))">
       <path d="${WHISKERS}" fill="none" stroke="${c.line}" stroke-width="1.8"
-        stroke-linecap="round" opacity=".45"/>
+        stroke-linecap="round"/>
     </g>
     <g class="cat-face" style="${pin('60px 100px', 0, 0, faceDy)}">
       <g class="cat-brows">${browSets}</g>
