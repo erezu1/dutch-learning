@@ -81,13 +81,13 @@ const REST: [number, number][] = [
 ]
 
 const TRAP: [number, number][] = [
-  [60, 23], [78, 23], [90, 26], [95, 33],
-  [101, 43], [106, 58], [107, 72],
-  [107.5, 86], [106.5, 99.4], [102, 100],
-  [90, 100], [30, 100], [18, 100],
-  [13.5, 99.4], [12.5, 86], [13, 72],
-  [14, 58], [19, 43], [25, 33],
-  [30, 26], [42, 23], [60, 23],
+  [60, 20], [78, 20], [93, 24], [98, 32],
+  [105, 44], [112, 58], [113, 72],
+  [113.5, 84], [110, 94.4], [102, 95],
+  [90, 95], [30, 95], [18, 95],
+  [10, 94.4], [6.5, 84], [7, 72],
+  [8, 58], [15, 44], [22, 32],
+  [27, 24], [42, 20], [60, 20],
 ]
 
 export function headPath(q = 1): string {
@@ -1037,6 +1037,10 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
         <path class="cat-ear-in" d="${EAR_R_IN}" fill="${c.ear}"/></g>
     </g>
     <path class="cat-skull" style="d:path('${HEAD}')" fill="${c.base}"/>
+    <!-- No spread on these. The same markings are drawn three times — once on
+         the head and once inside each ear clip — and moving only the head's
+         copy breaks them apart at the ear's edge, which is worse than a cap
+         that covers a little less of a wider head. -->
     <g class="cat-coat" clip-path="url(#${id}s)">${marks}</g>
     <ellipse class="cat-muzzle" cx="60" cy="75" rx="24" ry="13.5"
       fill="${c.muzzle}" opacity="${c.muzzleAlpha ?? (c.dark ? 0.42 : 0.65)}"
