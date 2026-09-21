@@ -649,6 +649,23 @@ svg.cat-bounce .cat-paw-r { animation-delay: 130ms }
 svg.cat-shake .cat-paw { animation: cat-paw-shake 180ms ease-in-out infinite }
 svg.cat-shake .cat-paw-r { animation-direction: reverse }
 
+/* Asleep. The whole group fades in so she does not start mid-thought, then
+   each z runs the same rise on its own delay — one keyframe, three offsets,
+   which is cheaper than three animations and cannot drift out of step. */
+@keyframes cat-z {
+  0% { opacity: 0; transform: translate(0, 5px) scale(0.68) }
+  18% { opacity: 0.72 }
+  100% { opacity: 0; transform: translate(6px, -13px) scale(1.18) }
+}
+.cat-zzz { opacity: 0; transition: opacity 340ms ease }
+svg.cat-asleep .cat-zzz { opacity: 1 }
+svg.cat-asleep .cat-z {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cat-z 3.6s ease-out infinite;
+  animation-delay: var(--zd, 0s);
+}
+
 /* Moving between situations. The state machine writes the numbers and this
    walks her there, so two moods can be halfway between each other rather than
    cutting. The ears carry 70ms of delay so they arrive behind the head —
@@ -672,5 +689,8 @@ svg.cat-rig {
   svg.cat-breathing { animation: none }
   svg.cat-bounce .cat-paw,
   svg.cat-shake .cat-paw { animation: none }
+  /* Still shown, just not drifting: they say she is asleep, which is
+     information, and the movement is the part that was decoration. */
+  svg.cat-asleep .cat-z { animation: none; opacity: 0.6 }
   svg.cat-rig { transition: none }
 }

@@ -92,6 +92,15 @@ const EYE = { l: 40, r: 80, y: 58, rx: 11.5, ry: 12 }
 const NOSE = 'M60 80.4C56.6 80.4 53.5 78.1 53.5 75.5C53.5 73.5 56.5 72.4 60 72.4C63.5 72.4 66.5 73.5 66.5 75.5C66.5 78.1 63.4 80.4 60 80.4Z'
 // Long, and deliberately outside the silhouette. Clipping them to the head
 // was wrong — in life and in the reference they cross the edge.
+// Three z's rising off her right ear. Drawn rather than set as text: at this
+// size a glyph is at the mercy of hinting and a font that may not have loaded,
+// and this is two strokes.
+//
+// They live in the frame's right margin — the space the ear tips needed for a
+// tilt — so they never cross her. A zzz over the cat is a label saying she is
+// asleep; a zzz beside her is her sleeping.
+const ZED = 'M0 0h5.4L0 6.6h5.4'
+
 const WHISKERS = 'M44 67q-17-4-28-6M44 72q-18 1-29 1M44 77q-17 5-27 7M76 67q17-4 28-6M76 72q18 1 29 1M76 77q17 5 27 7'
 
 // --- coats -----------------------------------------------------------------
@@ -563,7 +572,9 @@ const POSE_EAR = (side: 'l' | 'r') => {
 // Sleeping cats work their paws. Each turns about where it meets the ledge,
 // and the two run in antiphase on a period that is not a multiple of the
 // breath's — beats that share a factor resolve into one pattern.
-const POSE_PAW = (side: 'l' | 'r') => `rotate(var(--paw-${side}, 0deg)) translateY(calc(var(--paw-${side}-y, 0px)))`
+const POSE_PAW = (side: 'l' | 'r') =>
+  `rotate(calc(var(--paw-${side}, 0deg) + var(--paw-shake, 0deg))) ` +
+  `translateY(calc(var(--paw-${side}-y, 0px) + var(--paw-bob, 0px)))`
 const POSE_GAZE =
   'translate(calc(var(--gaze-x, 0px) + var(--gaze-px, 0px)), calc(var(--gaze-y, 0px) + var(--gaze-py, 0px)))'
 const TWITCH = (deg: number, v: string) => `calc(${deg}deg + var(${v}, 0deg))`
@@ -748,6 +759,12 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
     </g>
   </g>
   ${contact}
+  <g class="cat-zzz" fill="none" stroke="${rim ? '#ffffff' : c.line}" stroke-width="1.7"
+    stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(110 13)"><g class="cat-z" style="--zd:0s"><path d="${ZED}"/></g></g>
+    <g transform="translate(118 1)"><g class="cat-z" style="--zd:1.15s"><path d="${ZED}"/></g></g>
+    <g transform="translate(126 -12)"><g class="cat-z" style="--zd:2.3s"><path d="${ZED}"/></g></g>
+  </g>
   <g class="cat-paw cat-paw-l" style="${pin(PIVOT.pawL, 0, 0, 0, POSE_PAW('l'))}">
     ${pawRim(PAW_L)}<path d="${PAW_L}" ${pawFur}/><path d="${PAW_L}" ${pawVolume}/>
     <path d="${TOES_L}" fill="none" stroke="${c.line}" stroke-width="2" stroke-linecap="round" opacity=".45"/>

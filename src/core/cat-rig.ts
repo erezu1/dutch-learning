@@ -220,6 +220,10 @@ export class CatRig {
     // both: being cross is a whole-body thing, and leaving her paws perfectly
     // still under a furious face is what made the anger read as a mask.
     this.svg.classList.toggle('cat-shake', name === 'yawn' || name === 'grumpy')
+    // Only while she is actually settled. A yawn is a moment on the way there
+    // and on the way back, and zzz flickering on for two seconds either side
+    // of it would read as a fault.
+    this.svg.classList.toggle('cat-asleep', name === 'sleepy')
     // A gesture the mood cannot carry itself. Arriving at curious is a sniff:
     // she has noticed something and is checking it, which the face alone only
     // says statically.
