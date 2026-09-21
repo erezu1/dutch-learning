@@ -350,19 +350,22 @@
    taking a little of the ground away, so the shape sits on the ramp's own base
    tone whatever is sweeping past underneath.
 
-   Wide and translucent rather than tight and solid: a halo you can see is a
-   second object, and this one is only meant to be the absence of a first. The
-   ordinary elevation goes on top of it — later filters paint further back, so
-   the lift is listed first and ends up in front of the clearing.
+   Wide, so it reads as the wash being absent rather than as a ring drawn
+   around the ring — but strong, because a clearing that only half clears is
+   the worst of both: still hard to see the shape, and now something else
+   going on around it.
+
+   No elevation on top. The two were doing opposite jobs in the same few
+   pixels, one lightening the ground and one darkening it, and the shadow
+   spent most of what the clearing had just bought.
 
    The ring on the home screen and the bar on the card share it. They are the
    same object — the thing that says how far through you are — and the fact
    that one is bent into a circle should not mean it is lit differently. */
 .clear-of-ground {
-  filter: var(--lift-shadow)
-    drop-shadow(0 0 16px color-mix(in oklab, var(--color-surface) 88%, transparent))
-    drop-shadow(0 0 30px color-mix(in oklab, var(--color-surface) 76%, transparent))
-    drop-shadow(0 0 48px color-mix(in oklab, var(--color-surface) 58%, transparent));
+  filter: drop-shadow(0 0 12px var(--color-surface))
+    drop-shadow(0 0 26px color-mix(in oklab, var(--color-surface) 92%, transparent))
+    drop-shadow(0 0 46px color-mix(in oklab, var(--color-surface) 74%, transparent));
 }
 
 @layer base {
