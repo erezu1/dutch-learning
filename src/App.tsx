@@ -112,7 +112,11 @@ export default function App() {
       <AnimatePresence mode="wait" initial={false}>
         {showWelcome ? (
           <Screen key="welcome">
-            <Welcome onBegin={() => setGreeted(true)} />
+            <Welcome
+              coat={session.coat}
+              dark={session.resolvedMode === 'dark'}
+              onBegin={() => setGreeted(true)}
+            />
           </Screen>
         ) : showLevel ? (
           <Screen key="level">
@@ -128,7 +132,12 @@ export default function App() {
           </Screen>
         ) : reviewing ? (
           <Screen key="review">
-            <ReviewScreen session={session} onExit={() => setScreen('home')} />
+            <ReviewScreen
+              session={session}
+              coat={session.coat}
+              dark={session.resolvedMode === 'dark'}
+              onExit={() => setScreen('home')}
+            />
           </Screen>
         ) : screen === 'settings' ? (
           <Screen key="settings">
@@ -147,6 +156,8 @@ export default function App() {
             <Done
               stats={session.stats}
               points={session.sessionPoints}
+              coat={session.coat}
+              dark={session.resolvedMode === 'dark'}
               onHome={() => setScreen('home')}
               onMore={(extra) => {
                 session.start(extra)
@@ -162,6 +173,8 @@ export default function App() {
               level={session.level}
               week={session.week}
               theme={session.theme}
+              coat={session.coat}
+              onChangeCoat={session.setCoat}
               resolvedMode={session.resolvedMode}
               onChangeTheme={session.setTheme}
               onChangeLevel={() => setScreen('level')}

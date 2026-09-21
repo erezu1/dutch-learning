@@ -565,3 +565,112 @@
   --ambient-near: 20%;
   --ambient-far: 13%;
 }
+
+/* ---------------------------------------------------------------------------
+   The cat's animation channels.
+   
+   Registered so they can be interpolated at all: an unregistered custom
+   property is a string to the animation engine and jumps between keyframes
+   instead of tweening. They inherit because the animation is applied to the
+   <svg> and read by parts deep inside it.
+
+   Two sets, kept apart on purpose. The first belongs to the idle loop, which
+   runs continuously; the second is the pose, written once when her situation
+   changes. A pose and an animation must never share a transform — one is set
+   once and the other sixty times a second, and whichever wrote last wins — so
+   the pose is baked into the transform expression and these compose inside it.
+--------------------------------------------------------------------------- */
+@property --breath   { syntax: '<number>'; initial-value: 0;    inherits: true; }
+@property --blink-l  { syntax: '<number>'; initial-value: 0;    inherits: true; }
+@property --blink-r  { syntax: '<number>'; initial-value: 0;    inherits: true; }
+@property --twitch-l { syntax: '<angle>';  initial-value: 0deg; inherits: true; }
+@property --twitch-r { syntax: '<angle>';  initial-value: 0deg; inherits: true; }
+@property --gaze-x   { syntax: '<length>'; initial-value: 0px;  inherits: true; }
+@property --gaze-y   { syntax: '<length>'; initial-value: 0px;  inherits: true; }
+@property --sniff    { syntax: '<number>'; initial-value: 0;    inherits: true; }
+@property --face-dip { syntax: '<number>'; initial-value: 0;    inherits: true; }
+@property --huff     { syntax: '<number>'; initial-value: 0;    inherits: true; }
+@property --huff-l   { syntax: '<number>'; initial-value: 0;    inherits: true; }
+@property --huff-r   { syntax: '<number>'; initial-value: 0;    inherits: true; }
+
+@property --tilt     { syntax: '<angle>';  initial-value: 0deg; inherits: true; }
+@property --sq       { syntax: '<number>'; initial-value: .85;  inherits: true; }
+@property --ear-l    { syntax: '<angle>';  initial-value: 0deg; inherits: true; }
+@property --ear-r    { syntax: '<angle>';  initial-value: 0deg; inherits: true; }
+@property --gaze-px  { syntax: '<length>'; initial-value: 0px;  inherits: true; }
+@property --gaze-py  { syntax: '<length>'; initial-value: 0px;  inherits: true; }
+@property --paw-l    { syntax: '<angle>';  initial-value: 0deg; inherits: true; }
+@property --paw-r    { syntax: '<angle>';  initial-value: 0deg; inherits: true; }
+@property --paw-l-y  { syntax: '<length>'; initial-value: 0px;  inherits: true; }
+@property --paw-r-y  { syntax: '<length>'; initial-value: 0px;  inherits: true; }
+@property --paw-bob  { syntax: '<length>'; initial-value: 0px;  inherits: true; }
+@property --paw-shake{ syntax: '<angle>';  initial-value: 0deg; inherits: true; }
+
+/* The breath is the one beat that IS regular, so it is the one that can be a
+   CSS loop. Every other beat is scheduled in JS precisely because it must not
+   be: two fixed loops resolve into a single long pattern and the whole thing
+   reads as a machine. Longer out than in, which is how breathing works. */
+@keyframes cat-breathe { 0%, 100% { --breath: 0 } 42% { --breath: 1 } }
+
+/* Her paws work the way a sleeping cat's do — slow and alternating, one
+   pressing while the other releases. 5.9s against the breath's 4.4s: periods
+   sharing a factor drift into step and the two become one movement.
+
+   The amplitude is set for the size she is actually drawn at. These are user
+   units in a 140-wide box, and she renders about 92px tall — so a unit is
+   roughly three quarters of a device pixel and the first values I picked (2°
+   and 0.7px) came out under half a pixel of travel. Correct on paper and
+   invisible on a phone, which is the same as not being there. */
+@keyframes cat-knead {
+  0%, 100% { --paw-l: 5deg; --paw-l-y: -2px; --paw-r: 0deg;  --paw-r-y: 0 }
+  50%      { --paw-l: 0deg; --paw-l-y: 0;    --paw-r: -5deg; --paw-r-y: -2px }
+}
+
+svg.cat-breathing {
+  animation:
+    cat-breathe 4.4s cubic-bezier(0.45, 0, 0.55, 1) infinite,
+    cat-knead 5.9s ease-in-out infinite;
+}
+
+/* Delight and a yawn both reach the paws, and they reach them differently: a
+   pleased cat lifts them, a yawning one trembles. These live on the paws
+   rather than on the <svg> so they compose with the knead above instead of
+   replacing it — one element can only carry one `animation`. */
+@keyframes cat-paw-bob { 0%, 100% { --paw-bob: 0 } 50% { --paw-bob: -6px } }
+@keyframes cat-paw-shake {
+  0%, 100% { --paw-shake: 0deg }
+  30%      { --paw-shake: 5deg }
+  70%      { --paw-shake: -3.5deg }
+}
+/* The second paw lags, so they bob out of step. Together they read as one
+   object being lifted rather than as two paws. */
+svg.cat-bounce .cat-paw { animation: cat-paw-bob 420ms ease-in-out infinite }
+svg.cat-bounce .cat-paw-r { animation-delay: 130ms }
+svg.cat-shake .cat-paw { animation: cat-paw-shake 180ms ease-in-out infinite }
+svg.cat-shake .cat-paw-r { animation-direction: reverse }
+
+/* Moving between situations. The state machine writes the numbers and this
+   walks her there, so two moods can be halfway between each other rather than
+   cutting. The ears carry 70ms of delay so they arrive behind the head —
+   parts that land together read as one rigid object. */
+svg.cat-rig {
+  display: block;
+  cursor: pointer;
+  transition:
+    --tilt 300ms cubic-bezier(0.34, 1.24, 0.64, 1),
+    --sq 340ms cubic-bezier(0.34, 1.24, 0.64, 1),
+    --ear-l 260ms cubic-bezier(0.34, 1.3, 0.64, 1) 70ms,
+    --ear-r 260ms cubic-bezier(0.34, 1.3, 0.64, 1) 70ms,
+    --gaze-px 200ms ease-out,
+    --gaze-py 200ms ease-out;
+}
+
+/* The CSS rule further down zeroes every duration, but the loop's own beats
+   are JS animations and ignore it — so they are switched off in the module
+   too. This only covers the parts that are CSS. */
+@media (prefers-reduced-motion: reduce) {
+  svg.cat-breathing { animation: none }
+  svg.cat-bounce .cat-paw,
+  svg.cat-shake .cat-paw { animation: none }
+  svg.cat-rig { transition: none }
+}

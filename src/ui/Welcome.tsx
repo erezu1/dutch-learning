@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
+import type { CoatId } from '../core/cat'
 import { Button } from './Button'
+import { Cat } from './Cat'
 import { glide } from './motion'
-import { Paw } from './Paw'
 import { WORDMARK } from './type'
 
 // ---------------------------------------------------------------------------
@@ -10,16 +11,25 @@ import { WORDMARK } from './type'
 // what this is come first.
 // ---------------------------------------------------------------------------
 
-export function Welcome({ onBegin }: { onBegin: () => void }) {
+export function Welcome({ coat, dark, onBegin }: { coat: CoatId; dark: boolean; onBegin: () => void }) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-10 px-8 text-center">
       <motion.div
         initial={{ opacity: 0, scale: 0.8, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ ...glide, delay: 0.05 }}
-        className="grid h-28 w-28 place-items-center rounded-[2rem] bg-primary shadow-3"
       >
-        <Paw className="h-20 w-20 text-on-primary" />
+        {/* She is the first thing anyone sees, and she is pleased to see them.
+            The old mark in a rounded square said what the app was called; she
+            says what it is like. */}
+        <Cat
+          coat={coat}
+          rim={dark}
+          size={150}
+          scene="waiting"
+          beat={{ scene: 'greeting', key: 1 }}
+          label="The cat, saying hello"
+        />
       </motion.div>
 
       <motion.div

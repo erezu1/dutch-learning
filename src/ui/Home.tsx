@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import type { CoatId } from '../core/cat'
 import { reachedLevel, type LevelOption } from '../core/levels'
 import type { Resolved, Theme } from '../core/themes'
 import type { SessionStats } from '../session/useSession'
 import { Button } from './Button'
 import { promptInstall } from '../core/install'
+import { Cat } from './Cat'
+import { CoatPicker } from './CoatPicker'
 import { Paw } from './Paw'
 import { useCanInstall } from './useCanInstall'
 import { ThemePicker } from './ThemePicker'
@@ -20,6 +23,8 @@ interface Props {
   week: WeekDay[]
   onOpenSettings: () => void
   theme: Theme
+  coat: CoatId
+  onChangeCoat: (coat: CoatId) => void
   resolvedMode: Resolved
   onStart: (extra: boolean) => void
   onChangeLevel: () => void
@@ -32,6 +37,8 @@ export function Home({
   level,
   week,
   theme,
+  coat,
+  onChangeCoat,
   resolvedMode,
   onStart,
   onChangeLevel,
@@ -141,12 +148,48 @@ export function Home({
           </div>
         </div>
 
-        <p className="mt-1 text-on-surface-dim">A little Dutch, every day.</p>
       </div>
 
       <div className="flex flex-col items-center gap-8">
         <div className="flex flex-col items-center gap-3">
-          <div className="relative grid h-48 w-48 place-items-center">
+          {/* On the ring, exactly as she is on the progress bar while you
+              review. The ring is what this screen measures, so it is the thing
+              she rests on — and being in the same relationship to the same kind
+              of object on both screens is what makes her one cat rather than
+              two decorations.
+
+              In the column's flow rather than floating above the ring on an
+              absolute layer. Out of flow she cost the layout nothing, so the
+              column could not account for her: she ended up crammed four
+              pixels off the ring with sixty pixels of slack going spare at the
+              bottom. In flow she is simply the top of this block, and
+              justify-between gives the space above her and the space below the
+              week the same size without either being named.
+
+              She waits for the ring to finish drawing. Arriving with it, there
+              would be two things moving and nowhere to look. */}
+          <div className="flex flex-col items-center">
+            <motion.div
+              initial={false}
+              animate={{ opacity: arrived ? 1 : 0 }}
+              transition={afterRing(0.12)}
+              // Centred in the gap between the header and the ring rather
+              // than perched on the ring's edge. Because the column is
+              // justify-between, the space above her is whatever is left over
+              // — so the way to move her down is to push the ring away from
+              // her, which takes half of it back off the top. This margin is
+              // the number that makes the two gaps match.
+              className="mb-9"
+            >
+              <Cat
+                coat={coat}
+                rim={resolvedMode === 'dark'}
+                size={92}
+                scene={waiting > 0 ? 'waiting' : 'nothingDue'}
+                label="The cat"
+              />
+            </motion.div>
+            <div className="relative grid h-48 w-48 place-items-center">
             <svg viewBox="0 0 100 100" className="lift absolute inset-0 -rotate-90">
               <circle
                 cx="50"
@@ -188,6 +231,7 @@ export function Home({
               <p className={`text-5xl ${TITLE}`}>{score.toLocaleString()}</p>
               <p className="text-sm text-on-surface-dim">points</p>
             </motion.div>
+            </div>
           </div>
 
           {/* What the ring is measuring, said in words. The number inside it is
@@ -211,10 +255,16 @@ export function Home({
         {/* The week sits a little apart from the button: it's a record, not
             a second thing to press. */}
         <div className="flex w-full flex-col items-center gap-10">
+          {/* Smaller than the one on the Done screen, and narrower than the
+              column. This screen is not only its button — the ring above it
+              and the cat on that ring are the reason you are looking, and a
+              full-width block of accent under them takes the eye straight
+              back down. */}
           <Button
+            size="sm"
             onClick={() => onStart(another)}
             disabled={waiting === 0 && !another}
-            className="w-full max-w-xs"
+            className="px-14"
           >
             {/* Not "Continue": nothing is ever in progress here. The queue is
                 built when you press this and thrown away when you leave, so
@@ -233,7 +283,11 @@ export function Home({
         </div>
       </div>
 
-      <div className="flex flex-col items-center gap-5">
+
+      {/* Two rows of the same control: which cat, then which colour. The cat
+          comes first because she is the thing you just looked at. */}
+      <div className="flex flex-col items-center gap-3">
+        <CoatPicker current={coat} onPick={onChangeCoat} />
         <ThemePicker current={theme} resolved={resolvedMode} onPick={onChangeTheme} />
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { allCards, type Card } from '../core/cards'
+import { coatById, DEFAULT_COAT, type CoatId } from '../core/cat'
 import { db, getMeta, setMeta, type CardStateRow } from '../core/db'
 import { buildQueue, DEFAULTS, isUnlocked, type QueueOptions } from '../core/queue'
 import { applyGrade, emptyState, isNew, Rating, State, type Grade } from '../core/scheduler'
@@ -109,6 +110,9 @@ export interface Session {
   setLevel: (option: LevelOption) => void
   theme: Theme
   setTheme: (theme: Theme) => void
+  /** Which cat you have. Independent of the colour scheme on purpose. */
+  coat: CoatId
+  setCoat: (coat: CoatId) => void
   /** What was asked for: light, dark, or whatever the phone is doing. */
   mode: Mode
   /** What that comes out as right now. */
@@ -150,6 +154,7 @@ export function useSession(deck: Deck): Session {
   const [level, setLevelState] = useState<LevelOption>(DEFAULT_LEVEL)
   const [levelChosen, setLevelChosen] = useState(false)
   const [theme, setThemeState] = useState<Theme>(DEFAULT_THEME)
+  const [coat, setCoatState] = useState<CoatId>(DEFAULT_COAT)
   const [mode, setModeState] = useState<Mode>(DEFAULT_MODE)
   const [resolvedMode, setResolvedMode] = useState<Resolved>(() => resolveMode(DEFAULT_MODE))
   const [score, setScore] = useState(0)
@@ -220,6 +225,7 @@ export function useSession(deck: Deck): Session {
       db.reviews.orderBy('at').first(),
       getMeta<string | null>('level', null),
       getMeta<string | null>('theme', null),
+      getMeta<string | null>('coat', null),
       getMeta<string | null>('mode', null),
       getMeta<number>('score', 0),
       getMeta<boolean>('autoContinue', false),
@@ -234,6 +240,7 @@ export function useSession(deck: Deck): Session {
         earliest,
         savedLevel,
         savedTheme,
+        savedCoat,
         savedMode,
         savedScore,
         savedAuto,
@@ -255,6 +262,7 @@ export function useSession(deck: Deck): Session {
         // dark app, so that is what they get — in whichever colour they land on.
         const m = savedMode === null && wasNightScheme(savedTheme) ? 'dark' : modeById(savedMode)
         setThemeState(t)
+        setCoatState(coatById(savedCoat))
         setModeState(m)
         setResolvedMode(resolveMode(m))
         applyAppearance(t, m)
@@ -269,6 +277,11 @@ export function useSession(deck: Deck): Session {
   const setAutoContinue = useCallback((next: boolean) => {
     setAutoContinueState(next)
     void setMeta('autoContinue', next).catch(() => {})
+  }, [])
+
+  const setCoat = useCallback((next: CoatId) => {
+    setCoatState(next)
+    void setMeta('coat', next).catch(() => {})
   }, [])
 
   const setTheme = useCallback(
@@ -638,6 +651,8 @@ export function useSession(deck: Deck): Session {
     setLevel,
     theme,
     setTheme,
+    coat,
+    setCoat,
     mode,
     resolvedMode,
     setMode,

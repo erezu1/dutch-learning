@@ -1,0 +1,110 @@
+import { useEffect, useRef } from 'react'
+import { catSvg, type CoatId } from '../core/cat'
+import { CatRig, idle, SCENE, type SceneName } from '../core/cat-rig'
+
+// ---------------------------------------------------------------------------
+// The mascot, as one element the rest of the app talks to in situations.
+//
+// She is built once and then never re-rendered: her moods are drawings that
+// are all present from the start and hidden by attribute, and her poses are
+// numbers in custom properties. A React re-render would restart her breath and
+// drop every scheduled beat of the idle loop mid-flight, so the component
+// deliberately does almost nothing after mounting — it hands the DOM node to
+// the rig and gets out of the way.
+//
+// `scene` is the only thing that crosses the boundary. Screens name what is
+// happening, never an expression, so the mapping can change here without any
+// screen being touched.
+// ---------------------------------------------------------------------------
+
+interface Props {
+  coat: CoatId
+  /** The resting situation. Changing it moves her; it never re-renders her. */
+  scene: SceneName
+  /** A one-off, keyed so the same event twice still plays twice. */
+  beat?: { scene: SceneName; key: number } | null
+  /** Light or dark, for the rim of light she needs on a dark page. */
+  rim?: boolean
+  className?: string
+  /** Height in px. The width follows from the drawing's own proportions. */
+  size?: number
+  label?: string
+}
+
+export function Cat({ coat, scene, beat, rim = false, className = '', size = 96, label }: Props) {
+  const host = useRef<HTMLDivElement>(null)
+  const rig = useRef<CatRig | null>(null)
+
+  // Rebuilt only when the drawing itself changes — a different cat, or a
+  // different ramp to stand on. Never for a mood.
+  //
+  // Changing coat cross-fades rather than cutting. The old cat stays for a
+  // quarter of a second, lifted out of flow and fading, while the new one
+  // arrives underneath it — so the swap reads as the same animal in different
+  // markings rather than one being deleted and another appearing. The old one
+  // goes out of flow rather than the new one, because the new one has to hold
+  // the layout open: absolutely positioning the incoming cat would collapse
+  // the row and everything below it would jump.
+  useEffect(() => {
+    const box = host.current
+    if (!box) return
+    const outgoing = box.firstElementChild as SVGElement | null
+
+    const holder = document.createElement('div')
+    holder.innerHTML = catSvg({ coat, mood: 'idle', rim, size, rig: true })
+    const svg = holder.querySelector('svg')
+    if (!svg) return
+    svg.classList.add('cat-rig')
+    svg.removeAttribute('width')
+    svg.setAttribute('height', String(size))
+    box.prepend(svg)
+
+    if (outgoing) {
+      outgoing.style.cssText = 'position:absolute;inset:0;margin:auto;pointer-events:none'
+      const fade = outgoing.animate([{ opacity: 1 }, { opacity: 0 }], {
+        duration: 240,
+        easing: 'ease-out',
+        fill: 'forwards',
+      })
+      fade.finished.then(() => outgoing.remove()).catch(() => outgoing.remove())
+      svg.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 240, easing: 'ease-in' })
+    }
+
+    const r = new CatRig(svg)
+    rig.current = r
+    const stopIdle = idle(svg)
+    return () => {
+      stopIdle()
+      r.destroy()
+      rig.current = null
+    }
+  }, [coat, rim, size])
+
+  useEffect(() => {
+    if (rig.current) SCENE[scene](rig.current)
+  }, [scene])
+
+  useEffect(() => {
+    if (beat && rig.current) SCENE[beat.scene](rig.current)
+  }, [beat])
+
+  return (
+    <div
+      ref={host}
+      className={`relative ${className}`}
+      // She answers a poke, so she is a button — but a decorative one, and the
+      // label says which cat and nothing about what pressing her achieves,
+      // because pressing her achieves nothing.
+      role="button"
+      tabIndex={0}
+      aria-label={label ?? 'The cat'}
+      onClick={() => rig.current?.tap()}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          rig.current?.tap()
+        }
+      }}
+    />
+  )
+}

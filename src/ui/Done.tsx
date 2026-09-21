@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion'
+import type { CoatId } from '../core/cat'
 import type { SessionStats } from '../session/useSession'
+import { Cat } from './Cat'
 import { Button } from './Button'
 import { glide } from './motion'
 import { TITLE } from './type'
@@ -7,11 +9,13 @@ import { TITLE } from './type'
 interface Props {
   stats: SessionStats
   points: number
+  coat: CoatId
+  dark: boolean
   onHome: () => void
   onMore: (extra: boolean) => void
 }
 
-export function Done({ stats, points, onHome, onMore }: Props) {
+export function Done({ stats, points, coat, dark, onHome, onMore }: Props) {
   const pct = stats.reviewed ? Math.round((stats.correct / stats.reviewed) * 100) : 0
   // The end of a session is not the end of the day, and even the end of the
   // day is not the end of the deck. Whichever it is, the way on is the button
@@ -26,7 +30,17 @@ export function Done({ stats, points, onHome, onMore }: Props) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={glide}
       >
-        <p className="text-6xl">🎉</p>
+        {/* Was a 🎉 — the one place in the app where the drawing stopped
+            being the app's own. She says the same thing and belongs here. */}
+        <Cat
+          coat={coat}
+          rim={dark}
+          size={124}
+          scene="waiting"
+          beat={{ scene: 'finished', key: 1 }}
+          label="The cat, pleased with you"
+          className="mx-auto"
+        />
         <h1 className={`mt-4 text-4xl ${TITLE}`}>{more ? 'Nice work' : "That's today"}</h1>
         <motion.p
           initial={{ scale: 0.7, opacity: 0 }}

@@ -1,9 +1,12 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
+import type { CoatId } from '../core/cat'
+import type { SceneName } from '../core/cat-rig'
 import type { Session } from '../session/useSession'
 import { ContinueBar, GradeBar } from './GradeBar'
 import { cardVariants, glide, quiet, swapVariants, tap, turn } from './motion'
 import { PromptCard } from './PromptCard'
+import { Cat } from './Cat'
 import { ScorePop } from './ScorePop'
 
 /**
@@ -33,14 +36,36 @@ function Icon({ children }: { children: ReactNode }) {
 const headerButton =
   'grid h-10 w-10 shrink-0 place-items-center rounded-full text-on-surface-dim transition-[color,background-color,opacity]'
 
-export function ReviewScreen({ session, onExit }: { session: Session; onExit: () => void }) {
+interface Props {
+  session: Session
+  coat: CoatId
+  dark: boolean
+  onExit: () => void
+}
+
+export function ReviewScreen({ session, coat, dark, onExit }: Props) {
   const { prompt, revealed, picked, correct, position, length } = session
   const [spins, setSpins] = useState(0)
+
+  // One beat per answer. Keyed on the card so the same verdict twice in a row
+  // still plays twice — and fired from `correct` flipping off null, which is
+  // the moment the app knows, rather than from the render that shows it.
+  const [beat, setBeat] = useState<{ scene: SceneName; key: number } | null>(null)
+  const beats = useRef(0)
+  useEffect(() => {
+    if (correct === null) return
+    beats.current += 1
+    setBeat({ scene: correct ? 'correct' : 'wrong', key: beats.current })
+  }, [correct, prompt?.cardId])
+
   if (!prompt) return null
 
   return (
     <div className="relative flex flex-1 flex-col">
-      <header className="flex items-center gap-3 px-4 pt-3">
+      {/* The bar is pushed down to leave her somewhere to lie. She is not a
+          decoration above it — she is resting ON it, which only reads if the
+          bar is the thing under her paws rather than a line she floats over. */}
+      <header className="relative z-10 flex items-center gap-3 px-4 pt-[5.25rem]">
         <motion.button
           onClick={onExit}
           aria-label="Stop"
@@ -52,13 +77,29 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
             <path d="M5.5 5.5l13 13M18.5 5.5l-13 13" />
           </Icon>
         </motion.button>
-        <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-3">
-          <motion.div
-            className="h-full rounded-full bg-primary"
-            initial={false}
-            animate={{ width: `${length ? (position / length) * 100 : 0}%` }}
-            transition={quiet}
-          />
+        <div className="relative flex-1">
+          {/* Above the bar with air between them. She is resting near it, not
+              welded to it — the gap is what stops the bar reading as a shelf
+              bolted to her chin. */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-full mb-2.5 flex justify-center">
+            <Cat
+              coat={coat}
+              rim={dark}
+              size={78}
+              scene="reading"
+              beat={beat}
+              label="The cat. She is watching you work."
+              className="pointer-events-auto"
+            />
+          </div>
+          <div className="h-1.5 overflow-hidden rounded-full bg-surface-3">
+            <motion.div
+              className="h-full rounded-full bg-primary"
+              initial={false}
+              animate={{ width: `${length ? (position / length) * 100 : 0}%` }}
+              transition={quiet}
+            />
+          </div>
         </div>
         <motion.button
           onClick={() => {
@@ -107,7 +148,11 @@ export function ReviewScreen({ session, onExit }: { session: Session; onExit: ()
           animate="center"
           exit="exit"
           transition={glide}
-          className="flex flex-1 flex-col"
+          // Pulled back up. Giving her room above the bar pushed the bar down
+          // and the whole card with it, and the card is the thing you are
+          // here to read — she can have the space above the bar without the
+          // question paying for it.
+          className="-mt-14 flex flex-1 flex-col"
         >
           <PromptCard
             prompt={prompt}
