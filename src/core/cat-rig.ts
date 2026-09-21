@@ -54,6 +54,7 @@ export const ROLE = {
   curious:   { jobs: ['drift', 'reaction'], when: 'an idle glance; a wrong answer' },
   happy:     { jobs: ['reaction', 'poke'],  when: 'a right answer; being touched kindly' },
   surprised: { jobs: ['reaction', 'poke'],  when: 'a level reached; the first poke startles her' },
+  startled:  { jobs: ['poke'],              when: 'something wakes her — the one time she leaves the ground' },
   celebrate: { jobs: ['reaction'],          when: 'the day is finished' },
   sad:       { jobs: ['reaction'],          when: 'you have been away and the pile has grown' },
   grumpy:    { jobs: ['poke'],              when: 'poked once too often' },
@@ -350,6 +351,11 @@ export class CatRig {
     // rather than restarts. Without this she flickers between contradictory
     // states on rapid input and reads as having nothing behind the face.
     if (this.locked > now && name !== this.current) return
+    // Woken. Anything the app or a finger does to her while she is asleep
+    // gets her off the ground first — a cat that opens her eyes and is
+    // simply awake never was asleep. The drift is exempt because it is
+    // quiet: shifting in her sleep is not being woken by anything.
+    if (!quiet && this.current === 'sleepy' && name !== 'sleepy') this.hop()
     this.locked = now + Math.min(min, ms)
     if (!quiet) this.#stir()
     clearTimeout(this.holding ?? undefined)
@@ -405,8 +411,11 @@ export class CatRig {
     // still catches it — poke her just after a sulk and she startles and then
     // merely looks at you.
     const warm = this.pokes === 1 ? 'celebrate' : 'happy'
-    this.react('surprised', {
-      ms: 520, min: 520,
+    // Prodding someone awake is not the same as prodding someone. The startle
+    // is the bigger one and it is given room to land before the warm half.
+    const woken = this.current === 'sleepy'
+    this.react(woken ? 'startled' : 'surprised', {
+      ms: woken ? 760 : 520, min: woken ? 760 : 520,
       then: () => this.react(warm, { ms: warm === 'celebrate' ? 2100 : 1600, min: 900 }),
     })
   }
@@ -569,6 +578,33 @@ export class CatRig {
   }
 
   /** A gesture the idle loop owns. It may not be listening. */
+  /**
+   * A start: she comes off the ground and lands again.
+   *
+   * On the root element rather than in the pose, because it is the one thing
+   * she does that moves the whole animal — head, ears and paws together — and
+   * anything written into the pose would have to be undone by whatever mood
+   * follows. It is a one-shot with no resting state to return to, so nothing
+   * can be left holding it.
+   *
+   * Stretched going up and squashed on landing, which is the whole of why a
+   * jump reads as weight rather than as a picture being moved: she is longer
+   * in the air than she is on the floor.
+   */
+  hop() {
+    this.svg.style.transformOrigin = '50% 100%'
+    this.svg.animate(
+      [
+        { transform: 'translateY(0) scale(1, 1)' },
+        { transform: 'translateY(-6%) scale(0.95, 1.07)', offset: 0.2 },
+        { transform: 'translateY(-13%) scale(0.98, 1.03)', offset: 0.42 },
+        { transform: 'translateY(0) scale(1.07, 0.93)', offset: 0.7 },
+        { transform: 'translateY(0) scale(1, 1)' },
+      ],
+      { duration: 640, easing: 'cubic-bezier(.22,1,.36,1)' },
+    )
+  }
+
   gesture(name: string) {
     this.svg.dispatchEvent(new CustomEvent(`cat:${name}`))
   }

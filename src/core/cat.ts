@@ -488,10 +488,14 @@ const MOUTHS: Record<string, (c: Coat) => string> = {
   open: (c) => `<path d="M60 80.8c5.9 0 9.2 1.1 9.2 3.5 0 4.3-4.1 7.8-9.2 7.8s-9.2-3.5-9.2-7.8c0-2.4 3.3-3.5 9.2-3.5Z"
       fill="${c.pupil}"/><path d="M60 91.8c2.7-.2 4.4-1.8 4.4-3.3 0-1.3-2-2.1-4.4-2.1s-4.4.8-4.4 2.1c0 1.5 1.7 3.1 4.4 3.3Z"
       fill="#EE8E96"/>`,
-  // A yawn is the open mouth taken as far as it goes, and it is the one shape
-  // here that is taller than it is wide.
-  yawn: (c) => `<path d="M60 79.4c6.5 0 10.3 1.3 10.3 4 0 6.9-4.6 12.6-10.3 12.6s-10.3-5.7-10.3-12.6c0-2.7 3.8-4 10.3-4Z"
-      fill="${c.pupil}"/><path d="M60 95.4c3.1-.3 5.2-2.7 5.2-4.6 0-1.6-2.3-2.6-5.2-2.6s-5.2 1-5.2 2.6c0 1.9 2.1 4.3 5.2 4.6Z"
+  // A yawn is a plain oval, taller than it is wide, and nothing else.
+  //
+  // It used to be the open mouth stretched downward, which kept that shape's
+  // wide, nearly straight top — and a wide flat top with corners is a grin.
+  // She read as delighted with her mouth open rather than as a cat yawning.
+  // A true ellipse has no corners to read as anything.
+  yawn: (c) => `<path d="M60 79.4C63.98 79.4 67.2 83.12 67.2 87.7C67.2 92.28 63.98 96 60 96C56.02 96 52.8 92.28 52.8 87.7C52.8 83.12 56.02 79.4 60 79.4Z"
+      fill="${c.pupil}"/><path d="M60 94.6c2.7-.3 4.5-2.4 4.5-4.1 0-1.4-2-2.3-4.5-2.3s-4.5.9-4.5 2.3c0 1.7 1.8 3.8 4.5 4.1Z"
       fill="#EE8E96"/>`,
   frown: (c) => `<path d="M60 80.4v2.9M53.8 87.8q6.2-4.8 12.4 0" fill="none" stroke="${c.line}"
       stroke-width="2.4" stroke-linecap="round"/>`,
@@ -523,6 +527,10 @@ export const MOODS: Record<string, Mood> = {
   curious:   { eyes: 'curious', mouth: 'neutral', squash: 0.5, label: 'Curious', tilt: 7 },
   surprised: { eyes: 'wide',    mouth: 'open', squash: 0.32,    label: 'Surprised', ear: 'perk' },
   celebrate: { eyes: 'happy',   mouth: 'open', squash: 0.4,    label: 'Celebrate', tilt: -3, ear: 'perk' },
+  // Woken with a start. Further up than surprised and with no tilt at all —
+  // a head that has come straight off the ground rather than turned toward
+  // something. It is the only mood that is normally seen in the air.
+  startled:  { eyes: 'wide',    mouth: 'open', squash: 0.12,   label: 'Startled', ear: 'perk' },
   sad:       { eyes: 'sad',     mouth: 'frown', squash: 0.9,   label: 'Sad' },
   grumpy:    { eyes: 'angry',   mouth: 'neutral', squash: 0.8, label: 'Grumpy' },
   lookUpL:   { eyes: 'open',    mouth: 'neutral', squash: 0.45, label: 'Look up left',
