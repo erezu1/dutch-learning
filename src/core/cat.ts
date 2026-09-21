@@ -32,21 +32,75 @@
 // whatever it is set to, because that is the one thing she is resting on.
 const FLOOR = 100
 
+/**
+ * The head at rest and the head in the air, as two control nets of the same
+ * shape — same seven curves, same order — so every value between them is a
+ * straight interpolation and the browser can walk it as a `d` transition.
+ *
+ * Scaling one frozen path could never do this. A scale keeps every proportion
+ * it was given, so a head whose brow is 34 wide and whose jaw is 52 stays that
+ * ratio however hard it is squashed: flatter, yes, but always the same egg,
+ * and never a circle and never a base that is the widest part of her. These
+ * are the two shapes actually wanted, drawn as shapes.
+ *
+ * CIRCLE is exact — anchors on the circle, handles at r * 4/3 * tan(theta/4).
+ * TRAP has its widest point at y 78 and a flat bottom from x 16 to 104, with
+ * the corners rounded just enough not to be corners.
+ */
+const CIRCLE: [number, number][] = [
+  [60, 9], [73.31, 9], [85.95, 14.83], [94.6, 24.95],
+  [101.63, 33.19], [105.5, 43.67], [105.5, 54.5],
+  [105.5, 79.63], [85.13, 100], [60, 100],
+  [60, 100], [60, 100], [60, 100],
+  [34.87, 100], [14.5, 79.63], [14.5, 54.5],
+  [14.5, 43.67], [18.37, 33.19], [25.4, 24.95],
+  [34.05, 14.83], [46.69, 9], [60, 9],
+]
+/** Where the resting shape sits in the range, and where the wedge starts. */
+const REST_AT = 0.85
+const FLAT_AT = 0.98
+
+/** The head she has at rest, and for everything between resting and asleep. */
+const REST: [number, number][] = [
+  [60, 14.95], [76.78, 14.95], [89.52, 24.26], [93.55, 30.26],
+  [103.44, 41.26], [111.1, 53.98], [111.1, 65.98],
+  [111.1, 83.98], [91.68, 100], [60, 100],
+  [60, 100], [60, 100], [60, 100],
+  [28.32, 100], [8.9, 83.98], [8.9, 65.98],
+  [8.9, 53.98], [16.56, 41.26], [26.45, 30.26],
+  [30.48, 24.26], [43.22, 14.95], [60, 14.95],
+]
+
+const TRAP: [number, number][] = [
+  [60, 16], [80, 16], [92, 22], [92, 30],
+  [92, 44], [110, 64], [110, 78],
+  [110, 90], [108, 100], [104, 100],
+  [92, 100], [28, 100], [16, 100],
+  [12, 100], [10, 90], [10, 78],
+  [10, 64], [28, 44], [28, 30],
+  [28, 22], [40, 16], [60, 16],
+]
+
 export function headPath(q = 1): string {
-  const top = 16 - 7 * (1 - q)
-  const h = FLOOR - top
-  const wLo = 46 + 6 * q      // half-width low down, where the weight lands
-  const wUp = 31 + 3 * q      // half-width across the brow, barely loaded
-  const yWide = FLOOR - h * 0.4
-  const yBrow = top + h * 0.18
-  const x = 60
-  return `M${x} ${top}` +
-    `C${x + wUp * 0.5} ${top} ${x + wUp * 0.88} ${yBrow - 6} ${x + wUp} ${yBrow}` +
-    `C${x + wLo * 0.85} ${yBrow + 11} ${x + wLo} ${yWide - 12} ${x + wLo} ${yWide}` +
-    `C${x + wLo} ${yWide + 18} ${x + wLo * 0.62} ${FLOOR} ${x} ${FLOOR}` +
-    `C${x - wLo * 0.62} ${FLOOR} ${x - wLo} ${yWide + 18} ${x - wLo} ${yWide}` +
-    `C${x - wLo} ${yWide - 12} ${x - wLo * 0.85} ${yBrow + 11} ${x - wUp} ${yBrow}` +
-    `C${x - wUp * 0.88} ${yBrow - 6} ${x - wUp * 0.5} ${top} ${x} ${top}Z`
+  const t = Math.max(0, Math.min(1, q))
+  // Three shapes, not two, and the middle one holds a stretch of the range to
+  // itself. Everything between resting and nearly-flat — reading, a drowsy
+  // yawn, sad, bored — is the head she has always had; the wedge is the last
+  // fiftieth of the range and sleep is the only mood in it.
+  const [a, b, u] =
+    t <= REST_AT
+      ? [CIRCLE, REST, t / REST_AT]
+      : t <= FLAT_AT
+        ? [REST, REST, 0]
+        : [REST, TRAP, (t - FLAT_AT) / (1 - FLAT_AT)]
+  const n = (v: number) => (Math.round(v * 100) / 100).toString()
+  let d = ''
+  for (let i = 0; i < a.length; i++) {
+    const x = a[i][0] + (b[i][0] - a[i][0]) * u
+    const y = a[i][1] + (b[i][1] - a[i][1]) * u
+    d += (i === 0 ? 'M' : (i - 1) % 3 === 0 ? 'C' : ' ') + n(x) + ' ' + n(y)
+  }
+  return d + 'Z'
 }
 
 // Big triangles off the top corners. The ear is the silhouette — it is what
@@ -615,7 +669,7 @@ export const MOODS: Record<string, Mood> = {
   // spreads her past resting only above 0.85, and she is the only one up
   // there. A negative rise on top of it settles her the last couple of units
   // into the carpet — the scale flattens her, this is the weight.
-  sleepy:    { eyes: 'sleepy',  mouth: 'neutral', squash: 1, rise: -2.5, label: 'Sleepy', tilt: -4, ear: 'flat' },
+  sleepy:    { eyes: 'sleepy',  mouth: 'neutral', squash: 1, label: 'Sleepy', tilt: -4, ear: 'flat' },
   // Two yawns, because a cat yawns for two different reasons and they do not
   // look alike.
   //
@@ -716,36 +770,14 @@ const BREATH = 'scaleX(calc(1 - var(--breath, 0) * 0.006)) scaleY(calc(1 + var(-
 // at 46/52 of its resting width and the head 91/84 of its resting height.
 const LIFT = '(1 - var(--sq, 0.85))'
 
-/**
- * How far past resting she is pressed into the carpet: nought at 0.98 and one
- * at 1, where she is all the way down.
- *
- * The squash channel used to run from idle to a circle and stop — the flat end
- * of it WAS the shape the head is drawn as, so being fully down looked exactly
- * like resting.
- *
- * This is the other half of the range, and the door onto it is deliberately
- * narrow: nothing below 0.98 sees a scrap of it. Reading is 0.95 to 0.98 and
- * a drowsy yawn is 0.95, and all of those should look the way they always
- * did; sleep is the only mood at 1, and it is the only one that spreads.
- */
-const FLAT = 'max(0, (var(--sq, 0.85) - 0.98) * 50)'
-const SX = `(1 - ${LIFT} * 0.115 - var(--breath, 0) * 0.006)`
-const SY = `(1 + ${LIFT} * 0.083 + var(--breath, 0) * 0.013)`
 
-/**
- * The spread, and ONLY on the skull.
- *
- * It is deliberately not part of the head's own pose. Everything in the head
- * group inherits that — the mouth, the brows, the muzzle, the whiskers — and
- * a face stretched wider along with the skull is a different face, not a cat
- * lying flatter. Only the shape she is is allowed to change; what is drawn on
- * it is not. The eyes and nose already undo the pose about their own centres,
- * so they were never at risk; this is for everything that does not.
- */
-const SKULL_FLAT =
-  `transform-box:view-box;transform-origin:60px 100px;` +
-  `transform:scaleX(calc(1 + ${FLAT} * 0.075)) scaleY(calc(1 - ${FLAT} * 0.065))`
+// Only the breath is left in here. The squash used to be a scale on this
+// group and is a `d` transition on the skull itself now, which is the only
+// way the shape can actually change rather than be stretched.
+const SX = `(1 - var(--breath, 0) * 0.006)`
+const SY = `(1 + var(--breath, 0) * 0.013)`
+
+
 // The lift is a translate as well as a stretch. Scaling about the floor makes
 // the crown rise while the chin stays welded to it, which is a head being
 // pulled taller rather than a head coming up — the difference between a cat
@@ -859,7 +891,7 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
   // or reacts lifts; anything drowsy presses back down.
   const q = m.squash ?? 0.85
   const lift = 1 - q
-  const HEAD = headPath(rig ? 1 : q)
+  const HEAD = headPath(q)
   // The brow narrows by 3 and rises by 7 across the full range; the ears and
   // the face have to travel with it or they come unstuck from the skull.
   // The ears follow the brow up, but only about half as far as it travels.
@@ -882,7 +914,8 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
   // head shares, a darkening where one form passes behind another, and
   // nothing else — the moment fur gets its own texture she stops belonging
   // beside an interface that has no illustration anywhere else in it.
-  const volume = shade ? `<path class="cat-shade" d="${HEAD}" fill="url(#${id}v)"/>` : ''
+  const volume = shade
+    ? `<path class="cat-shade" style="d:path('${HEAD}')" fill="url(#${id}v)"/>` : ''
   const contact = shade
     ? `<g class="cat-contact" clip-path="url(#${id}body)" filter="url(#${id}b)" opacity="${c.dark ? '.34' : '.26'}">
       <ellipse cx="27" cy="84" rx="16" ry="7" fill="#000"/>
@@ -903,7 +936,7 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
   const silhouette = `<g class="cat-head" style="${headStyle}">
       <g class="cat-ear cat-ear-l" style="${earStyle('l')}"><path d="${EAR_L}"/></g>
       <g class="cat-ear cat-ear-r" style="${earStyle('r')}"><path d="${EAR_R}"/></g>
-      <g style="${SKULL_FLAT}"><path d="${HEAD}"/></g>
+      <path class="cat-skull-line" style="d:path('${HEAD}')"/>
     </g>
     <g class="cat-paw cat-paw-l" style="${pin(PIVOT.pawL, 0, 0, 0, POSE_PAW('l'))}"><path d="${PAW_L}"/></g>
     <g class="cat-paw cat-paw-r" style="${pin(PIVOT.pawR, 0, 0, 0, POSE_PAW('r'))}"><path d="${PAW_R}"/></g>`
@@ -925,8 +958,8 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
   return `<svg viewBox="-14 -20 148 134" width="${size}" height="${size * 134 / 148}"
   xmlns="http://www.w3.org/2000/svg" class="cat" role="img" aria-label="${c.name} cat, ${m.label.toLowerCase()}">
   <defs>
-    <clipPath id="${id}body"><path d="${HEAD}"/></clipPath>
-    <clipPath id="${id}s"><path d="${HEAD}"/></clipPath>
+    <clipPath id="${id}body"><path class="cat-skull-clip" style="d:path('${HEAD}')"/></clipPath>
+    <clipPath id="${id}s"><path class="cat-skull-clip" style="d:path('${HEAD}')"/></clipPath>
     <clipPath id="${id}el"><path d="${EAR_L}"/></clipPath>
     <clipPath id="${id}er"><path d="${EAR_R}"/></clipPath>
     <filter id="${id}b" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3.5"/></filter>
@@ -973,10 +1006,8 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
       <g clip-path="url(#${id}er)">${patches}
         <path class="cat-ear-in" d="${EAR_R_IN}" fill="${c.ear}"/></g>
     </g>
-    <g class="cat-skin" style="${SKULL_FLAT}">
-      <path class="cat-skull" d="${HEAD}" fill="${c.base}"/>
-      <g class="cat-coat" clip-path="url(#${id}s)">${marks}</g>
-    </g>
+    <path class="cat-skull" style="d:path('${HEAD}')" fill="${c.base}"/>
+    <g class="cat-coat" clip-path="url(#${id}s)">${marks}</g>
     <ellipse class="cat-muzzle" cx="60" cy="75" rx="24" ry="13.5"
       fill="${c.muzzle}" opacity="${c.muzzleAlpha ?? (c.dark ? 0.42 : 0.65)}"
       style="transform-box:view-box;transform-origin:60px 75px;transform:translateY(${faceDy}px) ${rig ? UNSQUASH : ''}"/>

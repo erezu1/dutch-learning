@@ -18,7 +18,7 @@
 //               and drop every scheduled beat of the idle loop.
 // ---------------------------------------------------------------------------
 
-import { HEART, lidPaths, MOODS, EAR_TURN, STAR, ZED, type Mood } from './cat'
+import { HEART, headPath, lidPaths, MOODS, EAR_TURN, STAR, ZED, type Mood } from './cat'
 
 // --- what each mood is FOR -------------------------------------------------
 // Three jobs, and every mood holds at least one. A mood with no job is a
@@ -300,6 +300,16 @@ export class CatRig {
     s.setProperty('--tilt', `${m.tilt ?? 0}deg`)
     s.setProperty('--sq', String(m.squash ?? 0.85))
     s.setProperty('--rise', String(m.rise ?? 0))
+    // The head's own shape. Not a scale — a scale keeps whatever proportions
+    // it was handed, and the two shapes wanted here are a circle and a
+    // flat-bottomed wedge, which no scale of one path can be both of. Every
+    // copy of the outline gets the same `d`, and CSS walks them there
+    // together: the skull, the line around it, the two clips the markings and
+    // the contact shadow are cut with, and the shading on top.
+    const shape = `path('${headPath(m.squash ?? 0.85)}')`
+    for (const el of this.svg.querySelectorAll<SVGElement & { style: CSSStyleDeclaration }>(
+      '.cat-skull, .cat-skull-line, .cat-skull-clip, .cat-shade',
+    )) el.style.setProperty('d', shape)
     // The hair lags the head. She turns, and for a moment the whiskers are
     // still pointing where she was — so the swing runs against the tilt, and
     // a mood with no tilt lets them fall back to level.

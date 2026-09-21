@@ -759,6 +759,17 @@ svg.cat-steady { --shake-gain: 0 }
    walks her there, so two moods can be halfway between each other rather than
    cutting. The ears carry 70ms of delay so they arrive behind the head —
    parts that land together read as one rigid object. */
+/* The head's shape walks between its two forms the way every other channel
+   walks between its values. `d` is an animatable property when the two paths
+   share a command structure, and these do — the same seven curves in the same
+   order, all the way from a circle to a wedge. */
+.cat-rig .cat-skull,
+.cat-rig .cat-skull-line,
+.cat-rig .cat-skull-clip,
+.cat-rig .cat-shade {
+  transition: d 340ms cubic-bezier(0.34, 1.24, 0.64, 1);
+}
+
 svg.cat-rig {
   display: block;
   cursor: pointer;
