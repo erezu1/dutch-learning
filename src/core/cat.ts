@@ -650,10 +650,11 @@ const POSE_EAR = (side: 'l' | 'r') => {
 const POSE_PAW = (side: 'l' | 'r') =>
   `rotate(calc(var(--paw-${side}, 0deg) + var(--shake, 0) * var(--shake-gain, 0) * 5deg)) ` +
   `translateY(calc(var(--paw-${side}-y, 0px) + var(--bob, 0) * var(--bob-gain, 0) * -6px` +
-  // A quarter of what the head does. She is pushing off the ledge, not
-  // letting go of it — paws that travel with the head make her a sticker
-  // being slid up the screen rather than a cat standing up in a hurry.
-  ` + var(--hop, 0) * -3.5px))`
+  // A fifth of what the head does, and its own channel because it also
+  // arrives late: the body goes and the legs are dragged after it. Parts that
+  // leave together are one rigid object, which is the difference between a
+  // cat jumping and a picture of a cat being moved.
+  ` + var(--hop-paw, 0) * -3.5px))`
 const POSE_GAZE =
   'translate(calc(var(--gaze-x, 0px) + var(--gaze-px, 0px)), calc(var(--gaze-y, 0px) + var(--gaze-py, 0px)))'
 const TWITCH = (deg: number, v: string) => `calc(${deg}deg + var(${v}, 0deg))`

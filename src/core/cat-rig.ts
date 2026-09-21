@@ -587,26 +587,29 @@ export class CatRig {
    * mood to undo.
    */
   hop() {
-    // Through the pose channels rather than on the root element, so the two
-    // halves of her can move by different amounts: the head takes the whole
-    // fifteen units and the paws take a fifth of that. She is pushing off the
-    // ledge, not letting go of it.
+    // Up is muscle and down is gravity, so up is the shorter half: about
+    // 170ms of rise against 300ms of fall, the rise decelerating into the
+    // apex and the fall accelerating out of it. Equal halves read as a
+    // bounce on a spring rather than as something that jumped.
     //
-    // She crouches before she goes and absorbs when she lands. Both are small
-    // and neither is the jump, but without them she arrives at the top of the
-    // move with nothing having led up to it — which is the whole of what
-    // "abrupt" means in a drawing that is otherwise this soft.
-    this.svg.animate(
-      [
-        { '--hop': 0 },
-        { '--hop': -0.13, offset: 0.12 },
-        { '--hop': 1, offset: 0.44 },
-        { '--hop': 0, offset: 0.76 },
-        { '--hop': -0.1, offset: 0.87 },
-        { '--hop': 0 },
-      ] as Keyframe[],
-      { duration: 900, easing: 'cubic-bezier(.4,0,.35,1)' },
-    )
+    // She crouches before she goes and absorbs when she lands. Neither is
+    // the jump, and both are small, but without them she arrives at the top
+    // of the move with nothing having led up to it — which is the whole of
+    // what "abrupt" means in a drawing that is otherwise this soft.
+    const arc = [
+      { v: 0, at: 0, ease: 'ease-out' },
+      { v: -0.12, at: 0.13, ease: 'cubic-bezier(.18,.9,.36,1)' },
+      { v: 1, at: 0.34, ease: 'cubic-bezier(.45,0,.75,.62)' },
+      { v: 0, at: 0.7, ease: 'ease-out' },
+      { v: -0.09, at: 0.82, ease: 'ease-out' },
+      { v: 0, at: 1 },
+    ]
+    const frames = (prop: string) =>
+      arc.map((k) => ({ [prop]: k.v, offset: k.at, easing: k.ease })) as Keyframe[]
+    const timing = { duration: 820, easing: 'linear' } as const
+    this.svg.animate(frames('--hop'), timing)
+    // The same curve, late. The body goes first and drags the legs after it.
+    this.svg.animate(frames('--hop-paw'), { ...timing, delay: 80 })
   }
 
   gesture(name: string) {

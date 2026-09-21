@@ -652,8 +652,10 @@
 @property --gaze-x   { syntax: '<length>'; initial-value: 0px;  inherits: true; }
 @property --gaze-y   { syntax: '<length>'; initial-value: 0px;  inherits: true; }
 @property --sniff    { syntax: '<number>'; initial-value: 0;    inherits: true; }
-/* A jump, read by the head at full and by the paws at a fifth. */
+/* A jump. The head reads the first at full; the paws read the second, which
+   is the same curve arriving a little later, at a fifth. */
 @property --hop      { syntax: '<number>'; initial-value: 0;    inherits: true; }
+@property --hop-paw  { syntax: '<number>'; initial-value: 0;    inherits: true; }
 @property --face-dip { syntax: '<number>'; initial-value: 0;    inherits: true; }
 @property --huff     { syntax: '<number>'; initial-value: 0;    inherits: true; }
 @property --whisk    { syntax: '<number>'; initial-value: 0;    inherits: true; }
