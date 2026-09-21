@@ -99,7 +99,7 @@ const NOSE = 'M60 80.4C56.6 80.4 53.5 78.1 53.5 75.5C53.5 73.5 56.5 72.4 60 72.4
 // They live in the frame's right margin — the space the ear tips needed for a
 // tilt — so they never cross her. A zzz over the cat is a label saying she is
 // asleep; a zzz beside her is her sleeping.
-const ZED = 'M0 0h5.4L0 6.6h5.4'
+export const ZED = 'M0 0h5.4L0 6.6h5.4'
 
 // And hearts, when she is delighted. The same corner of the frame as the zzz,
 // since the two moods can never happen at once, and the same construction —
@@ -110,7 +110,7 @@ const ZED = 'M0 0h5.4L0 6.6h5.4'
 // gesture into a cloud, and the zzz get three precisely because they are
 // smaller: how many there are is set by how much room each one takes, not by
 // matching the other beat.
-const HEART =
+export const HEART =
   'M0 2.1C0 0.7 1.2 0 2.1 0.6C2.5 0.85 2.8 1.2 3 1.5C3.2 1.2 3.5 0.85 3.9 0.6' +
   'C4.8 0 6 0.7 6 2.1C6 3.9 3.9 5.5 3 6.2C2.1 5.5 0 3.9 0 2.1Z'
 
@@ -772,16 +772,10 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
     </g>
   </g>
   ${contact}
-  <g class="cat-zzz" fill="none" stroke="${rim ? '#ffffff' : c.line}" stroke-width="1.7"
-    stroke-linecap="round" stroke-linejoin="round">
-    <g transform="translate(110 13)"><g class="cat-z" style="--zd:0s"><path d="${ZED}"/></g></g>
-    <g transform="translate(118 1)"><g class="cat-z" style="--zd:1.15s"><path d="${ZED}"/></g></g>
-    <g transform="translate(126 -12)"><g class="cat-z" style="--zd:2.3s"><path d="${ZED}"/></g></g>
-  </g>
-  <g class="cat-hearts" fill="#EE8E96">
-    <g transform="translate(103 17) scale(1.65)"><g class="cat-heart" style="--hd:0s"><path d="${HEART}"/></g></g>
-    <g transform="translate(113 4) scale(2.1)"><g class="cat-heart" style="--hd:1.25s"><path d="${HEART}"/></g></g>
-  </g>
+  <!-- Empty on purpose. Each z and each heart is spawned here when a mood
+       calls for one and removes itself when it has finished rising, so a mark
+       already in the air is never cut short by her changing her mind. -->
+  <g class="cat-emit" data-ink="${rim ? '#ffffff' : c.line}"></g>
   <g class="cat-paw cat-paw-l" style="${pin(PIVOT.pawL, 0, 0, 0, POSE_PAW('l'))}">
     ${pawRim(PAW_L)}<path d="${PAW_L}" ${pawFur}/><path d="${PAW_L}" ${pawVolume}/>
     <path d="${TOES_L}" fill="none" stroke="${c.line}" stroke-width="2" stroke-linecap="round" opacity=".45"/>

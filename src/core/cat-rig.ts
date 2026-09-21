@@ -18,7 +18,7 @@
 //               and drop every scheduled beat of the idle loop.
 // ---------------------------------------------------------------------------
 
-import { lidPaths, MOODS, EAR_TURN, type Mood } from './cat'
+import { HEART, lidPaths, MOODS, EAR_TURN, ZED, type Mood } from './cat'
 
 // --- what each mood is FOR -------------------------------------------------
 // Three jobs, and every mood holds at least one. A mood with no job is a
@@ -131,6 +131,36 @@ const COOLED = 'curious'
 const YAWN_AFTER = [2000, 4200] as const   // ~3s
 const SLEEP_AFTER = [2800, 5000] as const  // ~7s all in
 
+// --- the marks that rise off her ------------------------------------------
+// Each z and each heart is its own element with its own animation, spawned
+// when a mood calls for one and removing itself when it has finished.
+//
+// A mood starts and stops the SPAWNING. It has no authority over a mark that
+// is already in the air — those finish rising whatever she does next, the way
+// a breath you have already let out does not come back when you change your
+// mind. Gating them as a group meant waking her deleted the thought she was
+// halfway through having.
+const SVG_NS = 'http://www.w3.org/2000/svg'
+
+interface Mark {
+  d: string
+  /** Where it starts, before its own jitter. */
+  at: [number, number]
+  scale: [number, number]
+  rise: number
+  drift: number
+  ms: [number, number]
+  peak: number
+  /** Hearts are filled; a z is drawn. */
+  stroke?: number
+  fill?: string
+}
+
+const MARKS: Record<string, Mark> = {
+  z: { d: ZED, at: [106, 14], scale: [1.05, 1.5], rise: -26, drift: 7, ms: [2400, 3000], peak: 0.7, stroke: 1.8 },
+  heart: { d: HEART, at: [106, 10], scale: [1.5, 2.1], rise: -24, drift: 5, ms: [1800, 2300], peak: 0.92, fill: '#EE8E96' },
+}
+
 /** Which brow set a mood wants. Only two moods have any. */
 const browOf = (m: Mood) => (m.eyes === 'sad' ? 'up' : m.eyes === 'angry' ? 'down' : 'none')
 const rand = (a: number, b: number) => a + Math.random() * (b - a)
@@ -148,6 +178,9 @@ export class CatRig {
   holding: ReturnType<typeof setTimeout> | null = null
   drifting: ReturnType<typeof setTimeout> | null = null
   dozing: ReturnType<typeof setTimeout> | null = null
+  dozeMark: ReturnType<typeof setTimeout> | null = null
+  emitter: ReturnType<typeof setInterval> | null = null
+  emitting: string | null = null
   groups: Record<string, SVGElement[]>
   pokes = 0
   lastPoke = 0
@@ -220,10 +253,24 @@ export class CatRig {
     // both: being cross is a whole-body thing, and leaving her paws perfectly
     // still under a furious face is what made the anger read as a mask.
     this.svg.classList.toggle('cat-shake', name === 'yawn' || name === 'grumpy')
-    // Only while she is actually settled. A yawn is a moment on the way there
-    // and on the way back, and zzz flickering on for two seconds either side
-    // of it would read as a fault.
-    this.svg.classList.toggle('cat-asleep', name === 'sleepy')
+    // Only while she is actually settled — a yawn is a moment on the way there
+    // and on the way back, and zzz flickering on either side of it would read
+    // as a fault — and not until she has been settled a second.
+    //
+    // She has to visibly stop first. Arriving with the pose, the two read as
+    // one switch being thrown rather than as a cat falling asleep and then
+    // being asleep. Coming back is not symmetrical: waking is a single event,
+    // so the class goes the instant anything else happens.
+    clearTimeout(this.dozeMark ?? undefined)
+    if (name === 'sleepy') {
+      // She has to visibly stop before the first one appears. Arriving with
+      // the pose, the two read as one switch being thrown rather than as a cat
+      // falling asleep and then being asleep.
+      this.dozeMark = setTimeout(() => this.#emit('z'), 950)
+    } else {
+      this.dozeMark = null
+      this.#emit(name === 'celebrate' ? 'heart' : null)
+    }
     // A gesture the mood cannot carry itself. Arriving at curious is a sniff:
     // she has noticed something and is checking it, which the face alone only
     // says statically.
@@ -422,6 +469,55 @@ export class CatRig {
     return chosen
   }
 
+  /** One mark, launched and then on its own. */
+  #spawn(kind: string) {
+    const m = MARKS[kind]
+    const host = this.svg.querySelector<SVGElement>('.cat-emit')
+    if (!m || !host) return
+    const g = document.createElementNS(SVG_NS, 'g')
+    const path = document.createElementNS(SVG_NS, 'path')
+    path.setAttribute('d', m.d)
+    if (m.fill) path.setAttribute('fill', m.fill)
+    else {
+      path.setAttribute('fill', 'none')
+      path.setAttribute('stroke', host.dataset.ink ?? '#000')
+      path.setAttribute('stroke-width', String(m.stroke ?? 1.8))
+      path.setAttribute('stroke-linecap', 'round')
+      path.setAttribute('stroke-linejoin', 'round')
+    }
+    g.append(path)
+    g.style.transformBox = 'fill-box'
+    g.style.transformOrigin = 'center'
+    host.append(g)
+
+    // Jittered, so no two are launched from the same spot on the same arc.
+    const x = m.at[0] + rand(-3, 3)
+    const y = m.at[1] + rand(-3, 3)
+    const s = rand(m.scale[0], m.scale[1])
+    const at = (px: number, py: number, ps: number) =>
+      `translate(${px.toFixed(2)}px, ${py.toFixed(2)}px) scale(${ps.toFixed(3)})`
+    const anim = g.animate(
+      [
+        { opacity: 0, transform: at(x, y, s * 0.6) },
+        { opacity: m.peak, offset: 0.24, transform: at(x, y + m.rise * 0.2, s) },
+        { opacity: 0, transform: at(x + m.drift, y + m.rise, s * 1.1) },
+      ],
+      { duration: rand(m.ms[0], m.ms[1]), easing: 'ease-out', fill: 'none' },
+    )
+    anim.finished.then(() => g.remove()).catch(() => g.remove())
+  }
+
+  /** Start or stop spawning. Never touches what is already rising. */
+  #emit(kind: string | null) {
+    if (this.emitting === kind) return
+    this.emitting = kind
+    clearInterval(this.emitter ?? undefined)
+    this.emitter = null
+    if (!kind || matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    this.#spawn(kind)
+    this.emitter = setInterval(() => this.#spawn(kind), kind === 'heart' ? 760 : 1150)
+  }
+
   /** A gesture the idle loop owns. It may not be listening. */
   gesture(name: string) {
     this.svg.dispatchEvent(new CustomEvent(`cat:${name}`))
@@ -431,7 +527,10 @@ export class CatRig {
     clearTimeout(this.holding ?? undefined)
     clearTimeout(this.drifting ?? undefined)
     clearTimeout(this.dozing ?? undefined)
-    this.holding = this.drifting = this.dozing = null
+    clearTimeout(this.dozeMark ?? undefined)
+    clearInterval(this.emitter ?? undefined)
+    this.holding = this.drifting = this.dozing = this.dozeMark = null
+    this.emitter = null
   }
 }
 

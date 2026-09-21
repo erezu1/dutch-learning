@@ -662,48 +662,6 @@ svg.cat-rig { --bob-gain: 0; --shake-gain: 0 }
 svg.cat-delighted { --bob-gain: 1 }
 svg.cat-shake { --shake-gain: 1 }
 
-/* Asleep. One keyframe on three offsets, which is cheaper than three
-   animations and cannot drift out of step.
-   
-   The rise runs all the time and only the group's opacity is gated, for the
-   same reason the paws' cycles do: a class that starts and stops the animation
-   drops each z back to its base the instant it is removed — full opacity and
-   no transform — so waking her made them flash brighter and jump before
-   fading. Opacity multiplies down the tree, so a group fading from 1 to 0 over
-   a cycle that never stops is continuous wherever it is interrupted. */
-@keyframes cat-z {
-  0% { opacity: 0; transform: translate(0, 5px) scale(0.68) }
-  18% { opacity: 0.72 }
-  100% { opacity: 0; transform: translate(6px, -13px) scale(1.18) }
-}
-.cat-zzz { opacity: 0; transition: opacity 340ms ease }
-svg.cat-asleep .cat-zzz { opacity: 1 }
-.cat-z {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: cat-z 3.6s ease-out infinite;
-  animation-delay: var(--zd, 0s);
-}
-
-/* Hearts, when she is delighted. Built the same way as the zzz for the same
-   reason: the cycle never stops and only the group's opacity is gated, so
-   nothing can be caught mid-rise and dropped back to its base. Quicker than
-   the zzz and rising further — the beat should say which mood it belongs to
-   before you have read the shape. */
-@keyframes cat-heart {
-  0% { opacity: 0; transform: translate(0, 6px) scale(0.55) }
-  22% { opacity: 0.9 }
-  100% { opacity: 0; transform: translate(3px, -9px) scale(1.15) }
-}
-.cat-hearts { opacity: 0; transition: opacity 300ms ease }
-svg.cat-delighted .cat-hearts { opacity: 1 }
-.cat-heart {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: cat-heart 2.5s ease-out infinite;
-  animation-delay: var(--hd, 0s);
-}
-
 /* Moving between situations. The state machine writes the numbers and this
    walks her there, so two moods can be halfway between each other rather than
    cutting. The ears carry 70ms of delay so they arrive behind the head —
@@ -730,7 +688,5 @@ svg.cat-rig {
   .cat-paw { animation: none }
   /* Still shown, just not drifting: they say she is asleep, which is
      information, and the movement is the part that was decoration. */
-  .cat-z { animation: none; opacity: 0.6 }
-  .cat-heart { animation: none; opacity: 0.75 }
   svg.cat-rig { transition: none }
 }
