@@ -1,14 +1,16 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { COAT_IDS, COATS, SNOUT, type CoatId } from '../core/cat'
-import { pressable, quiet } from './motion'
+import { glide, pressable } from './motion'
 
 // ---------------------------------------------------------------------------
 // A row of cats, built like the row of colour dots above it: the swatch is the
 // control, because which cat you want is a choice made by looking.
 //
-// Her name is the exception, and it goes above the row rather than under each
-// face. Seven names at once is a list to read; one name is the cat you have,
-// and it changes as you try them on.
+// Her name is the exception, and it rides above whichever face is chosen —
+// seven names at once is a list to read, and one name sitting in the middle
+// of the row belongs to no cat in particular. It slides across as you try
+// them on, which is what says it is naming the one under it.
 //
 // Each dot is her actual face, not a colour sample. A calico and a tuxedo are
 // the same three colours in different places, so a plain swatch of either
@@ -22,32 +24,55 @@ export function CoatPicker({
   current: CoatId
   onPick: (coat: CoatId) => void
 }) {
+  // Measured rather than computed from the index: the row can wrap, the
+  // buttons carry a scale, and a number worked out from either would be a
+  // second opinion about a layout the browser has already decided.
+  const row = useRef<HTMLDivElement>(null)
+  const buttons = useRef(new Map<CoatId, HTMLButtonElement>())
+  const [x, setX] = useState(0)
+
+  useLayoutEffect(() => {
+    const place = () => {
+      const r = row.current
+      const b = buttons.current.get(current)
+      if (!r || !b) return
+      const rr = r.getBoundingClientRect()
+      const bb = b.getBoundingClientRect()
+      setX(bb.left + bb.width / 2 - (rr.left + rr.width / 2))
+    }
+    place()
+    // The row is centred, so it moves whenever the page width does.
+    window.addEventListener('resize', place)
+    return () => window.removeEventListener('resize', place)
+  }, [current])
+
   return (
     <div className="flex flex-col items-center">
-      {/* A fixed line to swap inside, so nothing below moves when the name
+      {/* A line of its own height, so nothing below moves when the name
           changes — a row of buttons that shifts under your finger as you
           press it is a row you press twice. */}
-      <div className="flex h-6 items-center">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.p
-            key={current}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={quiet}
-            className="font-display text-sm font-medium text-on-surface-dim"
-          >
-            {COATS[current].who}
-          </motion.p>
-        </AnimatePresence>
+      <div className="relative h-6 w-full">
+        <motion.p
+          // Centred in the full width and then carried sideways, so the text
+          // stays centred on the dot whatever its length.
+          className="absolute inset-x-0 top-0 whitespace-nowrap text-center text-sm font-medium text-on-surface-dim"
+          animate={{ x }}
+          transition={glide}
+        >
+          {COATS[current].who}
+        </motion.p>
       </div>
-      <div className="flex flex-wrap items-center justify-center gap-2">
+      <div ref={row} className="flex flex-wrap items-center justify-center gap-2">
       {COAT_IDS.map((id) => {
         const coat = COATS[id]
         const active = id === current
         return (
           <motion.button
             key={id}
+            ref={(el) => {
+              if (el) buttons.current.set(id, el)
+              else buttons.current.delete(id)
+            }}
             {...pressable}
             onClick={() => onPick(id)}
             aria-label={`${coat.who}, the ${coat.name.toLowerCase()} cat`}
