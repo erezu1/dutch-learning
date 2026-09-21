@@ -737,6 +737,10 @@ svg.cat-shake { --shake-gain: 1 }
 svg.cat-rig {
   display: block;
   cursor: pointer;
+  /* She leaves the box when she jumps. The viewBox is drawn for a cat at
+     rest, and widening it for the one moment she is in the air would shrink
+     her on every screen for the rest of the time. */
+  overflow: visible;
   transition:
     --tilt 300ms cubic-bezier(0.34, 1.24, 0.64, 1),
     --sq 340ms cubic-bezier(0.34, 1.24, 0.64, 1),

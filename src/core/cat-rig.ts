@@ -588,9 +588,12 @@ export class CatRig {
    */
   hop() {
     // Up is muscle and down is gravity, so up is the shorter half: about
-    // 170ms of rise against 300ms of fall, the rise decelerating into the
+    // 130ms of rise against 220ms of fall, the rise decelerating into the
     // apex and the fall accelerating out of it. Equal halves read as a
     // bounce on a spring rather than as something that jumped.
+    //
+    // The whole thing is over in six hundred milliseconds. A start is a
+    // thing that has happened to her, not a thing she is doing.
     //
     // She crouches before she goes and absorbs when she lands. Neither is
     // the jump, and both are small, but without them she arrives at the top
@@ -606,10 +609,10 @@ export class CatRig {
     ]
     const frames = (prop: string) =>
       arc.map((k) => ({ [prop]: k.v, offset: k.at, easing: k.ease })) as Keyframe[]
-    const timing = { duration: 820, easing: 'linear' } as const
+    const timing = { duration: 600, easing: 'linear' } as const
     this.svg.animate(frames('--hop'), timing)
     // The same curve, late. The body goes first and drags the legs after it.
-    this.svg.animate(frames('--hop-paw'), { ...timing, delay: 80 })
+    this.svg.animate(frames('--hop-paw'), { ...timing, delay: 60 })
   }
 
   gesture(name: string) {
