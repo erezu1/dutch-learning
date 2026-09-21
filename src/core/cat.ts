@@ -197,7 +197,7 @@ export const COATS: Record<string, Coat> = {
   siamese: {
     name: 'Siamese', base: '#F1E3CE', muzzle: '#F7EEE0', ear: '#8A6A58',
     iris: '#A9D4EE', pupil: PUPIL, line: '#8D765F', paw: '#F9F2E7',
-    patches: [{ d: P.mask, fill: '#5B463A', soft: true }],
+    patches: [{ d: P.mask, fill: '#6E5747', soft: true }],
     earPatch: '#8A6A58',
     // The mask runs right over the muzzle, and a rose nose on top of that
     // brown is two dark things on each other — the nose disappeared. So the
@@ -634,7 +634,7 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
   // it. Stripes do not: they are laid out for the forehead, and letting them
   // through the ear clip just drops fragments of band on the ear backs.
   const patches = (c.patches ?? []).map((p) =>
-    `<path d="${p.d}" fill="${p.fill}"${p.soft ? ` filter="url(#${id}b)" opacity=".95"` : ''}/>`).join('')
+    `<path d="${p.d}" fill="${p.fill}"${p.soft ? ` filter="url(#${id}f)" opacity=".8"` : ''}/>`).join('')
   const stripeFill = c.stripes?.fill ?? 'none'
   const stripes = (c.stripes?.d ?? []).map((e) =>
     `<ellipse cx="${e.cx}" cy="${e.cy}" rx="${e.rx}" ry="${e.ry}"${e.rot ? ` transform="rotate(${e.rot} ${e.cx} ${e.cy})"` : ''} fill="${stripeFill}"/>`).join('')
@@ -685,6 +685,11 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
     <clipPath id="${id}el"><path d="${EAR_L}"/></clipPath>
     <clipPath id="${id}er"><path d="${EAR_R}"/></clipPath>
     <filter id="${id}b" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3.5"/></filter>
+    <!-- A Siamese's points have no edge. Three and a half units of blur still
+         left one — a soft line is still a line — so the soft patches get their
+         own filter at twice the spread, and a fill closer to the coat so there
+         is less distance for the blur to cover in the first place. -->
+    <filter id="${id}f" x="-45%" y="-45%" width="190%" height="190%"><feGaussianBlur stdDeviation="8"/></filter>
     <radialGradient id="${id}v" cx="38%" cy="24%" r="82%">
       <stop offset="0%" stop-color="#fff" stop-opacity=".34"/>
       <stop offset="52%" stop-color="#fff" stop-opacity="0"/>

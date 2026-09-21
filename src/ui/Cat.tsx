@@ -91,7 +91,7 @@ export function Cat({ coat, scene, beat, rim = false, className = '', size = 96,
   return (
     <div
       ref={host}
-      className={`relative ${className}`}
+      className={`relative flex justify-center ${className}`}
       // She answers a poke, so she is a button — but a decorative one, and the
       // label says which cat and nothing about what pressing her achieves,
       // because pressing her achieves nothing.
