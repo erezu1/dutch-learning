@@ -48,7 +48,8 @@ export const ROLE = {
   lookDownL: { jobs: ['drift'],             when: 'glancing across what she is reading' },
   lookDownR: { jobs: ['drift'],             when: 'glancing across what she is reading' },
   sleepy:    { jobs: ['base'],              when: 'nothing is due' },
-  yawn:      { jobs: ['drift'],             when: 'she has been dozing a while' },
+  yawn:      { jobs: ['drift'],             when: 'on the way down, just before she settles' },
+  stretch:   { jobs: ['drift'],             when: 'on the way back up, without waking' },
   lookUpL:   { jobs: ['drift', 'reaction'], when: 'an idle glance up; the first run' },
   lookUpR:   { jobs: ['drift'],             when: 'an idle glance up' },
   curious:   { jobs: ['drift', 'reaction'], when: 'an idle glance; a wrong answer' },
@@ -73,7 +74,9 @@ const DRIFT: Record<string, string[]> = {
   lookDownC: ['lookUpL', 'lookUpR', 'curious'],
   lookDownL: ['lookUpL', 'curious'],
   lookDownR: ['lookUpR', 'curious'],
-  sleepy: ['yawn'],
+  // A yawn out of sleep is the stretching one. The drowsy yawn belongs to the
+  // wind-down, which schedules it itself on the way down.
+  sleepy: ['stretch'],
 }
 
 /**
@@ -281,11 +284,12 @@ export class CatRig {
     // Two moods reach the paws. Toggled by class rather than written into the
     // pose, because they are loops and the pose is a destination.
     this.svg.classList.toggle('cat-delighted', name === 'celebrate')
-    // A yawn trembles and so does a temper that has already been lost once.
-    // Same channel: being properly cross is a whole-body thing, and leaving
-    // her paws perfectly still under a furious face is what made the anger
-    // read as a mask.
-    this.svg.classList.toggle('cat-shake', name === 'yawn' || again)
+    // A stretch trembles and so does a temper that has already been lost
+    // once. Same channel: both are a whole-body thing, and leaving her paws
+    // perfectly still under a furious face is what made the anger read as a
+    // mask. The drowsy yawn is deliberately not in here — she is going to
+    // sleep, and a cat settling does not shake.
+    this.svg.classList.toggle('cat-shake', name === 'stretch' || again)
     // Past shaking. Three tempers inside one sulk and it comes out of her
     // paws — a face and a tremble have both already been spent by then, and
     // a mood with no further step reads as a mood that was never listening.

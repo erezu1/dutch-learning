@@ -523,11 +523,18 @@ export const MOODS: Record<string, Mood> = {
   idle:      { eyes: 'open',    mouth: 'neutral', squash: 0.85, label: 'Idle' },
   happy:     { eyes: 'happy',   mouth: 'smile', squash: 0.78,   label: 'Happy' },
   sleepy:    { eyes: 'sleepy',  mouth: 'neutral', squash: 1, label: 'Sleepy', tilt: -4, ear: 'flat' },
-  // She comes up off the carpet to do it. A yawn taken lying flat is a cat
-  // with her mouth open; the lift is what makes it a yawn — which is why
-  // this sits above idle rather than just above sleepy, and why it is the
-  // one place the head visibly rises and settles again on its own.
-  yawn:      { eyes: 'sleepy',  mouth: 'yawn', squash: 0.58,    label: 'Yawn',   tilt: -3, ear: 'flat' },
+  // Two yawns, because a cat yawns for two different reasons and they do not
+  // look alike.
+  //
+  // This is the one on the way down: she is going to sleep and her mouth
+  // opens on the way. Nothing else moves — no lift, no tremble — because
+  // nothing else is happening. She is already three quarters gone.
+  yawn:      { eyes: 'sleepy',  mouth: 'yawn', squash: 0.95,    label: 'Yawn',   tilt: -3, ear: 'flat' },
+  // And this is the one on the way back: the yawn that comes with a stretch,
+  // which is the only reason to come up off the carpet with your eyes still
+  // shut. The lift is the whole difference — a yawn taken lying flat is a cat
+  // with her mouth open — and her paws quiver through it, the way they do.
+  stretch:   { eyes: 'sleepy',  mouth: 'yawn', squash: 0.5,     label: 'Stretch', tilt: -3, ear: 'flat' },
   curious:   { eyes: 'curious', mouth: 'neutral', squash: 0.5, label: 'Curious', tilt: 7 },
   surprised: { eyes: 'wide',    mouth: 'open', squash: 0.32,    label: 'Surprised', ear: 'perk' },
   celebrate: { eyes: 'happy',   mouth: 'open', squash: 0.4,    label: 'Celebrate', tilt: -3, ear: 'perk' },
