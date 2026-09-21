@@ -481,7 +481,7 @@ const brow = (c: Coat, inner: 'up' | 'down') => {
   const dy = inner === 'up' ? -3 : 4.6
   const lift = inner === 'up' ? -5.5 : 1.2
   return `<path d="M${x0} ${y}q${w / 2} ${lift} ${w} ${dy}M${120 - x0} ${y}q${-w / 2} ${lift} ${-w} ${dy}"
-      fill="none" stroke="${c.pupil}" stroke-width="2.7" stroke-linecap="round" opacity=".7"/>`
+      fill="none" stroke="${c.ink ?? c.pupil}" stroke-width="2.7" stroke-linecap="round" opacity=".7"/>`
 }
 
 const E = EYE

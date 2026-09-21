@@ -795,21 +795,29 @@ export class CatRig {
       // The star is ten units across and drawn from its own corner, so half
       // of it comes off both numbers to put its centre where it is aimed.
       const x0 = 60 - 5, y0 = 2 - 5
-      const spin = rand(-70, 70)
+      // Out quickly, then hang. A star that is still travelling when it fades
+      // was never seen — there has to be a stretch in the middle where it is
+      // simply there, turning, for the eye to arrive at it.
+      const [jx, jy] = [rand(-5, 5), rand(-4, 4)]
+      const tx = x0 + dx + jx, ty = y0 + dy + jy
+      const spin = rand(150, 260) * (dx < 0 ? -1 : 1)
       const at = (px: number, py: number, sc: number, rot: number) =>
         `translate(${px.toFixed(2)}px, ${py.toFixed(2)}px) rotate(${rot.toFixed(1)}deg) scale(${sc.toFixed(3)})`
       const anim = g.animate(
         [
           { opacity: 0, transform: at(x0, y0, 0.25, 0) },
-          { opacity: 1, offset: 0.3, transform: at(x0 + dx * 0.45, y0 + dy * 0.45, 1.9, spin * 0.45) },
-          { opacity: 0, transform: at(x0 + dx, y0 + dy, 0.8, spin) },
+          { opacity: 1, offset: 0.14, transform: at(x0 + dx * 0.6, y0 + dy * 0.6, 1.95, spin * 0.2) },
+          { opacity: 1, offset: 0.3, transform: at(tx, ty, 1.75, spin * 0.36) },
+          { opacity: 1, offset: 0.72, transform: at(tx, ty - 3, 1.6, spin * 0.78) },
+          { opacity: 0, transform: at(tx, ty - 7, 1.1, spin) },
         ],
         {
-          duration: rand(720, 840),
-          // Thrown, not carried: most of the distance is covered early.
-          easing: 'cubic-bezier(.16,.85,.34,1)',
+          duration: rand(1450, 1600),
+          // Thrown, not carried: most of the distance is covered early, and
+          // the rest of the time is spent turning where it landed.
+          easing: 'linear',
           // Staggered, so it sparkles rather than pops.
-          delay: i * 70,
+          delay: i * 90,
           fill: 'none',
         },
       )
@@ -878,8 +886,12 @@ export const SCENE: Record<SceneName, (r: CatRig) => void> = {
         r.pose(r.base)
       },
     })
-    // On the way up, not on the way down.
+    // Twice. One burst inside a two-and-a-half second celebration is a thing
+    // you find you have missed; the second is what makes the first one an
+    // event rather than a glitch, and they land in different places because
+    // each star jitters its own destination.
     setTimeout(() => r.spark(), 150)
+    setTimeout(() => r.spark(), 1150)
   },
   levelUp: (r: CatRig) => {
     r.hop()
