@@ -16,8 +16,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icon.svg'],
       manifest: {
-        name: 'Doei',
-        short_name: 'Doei',
+        name: 'Doei!',
+        short_name: 'Doei!',
         description: 'A little Dutch, every day.',
         theme_color: '#fdf6f8',
         background_color: '#fdf6f8',

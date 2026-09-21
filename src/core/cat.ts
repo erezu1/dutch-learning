@@ -207,7 +207,11 @@ export const COATS: Record<string, Coat> = {
     iris: '#F2CB64', pupil: '#1C1815', line: '#211E1D', dark: true, paw: '#443E3B',
   },
   ginger: {
-    name: 'Ginger', base: '#EDA45C', muzzle: '#FBE7CE', ear: '#EFA79D',
+    // Her ear is a deeper rose than the others'. A ginger cat's pink sits on
+    // orange, and the two are close enough in both hue and lightness that the
+    // usual salmon disappeared into the coat — the one place the inner ear
+    // has to fight its own background rather than contrast with it.
+    name: 'Ginger', base: '#EDA45C', muzzle: '#FBE7CE', ear: '#D5747F',
     iris: '#FFF3DE', pupil: PUPIL, line: '#A9622C', paw: '#FBE7CE',
     stripes: { d: STRIPES, fill: '#D5823C' },
   },

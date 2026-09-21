@@ -87,7 +87,7 @@ export function Home({
               why these are exact numbers rather than the spacing scale. */}
           <div className="flex items-center gap-3">
             <Paw className="h-[38px] w-[38px] text-primary" />
-            <h1 className={`text-[2.6rem] leading-none ${WORDMARK}`}>Doei</h1>
+            <h1 className={`text-[2.6rem] leading-none ${WORDMARK}`}>Doei!</h1>
           </div>
 
           <div className="flex shrink-0 items-center gap-2">
