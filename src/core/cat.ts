@@ -56,6 +56,15 @@ const CIRCLE: [number, number][] = [
   [14.5, 43.67], [18.37, 33.19], [25.4, 24.95],
   [34.05, 14.83], [46.69, 9], [60, 9],
 ]
+/**
+ * The wedge, and it is a gentler one than the first try. The first had a flat
+ * crown and two straight vertical runs down each side, which is a box; a side
+ * that goes straight for a stretch and then turns reads as two curves meeting
+ * however smoothly they actually join. Every anchor down each side now hands
+ * over along its own tangent and the curvature never stops changing, so each
+ * side is one sweep from the base corner to the crown.
+ */
+
 /** Where the resting shape sits in the range, and where the wedge starts. */
 const REST_AT = 0.85
 const FLAT_AT = 0.98
@@ -72,13 +81,13 @@ const REST: [number, number][] = [
 ]
 
 const TRAP: [number, number][] = [
-  [60, 16], [80, 16], [92, 22], [92, 30],
-  [92, 44], [110, 64], [110, 78],
-  [110, 90], [108, 100], [104, 100],
-  [92, 100], [28, 100], [16, 100],
-  [12, 100], [10, 90], [10, 78],
-  [10, 64], [28, 44], [28, 30],
-  [28, 22], [40, 16], [60, 16],
+  [60, 15], [78, 15], [90, 20], [95, 29],
+  [101, 40], [106, 56], [107, 72],
+  [107.5, 86], [105, 99.4], [96, 100],
+  [84, 100], [36, 100], [24, 100],
+  [15, 99.4], [12.5, 86], [13, 72],
+  [14, 56], [19, 40], [25, 29],
+  [30, 20], [42, 15], [60, 15],
 ]
 
 export function headPath(q = 1): string {
@@ -348,6 +357,8 @@ export interface Mood {
   mouth: keyof typeof MOUTHS
   label: string
   squash?: number
+  /** How far each ear slides away from the midline, in user units. */
+  earOut?: number
   /**
    * Straight up, in user units, with no change of shape.
    *
@@ -669,7 +680,9 @@ export const MOODS: Record<string, Mood> = {
   // spreads her past resting only above 0.85, and she is the only one up
   // there. A negative rise on top of it settles her the last couple of units
   // into the carpet — the scale flattens her, this is the weight.
-  sleepy:    { eyes: 'sleepy',  mouth: 'neutral', squash: 1, label: 'Sleepy', tilt: -4, ear: 'flat' },
+  // Down on the carpet her ears slide outward and lie back further than any
+  // other mood's: a head spread along the floor takes its ears with it.
+  sleepy:    { eyes: 'sleepy',  mouth: 'neutral', squash: 1, earOut: 4, label: 'Sleepy', tilt: -4, ear: 'flat' },
   // Two yawns, because a cat yawns for two different reasons and they do not
   // look alike.
   //
@@ -808,7 +821,7 @@ const UNSQUASH = `scaleX(calc(1 / ${SX})) scaleY(calc(1 / ${SY}))`
 // than a mood.
 const POSE_EAR = (side: 'l' | 'r') => {
   const out = side === 'l' ? 1 : -1
-  return `translate(calc(${LIFT} * ${out * 2.5}px), calc(${LIFT} * -4px)) ` +
+  return `translate(calc(${LIFT} * ${out * 2.5}px + var(--ear-out, 0) * ${out}px), calc(${LIFT} * -4px)) ` +
     `rotate(calc(var(--ear-${side}, 0deg) + var(--twitch-${side}, 0deg) + var(--huff-${side}, 0) * ${out * 15}deg))`
 }
 // The idle glance and the mood's own gaze are separate channels that add, so
@@ -829,7 +842,7 @@ const POSE_GAZE =
 const TWITCH = (deg: number, v: string) => `calc(${deg}deg + var(${v}, 0deg))`
 // Kept small. The base of the ear is hidden behind the skull, and these are
 // the angles that stay hidden — turn it further and the ear visibly unhooks.
-const EAR_TURN: Record<string, number> = { perk: -6, flat: 10 }
+const EAR_TURN: Record<string, number> = { perk: -6, flat: 15 }
 
 let uid = 0
 
