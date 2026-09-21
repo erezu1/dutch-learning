@@ -105,6 +105,11 @@ const ZED = 'M0 0h5.4L0 6.6h5.4'
 // since the two moods can never happen at once, and the same construction —
 // the difference between sleeping and being pleased should be what rises off
 // her, not where it rises from.
+//
+// Two of them, not three. At this size a third crowds the corner and turns a
+// gesture into a cloud, and the zzz get three precisely because they are
+// smaller: how many there are is set by how much room each one takes, not by
+// matching the other beat.
 const HEART =
   'M0 2.1C0 0.7 1.2 0 2.1 0.6C2.5 0.85 2.8 1.2 3 1.5C3.2 1.2 3.5 0.85 3.9 0.6' +
   'C4.8 0 6 0.7 6 2.1C6 3.9 3.9 5.5 3 6.2C2.1 5.5 0 3.9 0 2.1Z'
@@ -774,9 +779,8 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
     <g transform="translate(126 -12)"><g class="cat-z" style="--zd:2.3s"><path d="${ZED}"/></g></g>
   </g>
   <g class="cat-hearts" fill="#EE8E96">
-    <g transform="translate(111 15) scale(0.78)"><g class="cat-heart" style="--hd:0s"><path d="${HEART}"/></g></g>
-    <g transform="translate(120 4) scale(1)"><g class="cat-heart" style="--hd:0.85s"><path d="${HEART}"/></g></g>
-    <g transform="translate(128 -9) scale(1.2)"><g class="cat-heart" style="--hd:1.7s"><path d="${HEART}"/></g></g>
+    <g transform="translate(103 17) scale(1.65)"><g class="cat-heart" style="--hd:0s"><path d="${HEART}"/></g></g>
+    <g transform="translate(113 4) scale(2.1)"><g class="cat-heart" style="--hd:1.25s"><path d="${HEART}"/></g></g>
   </g>
   <g class="cat-paw cat-paw-l" style="${pin(PIVOT.pawL, 0, 0, 0, POSE_PAW('l'))}">
     ${pawRim(PAW_L)}<path d="${PAW_L}" ${pawFur}/><path d="${PAW_L}" ${pawVolume}/>

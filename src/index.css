@@ -693,7 +693,7 @@ svg.cat-asleep .cat-zzz { opacity: 1 }
 @keyframes cat-heart {
   0% { opacity: 0; transform: translate(0, 6px) scale(0.55) }
   22% { opacity: 0.9 }
-  100% { opacity: 0; transform: translate(7px, -15px) scale(1.15) }
+  100% { opacity: 0; transform: translate(3px, -9px) scale(1.15) }
 }
 .cat-hearts { opacity: 0; transition: opacity 300ms ease }
 svg.cat-delighted .cat-hearts { opacity: 1 }
