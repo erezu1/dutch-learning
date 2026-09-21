@@ -194,7 +194,7 @@ export function Home({
                   so nothing that animates lives inside the thing casting it. */}
               <div
                 aria-hidden="true"
-                className="clearing-ring pointer-events-none absolute inset-[-20px] rounded-full"
+                className="clearing-ring pointer-events-none absolute inset-[-34px] rounded-full"
               />
               <svg viewBox="0 0 100 100" className="absolute inset-0 -rotate-90">
               <circle

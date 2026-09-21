@@ -391,9 +391,9 @@
 .clearing-ring {
   background: radial-gradient(
     circle closest-side,
-    transparent 50%,
-    color-mix(in oklab, var(--color-surface) 80%, transparent) 63%,
-    color-mix(in oklab, var(--color-surface) 80%, transparent) 86%,
+    transparent 34%,
+    color-mix(in oklab, var(--color-surface) 62%, transparent) 57%,
+    color-mix(in oklab, var(--color-surface) 62%, transparent) 76%,
     transparent 99%
   );
 }
