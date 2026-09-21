@@ -24,7 +24,7 @@ export function Done({ stats, points, coat, dark, onHome, onMore }: Props) {
   const another = !more && stats.extraWaiting > 0
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-8 px-6 text-center">
+    <div className="flex flex-1 flex-col overflow-y-auto items-center justify-center gap-8 py-6 px-6 text-center">
       <motion.div
         initial={{ opacity: 0, scale: 0.9, y: 12 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}

@@ -319,7 +319,7 @@ export function Settings({
   onBack,
 }: Props) {
   return (
-    <div className="flex flex-1 flex-col px-6 py-10">
+    <div className="flex flex-1 flex-col overflow-y-auto px-6 py-10">
       <BackHeader title="Settings" onBack={onBack} />
 
       <div className="mt-8 flex flex-col gap-3">

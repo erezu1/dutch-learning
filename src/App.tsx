@@ -31,13 +31,18 @@ function Screen({ children }: { children: React.ReactNode }) {
       animate="center"
       exit="exit"
       transition={glide}
-      // A column at least as tall as the window. The screen inside it is a
-      // flex child that stretches to fill it, so a screen that fits is laid
-      // out against the window exactly as it always was — and one that
-      // doesn't, like Settings on a short phone, pushes the column taller
-      // instead of spilling out of a box the height of the glass, where the
-      // end of it can never be scrolled to.
-      className="flex min-h-full flex-col"
+      // The window, exactly — not "at least the window".
+      //
+      // At least meant the column grew to whatever was inside it, and a
+      // screen laid out against a column taller than the glass puts things
+      // off the top of it: the card page's cat is drawn above the header,
+      // in room the header makes for her, and that room is only in the right
+      // place if the header is where it thinks it is. A definite height also
+      // means flex-1 is the remainder rather than a negotiation with the
+      // content, so the card is whatever is left over and nothing overflows.
+      //
+      // Screens longer than the glass scroll inside themselves instead.
+      className="flex h-full flex-col"
     >
       {children}
     </motion.div>

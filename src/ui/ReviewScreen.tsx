@@ -76,7 +76,7 @@ export function ReviewScreen({ session, coat, dark, onExit }: Props) {
           contents are taller than the window made the page shrink the moment
           an answer replaced the four choices with two lines, and everything
           above it slid up by the difference while you were reading it. */}
-      <header className="relative z-10 flex items-center gap-3 px-4 pt-[6.5rem] [@media(max-height:780px)]:pt-[4rem]">
+      <header className="relative z-10 flex items-center gap-3 px-4 pt-[calc(var(--cat-perch)+0.6rem)]">
         <motion.button
           onClick={onExit}
           aria-label="Stop"
@@ -92,7 +92,7 @@ export function ReviewScreen({ session, coat, dark, onExit }: Props) {
           {/* Above the bar with air between them. She is resting near it, not
               welded to it — the gap is what stops the bar reading as a shelf
               bolted to her chin. */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-full mb-2.5 flex justify-center">
+          <div className="cat-perch pointer-events-none absolute inset-x-0 bottom-full mb-2.5 flex justify-center">
             <Cat
               coat={coat}
               rim={dark}

@@ -38,7 +38,7 @@ export function LevelPicker({ current, known, onPick, onCancel }: Props) {
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-8 px-6 py-10">
+    <div className="flex flex-1 flex-col overflow-y-auto gap-8 px-6 py-10">
       <div>
         {/* The same control as Settings, in the same corner. This screen is
             reachable from home once a level has been chosen, and a screen you

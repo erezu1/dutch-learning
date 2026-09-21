@@ -727,6 +727,18 @@ svg.cat-breathing {
    reads as two paws doing the same thing at the same instant. */
 .cat-paw-r { animation-delay: 130ms, 0ms; animation-direction: normal, reverse }
 
+/* The cat on the card screen is drawn ABOVE the header rather than inside it,
+   which means the header's top padding is the only thing keeping her on the
+   screen at all. So the two are one number, and the padding is always the
+   larger of them — a padding tuned for a short phone and a cat that was not
+   put her thirty pixels off the top of it.
+
+   She shrinks with the screen rather than the room around her: 101px is her
+   size on a tall phone and 13vh takes over below about 780, so the gap above
+   her head is the same sixteen pixels at every shape. */
+:root { --cat-perch: min(101px, 13vh) }
+.cat-perch svg.cat-rig { height: var(--cat-perch) }
+
 svg.cat-rig { --bob-gain: 0; --shake-gain: 0 }
 svg.cat-delighted { --bob-gain: 1 }
 svg.cat-shake { --shake-gain: 1 }

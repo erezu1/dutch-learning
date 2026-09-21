@@ -13,7 +13,7 @@ import { WORDMARK } from './type'
 
 export function Welcome({ coat, dark, onBegin }: { coat: CoatId; dark: boolean; onBegin: () => void }) {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-10 px-8 text-center">
+    <div className="flex flex-1 flex-col overflow-y-auto items-center justify-center gap-10 py-6 px-8 text-center">
       <motion.div
         initial={{ opacity: 0, scale: 0.8, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
