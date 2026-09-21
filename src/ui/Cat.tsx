@@ -31,9 +31,33 @@ interface Props {
   label?: string
 }
 
+/**
+ * Copy where every running animation had got to, element for element.
+ *
+ * The two trees are built by the same generator from the same arguments, so
+ * they have the same shape and walking them together lines each animation up
+ * with its own counterpart.
+ */
+function carryPhase(from: Element, to: Element) {
+  const a = from.getAnimations()
+  const b = to.getAnimations()
+  for (let i = 0; i < Math.min(a.length, b.length); i++) b[i].currentTime = a[i].currentTime
+  const ax = [...from.children]
+  const bx = [...to.children]
+  for (let i = 0; i < Math.min(ax.length, bx.length); i++) carryPhase(ax[i], bx[i])
+}
+
 export function Cat({ coat, scene, beat, rim = false, className = '', size = 96, label }: Props) {
   const host = useRef<HTMLDivElement>(null)
   const rig = useRef<CatRig | null>(null)
+  /**
+   * What she was doing when the last drawing was torn down.
+   *
+   * React runs the old effect's cleanup before the new effect's body, so the
+   * previous rig is already gone by the time the new one exists — the state
+   * has to be caught on the way out and handed over on the way in.
+   */
+  const carried = useRef<ReturnType<CatRig['snapshot']> | null>(null)
 
   // Rebuilt only when the drawing itself changes — a different cat, or a
   // different ramp to stand on. Never for a mood.
@@ -72,8 +96,16 @@ export function Cat({ coat, scene, beat, rim = false, className = '', size = 96,
 
     const r = new CatRig(svg)
     rig.current = r
+    if (carried.current) r.restore(carried.current)
     const stopIdle = idle(svg)
+    // And the loops themselves, AFTER the idle loop has started them — there
+    // is nothing to line up with until it has. The breath and the knead begin
+    // at zero on a new element, so without this the two cats breathe out of
+    // step in front of each other, which is the one moment both are on screen
+    // and the only moment it could show.
+    if (outgoing) carryPhase(outgoing, svg)
     return () => {
+      carried.current = r.snapshot()
       stopIdle()
       r.destroy()
       rig.current = null

@@ -286,6 +286,40 @@ export class CatRig {
   }
 
   /**
+   * Everything about her that is not the drawing.
+   *
+   * Changing coat rebuilds the SVG and therefore the rig, and without this the
+   * new cat starts the way every cat starts — awake, unbothered, idle — which
+   * makes a colour swap a reset. She was asleep before it and she should be
+   * asleep after it: the markings changed, not the animal.
+   */
+  snapshot() {
+    return {
+      base: this.base, wanted: this.wanted, current: this.current,
+      lastActive: this.lastActive, pokes: this.pokes, lastPoke: this.lastPoke,
+      locked: this.locked, sulkUntil: this.sulkUntil, cross: this.cross,
+      starring: this.starring, settling: this.settling, lastWrong: this.lastWrong,
+      emitting: this.emitting, emitSeq: this.emitSeq,
+    }
+  }
+
+  /** Put her back exactly where the drawing before this one left her. */
+  restore(was: ReturnType<CatRig['snapshot']>) {
+    Object.assign(this, was, { emitting: null })
+    // The pose applies to an element that has never had one, so nothing
+    // transitions: she is simply already in it when she fades in.
+    this.pose(was.current || was.base)
+    // `pose` restarts the wait before the first z, which is right for a cat
+    // falling asleep and wrong for one that has been asleep for a minute. If
+    // marks were already rising, they carry on rising.
+    if (was.emitting) {
+      clearTimeout(this.dozeMark ?? undefined)
+      this.dozeMark = null
+      this.#emit(was.emitting)
+    }
+  }
+
+  /**
    * Put her in a mood. The drawings change now; the numbers are handed to CSS,
    * which walks them there over the transition — so calling this mid-move
    * redirects from wherever she currently is rather than snapping to the start.
