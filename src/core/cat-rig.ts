@@ -259,14 +259,23 @@ export class CatRig {
     this.#choose('eyes', m.eyes)
     this.#choose('mouth', m.mouth)
     this.#choose('brow', browOf(m))
+    // Cross once and she only pulls a face. Cross again while she is still
+    // coming down from the last time, and it reaches her paws — losing your
+    // temper is a thing that builds, and a cat who shakes at the first
+    // annoyance has nowhere left to go when you keep at it.
+    //
+    // Read before the clock is reset, because resetting it is what would make
+    // every temper look like a second one.
+    const again = name === 'grumpy' && performance.now() < this.sulkUntil
     if (name === 'grumpy') this.sulkUntil = performance.now() + SULK
     // Two moods reach the paws. Toggled by class rather than written into the
     // pose, because they are loops and the pose is a destination.
     this.svg.classList.toggle('cat-delighted', name === 'celebrate')
-    // A yawn trembles and so does temper. Same channel, and it belongs on
-    // both: being cross is a whole-body thing, and leaving her paws perfectly
-    // still under a furious face is what made the anger read as a mask.
-    this.svg.classList.toggle('cat-shake', name === 'yawn' || name === 'grumpy')
+    // A yawn trembles and so does a temper that has already been lost once.
+    // Same channel: being properly cross is a whole-body thing, and leaving
+    // her paws perfectly still under a furious face is what made the anger
+    // read as a mask.
+    this.svg.classList.toggle('cat-shake', name === 'yawn' || again)
     // Only while she is actually settled — a yawn is a moment on the way there
     // and on the way back, and zzz flickering on either side of it would read
     // as a fault — and not until she has been settled a second.
