@@ -729,6 +729,11 @@ svg.cat-breathing {
 svg.cat-rig { --bob-gain: 0; --shake-gain: 0 }
 svg.cat-delighted { --bob-gain: 1 }
 svg.cat-shake { --shake-gain: 1 }
+/* One thing at a time in her paws. A tremble underneath a stamp is two
+   unrelated movements in the same place and neither of them reads — the
+   stamp wins, because it is the one that was just asked for. It comes back
+   on its own easing, so she does not snap back into trembling either. */
+svg.cat-steady { --shake-gain: 0 }
 
 /* Moving between situations. The state machine writes the numbers and this
    walks her there, so two moods can be halfway between each other rather than

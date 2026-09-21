@@ -203,6 +203,7 @@ export class CatRig {
   sulkUntil = 0
   /** How many times she has been made cross without once cooling off. */
   cross = 0
+  steady: ReturnType<typeof setTimeout> | null = null
   lastWrong = ''
 
   constructor(
@@ -614,6 +615,17 @@ export class CatRig {
     head: { gain: number; delay: number },
     paw: { gain: number; delay: number },
   ) {
+    // Nothing else moves her paws while this is running. A tremble under a
+    // stamp is two movements in one place, and the one that was just asked
+    // for is the one that should be legible.
+    this.svg.classList.add('cat-steady')
+    clearTimeout(this.steady ?? undefined)
+    const over = duration + Math.max(head.delay, paw.delay)
+    this.steady = setTimeout(() => {
+      this.steady = null
+      this.svg.classList.remove('cat-steady')
+    }, over + 120)
+
     const frames = (prop: string, gain: number) =>
       shape.map((k) => ({ [prop]: k.v * gain, offset: k.at, easing: k.ease })) as Keyframe[]
     this.svg.animate(frames('--hop', head.gain), {
@@ -686,6 +698,7 @@ export class CatRig {
   }
 
   destroy() {
+    clearTimeout(this.steady ?? undefined)
     clearTimeout(this.holding ?? undefined)
     clearTimeout(this.drifting ?? undefined)
     clearTimeout(this.dozing ?? undefined)
