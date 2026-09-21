@@ -611,7 +611,11 @@ export { EAR_TURN }
 export const MOODS: Record<string, Mood> = {
   idle:      { eyes: 'open',    mouth: 'neutral', squash: 0.85, label: 'Idle' },
   happy:     { eyes: 'happy',   mouth: 'smile', squash: 0.78,   label: 'Happy' },
-  sleepy:    { eyes: 'sleepy',  mouth: 'neutral', squash: 1, label: 'Sleepy', tilt: -4, ear: 'flat' },
+  // All the way down, and it is the only mood that is: the squash channel
+  // spreads her past resting only above 0.85, and she is the only one up
+  // there. A negative rise on top of it settles her the last couple of units
+  // into the carpet — the scale flattens her, this is the weight.
+  sleepy:    { eyes: 'sleepy',  mouth: 'neutral', squash: 1, rise: -2.5, label: 'Sleepy', tilt: -4, ear: 'flat' },
   // Two yawns, because a cat yawns for two different reasons and they do not
   // look alike.
   //
@@ -711,8 +715,37 @@ const BREATH = 'scaleX(calc(1 - var(--breath, 0) * 0.006)) scaleY(calc(1 + var(-
 // The numbers come from headPath itself: at full lift it drew the lower half
 // at 46/52 of its resting width and the head 91/84 of its resting height.
 const LIFT = '(1 - var(--sq, 0.85))'
+
+/**
+ * How far past resting she is pressed into the carpet: nought at 0.98 and one
+ * at 1, where she is all the way down.
+ *
+ * The squash channel used to run from idle to a circle and stop — the flat end
+ * of it WAS the shape the head is drawn as, so being fully down looked exactly
+ * like resting.
+ *
+ * This is the other half of the range, and the door onto it is deliberately
+ * narrow: nothing below 0.98 sees a scrap of it. Reading is 0.95 to 0.98 and
+ * a drowsy yawn is 0.95, and all of those should look the way they always
+ * did; sleep is the only mood at 1, and it is the only one that spreads.
+ */
+const FLAT = 'max(0, (var(--sq, 0.85) - 0.98) * 50)'
 const SX = `(1 - ${LIFT} * 0.115 - var(--breath, 0) * 0.006)`
 const SY = `(1 + ${LIFT} * 0.083 + var(--breath, 0) * 0.013)`
+
+/**
+ * The spread, and ONLY on the skull.
+ *
+ * It is deliberately not part of the head's own pose. Everything in the head
+ * group inherits that — the mouth, the brows, the muzzle, the whiskers — and
+ * a face stretched wider along with the skull is a different face, not a cat
+ * lying flatter. Only the shape she is is allowed to change; what is drawn on
+ * it is not. The eyes and nose already undo the pose about their own centres,
+ * so they were never at risk; this is for everything that does not.
+ */
+const SKULL_FLAT =
+  `transform-box:view-box;transform-origin:60px 100px;` +
+  `transform:scaleX(calc(1 + ${FLAT} * 0.075)) scaleY(calc(1 - ${FLAT} * 0.065))`
 // The lift is a translate as well as a stretch. Scaling about the floor makes
 // the crown rise while the chin stays welded to it, which is a head being
 // pulled taller rather than a head coming up — the difference between a cat
@@ -731,7 +764,11 @@ const POSE_HEAD =
 //
 // Each feature undoes the head's scale about its OWN centre, so it keeps its
 // shape while still being carried wherever the deformation puts it. Position
-// follows the face, proportion does not.
+// follows the face, proportion does not. EVERY feature: the eyes and the nose
+// did this from the start, but the mouth, the brows, the muzzle and each
+// whisker did not, and a mouth that widens with the skull is a different
+// mouth. The whiskers undo it about their own roots, which is the same point
+// they swing about — a hair does not get fatter because she lay down.
 const UNSQUASH = `scaleX(calc(1 / ${SX})) scaleY(calc(1 / ${SY}))`
 // Each ear has its OWN huff channel, so an irritated cat can lay back both
 // ears, or one, or neither. Driving them from the same value as the nose made
@@ -866,7 +903,7 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
   const silhouette = `<g class="cat-head" style="${headStyle}">
       <g class="cat-ear cat-ear-l" style="${earStyle('l')}"><path d="${EAR_L}"/></g>
       <g class="cat-ear cat-ear-r" style="${earStyle('r')}"><path d="${EAR_R}"/></g>
-      <path d="${HEAD}"/>
+      <g style="${SKULL_FLAT}"><path d="${HEAD}"/></g>
     </g>
     <g class="cat-paw cat-paw-l" style="${pin(PIVOT.pawL, 0, 0, 0, POSE_PAW('l'))}"><path d="${PAW_L}"/></g>
     <g class="cat-paw cat-paw-r" style="${pin(PIVOT.pawR, 0, 0, 0, POSE_PAW('r'))}"><path d="${PAW_R}"/></g>`
@@ -936,10 +973,13 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
       <g clip-path="url(#${id}er)">${patches}
         <path class="cat-ear-in" d="${EAR_R_IN}" fill="${c.ear}"/></g>
     </g>
-    <path class="cat-skull" d="${HEAD}" fill="${c.base}"/>
-    <g class="cat-coat" clip-path="url(#${id}s)">${marks}</g>
-    <ellipse class="cat-muzzle" transform="translate(0 ${faceDy})" cx="60" cy="75" rx="24" ry="13.5"
-      fill="${c.muzzle}" opacity="${c.muzzleAlpha ?? (c.dark ? 0.42 : 0.65)}"/>
+    <g class="cat-skin" style="${SKULL_FLAT}">
+      <path class="cat-skull" d="${HEAD}" fill="${c.base}"/>
+      <g class="cat-coat" clip-path="url(#${id}s)">${marks}</g>
+    </g>
+    <ellipse class="cat-muzzle" cx="60" cy="75" rx="24" ry="13.5"
+      fill="${c.muzzle}" opacity="${c.muzzleAlpha ?? (c.dark ? 0.42 : 0.65)}"
+      style="transform-box:view-box;transform-origin:60px 75px;transform:translateY(${faceDy}px) ${rig ? UNSQUASH : ''}"/>
     ${volume}
     ${c.chin ? `<ellipse class="cat-chin" clip-path="url(#${id}s)" cx="${c.chin.cx}"
       cy="${c.chin.cy}" rx="${c.chin.rx}" ry="${c.chin.ry}" fill="${c.chin.fill}"/>` : ''}
@@ -947,13 +987,13 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
       ${WHISKERS.map((w, i) => `<path d="${w.d}" fill="none" stroke="${c.line}"
         stroke-width="1.8" stroke-linecap="round" style="transform-box:view-box;
         transform-origin:${w.at};transform:rotate(calc(var(--whisk-${i % 3}, 0deg) * ${w.swing}
-        + var(--hop, 0) * ${w.flick}deg))"/>`).join('')}
+        + var(--hop, 0) * ${w.flick}deg)) ${rig ? UNSQUASH : ''}"/>`).join('')}
     </g>
     <g class="cat-face" style="${pin('60px 100px', 0, 0, faceDy)}">
-      <g class="cat-brows">${browSets}</g>
+      <g class="cat-brows" style="transform-box:view-box;transform-origin:60px 44px;transform:${rig ? UNSQUASH : 'none'}">${browSets}</g>
       <g class="cat-eye cat-eye-l" style="${pin(PIVOT.eyeL, 0, 0, 0, rig ? UNSQUASH : '')}">${rig ? side('l') : eyeL}</g>
       <g class="cat-eye cat-eye-r" style="${pin(PIVOT.eyeR, 0, 0, 0, rig ? UNSQUASH : '')}">${rig ? side('r') : eyeR}</g>
-      <g class="cat-mouth" style="transform-box:view-box;transform:translateY(calc(${SNOUT}px + var(--face-dip,0) * 1.5px))">${rig ? mouthSets : MOUTHS[m.mouth](c)}</g>
+      <g class="cat-mouth" style="transform-box:view-box;transform-origin:60px 84px;transform:translateY(calc(${SNOUT}px + var(--face-dip,0) * 1.5px)) ${rig ? UNSQUASH : ''}">${rig ? mouthSets : MOUTHS[m.mouth](c)}</g>
       <path class="cat-nose" d="${NOSE}" fill="${c.ear}"
         style="transform-box:view-box;transform-origin:60px 76px;transform:translateY(calc(${SNOUT}px + var(--sniff,0) * -0.7px + var(--face-dip,0) * 1.1px + var(--huff,0) * -1.7px)) scale(calc(1 + var(--sniff,0) * 0.07 + var(--huff,0) * 0.16)) ${rig ? UNSQUASH : ''}"/>
     </g>
