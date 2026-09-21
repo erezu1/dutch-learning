@@ -190,7 +190,13 @@ export function Home({
               />
             </motion.div>
             <div className="relative grid h-48 w-48 place-items-center">
-            <svg viewBox="0 0 100 100" className="clear-of-ground absolute inset-0 -rotate-90">
+            {/* The clearing is its own element, a plain circle the size of the ring,
+                  so nothing that animates lives inside the thing casting it. */}
+              <div
+                aria-hidden="true"
+                className="clear-of-ground-ring pointer-events-none absolute inset-[5px] rounded-full"
+              />
+              <svg viewBox="0 0 100 100" className="absolute inset-0 -rotate-90">
               <circle
                 cx="50"
                 cy="50"

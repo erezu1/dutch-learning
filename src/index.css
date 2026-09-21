@@ -340,8 +340,7 @@
   filter: var(--lift-shadow);
 }
 
-/* A wide, faint clearing of the page's own colour under the things that
-   measure you.
+/* A clearing of the page's own colour under the things that measure you.
 
    The ambient wash drifts across the whole app, and where its bright part
    passes under something as slender as the progress bar the two come close
@@ -350,22 +349,29 @@
    taking a little of the ground away, so the shape sits on the ramp's own base
    tone whatever is sweeping past underneath.
 
-   Wide, so it reads as the wash being absent rather than as a ring drawn
-   around the ring — but strong, because a clearing that only half clears is
-   the worst of both: still hard to see the shape, and now something else
-   going on around it.
+   Painted, not filtered. A `filter` is recomputed whenever the element it sits
+   on changes, and both of these have something moving INSIDE them — the bar
+   holds the fill whose width animates, the ring holds the arc that draws
+   itself in — so three large blurs were being redone every frame of every
+   animation on the screen. A box-shadow is composited once and does not care
+   what the element contains.
 
-   No elevation on top. The two were doing opposite jobs in the same few
-   pixels, one lightening the ground and one darkening it, and the shadow
-   spent most of what the clearing had just bought.
+   The ring wants the same treatment on both sides of its stroke, which is the
+   only difference between the two: it gets the inset copy as well. */
+:root {
+  --clearing: 0 0 0 5px var(--color-surface), 0 0 14px 7px var(--color-surface),
+    0 0 32px 15px color-mix(in oklab, var(--color-surface) 72%, transparent);
+  --clearing-inset: inset 0 0 0 5px var(--color-surface),
+    inset 0 0 14px 7px var(--color-surface),
+    inset 0 0 32px 15px color-mix(in oklab, var(--color-surface) 72%, transparent);
+}
 
-   The ring on the home screen and the bar on the card share it. They are the
-   same object — the thing that says how far through you are — and the fact
-   that one is bent into a circle should not mean it is lit differently. */
 .clear-of-ground {
-  filter: drop-shadow(0 0 12px var(--color-surface))
-    drop-shadow(0 0 26px color-mix(in oklab, var(--color-surface) 92%, transparent))
-    drop-shadow(0 0 46px color-mix(in oklab, var(--color-surface) 74%, transparent));
+  box-shadow: var(--clearing);
+}
+
+.clear-of-ground-ring {
+  box-shadow: var(--clearing), var(--clearing-inset);
 }
 
 @layer base {
