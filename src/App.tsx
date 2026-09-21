@@ -11,6 +11,7 @@ import { LevelPicker } from './ui/LevelPicker'
 import { glide, screenVariants } from './ui/motion'
 import { ReviewScreen } from './ui/ReviewScreen'
 import { Settings } from './ui/Settings'
+import { UpdateToast } from './ui/UpdateToast'
 import { Welcome } from './ui/Welcome'
 
 const deck = deckCore as Deck
@@ -108,6 +109,7 @@ export default function App() {
 
   return (
     <>
+      <UpdateToast />
       <InstallPrompt />
       <AnimatePresence mode="wait" initial={false}>
         {showWelcome ? (
