@@ -222,6 +222,15 @@ export interface Mood {
   mouth: keyof typeof MOUTHS
   label: string
   squash?: number
+  /**
+   * Straight up, in user units, with no change of shape.
+   *
+   * Squash already lifts her, but it lifts her by deforming — narrower and
+   * taller — so asking for more height that way asks for more stretch as
+   * well. This is the other half of the same idea kept separate: a cat can
+   * raise her chest off the floor without becoming a longer cat.
+   */
+  rise?: number
   tilt?: number
   ear?: 'perk' | 'flat'
   gaze?: [number, number]
@@ -534,7 +543,7 @@ export const MOODS: Record<string, Mood> = {
   // which is the only reason to come up off the carpet with your eyes still
   // shut. The lift is the whole difference — a yawn taken lying flat is a cat
   // with her mouth open — and her paws quiver through it, the way they do.
-  stretch:   { eyes: 'sleepy',  mouth: 'yawn', squash: 0.5,     label: 'Stretch', tilt: -3, ear: 'flat' },
+  stretch:   { eyes: 'sleepy',  mouth: 'yawn', squash: 0.5, rise: 6, label: 'Stretch', tilt: -3, ear: 'flat' },
   curious:   { eyes: 'curious', mouth: 'neutral', squash: 0.5, label: 'Curious', tilt: 7 },
   surprised: { eyes: 'wide',    mouth: 'open', squash: 0.32,    label: 'Surprised', ear: 'perk' },
   celebrate: { eyes: 'happy',   mouth: 'open', squash: 0.4,    label: 'Celebrate', tilt: -3, ear: 'perk' },
@@ -633,7 +642,7 @@ const SY = `(1 + ${LIFT} * 0.083 + var(--breath, 0) * 0.013)`
 // Outermost in the list, so it moves the already-deformed head rather than
 // being scaled along with everything else.
 const POSE_HEAD =
-  `translateY(calc(${LIFT} * -5px + var(--hop, 0) * -15px)) ` +
+  `translateY(calc(${LIFT} * -5px + var(--rise, 0) * -1px + var(--hop, 0) * -15px)) ` +
   `rotate(var(--tilt, 0deg)) scaleX(calc(${SX})) scaleY(calc(${SY}))`
 
 // The skull deforms; the things sitting in it do not. An eye is a circle and
@@ -692,7 +701,13 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
   // In rig mode the pose is not baked in. Every channel reads a custom
   // property instead, so one element can hold any mood and two moods can be
   // blended by transitioning the properties rather than swapping drawings.
-  const headStyle = rig ? pin(PIVOT.head, 0, 0, 0, POSE_HEAD) : pin(PIVOT.head, m.tilt ?? 0, 0, 0, BREATH)
+  // The static render has no channels to read, so the rise is written into
+  // the transform directly — otherwise a still of a mood does not match the
+  // rig's version of the same mood, which is the sort of thing that is only
+  // ever found later and by accident.
+  const headStyle = rig
+    ? pin(PIVOT.head, 0, 0, 0, POSE_HEAD)
+    : pin(PIVOT.head, m.tilt ?? 0, 0, -(m.rise ?? 0), BREATH)
   const earStyle = (side: 'l' | 'r') => rig
     ? pin(side === 'l' ? PIVOT.earL : PIVOT.earR, 0, 0, 0, POSE_EAR(side))
     : pin(side === 'l' ? PIVOT.earL : PIVOT.earR,

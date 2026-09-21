@@ -271,6 +271,7 @@ export class CatRig {
     const [gx, gy] = m.gaze ?? [0, 0]
     s.setProperty('--tilt', `${m.tilt ?? 0}deg`)
     s.setProperty('--sq', String(m.squash ?? 0.85))
+    s.setProperty('--rise', String(m.rise ?? 0))
     s.setProperty('--ear-l', `${turn}deg`)
     s.setProperty('--ear-r', `${-turn}deg`)
     s.setProperty('--gaze-px', `${gx}px`)
