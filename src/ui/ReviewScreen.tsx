@@ -65,7 +65,7 @@ export function ReviewScreen({ session, coat, dark, onExit }: Props) {
       {/* The bar is pushed down to leave her somewhere to lie. She is not a
           decoration above it — she is resting ON it, which only reads if the
           bar is the thing under her paws rather than a line she floats over. */}
-      <header className="relative z-10 flex items-center gap-3 px-4 pt-[5.25rem]">
+      <header className="relative z-10 flex items-center gap-3 px-4 pt-[6.5rem]">
         <motion.button
           onClick={onExit}
           aria-label="Stop"
@@ -85,14 +85,14 @@ export function ReviewScreen({ session, coat, dark, onExit }: Props) {
             <Cat
               coat={coat}
               rim={dark}
-              size={86}
+              size={101}
               scene="reading"
               beat={beat}
               label="The cat. She is watching you work."
               className="pointer-events-auto"
             />
           </div>
-          <div className="h-1.5 overflow-hidden rounded-full bg-surface-3">
+          <div className="clear-of-ground h-1.5 overflow-hidden rounded-full bg-surface-3">
             <motion.div
               className="h-full rounded-full bg-primary"
               initial={false}

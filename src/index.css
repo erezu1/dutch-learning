@@ -334,6 +334,26 @@
     drop-shadow(0 0 14px rgb(var(--glow) / calc(0.09 * var(--glow-boost))));
 }
 
+/* A halo of the page's own colour, so a thin shape reads against the moving
+   accent behind it.
+   
+   The ambient wash drifts across the whole app, and where its bright part
+   passes under something as slender as the progress bar the two come close
+   enough in tone that the bar disappears for a few seconds at a time. A
+   shadow cannot fix that — it is the same problem one step darker. What works
+   is clearing a little of the ground away: three stacked drop-shadows in the
+   surface colour, which paint the ground back in around the shape before the
+   shape is drawn, so it always sits on the ramp's own base tone whatever is
+   sweeping past underneath.
+   
+   The ring on the home screen and the bar on the card share it. They are the
+   same object — the thing that says how far through you are — and the fact
+   that one is bent into a circle should not mean it is lit differently. */
+.clear-of-ground {
+  filter: drop-shadow(0 0 3px var(--color-surface)) drop-shadow(0 0 7px var(--color-surface))
+    drop-shadow(0 0 13px var(--color-surface));
+}
+
 @layer base {
   html,
   body,

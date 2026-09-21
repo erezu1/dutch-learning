@@ -190,7 +190,7 @@ export function Home({
               />
             </motion.div>
             <div className="relative grid h-48 w-48 place-items-center">
-            <svg viewBox="0 0 100 100" className="lift absolute inset-0 -rotate-90">
+            <svg viewBox="0 0 100 100" className="clear-of-ground absolute inset-0 -rotate-90">
               <circle
                 cx="50"
                 cy="50"
