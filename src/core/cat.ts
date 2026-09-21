@@ -51,13 +51,18 @@ export function headPath(q = 1): string {
 
 // Big triangles off the top corners. The ear is the silhouette — it is what
 // still says "cat" at 36px, when the whole face has become four grey pixels.
+//
 // The base runs a long way down into the skull. None of that lobe is ever
 // seen — the head is drawn over it — and it is there entirely so the ear
 // still has something to sit on once it has been turned by a perk or lifted
 // by a squash. A base cut to just what shows at rest comes away from the
-// head the moment anything moves.
-const EAR_L = 'M12 48C7 33 4 12 8 5C10.5 1 15 3 18.5 7.5C26 17 38 26 48 24C52 40 44 58 28 60C18 61 13 55 12 48Z'
-const EAR_R = 'M108 48C113 33 116 12 112 5C109.5 1 105 3 101.5 7.5C94 17 82 26 72 24C68 40 76 58 92 60C102 61 107 55 108 48Z'
+// head the moment anything moves, and it did: asleep, with both ears laid
+// flat and the head at its widest and lowest, the bottom of the right lobe
+// swung out past the skull and you could see where the ear stopped. It now
+// runs fourteen units deeper, to y 74, which is still well inside a head
+// whose edge at that height is out at 110.
+const EAR_L = 'M12 48C7 33 4 12 8 5C10.5 1 15 3 18.5 7.5C26 17 38 26 48 24C54 44 46 72 28 74C16 75 12 62 12 48Z'
+const EAR_R = 'M108 48C113 33 116 12 112 5C109.5 1 105 3 101.5 7.5C94 17 82 26 72 24C66 44 74 72 92 74C104 75 108 62 108 48Z'
 
 // The pink sits inside the ear, off-centre toward the OUTER edge: roughly
 // four units of fur along the outside against seven or more along the inside.
@@ -76,17 +81,26 @@ const EAR_R_IN = 'M105.5 44C110.5 32 112 13 109 7.5C107.5 5.5 106 6.5 104.5 10C1
 // There is no straight segment anywhere in it — the last version had real
 // H and V edges, which is what made it a box. A pure ellipse went the other
 // way and turned them into eggs; this sits between the two.
+// The two TOP corners are rounder than the bottom two: the handle there is
+// 0.70 of the radius against 0.72 below. The top of a paw is the part with
+// nothing behind it, so a corner there reads as a corner; the bottom two sit
+// against the ledge and keep the flatter, weightier turn.
+//
 // Whole rounded shapes, top and bottom both. Nothing is cut by the frame —
 // they rest above it. Two earlier tries were wrong in opposite directions: a
 // half-oval, which has no bottom at all, and then a rounded rectangle, which
 // has twelve units of dead straight side. This has neither; the curve never
 // stops turning.
-const PAW_L = 'M11 92C11 83.4 15.5 80 27 80C38.5 80 43 83.4 43 92C43 100.6 38.5 104 27 104C15.5 104 11 100.6 11 92Z'
-const PAW_R = 'M77 92C77 83.4 81.5 80 93 80C104.5 80 109 83.4 109 92C109 100.6 104.5 104 93 104C81.5 104 77 100.6 77 92Z'
+const PAW_L = 'M11 92C11 83.6 15.8 80 27 80C38.2 80 43 83.6 43 92C43 100.6 38.5 104 27 104C15.5 104 11 100.6 11 92Z'
+const PAW_R = 'M77 92C77 83.6 81.8 80 93 80C104.2 80 109 83.6 109 92C109 100.6 104.5 104 93 104C81.5 104 77 100.6 77 92Z'
 // The toe splits rise from the bottom of the paw, not down from the crown. A
 // paw divides front-to-back; a line hanging off the top reads as a seam.
-const TOES_L = 'M23 102V97M33 102V97'
-const TOES_R = 'M87 102V97M97 102V97'
+// Down to 103, where the round cap takes them to 104 — exactly the paw's
+// lower edge, so each line runs into the outline rather than stopping in open
+// fur a couple of units above it. That gap is what made them read as marks
+// ON a paw instead of as the splits BETWEEN toes.
+const TOES_L = 'M23 103V95M33 103V95'
+const TOES_R = 'M87 103V95M97 103V95'
 
 const EYE = { l: 40, r: 80, y: 58, rx: 11.5, ry: 12 }
 /**
