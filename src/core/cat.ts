@@ -667,12 +667,17 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
     </g>` : ''
   const pawRim = (d: string) => (rim ? `<path class="cat-rim" d="${d}" ${rimAttrs}/>` : '')
 
-  // The drawing is laid out in a 120x108 field, but the frame is wider than
-  // that on every side. A tilted head swings an ear tip a long way: seven
-  // degrees about the neck moves the far tip roughly eight units sideways and
-  // five up, and a lifted squash raises it further still. With the frame cut
-  // to the resting pose those tips get sliced off the moment she reacts.
-  return `<svg viewBox="-10 -10 140 122" width="${size}" height="${size * 122 / 140}"
+  // The drawing is laid out in a 120x108 field and the frame is wider than
+  // that on every side, because almost everything she does makes her briefly
+  // bigger than her resting pose. A seven-degree tilt swings the far ear tip
+  // about eight units sideways and five up; a lifted squash stretches her and
+  // then raises the whole head on top of that; a huff lays the ears back.
+  //
+  // Measured rather than guessed: across the tilt and squash range her ears
+  // reach y = -9.1, which a top edge at -10 was clipping the moment two of
+  // those combined. The margin is now ten units clear at the top, where every
+  // one of those effects points.
+  return `<svg viewBox="-14 -20 148 134" width="${size}" height="${size * 134 / 148}"
   xmlns="http://www.w3.org/2000/svg" class="cat" role="img" aria-label="${c.name} cat, ${m.label.toLowerCase()}">
   <defs>
     <clipPath id="${id}body"><path d="${HEAD}"/></clipPath>

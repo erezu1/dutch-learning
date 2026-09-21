@@ -35,7 +35,7 @@ export function Done({ stats, points, coat, dark, onHome, onMore }: Props) {
         <Cat
           coat={coat}
           rim={dark}
-          size={124}
+          size={136}
           scene="waiting"
           beat={{ scene: 'finished', key: 1 }}
           label="The cat, pleased with you"

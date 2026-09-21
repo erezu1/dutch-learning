@@ -25,7 +25,7 @@ export function Welcome({ coat, dark, onBegin }: { coat: CoatId; dark: boolean; 
         <Cat
           coat={coat}
           rim={dark}
-          size={150}
+          size={165}
           scene="waiting"
           beat={{ scene: 'greeting', key: 1 }}
           label="The cat, saying hello"

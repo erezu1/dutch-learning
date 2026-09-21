@@ -85,7 +85,7 @@ export function ReviewScreen({ session, coat, dark, onExit }: Props) {
             <Cat
               coat={coat}
               rim={dark}
-              size={78}
+              size={86}
               scene="reading"
               beat={beat}
               label="The cat. She is watching you work."

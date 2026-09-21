@@ -184,7 +184,7 @@ export function Home({
               <Cat
                 coat={coat}
                 rim={resolvedMode === 'dark'}
-                size={92}
+                size={101}
                 scene={waiting > 0 ? 'waiting' : 'nothingDue'}
                 label="The cat"
               />
