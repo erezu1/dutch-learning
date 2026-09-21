@@ -301,6 +301,7 @@ export class CatRig {
     s.setProperty('--sq', String(m.squash ?? 0.85))
     s.setProperty('--rise', String(m.rise ?? 0))
     s.setProperty('--ear-out', String(m.earOut ?? 0))
+    s.setProperty('--face-down', String(m.faceDown ?? 0))
     // The head's own shape. Not a scale — a scale keeps whatever proportions
     // it was handed, and the two shapes wanted here are a circle and a
     // flat-bottomed wedge, which no scale of one path can be both of. Every

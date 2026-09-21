@@ -81,13 +81,13 @@ const REST: [number, number][] = [
 ]
 
 const TRAP: [number, number][] = [
-  [60, 15], [78, 15], [90, 20], [95, 29],
-  [101, 40], [106, 56], [107, 72],
-  [107.5, 86], [105, 99.4], [96, 100],
-  [84, 100], [36, 100], [24, 100],
-  [15, 99.4], [12.5, 86], [13, 72],
-  [14, 56], [19, 40], [25, 29],
-  [30, 20], [42, 15], [60, 15],
+  [60, 23], [78, 23], [90, 26], [95, 33],
+  [101, 43], [106, 58], [107, 72],
+  [107.5, 86], [106.5, 99.4], [102, 100],
+  [90, 100], [30, 100], [18, 100],
+  [13.5, 99.4], [12.5, 86], [13, 72],
+  [14, 58], [19, 43], [25, 33],
+  [30, 26], [42, 23], [60, 23],
 ]
 
 export function headPath(q = 1): string {
@@ -359,6 +359,15 @@ export interface Mood {
   squash?: number
   /** How far each ear slides away from the midline, in user units. */
   earOut?: number
+  /**
+   * How far the whole face rides down, in user units.
+   *
+   * A head with a lower crown has less room above the eyes and the same
+   * amount below, which puts the face too high in it. This is not a squash —
+   * nothing changes shape, the arrangement just sits lower, which is where a
+   * face sits on a cat lying flat.
+   */
+  faceDown?: number
   /**
    * Straight up, in user units, with no change of shape.
    *
@@ -682,7 +691,8 @@ export const MOODS: Record<string, Mood> = {
   // into the carpet — the scale flattens her, this is the weight.
   // Down on the carpet her ears slide outward and lie back further than any
   // other mood's: a head spread along the floor takes its ears with it.
-  sleepy:    { eyes: 'sleepy',  mouth: 'neutral', squash: 1, earOut: 4, label: 'Sleepy', tilt: -4, ear: 'flat' },
+  sleepy:    { eyes: 'sleepy',  mouth: 'neutral', squash: 1, earOut: 4, faceDown: 5,
+               label: 'Sleepy', tilt: -4, ear: 'flat' },
   // Two yawns, because a cat yawns for two different reasons and they do not
   // look alike.
   //
@@ -842,7 +852,11 @@ const POSE_GAZE =
 const TWITCH = (deg: number, v: string) => `calc(${deg}deg + var(${v}, 0deg))`
 // Kept small. The base of the ear is hidden behind the skull, and these are
 // the angles that stay hidden — turn it further and the ear visibly unhooks.
-const EAR_TURN: Record<string, number> = { perk: -6, flat: 15 }
+// Signs, because they are the easy thing to get backwards and I did. The left
+// ear's tip sits up and to the left of its pivot, so a POSITIVE rotation
+// swings that tip inward and up — ears pinched together, which is an alert
+// cat, not a sleeping one. Laid back is outward and down, which is negative.
+const EAR_TURN: Record<string, number> = { perk: -6, flat: -15 }
 
 let uid = 0
 
@@ -911,7 +925,10 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
   // The skull narrows as it lifts, and an ear that rides the full 7 units
   // ends up above the part of the head still wide enough to hold it.
   const earDx = 2.5 * lift, earDy = -4 * lift
-  const faceDy = -3.5 * lift
+  const faceDy = -3.5 * lift + (m.faceDown ?? 0)
+  // In the rig the mood is chosen after the drawing is built, so anything the
+  // mood decides has to be a channel rather than a number baked into it.
+  const DOWN = 'var(--face-down, 0) * 1px'
 
   // Patches carry onto the ears — a calico's black side takes its ear with
   // it. Stripes do not: they are laid out for the forehead, and letting them
@@ -1023,17 +1040,17 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
     <g class="cat-coat" clip-path="url(#${id}s)">${marks}</g>
     <ellipse class="cat-muzzle" cx="60" cy="75" rx="24" ry="13.5"
       fill="${c.muzzle}" opacity="${c.muzzleAlpha ?? (c.dark ? 0.42 : 0.65)}"
-      style="transform-box:view-box;transform-origin:60px 75px;transform:translateY(${faceDy}px) ${rig ? UNSQUASH : ''}"/>
+      style="transform-box:view-box;transform-origin:60px 75px;transform:translateY(calc(${faceDy}px + ${DOWN})) ${rig ? UNSQUASH : ''}"/>
     ${volume}
     ${c.chin ? `<ellipse class="cat-chin" clip-path="url(#${id}s)" cx="${c.chin.cx}"
       cy="${c.chin.cy}" rx="${c.chin.rx}" ry="${c.chin.ry}" fill="${c.chin.fill}"/>` : ''}
-    <g class="cat-whiskers" transform="translate(0 ${faceDy})" style="transform-box:view-box;transform-origin:60px 78px;transform:rotate(calc(var(--huff,0) * -2.2deg + var(--whisk,0) * 2.1deg)) scaleX(calc(1 + var(--huff,0) * 0.035 + var(--whisk,0) * 0.022))">
+    <g class="cat-whiskers" style="transform-box:view-box;transform-origin:60px 78px;transform:translateY(calc(${faceDy}px + ${DOWN})) rotate(calc(var(--huff,0) * -2.2deg + var(--whisk,0) * 2.1deg)) scaleX(calc(1 + var(--huff,0) * 0.035 + var(--whisk,0) * 0.022))">
       ${WHISKERS.map((w, i) => `<path d="${w.d}" fill="none" stroke="${c.line}"
         stroke-width="1.8" stroke-linecap="round" style="transform-box:view-box;
         transform-origin:${w.at};transform:rotate(calc(var(--whisk-${i % 3}, 0deg) * ${w.swing}
         + var(--hop, 0) * ${w.flick}deg)) ${rig ? UNSQUASH : ''}"/>`).join('')}
     </g>
-    <g class="cat-face" style="${pin('60px 100px', 0, 0, faceDy)}">
+    <g class="cat-face" style="transform-box:view-box;transform-origin:60px 100px;transform:translateY(calc(${faceDy}px + ${DOWN}))">
       <g class="cat-brows" style="transform-box:view-box;transform-origin:60px 44px;transform:${rig ? UNSQUASH : 'none'}">${browSets}</g>
       <g class="cat-eye cat-eye-l" style="${pin(PIVOT.eyeL, 0, 0, 0, rig ? UNSQUASH : '')}">${rig ? side('l') : eyeL}</g>
       <g class="cat-eye cat-eye-r" style="${pin(PIVOT.eyeR, 0, 0, 0, rig ? UNSQUASH : '')}">${rig ? side('r') : eyeR}</g>
