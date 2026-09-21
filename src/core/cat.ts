@@ -701,8 +701,12 @@ export const MOODS: Record<string, Mood> = {
   // into the carpet — the scale flattens her, this is the weight.
   // Down on the carpet her ears slide outward and lie back further than any
   // other mood's: a head spread along the floor takes its ears with it.
+  // No tilt. Every other mood can lean, but this one is the only one whose
+  // shape has a flat bottom, and four degrees of lean on a flat bottom is a
+  // cat lying on a slope. The base has to be parallel to the ground it is
+  // supposed to be resting on.
   sleepy:    { eyes: 'sleepy',  mouth: 'neutral', squash: 1, earOut: 4, earDown: 5, faceDown: 5,
-               label: 'Sleepy', tilt: -4, ear: 'flat' },
+               label: 'Sleepy', ear: 'flat' },
   // Two yawns, because a cat yawns for two different reasons and they do not
   // look alike.
   //
