@@ -622,7 +622,7 @@ const SY = `(1 + ${LIFT} * 0.083 + var(--breath, 0) * 0.013)`
 // Outermost in the list, so it moves the already-deformed head rather than
 // being scaled along with everything else.
 const POSE_HEAD =
-  `translateY(calc(${LIFT} * -5px)) ` +
+  `translateY(calc(${LIFT} * -5px + var(--hop, 0) * -15px)) ` +
   `rotate(var(--tilt, 0deg)) scaleX(calc(${SX})) scaleY(calc(${SY}))`
 
 // The skull deforms; the things sitting in it do not. An eye is a circle and
@@ -649,7 +649,11 @@ const POSE_EAR = (side: 'l' | 'r') => {
 // breath's — beats that share a factor resolve into one pattern.
 const POSE_PAW = (side: 'l' | 'r') =>
   `rotate(calc(var(--paw-${side}, 0deg) + var(--shake, 0) * var(--shake-gain, 0) * 5deg)) ` +
-  `translateY(calc(var(--paw-${side}-y, 0px) + var(--bob, 0) * var(--bob-gain, 0) * -6px))`
+  `translateY(calc(var(--paw-${side}-y, 0px) + var(--bob, 0) * var(--bob-gain, 0) * -6px` +
+  // A quarter of what the head does. She is pushing off the ledge, not
+  // letting go of it — paws that travel with the head make her a sticker
+  // being slid up the screen rather than a cat standing up in a hurry.
+  ` + var(--hop, 0) * -3.5px))`
 const POSE_GAZE =
   'translate(calc(var(--gaze-x, 0px) + var(--gaze-px, 0px)), calc(var(--gaze-y, 0px) + var(--gaze-py, 0px)))'
 const TWITCH = (deg: number, v: string) => `calc(${deg}deg + var(${v}, 0deg))`

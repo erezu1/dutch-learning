@@ -579,29 +579,33 @@ export class CatRig {
 
   /** A gesture the idle loop owns. It may not be listening. */
   /**
-   * A start: she comes off the ground and lands again.
+   * A start: she comes off the ledge and settles back onto it.
    *
-   * On the root element rather than in the pose, because it is the one thing
-   * she does that moves the whole animal — head, ears and paws together — and
-   * anything written into the pose would have to be undone by whatever mood
-   * follows. It is a one-shot with no resting state to return to, so nothing
-   * can be left holding it.
-   *
-   * Stretched going up and squashed on landing, which is the whole of why a
-   * jump reads as weight rather than as a picture being moved: she is longer
-   * in the air than she is on the floor.
+   * One channel, `--hop`, which the head and the paws each read at their own
+   * gain — so it composes with whatever mood she is in instead of fighting it,
+   * and a one-shot that returns to zero leaves nothing behind for the next
+   * mood to undo.
    */
   hop() {
-    this.svg.style.transformOrigin = '50% 100%'
+    // Through the pose channels rather than on the root element, so the two
+    // halves of her can move by different amounts: the head takes the whole
+    // fifteen units and the paws take a fifth of that. She is pushing off the
+    // ledge, not letting go of it.
+    //
+    // She crouches before she goes and absorbs when she lands. Both are small
+    // and neither is the jump, but without them she arrives at the top of the
+    // move with nothing having led up to it — which is the whole of what
+    // "abrupt" means in a drawing that is otherwise this soft.
     this.svg.animate(
       [
-        { transform: 'translateY(0) scale(1, 1)' },
-        { transform: 'translateY(-6%) scale(0.95, 1.07)', offset: 0.2 },
-        { transform: 'translateY(-13%) scale(0.98, 1.03)', offset: 0.42 },
-        { transform: 'translateY(0) scale(1.07, 0.93)', offset: 0.7 },
-        { transform: 'translateY(0) scale(1, 1)' },
-      ],
-      { duration: 640, easing: 'cubic-bezier(.22,1,.36,1)' },
+        { '--hop': 0 },
+        { '--hop': -0.13, offset: 0.12 },
+        { '--hop': 1, offset: 0.44 },
+        { '--hop': 0, offset: 0.76 },
+        { '--hop': -0.1, offset: 0.87 },
+        { '--hop': 0 },
+      ] as Keyframe[],
+      { duration: 900, easing: 'cubic-bezier(.4,0,.35,1)' },
     )
   }
 
