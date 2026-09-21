@@ -228,6 +228,16 @@ export class CatRig {
    * gets the moment to itself.
    */
   starring = false
+  /**
+   * She has started going under: the wind-down's yawn has been and gone and
+   * the sleep behind it is already scheduled.
+   *
+   * Nothing unprompted may happen to her in that window. A cat who jumps at
+   * a noise and is asleep two seconds later did not hear anything — and the
+   * jump is the loudest thing she does, so it is the one that makes the
+   * contradiction obvious.
+   */
+  settling = false
   lastWrong = ''
 
   constructor(
@@ -491,6 +501,9 @@ export class CatRig {
    */
   #scheduleDoze() {
     clearTimeout(this.dozing ?? undefined)
+    // The clock is starting over, which means something woke her or kept her
+    // up. Whatever she had begun to do about going to sleep, she has stopped.
+    this.settling = false
     // Already down. The test is what she is doing, not what the screen asked
     // for: a cat who has woken herself up out of a nap on a screen that still
     // wants her asleep has to be able to wind back down, and testing `wanted`
@@ -499,6 +512,7 @@ export class CatRig {
     this.dozing = setTimeout(() => {
       // `quiet`, so a yawn does not count as being paid attention to and reset
       // the very clock that produced it.
+      this.settling = true
       if (!this.holding) this.react('yawn', { ms: 2400, quiet: true, min: 0 })
       this.dozing = setTimeout(() => {
         this.dozing = null
@@ -525,7 +539,7 @@ export class CatRig {
         // Not while she is asleep: waking for no reason undoes the one mood
         // that is meant to look like nothing is happening, and a start out of
         // sleep is what the app's own beats are for.
-        if (this.base !== 'sleepy' && chance(0.07)) {
+        if (this.base !== 'sleepy' && !this.settling && chance(0.07)) {
           this.hop()
           this.react('startled', { ms: 900, quiet: true, min: 0 })
         } else {
