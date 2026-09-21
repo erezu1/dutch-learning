@@ -194,7 +194,7 @@ export function Home({
                   so nothing that animates lives inside the thing casting it. */}
               <div
                 aria-hidden="true"
-                className="clearing-ring pointer-events-none absolute inset-0 rounded-full"
+                className="clearing-ring pointer-events-none absolute inset-[-20px] rounded-full"
               />
               <svg viewBox="0 0 100 100" className="absolute inset-0 -rotate-90">
               <circle
@@ -261,13 +261,13 @@ export function Home({
         {/* The week sits a little apart from the button: it's a record, not
             a second thing to press. */}
         <div className="flex w-full flex-col items-center gap-10">
-          {/* Smaller than the one on the Done screen, and narrower than the
-              column. This screen is not only its button — the ring above it
-              and the cat on that ring are the reason you are looking, and a
-              full-width block of accent under them takes the eye straight
-              back down. */}
+          {/* Narrower than the column, but the same height and type as every
+              other button in the app. This screen is not only its button — the
+              ring above it and the cat on that ring are the reason you are
+              looking, and a full-width block of accent under them takes the
+              eye straight back down. Width is the part that can vary; a button
+              that is also a different size is just a different button. */}
           <Button
-            size="sm"
             onClick={() => onStart(another)}
             disabled={waiting === 0 && !another}
             className="px-14"

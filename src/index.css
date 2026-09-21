@@ -359,30 +359,42 @@
 
    Each is its own element behind the thing it clears, so nothing that moves
    ever sits inside it. */
-/* Denser at the core than the first gradient and softer at the edge than the
-   box-shadow it replaced: most of the weight sits in the few pixels either
-   side of the bar, where it does the work, and what is left only has to carry
-   the falloff. */
+/* The bar's clearing is the bar's shape, not a blob behind it. An ellipse
+   bulges in the middle and pinches at the ends, which is the opposite of what
+   a long thin pill needs — the middle was over-cleared and the ends were bare.
+   A vertical gradient gives the falloff above and below, and a mask takes the
+   two ends off, so what is left is a band the length of the bar. */
 .clearing {
-  background: radial-gradient(
-    ellipse at center,
-    color-mix(in oklab, var(--color-surface) 88%, transparent) 0%,
-    color-mix(in oklab, var(--color-surface) 70%, transparent) 32%,
-    color-mix(in oklab, var(--color-surface) 32%, transparent) 60%,
-    transparent 82%
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in oklab, var(--color-surface) 26%, transparent) 20%,
+    color-mix(in oklab, var(--color-surface) 88%, transparent) 40%,
+    color-mix(in oklab, var(--color-surface) 88%, transparent) 60%,
+    color-mix(in oklab, var(--color-surface) 26%, transparent) 80%,
+    transparent 100%
   );
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
 }
 
 /* The ring wants the same thing bent into a band: cleared on both sides of the
    stroke rather than out from a centre, since its middle is where the score
-   goes and there is nothing there to lift. */
+   goes and there is nothing there to lift.
+
+   It is deliberately drawn on an element larger than the ring. Sized to the
+   ring itself the outer half of the band had nowhere to go — a rounded element
+   clips its own background at its edge, so every stop past 100% simply never
+   painted, and the fade looked thin outside and generous inside when the two
+   were meant to match. With room on both sides the ramps are within a few
+   pixels of each other. */
 .clearing-ring {
   background: radial-gradient(
     circle closest-side,
-    transparent 56%,
-    color-mix(in oklab, var(--color-surface) 76%, transparent) 76%,
-    color-mix(in oklab, var(--color-surface) 76%, transparent) 99%,
-    transparent 116%
+    transparent 50%,
+    color-mix(in oklab, var(--color-surface) 80%, transparent) 63%,
+    color-mix(in oklab, var(--color-surface) 80%, transparent) 86%,
+    transparent 99%
   );
 }
 
