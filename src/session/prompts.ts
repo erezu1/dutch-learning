@@ -85,6 +85,28 @@ function example(note: Note) {
   return { detail: ex?.nl, detailTranslation: ex?.en }
 }
 
+/**
+ * The example sentence, but only when it contains the form the card is about.
+ *
+ * A word's example is written for the word, not for the question being asked
+ * about it: of the 286 verbs with both a participle and a sentence, exactly 2
+ * sentences contain the participle. So "What is the past participle? / zijn /
+ * geweest" came with "Ik ben moe." underneath — a present-tense sentence, set
+ * larger than anything else on the card, that shows neither the participle nor
+ * the perfect tense and reads as if it were the point. Better nothing than a
+ * sentence that contradicts the question.
+ *
+ * Kept for the cards where the sentence really is about the answer: knowing a
+ * noun's gender is helped by seeing the noun in a sentence, whether or not the
+ * article happens to be next to it.
+ */
+function exampleOf(note: Note, form: string | undefined) {
+  if (!form) return {}
+  const pattern = new RegExp(`\\b${form.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i')
+  const ex = note.examples?.find((e) => pattern.test(e.nl))
+  return ex ? { detail: ex.nl, detailTranslation: ex.en } : {}
+}
+
 export interface PromptContext {
   /** The whole deck, so we can draw plausible wrong answers from it. */
   notes: Note[]
@@ -115,7 +137,12 @@ function shuffle<T>(items: T[]): T[] {
  */
 const bare = (text: string) => text.replace(/\s*\([^)]*\)\s*$/, '').toLowerCase()
 
-function distractors(note: Note, ctx: PromptContext, render: (n: Note) => string, count = 3): string[] {
+function distractors(
+  note: Note,
+  ctx: PromptContext,
+  render: (n: Note) => string,
+  count = 3,
+): string[] {
   const correct = render(note)
   const candidates = ctx.notes.filter((n) => n.id !== note.id && bare(render(n)) !== bare(correct))
   const tag = note.tags?.[0]
@@ -234,7 +261,7 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         answer: note.gender ? `de ${note.plural}` : note.plural!,
         answerLang: 'nl',
         speak: note.gender ? `de ${note.plural}` : note.plural,
-        ...example(note),
+        ...exampleOf(note, note.plural),
       }
 
     case 'participle':
@@ -244,14 +271,15 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         instruction: 'What is the past participle?',
         question: note.nl,
         questionLang: 'nl',
-        subtitle: note.verb?.separable ? 'separable verb' : undefined,
+        // Which verb it is, since the sentence that used to say so is gone.
+        subtitle: note.verb?.separable ? `separable · ${note.en[0]}` : note.en[0],
         // Just the participle. The question asks for one word, so answering
         // with "hebben gedaan" answers a question that wasn't asked — and the
         // helper is drilled by its own card anyway.
         answer: note.verb!.participle,
         answerLang: 'nl',
         speak: note.verb!.participle,
-        ...example(note),
+        ...exampleOf(note, note.verb!.participle),
       }
 
     case 'cloze': {
@@ -291,7 +319,7 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         answerLang: 'nl',
         choices: ['hebben', 'zijn'],
         speak: `${aux} ${note.verb!.participle}`,
-        ...example(note),
+        ...exampleOf(note, note.verb!.participle),
       }
     }
   }
