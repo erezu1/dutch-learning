@@ -215,7 +215,7 @@ export class CatRig {
     if (name === 'grumpy') this.sulkUntil = performance.now() + SULK
     // Two moods reach the paws. Toggled by class rather than written into the
     // pose, because they are loops and the pose is a destination.
-    this.svg.classList.toggle('cat-bounce', name === 'celebrate')
+    this.svg.classList.toggle('cat-delighted', name === 'celebrate')
     // A yawn trembles and so does temper. Same channel, and it belongs on
     // both: being cross is a whole-body thing, and leaving her paws perfectly
     // still under a furious face is what made the anger read as a mask.
@@ -612,12 +612,34 @@ export function idle(svg: SVGSVGElement, { breath = true } = {}) {
 
   function sniffOnce() {
     play([
+      { '--whisk': 0 }, { '--whisk': 0.45, offset: 0.35 }, { '--whisk': 0 },
+    ], 480, 'ease-out')
+    play([
       { '--sniff': 0 }, { '--sniff': 1, offset: 0.3 },
       { '--sniff': 0, offset: 0.55 }, { '--sniff': 0.6, offset: 0.75 }, { '--sniff': 0 },
     ], 420, 'ease-out')
   }
 
   svg.addEventListener('cat:sniff', () => !stopped && sniffOnce())
+
+  // --- whisker twitch ----------------------------------------------------
+  // The one beat that keeps running whatever she is doing. Whiskers move on a
+  // sleeping cat as readily as on a waking one — they are wired to her nose,
+  // not to her mood — so this is deliberately not gated on anything, and it is
+  // the only sign of life left when everything else has gone still.
+  //
+  // Direction is random. A twitch that always goes the same way is a tic.
+  function whisk() {
+    if (stopped) return
+    const d = chance(0.5) ? 1 : -1
+    play([
+      { '--whisk': 0 },
+      { '--whisk': d, offset: 0.22 },
+      { '--whisk': d * -0.28, offset: 0.55 },
+      { '--whisk': 0 },
+    ], rand(420, 620), 'ease-out')
+    later(whisk, rand(5200, 14000))
+  }
 
   function start() {
     if (reduced.matches) return
@@ -629,6 +651,7 @@ export function idle(svg: SVGSVGElement, { breath = true } = {}) {
     later(flick, rand(2000, 6000))
     later(glance, rand(1500, 5000))
     later(sniff, rand(4000, 12000))
+    later(whisk, rand(1600, 5000))
   }
 
   function stop() {

@@ -590,6 +590,7 @@
 @property --sniff    { syntax: '<number>'; initial-value: 0;    inherits: true; }
 @property --face-dip { syntax: '<number>'; initial-value: 0;    inherits: true; }
 @property --huff     { syntax: '<number>'; initial-value: 0;    inherits: true; }
+@property --whisk    { syntax: '<number>'; initial-value: 0;    inherits: true; }
 @property --huff-l   { syntax: '<number>'; initial-value: 0;    inherits: true; }
 @property --huff-r   { syntax: '<number>'; initial-value: 0;    inherits: true; }
 
@@ -603,8 +604,10 @@
 @property --paw-r    { syntax: '<angle>';  initial-value: 0deg; inherits: true; }
 @property --paw-l-y  { syntax: '<length>'; initial-value: 0px;  inherits: true; }
 @property --paw-r-y  { syntax: '<length>'; initial-value: 0px;  inherits: true; }
-@property --paw-bob  { syntax: '<length>'; initial-value: 0px;  inherits: true; }
-@property --paw-shake{ syntax: '<angle>';  initial-value: 0deg; inherits: true; }
+@property --bob      { syntax: '<number>'; initial-value: 0;    inherits: false; }
+@property --shake    { syntax: '<number>'; initial-value: 0;    inherits: false; }
+@property --bob-gain { syntax: '<number>'; initial-value: 0;    inherits: true; }
+@property --shake-gain { syntax: '<number>'; initial-value: 0;  inherits: true; }
 
 /* The breath is the one beat that IS regular, so it is the one that can be a
    CSS loop. Every other beat is scheduled in JS precisely because it must not
@@ -633,25 +636,41 @@ svg.cat-breathing {
 }
 
 /* Delight and a yawn both reach the paws, and they reach them differently: a
-   pleased cat lifts them, a yawning one trembles. These live on the paws
-   rather than on the <svg> so they compose with the knead above instead of
-   replacing it — one element can only carry one `animation`. */
-@keyframes cat-paw-bob { 0%, 100% { --paw-bob: 0 } 50% { --paw-bob: -6px } }
-@keyframes cat-paw-shake {
-  0%, 100% { --paw-shake: 0deg }
-  30%      { --paw-shake: 5deg }
-  70%      { --paw-shake: -3.5deg }
-}
-/* The second paw lags, so they bob out of step. Together they read as one
-   object being lifted rather than as two paws. */
-svg.cat-bounce .cat-paw { animation: cat-paw-bob 420ms ease-in-out infinite }
-svg.cat-bounce .cat-paw-r { animation-delay: 130ms }
-svg.cat-shake .cat-paw { animation: cat-paw-shake 180ms ease-in-out infinite }
-svg.cat-shake .cat-paw-r { animation-direction: reverse }
+   pleased cat lifts them, an angry or yawning one trembles. These live on the
+   paws rather than on the <svg> so they compose with the knead above instead
+   of replacing it — one element can only carry one `animation`.
+   
+   The cycles run all the time and a GAIN decides whether they count. Starting
+   and stopping the animations with a class was what made her paws jump:
+   removing an animation returns the property to its base value instantly, so
+   whatever point of the cycle she happened to be at became a step. A gain
+   that eases between 0 and 1 leaves the phase alone and fades the amplitude,
+   which is continuous wherever it is interrupted. */
+@keyframes cat-paw-bob { 0%, 100% { --bob: 0 } 50% { --bob: 1 } }
+@keyframes cat-paw-shake { 0%, 100% { --shake: 0 } 30% { --shake: 1 } 70% { --shake: -0.7 } }
 
-/* Asleep. The whole group fades in so she does not start mid-thought, then
-   each z runs the same rise on its own delay — one keyframe, three offsets,
-   which is cheaper than three animations and cannot drift out of step. */
+.cat-paw {
+  animation:
+    cat-paw-bob 420ms ease-in-out infinite,
+    cat-paw-shake 180ms ease-in-out infinite;
+}
+/* The second paw lags on the lift and mirrors on the tremble, so neither
+   reads as two paws doing the same thing at the same instant. */
+.cat-paw-r { animation-delay: 130ms, 0ms; animation-direction: normal, reverse }
+
+svg.cat-rig { --bob-gain: 0; --shake-gain: 0 }
+svg.cat-delighted { --bob-gain: 1 }
+svg.cat-shake { --shake-gain: 1 }
+
+/* Asleep. One keyframe on three offsets, which is cheaper than three
+   animations and cannot drift out of step.
+   
+   The rise runs all the time and only the group's opacity is gated, for the
+   same reason the paws' cycles do: a class that starts and stops the animation
+   drops each z back to its base the instant it is removed — full opacity and
+   no transform — so waking her made them flash brighter and jump before
+   fading. Opacity multiplies down the tree, so a group fading from 1 to 0 over
+   a cycle that never stops is continuous wherever it is interrupted. */
 @keyframes cat-z {
   0% { opacity: 0; transform: translate(0, 5px) scale(0.68) }
   18% { opacity: 0.72 }
@@ -659,11 +678,30 @@ svg.cat-shake .cat-paw-r { animation-direction: reverse }
 }
 .cat-zzz { opacity: 0; transition: opacity 340ms ease }
 svg.cat-asleep .cat-zzz { opacity: 1 }
-svg.cat-asleep .cat-z {
+.cat-z {
   transform-box: fill-box;
   transform-origin: center;
   animation: cat-z 3.6s ease-out infinite;
   animation-delay: var(--zd, 0s);
+}
+
+/* Hearts, when she is delighted. Built the same way as the zzz for the same
+   reason: the cycle never stops and only the group's opacity is gated, so
+   nothing can be caught mid-rise and dropped back to its base. Quicker than
+   the zzz and rising further — the beat should say which mood it belongs to
+   before you have read the shape. */
+@keyframes cat-heart {
+  0% { opacity: 0; transform: translate(0, 6px) scale(0.55) }
+  22% { opacity: 0.9 }
+  100% { opacity: 0; transform: translate(7px, -15px) scale(1.15) }
+}
+.cat-hearts { opacity: 0; transition: opacity 300ms ease }
+svg.cat-delighted .cat-hearts { opacity: 1 }
+.cat-heart {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cat-heart 2.5s ease-out infinite;
+  animation-delay: var(--hd, 0s);
 }
 
 /* Moving between situations. The state machine writes the numbers and this
@@ -679,7 +717,9 @@ svg.cat-rig {
     --ear-l 260ms cubic-bezier(0.34, 1.3, 0.64, 1) 70ms,
     --ear-r 260ms cubic-bezier(0.34, 1.3, 0.64, 1) 70ms,
     --gaze-px 200ms ease-out,
-    --gaze-py 200ms ease-out;
+    --gaze-py 200ms ease-out,
+    --bob-gain 260ms ease-out,
+    --shake-gain 200ms ease-out;
 }
 
 /* The CSS rule further down zeroes every duration, but the loop's own beats
@@ -687,10 +727,10 @@ svg.cat-rig {
    too. This only covers the parts that are CSS. */
 @media (prefers-reduced-motion: reduce) {
   svg.cat-breathing { animation: none }
-  svg.cat-bounce .cat-paw,
-  svg.cat-shake .cat-paw { animation: none }
+  .cat-paw { animation: none }
   /* Still shown, just not drifting: they say she is asleep, which is
      information, and the movement is the part that was decoration. */
-  svg.cat-asleep .cat-z { animation: none; opacity: 0.6 }
+  .cat-z { animation: none; opacity: 0.6 }
+  .cat-heart { animation: none; opacity: 0.75 }
   svg.cat-rig { transition: none }
 }

@@ -101,6 +101,14 @@ const NOSE = 'M60 80.4C56.6 80.4 53.5 78.1 53.5 75.5C53.5 73.5 56.5 72.4 60 72.4
 // asleep; a zzz beside her is her sleeping.
 const ZED = 'M0 0h5.4L0 6.6h5.4'
 
+// And hearts, when she is delighted. The same corner of the frame as the zzz,
+// since the two moods can never happen at once, and the same construction —
+// the difference between sleeping and being pleased should be what rises off
+// her, not where it rises from.
+const HEART =
+  'M0 2.1C0 0.7 1.2 0 2.1 0.6C2.5 0.85 2.8 1.2 3 1.5C3.2 1.2 3.5 0.85 3.9 0.6' +
+  'C4.8 0 6 0.7 6 2.1C6 3.9 3.9 5.5 3 6.2C2.1 5.5 0 3.9 0 2.1Z'
+
 const WHISKERS = 'M44 67q-17-4-28-6M44 72q-18 1-29 1M44 77q-17 5-27 7M76 67q17-4 28-6M76 72q18 1 29 1M76 77q17 5 27 7'
 
 // --- coats -----------------------------------------------------------------
@@ -573,8 +581,8 @@ const POSE_EAR = (side: 'l' | 'r') => {
 // and the two run in antiphase on a period that is not a multiple of the
 // breath's — beats that share a factor resolve into one pattern.
 const POSE_PAW = (side: 'l' | 'r') =>
-  `rotate(calc(var(--paw-${side}, 0deg) + var(--paw-shake, 0deg))) ` +
-  `translateY(calc(var(--paw-${side}-y, 0px) + var(--paw-bob, 0px)))`
+  `rotate(calc(var(--paw-${side}, 0deg) + var(--shake, 0) * var(--shake-gain, 0) * 5deg)) ` +
+  `translateY(calc(var(--paw-${side}-y, 0px) + var(--bob, 0) * var(--bob-gain, 0) * -6px))`
 const POSE_GAZE =
   'translate(calc(var(--gaze-x, 0px) + var(--gaze-px, 0px)), calc(var(--gaze-y, 0px) + var(--gaze-py, 0px)))'
 const TWITCH = (deg: number, v: string) => `calc(${deg}deg + var(${v}, 0deg))`
@@ -745,7 +753,7 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
     ${volume}
     ${c.chin ? `<ellipse class="cat-chin" clip-path="url(#${id}s)" cx="${c.chin.cx}"
       cy="${c.chin.cy}" rx="${c.chin.rx}" ry="${c.chin.ry}" fill="${c.chin.fill}"/>` : ''}
-    <g class="cat-whiskers" transform="translate(0 ${faceDy})" style="transform-box:view-box;transform-origin:60px 78px;transform:rotate(calc(var(--huff,0) * -2.2deg)) scaleX(calc(1 + var(--huff,0) * 0.035))">
+    <g class="cat-whiskers" transform="translate(0 ${faceDy})" style="transform-box:view-box;transform-origin:60px 78px;transform:rotate(calc(var(--huff,0) * -2.2deg + var(--whisk,0) * 2.1deg)) scaleX(calc(1 + var(--huff,0) * 0.035 + var(--whisk,0) * 0.022))">
       <path d="${WHISKERS}" fill="none" stroke="${c.line}" stroke-width="1.8"
         stroke-linecap="round" opacity=".45"/>
     </g>
@@ -764,6 +772,11 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
     <g transform="translate(110 13)"><g class="cat-z" style="--zd:0s"><path d="${ZED}"/></g></g>
     <g transform="translate(118 1)"><g class="cat-z" style="--zd:1.15s"><path d="${ZED}"/></g></g>
     <g transform="translate(126 -12)"><g class="cat-z" style="--zd:2.3s"><path d="${ZED}"/></g></g>
+  </g>
+  <g class="cat-hearts" fill="#EE8E96">
+    <g transform="translate(111 15) scale(0.78)"><g class="cat-heart" style="--hd:0s"><path d="${HEART}"/></g></g>
+    <g transform="translate(120 4) scale(1)"><g class="cat-heart" style="--hd:0.85s"><path d="${HEART}"/></g></g>
+    <g transform="translate(128 -9) scale(1.2)"><g class="cat-heart" style="--hd:1.7s"><path d="${HEART}"/></g></g>
   </g>
   <g class="cat-paw cat-paw-l" style="${pin(PIVOT.pawL, 0, 0, 0, POSE_PAW('l'))}">
     ${pawRim(PAW_L)}<path d="${PAW_L}" ${pawFur}/><path d="${PAW_L}" ${pawVolume}/>
