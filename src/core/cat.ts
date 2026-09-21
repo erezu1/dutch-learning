@@ -624,7 +624,7 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
   // the same stacking the blink uses, so a still frame matches the rig.
   const lid0 = m.arc ?? LID_OPEN
   const [eyeL, eyeR, brows] = EYES[m.eyes](c, id, m.gaze ?? [0, 0], lid0 + (m.lid ?? 0) * (1 - lid0))
-  const pawFur = `fill="${c.paw ?? c.base}" stroke="${c.line}" stroke-width="2.6" stroke-linejoin="round"`
+  const pawFur = `fill="${c.paw ?? c.base}"`
   const turn = m.ear ? (EAR_TURN[m.ear] ?? 0) : 0
   // In rig mode the pose is not baked in. Every channel reads a custom
   // property instead, so one element can hold any mood and two moods can be
@@ -701,14 +701,21 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
   // It has to sit inside the groups that carry the pose. Drawn once at the top
   // level it never moved, so the moment she tilted or squashed it stayed
   // behind as a second outline hanging in the air where she used to be.
-  const rimAttrs = 'fill="none" stroke="#fff" stroke-width="9" opacity=".15" stroke-linejoin="round"'
-  const headRim = rim
-    ? `<g class="cat-rim" ${rimAttrs}>
+  // Her whole outline — ears, head and paws — as one set of paths, each still
+  // inside the group that carries its own pose. Written once because the rim
+  // and the line have to trace exactly the same silhouette; two copies of this
+  // would eventually disagree.
+  const silhouette = `<g class="cat-head" style="${headStyle}">
       <g class="cat-ear cat-ear-l" style="${earStyle('l')}"><path d="${EAR_L}"/></g>
       <g class="cat-ear cat-ear-r" style="${earStyle('r')}"><path d="${EAR_R}"/></g>
       <path d="${HEAD}"/>
-    </g>` : ''
-  const pawRim = (d: string) => (rim ? `<path class="cat-rim" d="${d}" ${rimAttrs}/>` : '')
+    </g>
+    <g class="cat-paw cat-paw-l" style="${pin(PIVOT.pawL, 0, 0, 0, POSE_PAW('l'))}"><path d="${PAW_L}"/></g>
+    <g class="cat-paw cat-paw-r" style="${pin(PIVOT.pawR, 0, 0, 0, POSE_PAW('r'))}"><path d="${PAW_R}"/></g>`
+
+  const catRim = rim
+    ? `<g class="cat-rim" fill="none" stroke="#fff" stroke-width="9" opacity=".15"
+      stroke-linejoin="round">${silhouette}</g>` : ''
 
   // The drawing is laid out in a 120x108 field and the frame is wider than
   // that on every side, because almost everything she does makes her briefly
@@ -744,22 +751,23 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
       <stop offset="100%" stop-color="#000" stop-opacity=".1"/>
     </linearGradient>
   </defs>
-  <g class="cat-head" style="${headStyle}">
-    ${headRim}
-    <!-- The silhouette is one shape, so it gets one outline. Every stroke is
-         laid down first and every fill goes over the top of all of them: any
-         stroke that falls inside the union is painted out, and what survives
-         is only the outer boundary. Stroke three shapes separately and the
-         head's own outline runs straight across the base of each ear, which
-         is the seam that gave her a line between head and ear.
+  ${catRim}
+  <!-- She is one shape, so she gets one outline — paws included. Every stroke
+       is laid down first and every fill goes over the top of all of them: any
+       stroke that falls inside the union is painted out, and what survives is
+       only the outer boundary.
 
-         The width is doubled because the fills cover the inner half of it,
-         leaving 2.6 showing on the outside. -->
-    <g class="cat-outline" fill="none" stroke="${c.line}" stroke-width="5.2" stroke-linejoin="round">
-      <g class="cat-ear cat-ear-l" style="${earStyle('l')}"><path d="${EAR_L}"/></g>
-      <g class="cat-ear cat-ear-r" style="${earStyle('r')}"><path d="${EAR_R}"/></g>
-      <path d="${HEAD}"/>
-    </g>
+       That is why the paws are in here rather than carrying their own. Drawn
+       separately they came with a full outline each, so a line ran between a
+       paw and the face it rests against — she read as a cat with two objects
+       in front of her rather than as a cat with her paws up.
+
+       The width is doubled because the fills cover the inner half of it,
+       leaving 2.6 showing on the outside. -->
+  <g class="cat-outline" fill="none" stroke="${c.line}" stroke-width="5.2" stroke-linejoin="round">
+    ${silhouette}
+  </g>
+  <g class="cat-head" style="${headStyle}">
     <g class="cat-ear cat-ear-l" style="${earStyle('l')}">
       <path d="${EAR_L}" fill="${c.base}"/>
       <g clip-path="url(#${id}el)">${patches}
@@ -796,11 +804,11 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
        already in the air is never cut short by her changing her mind. -->
   <g class="cat-emit" data-ink="${rim ? '#ffffff' : c.line}"></g>
   <g class="cat-paw cat-paw-l" style="${pin(PIVOT.pawL, 0, 0, 0, POSE_PAW('l'))}">
-    ${pawRim(PAW_L)}<path d="${PAW_L}" ${pawFur}/><path d="${PAW_L}" ${pawVolume}/>
+<path d="${PAW_L}" ${pawFur}/><path d="${PAW_L}" ${pawVolume}/>
     <path d="${TOES_L}" fill="none" stroke="${c.line}" stroke-width="2" stroke-linecap="round" opacity=".45"/>
   </g>
   <g class="cat-paw cat-paw-r" style="${pin(PIVOT.pawR, 0, 0, 0, POSE_PAW('r'))}">
-    ${pawRim(PAW_R)}<path d="${PAW_R}" ${pawFur}/><path d="${PAW_R}" ${pawVolume}/>
+<path d="${PAW_R}" ${pawFur}/><path d="${PAW_R}" ${pawVolume}/>
     <path d="${TOES_R}" fill="none" stroke="${c.line}" stroke-width="2" stroke-linecap="round" opacity=".45"/>
   </g>
 </svg>`
