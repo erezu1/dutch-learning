@@ -360,6 +360,14 @@ export interface Mood {
   /** How far each ear slides away from the midline, in user units. */
   earOut?: number
   /**
+   * How far each ear sinks into the skull, in user units.
+   *
+   * Not a scale: the ear is drawn with a long lobe buried in the head, so
+   * pushing it down leaves less of it standing out and it simply reads as a
+   * smaller ear. A cat flat on the carpet has very little ear showing.
+   */
+  earDown?: number
+  /**
    * How far the whole face rides down, in user units.
    *
    * A head with a lower crown has less room above the eyes and the same
@@ -684,14 +692,16 @@ export { EAR_TURN }
 
 export const MOODS: Record<string, Mood> = {
   idle:      { eyes: 'open',    mouth: 'neutral', squash: 0.85, label: 'Idle' },
-  happy:     { eyes: 'happy',   mouth: 'smile', squash: 0.78,   label: 'Happy' },
+  // Pleased lifts her. Squash alone only narrows the head a little at this
+  // end of the range, and being pleased is a thing you do with your chin up.
+  happy:     { eyes: 'happy',   mouth: 'smile', squash: 0.78, rise: 3, label: 'Happy' },
   // All the way down, and it is the only mood that is: the squash channel
   // spreads her past resting only above 0.85, and she is the only one up
   // there. A negative rise on top of it settles her the last couple of units
   // into the carpet — the scale flattens her, this is the weight.
   // Down on the carpet her ears slide outward and lie back further than any
   // other mood's: a head spread along the floor takes its ears with it.
-  sleepy:    { eyes: 'sleepy',  mouth: 'neutral', squash: 1, earOut: 4, faceDown: 5,
+  sleepy:    { eyes: 'sleepy',  mouth: 'neutral', squash: 1, earOut: 4, earDown: 5, faceDown: 5,
                label: 'Sleepy', tilt: -4, ear: 'flat' },
   // Two yawns, because a cat yawns for two different reasons and they do not
   // look alike.
@@ -831,7 +841,8 @@ const UNSQUASH = `scaleX(calc(1 / ${SX})) scaleY(calc(1 / ${SY}))`
 // than a mood.
 const POSE_EAR = (side: 'l' | 'r') => {
   const out = side === 'l' ? 1 : -1
-  return `translate(calc(${LIFT} * ${out * 2.5}px + var(--ear-out, 0) * ${out}px), calc(${LIFT} * -4px)) ` +
+  return `translate(calc(${LIFT} * ${out * 2.5}px + var(--ear-out, 0) * ${out}px), ` +
+    `calc(${LIFT} * -4px + var(--ear-down, 0) * 1px)) ` +
     `rotate(calc(var(--ear-${side}, 0deg) + var(--twitch-${side}, 0deg) + var(--huff-${side}, 0) * ${out * 15}deg))`
 }
 // The idle glance and the mood's own gaze are separate channels that add, so
