@@ -24,7 +24,7 @@ export const LEVELS: LevelOption[] = [
   // language; they are a beginner, or they get by, or they are conversational.
   { id: 'beginner', name: 'Beginner', description: 'Little or no Dutch', startRank: 0 },
   { id: 'a1', name: 'Elementary', description: 'A few hundred words', startRank: 250 },
-  { id: 'a2', name: 'Conversational', description: 'Simple conversations', startRank: 750 },
+  { id: 'a2', name: 'Getting by', description: 'Simple conversations', startRank: 750 },
   { id: 'b1', name: 'Fluent', description: 'Comfortable day to day', startRank: 1500 },
 ]
 
