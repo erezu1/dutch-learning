@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { COAT_IDS, COATS, type CoatId } from '../core/cat'
+import { COAT_IDS, COATS, SNOUT, type CoatId } from '../core/cat'
 import { pressable, quiet } from './motion'
 
 // ---------------------------------------------------------------------------
@@ -109,6 +109,6 @@ function faceMark(id: CoatId): string {
       ${patches}${stripes}
       <ellipse cx="60" cy="75" rx="24" ry="13.5" fill="${c.muzzle}" opacity="${c.muzzleAlpha ?? (c.dark ? 0.42 : 0.65)}"/>
       ${eye(40)}${eye(80)}
-      <path d="M60 80.4C56.6 80.4 53.5 78.1 53.5 75.5C53.5 73.5 56.5 72.4 60 72.4C63.5 72.4 66.5 73.5 66.5 75.5C66.5 78.1 63.4 80.4 60 80.4Z" fill="${c.nose ?? (c.dark ? '#C98C86' : '#E29A93')}"/>
+      <path transform="translate(0 ${SNOUT})" d="M60 80.4C56.6 80.4 53.5 78.1 53.5 75.5C53.5 73.5 56.5 72.4 60 72.4C63.5 72.4 66.5 73.5 66.5 75.5C66.5 78.1 63.4 80.4 60 80.4Z" fill="${c.nose ?? (c.dark ? '#C98C86' : '#E29A93')}"/>
     </g>`
 }

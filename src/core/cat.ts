@@ -89,6 +89,16 @@ const TOES_L = 'M23 102V97M33 102V97'
 const TOES_R = 'M87 102V97M97 102V97'
 
 const EYE = { l: 40, r: 80, y: 58, rx: 11.5, ry: 12 }
+/**
+ * How far the nose and mouth ride above where they are drawn.
+ *
+ * They are drawn as one assembly — every mouth hangs off the nose's bottom
+ * point at y 80.4 — so moving the nose means moving both, and one number
+ * does it for all of them rather than five sets of coordinates being nudged
+ * out of agreement with each other.
+ */
+export const SNOUT = -3
+
 const NOSE = 'M60 80.4C56.6 80.4 53.5 78.1 53.5 75.5C53.5 73.5 56.5 72.4 60 72.4C63.5 72.4 66.5 73.5 66.5 75.5C66.5 78.1 63.4 80.4 60 80.4Z'
 // Long, and deliberately outside the silhouette. Clipping them to the head
 // was wrong — in life and in the reference they cross the edge.
@@ -138,8 +148,12 @@ const disc = (cx: number, cy: number, r: number): string =>
 // no corner to find. Kept small enough to be a marking rather than a hood:
 // it takes the ear and the brow above the eye and stops, which leaves her
 // most of a white face to make expressions with.
+//
+// The two are not the same size. A cat whose markings match on both sides is
+// a logo; the left one comes further down and wraps under the eye onto the
+// cheek, which is the difference between a pattern and an animal.
 const P = {
-  left: disc(22, 23, 30),
+  left: disc(19, 33, 38),
   right: disc(98, 23, 30),
   mask: 'M60 44C82 44 99 62 99 86C99 110 82 126 60 126C38 126 21 110 21 86C21 62 38 44 60 44Z',
 }
@@ -818,9 +832,9 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
       <g class="cat-brows">${browSets}</g>
       <g class="cat-eye cat-eye-l" style="${pin(PIVOT.eyeL, 0, 0, 0, rig ? UNSQUASH : '')}">${rig ? side('l') : eyeL}</g>
       <g class="cat-eye cat-eye-r" style="${pin(PIVOT.eyeR, 0, 0, 0, rig ? UNSQUASH : '')}">${rig ? side('r') : eyeR}</g>
-      <g class="cat-mouth" style="transform-box:view-box;transform:translateY(calc(var(--face-dip,0) * 1.5px))">${rig ? mouthSets : MOUTHS[m.mouth](c)}</g>
+      <g class="cat-mouth" style="transform-box:view-box;transform:translateY(calc(${SNOUT}px + var(--face-dip,0) * 1.5px))">${rig ? mouthSets : MOUTHS[m.mouth](c)}</g>
       <path class="cat-nose" d="${NOSE}" fill="${c.nose ?? (c.dark ? '#C98C86' : '#E29A93')}"
-        style="transform-box:view-box;transform-origin:60px 76px;transform:translateY(calc(var(--sniff,0) * -0.7px + var(--face-dip,0) * 1.1px + var(--huff,0) * -1.7px)) scale(calc(1 + var(--sniff,0) * 0.07 + var(--huff,0) * 0.16)) ${rig ? UNSQUASH : ''}"/>
+        style="transform-box:view-box;transform-origin:60px 76px;transform:translateY(calc(${SNOUT}px + var(--sniff,0) * -0.7px + var(--face-dip,0) * 1.1px + var(--huff,0) * -1.7px)) scale(calc(1 + var(--sniff,0) * 0.07 + var(--huff,0) * 0.16)) ${rig ? UNSQUASH : ''}"/>
     </g>
   </g>
   ${contact}
