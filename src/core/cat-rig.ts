@@ -467,7 +467,19 @@ export class CatRig {
     this.drifting = setTimeout(() => {
       // Never over a reaction: the app is saying something and she is not.
       if (!this.holding) {
-        {
+        // Once in a while something she can hear and you cannot. It is the
+        // only movement she makes that nothing on the screen asked for, which
+        // is exactly what stops the rest of them reading as a machine
+        // answering inputs — rare enough (one drift in fourteen, so a couple
+        // of minutes apart at best) that it stays an event.
+        //
+        // Not while she is asleep: waking for no reason undoes the one mood
+        // that is meant to look like nothing is happening, and a start out of
+        // sleep is what the app's own beats are for.
+        if (this.base !== 'sleepy' && chance(0.07)) {
+          this.hop()
+          this.react('startled', { ms: 900, quiet: true, min: 0 })
+        } else {
           const family = familyOf(this.base)
           // Half the time she resettles somewhere else in the same family and
           // stays there; the rest of the time she pays a visit and returns.
@@ -739,8 +751,17 @@ export const SCENE: Record<SceneName, (r: CatRig) => void> = {
   // Never the same one twice running, which matters more than the weights: a
   // repeat reads as a fixed response even when the set is varied.
   wrong: (r: CatRig) => r.react(r.pickWrong(), { ms: 1500, min: 900 }),
-  finished: (r: CatRig) => r.react('celebrate', { ms: 2800, min: 1600 }),
-  levelUp: (r: CatRig) => r.react('surprised', { ms: 1900, min: 1100 }),
+  // The two beats big enough to come off the ledge for. Everything else she
+  // does sitting down — a mascot who jumps at every right answer has nothing
+  // left for the end of the round.
+  finished: (r: CatRig) => {
+    r.hop()
+    r.react('celebrate', { ms: 2800, min: 1600 })
+  },
+  levelUp: (r: CatRig) => {
+    r.hop()
+    r.react('surprised', { ms: 1900, min: 1100 })
+  },
   greeting: (r: CatRig) => r.react('lookUpL', { ms: 2200, min: 1200 }),
   // Arrival is the one moment she is not reacting to something you just did,
   // so it is also the one moment nothing else is competing for your eye. These
