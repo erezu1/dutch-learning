@@ -360,7 +360,12 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
   return (
     <div
       onClick={!isChoice && !revealed ? onReveal : undefined}
-      className="grid flex-1 grid-rows-2 gap-7 px-5 text-center"
+      // `min-h-0` on a flex child, or its automatic minimum is its content
+      // and the whole column re-solves whenever the content changes size. The
+      // two rows are halves of whatever space there is, and they stay halves
+      // whatever is put in them — which is the only way the question can be
+      // guaranteed not to move while you are reading it.
+      className="grid min-h-0 flex-1 grid-rows-2 gap-7 px-5 text-center [@media(max-height:780px)]:gap-4"
     >
       {/* Upper zone: the question, resting on the centre line. It stays put
           from the moment the card appears until it leaves — a gap-fill has its

@@ -200,6 +200,12 @@ export interface Coat {
   who: string
   base: string
   muzzle: string
+  /**
+   * Her pink: the inside of both ears and her nose, which are the same colour
+   * on a real cat and are now the same colour here. They were two fields and
+   * drifted apart the moment either was tuned — a cat with a rose nose and
+   * salmon ears is two decisions where there is only one fact.
+   */
   ear: string
   iris: string
   pupil: string
@@ -214,9 +220,9 @@ export interface Coat {
   lineDark?: string
   paw: string
   dark?: boolean
-  nose?: string
   muzzleAlpha?: number
-  earPatch?: string
+  /** The OUTER ear, for a coat whose ears are a colour point rather than fur. */
+  earFur?: string
   patches?: { d: string; fill: string; soft?: boolean }[]
   stripes?: { d: Stripe[]; fill: string }
   chin?: { cx: number; cy: number; rx: number; ry: number; fill: string }
@@ -273,7 +279,7 @@ export const COATS: Record<string, Coat> = {
     // darker than. Her mouth, whiskers and brows are the same near-black as
     // every other coat's; the fur is what moved, and only just — any further
     // and she stops being the black cat.
-    name: 'Black', who: 'Roet', base: '#423C39', muzzle: '#4D4740', ear: '#6E5350',
+    name: 'Black', who: 'Roet', base: '#423C39', muzzle: '#4D4740', ear: '#C08B84',
     iris: '#F2CB64', pupil: '#1C1815', line: '#211E1D', dark: true, paw: '#4C4643',
   },
   ginger: {
@@ -291,17 +297,18 @@ export const COATS: Record<string, Coat> = {
     stripes: { d: STRIPES, fill: '#868D90' },
   },
   siamese: {
-    name: 'Siamese', who: 'Mokka', base: '#F1E3CE', muzzle: '#F7EEE0', ear: '#8A6A58',
+    name: 'Siamese', who: 'Mokka', base: '#F1E3CE', muzzle: '#F7EEE0', ear: '#C2726C',
     iris: '#A9D4EE', pupil: PUPIL, line: '#8D765F', paw: '#F9F2E7',
     patches: [{ d: P.mask, fill: '#6E5747', soft: true }],
-    earPatch: '#8A6A58',
+    // A siamese's ears are a point, not fur — so the whole ear goes dark and
+    // the pink sits inside it, which is both what the animal looks like and
+    // the only way her ear and her nose can be the same colour.
+    earFur: '#8A6A58',
     // The mask runs right over the muzzle, and a rose nose on top of that
     // brown is two dark things on each other — the nose disappeared. So the
     // muzzle reads at nearly full strength on this coat, which is what gives
-    // the nose a pale field to sit on, and the nose itself goes deeper so it
-    // is darker than what is now behind it rather than lighter.
+    // the nose a pale field to sit on.
     muzzleAlpha: 0.88,
-    nose: '#C2726C',
   },
   white: {
     name: 'White', who: 'Vlok', base: '#FCF9F3', muzzle: '#FFFFFF', ear: '#F2B3AA',
@@ -554,7 +561,7 @@ export const MOODS: Record<string, Mood> = {
   // which is the only reason to come up off the carpet with your eyes still
   // shut. The lift is the whole difference — a yawn taken lying flat is a cat
   // with her mouth open — and her paws quiver through it, the way they do.
-  stretch:   { eyes: 'sleepy',  mouth: 'yawn', squash: 0.5, rise: 6, label: 'Stretch', tilt: -3, ear: 'flat' },
+  stretch:   { eyes: 'sleepy',  mouth: 'yawn', squash: 0, rise: 7, label: 'Stretch', tilt: -3, ear: 'flat' },
   curious:   { eyes: 'curious', mouth: 'neutral', squash: 0.5, label: 'Curious', tilt: 7 },
   surprised: { eyes: 'wide',    mouth: 'open', squash: 0.32,    label: 'Surprised', ear: 'perk' },
   celebrate: { eyes: 'happy',   mouth: 'open', squash: 0.4,    label: 'Celebrate', tilt: -3, ear: 'perk' },
@@ -858,14 +865,14 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
   </g>
   <g class="cat-head" style="${headStyle}">
     <g class="cat-ear cat-ear-l" style="${earStyle('l')}">
-      <path d="${EAR_L}" fill="${c.base}"/>
+      <path d="${EAR_L}" fill="${c.earFur ?? c.base}"/>
       <g clip-path="url(#${id}el)">${patches}
-        <path class="cat-ear-in" d="${EAR_L_IN}" fill="${c.earPatch ?? c.ear}"/></g>
+        <path class="cat-ear-in" d="${EAR_L_IN}" fill="${c.ear}"/></g>
     </g>
     <g class="cat-ear cat-ear-r" style="${earStyle('r')}">
-      <path d="${EAR_R}" fill="${c.base}"/>
+      <path d="${EAR_R}" fill="${c.earFur ?? c.base}"/>
       <g clip-path="url(#${id}er)">${patches}
-        <path class="cat-ear-in" d="${EAR_R_IN}" fill="${c.earPatch ?? c.ear}"/></g>
+        <path class="cat-ear-in" d="${EAR_R_IN}" fill="${c.ear}"/></g>
     </g>
     <path class="cat-skull" d="${HEAD}" fill="${c.base}"/>
     <g class="cat-coat" clip-path="url(#${id}s)">${marks}</g>
@@ -883,7 +890,7 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
       <g class="cat-eye cat-eye-l" style="${pin(PIVOT.eyeL, 0, 0, 0, rig ? UNSQUASH : '')}">${rig ? side('l') : eyeL}</g>
       <g class="cat-eye cat-eye-r" style="${pin(PIVOT.eyeR, 0, 0, 0, rig ? UNSQUASH : '')}">${rig ? side('r') : eyeR}</g>
       <g class="cat-mouth" style="transform-box:view-box;transform:translateY(calc(${SNOUT}px + var(--face-dip,0) * 1.5px))">${rig ? mouthSets : MOUTHS[m.mouth](c)}</g>
-      <path class="cat-nose" d="${NOSE}" fill="${c.nose ?? (c.dark ? '#C98C86' : '#E29A93')}"
+      <path class="cat-nose" d="${NOSE}" fill="${c.ear}"
         style="transform-box:view-box;transform-origin:60px 76px;transform:translateY(calc(${SNOUT}px + var(--sniff,0) * -0.7px + var(--face-dip,0) * 1.1px + var(--huff,0) * -1.7px)) scale(calc(1 + var(--sniff,0) * 0.07 + var(--huff,0) * 0.16)) ${rig ? UNSQUASH : ''}"/>
     </g>
   </g>

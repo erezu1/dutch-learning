@@ -39,7 +39,40 @@ export function LevelPicker({ current, known, onPick, onCancel }: Props) {
   return (
     <div className="flex flex-1 flex-col justify-center gap-8 px-6 py-10">
       <div>
-        <h1 className={`text-4xl ${TITLE}`}>Where are you now?</h1>
+        {/* The same control as Settings, in the same corner. This screen is
+            reachable from home once a level has been chosen, and a screen you
+            can open is a screen you need a way out of — the text link at the
+            bottom was somewhere else entirely, below three cards you had to
+            scroll past. On first run there is no way out, because there is
+            nothing to go back to yet. */}
+        <div className="flex items-center gap-3">
+          {onCancel && (
+            <motion.button
+              whileTap={{ scale: 0.85 }}
+              transition={glide}
+              onClick={onCancel}
+              aria-label="Back"
+              className="-ml-2 grid h-10 w-10 shrink-0 place-items-center rounded-full text-on-surface-dim"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="h-[22px] w-[22px]"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M15 5.5 8 12l7 6.5" />
+              </svg>
+            </motion.button>
+          )}
+          {/* Smaller beside the arrow than it was alone, so the two sit on one
+              line the way Settings does rather than the title wrapping around
+              a button parked above it. */}
+          <h1 className={`${onCancel ? 'text-3xl' : 'text-4xl'} ${TITLE}`}>Where are you now?</h1>
+        </div>
         <p className="mt-2 text-on-surface-dim">
           This decides which words you&rsquo;re given first. Nothing is locked away &mdash; whatever
           a head start skips comes back once you catch up.
@@ -80,12 +113,6 @@ export function LevelPicker({ current, known, onPick, onCancel }: Props) {
           )
         })}
       </div>
-
-      {onCancel && (
-        <button onClick={onCancel} className="text-sm text-on-surface-dim active:scale-95">
-          Cancel
-        </button>
-      )}
 
       {/* The word data is openly licensed and asks to be credited. Kept here
           rather than on the home screen, which you see every day. */}

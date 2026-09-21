@@ -109,8 +109,12 @@ export function Home({
   // the words go by, which is what a level is for.
   const reached = reachedLevel(stats.known, level)
 
+  // One screen, always. The home page is a glance — the ring, the cat and the
+  // week in one look — and a glance you have to scroll for is not one. Every
+  // vertical number below has a smaller twin that takes over on a short phone,
+  // so nothing is ever under the fold; on a tall one the layout is untouched.
   return (
-    <div className="flex flex-1 flex-col justify-between px-6 py-10">
+    <div className="flex flex-1 flex-col justify-between px-6 py-10 [@media(max-height:780px)]:py-4">
       <div>
         <div className="flex items-center justify-between gap-4">
           {/* The paw is sized against the word's cap height, not against its
@@ -181,7 +185,7 @@ export function Home({
 
       </div>
 
-      <div className="flex flex-col items-center gap-8">
+      <div className="flex flex-col items-center gap-8 [@media(max-height:780px)]:gap-4">
         <div className="flex flex-col items-center gap-3">
           {/* On the ring, exactly as she is on the progress bar while you
               review. The ring is what this screen measures, so it is the thing
@@ -210,7 +214,7 @@ export function Home({
               // — so the way to move her down is to push the ring away from
               // her, which takes half of it back off the top. This margin is
               // the number that makes the two gaps match.
-              className="mb-9"
+              className="mb-9 [@media(max-height:780px)]:mb-4"
             >
               <Cat
                 coat={coat}
@@ -221,7 +225,7 @@ export function Home({
                 label="The cat"
               />
             </motion.div>
-            <div className="relative grid h-48 w-48 place-items-center">
+            <div className="relative grid h-48 w-48 place-items-center [@media(max-height:780px)]:h-40 [@media(max-height:780px)]:w-40">
             {/* The clearing is its own element, a plain circle the size of the ring,
                   so nothing that animates lives inside the thing casting it. */}
               <div
@@ -292,7 +296,7 @@ export function Home({
 
         {/* The week sits a little apart from the button: it's a record, not
             a second thing to press. */}
-        <div className="flex w-full flex-col items-center gap-10">
+        <div className="flex w-full flex-col items-center gap-10 [@media(max-height:780px)]:gap-5">
           {/* Narrower than the column, but the same height and type as every
               other button in the app. This screen is not only its button — the
               ring above it and the cat on that ring are the reason you are
@@ -324,7 +328,7 @@ export function Home({
 
       {/* Two rows of the same control: which cat, then which colour. The cat
           comes first because she is the thing you just looked at. */}
-      <div className="flex flex-col items-center gap-3">
+      <div className="flex flex-col items-center gap-3 [@media(max-height:780px)]:gap-2">
         <CoatPicker current={coat} onPick={onChangeCoat} />
         <ThemePicker current={theme} resolved={resolvedMode} onPick={onChangeTheme} />
       </div>

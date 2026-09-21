@@ -87,7 +87,11 @@ const DRIFT: Record<string, string[]> = {
  * so most ticks pass over her and the yawn arrives every minute or so, which
  * is what it is for: proof she is still there, not a metronome.
  */
-const DRIFT_CHANCE: Record<string, number> = { sleepy: 0.13 }
+// A sleeping cat mostly stays asleep — but at one drift in eight she stayed
+// under for minutes at a time, and a stretch is now usually the end of a nap
+// rather than a punctuation mark inside one, so it can afford to come round
+// more often.
+const DRIFT_CHANCE: Record<string, number> = { sleepy: 0.28 }
 
 /**
  * Moods that are the same job pointed different ways. She settles into any of
@@ -129,11 +133,16 @@ const COOLED = 'curious'
 // after which she is not dozing off, she is ticking. Drawn fresh on every
 // stir, so no two waits are the same length.
 //
-// They are also short. At the forty-five seconds I first picked, the whole
-// thing was unreachable in normal use: she would only ever have dozed off on
-// a screen nobody was looking at, which is the one place it cannot be seen.
-const YAWN_AFTER = [2000, 4200] as const   // ~3s
-const SLEEP_AFTER = [2800, 5000] as const  // ~7s all in
+// The first numbers were far too short. At three seconds to a yawn and seven
+// to sleep, and a drift tick that averaged nine and a half, she was asleep
+// before she had done a single thing — so the twelve waking moods were all
+// but unreachable and the two sleeping ones were most of what anyone saw.
+//
+// Eleven to twenty seconds gives her two or three drifts before she goes
+// under, which is what it takes for looking up to be something she does
+// rather than something she might.
+const YAWN_AFTER = [7000, 12000] as const   // ~9s
+const SLEEP_AFTER = [4000, 8000] as const   // ~15s all in
 
 // --- the marks that rise off her ------------------------------------------
 // Each z and each heart is its own element with its own animation, spawned
@@ -561,16 +570,30 @@ export class CatRig {
               // most cat thing in here — but a stretch that never once led
               // anywhere made the whole gesture punctuation.
               const up = to === 'stretch' && chance(0.7)
+              // Looking up is not a glance. Something up there has her
+              // attention and she gives it a while — and about half the time
+              // she decides it is actually over the other way, which is the
+              // difference between watching something and having noticed it.
+              const gazing = to === 'lookUpL' || to === 'lookUpR'
+              const other = to === 'lookUpL' ? 'lookUpR' : 'lookUpL'
               this.react(to, {
-                ms: rand(1400, 2800), quiet: true, min: 0,
-                then: up ? () => this.#rouse() : undefined,
+                ms: gazing ? rand(4500, 9000) : rand(1400, 2800),
+                quiet: true, min: 0,
+                then: up
+                  ? () => this.#rouse()
+                  : gazing && chance(0.45)
+                    ? () => this.react(other, { ms: rand(3000, 6500), quiet: true, min: 0 })
+                    : undefined,
               })
             }
           }
         }
       }
       this.#scheduleDrift()
-    }, rand(6000, 13000))
+      // Faster than the wind-down, or she never drifts at all before the
+      // wind-down takes her: the tick has to fit inside the waking window
+      // two or three times over.
+    }, rand(4500, 9000))
   }
 
   /**
@@ -899,20 +922,21 @@ export const SCENE: Record<SceneName, (r: CatRig) => void> = {
       // Longer than any other reaction, because three bursts have to land
       // inside it — stars still in the air after she has gone back to idle
       // belong to nothing.
-      ms: 3600, min: 1600,
+      ms: 4200, min: 1600,
       then: () => {
         r.starring = false
         r.pose(r.base)
       },
     })
-    // Three times. One burst is a thing you find you have missed; two is an
-    // event; three is a celebration, and the spacing is what makes it read as
-    // one — close enough that the second starts while the first is still in
-    // the air, so there are always stars up there for the whole of it. Each
-    // star jitters its own destination, so no round retraces the last.
+    // Three times, a second apart. One burst is a thing you find you have
+    // missed; three at a spacing you can count is a celebration. They still
+    // overlap — a burst is in the air for a second and a half — so there are
+    // never no stars, but each one gets to be its own event rather than
+    // arriving while you are still looking at the last. Each star jitters
+    // its own destination, so no round retraces the one before.
     setTimeout(() => r.spark(), 150)
-    setTimeout(() => r.spark(), 900)
-    setTimeout(() => r.spark(), 1650)
+    setTimeout(() => r.spark(), 1150)
+    setTimeout(() => r.spark(), 2150)
   },
   levelUp: (r: CatRig) => {
     r.hop()

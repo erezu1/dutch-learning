@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import deckCore from './content/deck-core.json'
 import type { Deck } from './core/types'
 import { setReviewing } from './core/update'
@@ -54,31 +54,57 @@ type ScreenName = 'home' | 'review' | 'level' | 'settings'
  * setting the screen directly — otherwise every visit would leave an entry
  * behind and you would have to press back several times to get out.
  */
+/**
+ * Screens that survive a reload.
+ *
+ * Both are places you can sit and read, so losing them to a refresh is losing
+ * your place. A round is not one of them: it is a queue held in memory, and
+ * restoring the screen without the queue would be a card page with no card.
+ */
+const RESTORE = new Set(['settings', 'level'])
+
+const fromHash = (): ScreenName => {
+  const h = window.location.hash.slice(1)
+  return RESTORE.has(h) ? (h as ScreenName) : 'home'
+}
+
+/**
+ * One screen, one history entry, and the entry is in the URL.
+ *
+ * Every screen but home pushes, so the phone's back button always walks back
+ * exactly one screen — and home pushes nothing, which is what makes back from
+ * home leave the app rather than unwinding a stack of states nobody made.
+ */
 function useScreenHistory(): [ScreenName, (next: ScreenName) => void] {
-  const [screen, setScreen] = useState<ScreenName>('home')
-  const pushed = useRef(false)
+  const [screen, setScreen] = useState<ScreenName>(fromHash)
 
   useEffect(() => {
-    const onPop = () => {
-      pushed.current = false
-      setScreen('home')
+    // Landed directly on a screen, by reload or by link. The entry underneath
+    // it is the one the browser made, so back would leave — put home there
+    // first, so back from a reloaded Settings goes where it goes every other
+    // time.
+    const h = window.location.hash
+    if (h && RESTORE.has(h.slice(1))) {
+      const bare = window.location.pathname + window.location.search
+      window.history.replaceState({ screen: 'home' }, '', bare)
+      window.history.pushState({ screen: h.slice(1) }, '', h)
     }
+  }, [])
+
+  useEffect(() => {
+    const onPop = () => setScreen(fromHash())
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
   }, [])
 
   const go = useCallback((next: ScreenName) => {
     if (next === 'home') {
-      if (pushed.current) {
-        // popstate sets the screen, so the two routes stay identical.
-        window.history.back()
-      } else {
-        setScreen('home')
-      }
+      // popstate sets the screen, so the button and the gesture stay identical.
+      if (window.location.hash) window.history.back()
+      else setScreen('home')
       return
     }
-    window.history.pushState({ screen: next }, '')
-    pushed.current = true
+    window.history.pushState({ screen: next }, '', `#${next}`)
     setScreen(next)
   }, [])
 

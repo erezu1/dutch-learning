@@ -61,11 +61,22 @@ export function ReviewScreen({ session, coat, dark, onExit }: Props) {
   if (!prompt) return null
 
   return (
-    <div className="relative flex flex-1 flex-col">
+    // `min-h-0` here is what actually holds the question still. A flex item's
+    // automatic minimum is its own content, so this screen grew to whatever
+    // the card wanted and the page went over the window — then the answer
+    // replaced four choices with two lines, the page came back to the window,
+    // and everything above slid up by the difference. The screen takes the
+    // window and the card takes what is left, always.
+    <div className="relative flex min-h-0 flex-1 flex-col">
       {/* The bar is pushed down to leave her somewhere to lie. She is not a
           decoration above it — she is resting ON it, which only reads if the
           bar is the thing under her paws rather than a line she floats over. */}
-      <header className="relative z-10 flex items-center gap-3 px-4 pt-[6.5rem]">
+      {/* Same rule as the home screen: the vertical numbers have smaller twins
+          for a short phone. Here it is not only about scrolling — a card whose
+          contents are taller than the window made the page shrink the moment
+          an answer replaced the four choices with two lines, and everything
+          above it slid up by the difference while you were reading it. */}
+      <header className="relative z-10 flex items-center gap-3 px-4 pt-[6.5rem] [@media(max-height:780px)]:pt-[4rem]">
         <motion.button
           onClick={onExit}
           aria-label="Stop"
@@ -158,7 +169,13 @@ export function ReviewScreen({ session, coat, dark, onExit }: Props) {
           // and the whole card with it, and the card is the thing you are
           // here to read — she can have the space above the bar without the
           // question paying for it.
-          className="-mt-14 flex flex-1 flex-col"
+          // `min-h-0`, or the card is as tall as whatever is inside it and the
+          // flex column re-solves every time that changes. A wrong answer adds
+          // two lines — what you chose, and the word in a sentence — and the
+          // card grew, the column overflowed, and everything above the new
+          // content slid up to make room. The question is the one thing on
+          // this screen that must not move while you are reading it.
+          className="-mt-14 flex min-h-0 flex-1 flex-col"
         >
           <PromptCard
             prompt={prompt}
@@ -175,7 +192,7 @@ export function ReviewScreen({ session, coat, dark, onExit }: Props) {
 
       {/* The bar rises into place the way the answer above it does, rather
           than appearing fully formed the instant the card is answered. */}
-      <div className="flex min-h-[7.5rem] items-end">
+      <div className="flex min-h-[7.5rem] items-end [@media(max-height:780px)]:min-h-[5.5rem]">
         <AnimatePresence initial={false}>
           {revealed && (
             <motion.div

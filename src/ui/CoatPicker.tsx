@@ -29,7 +29,7 @@ export function CoatPicker({
   // second opinion about a layout the browser has already decided.
   const row = useRef<HTMLDivElement>(null)
   const buttons = useRef(new Map<CoatId, HTMLButtonElement>())
-  const [x, setX] = useState(0)
+  const [x, setX] = useState<number | null>(null)
 
   useLayoutEffect(() => {
     const place = () => {
@@ -52,15 +52,29 @@ export function CoatPicker({
           changes — a row of buttons that shifts under your finger as you
           press it is a row you press twice. */}
       <div className="relative h-6 w-full">
-        <motion.p
-          // Centred in the full width and then carried sideways, so the text
-          // stays centred on the dot whatever its length.
-          className="absolute inset-x-0 top-0 whitespace-nowrap text-center text-sm font-medium text-on-surface-dim"
-          animate={{ x }}
-          transition={glide}
-        >
-          {COATS[current].who}
-        </motion.p>
+        {/* The box stays put and the TEXT moves inside it. Translating the box
+            itself pushed a full-width element half its own width off the side
+            of the page, which on a phone is a page you can scroll sideways —
+            invisible for the cats left of centre and a real horizontal scroll
+            for the ones right of it. The text is forty pixels wide and never
+            leaves the screen. */}
+        <p className="absolute inset-x-0 top-0 text-center text-sm font-medium text-on-surface-dim">
+          {/* Not rendered until it has been measured. `initial` is captured on
+              the first render, so a name that mounts before the measurement
+              mounts at nought and then travels to where it belongs — which is
+              the slide in from the middle. Mounting it late costs one frame
+              and it simply fades in where it goes. */}
+          {x !== null && (
+            <motion.span
+              className="inline-block whitespace-nowrap"
+              initial={{ x, opacity: 0 }}
+              animate={{ x, opacity: 1 }}
+              transition={glide}
+            >
+              {COATS[current].who}
+            </motion.span>
+          )}
+        </p>
       </div>
       <div ref={row} className="flex flex-wrap items-center justify-center gap-2">
       {COAT_IDS.map((id) => {
@@ -134,6 +148,6 @@ function faceMark(id: CoatId): string {
       ${patches}${stripes}
       <ellipse cx="60" cy="75" rx="24" ry="13.5" fill="${c.muzzle}" opacity="${c.muzzleAlpha ?? (c.dark ? 0.42 : 0.65)}"/>
       ${eye(40)}${eye(80)}
-      <path transform="translate(0 ${SNOUT})" d="M60 80.4C56.6 80.4 53.5 78.1 53.5 75.5C53.5 73.5 56.5 72.4 60 72.4C63.5 72.4 66.5 73.5 66.5 75.5C66.5 78.1 63.4 80.4 60 80.4Z" fill="${c.nose ?? (c.dark ? '#C98C86' : '#E29A93')}"/>
+      <path transform="translate(0 ${SNOUT})" d="M60 80.4C56.6 80.4 53.5 78.1 53.5 75.5C53.5 73.5 56.5 72.4 60 72.4C63.5 72.4 66.5 73.5 66.5 75.5C66.5 78.1 63.4 80.4 60 80.4Z" fill="${c.ear}"/>
     </g>`
 }

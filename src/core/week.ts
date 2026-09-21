@@ -107,7 +107,13 @@ export function weekDays(
 }
 
 /**
- * One line under the dots. It should read like someone who is pleased for you
+ * One line under the dots — and one line, literally: every branch has to fit
+ * across a phone at the size it is set, because a message that wraps to two
+ * lines on the narrow screens and one on the wide ones moves everything under
+ * it depending on what kind of week you had.
+ *
+ * Each says two things and only two: how much is behind you, and a reason to
+ * open it again today. It should read like someone who is pleased for you
  * and has not been keeping a ledger: a missed day is worth naming once, and
  * never worth naming twice. Nothing here scolds, because an app that scolds
  * gets deleted on the first bad week — and nothing here trails off into a
@@ -137,28 +143,26 @@ function readWeek(days: WeekDay[]) {
 
 export function weekMessage(days: WeekDay[]): string {
   const { index, done, missed, started, todayDone, streak, firstDay } = readWeek(days)
-  if (index === 0 && !todayDone && started === 0) return 'A new week. Start it straight!'
+  if (index === 0 && !todayDone && started === 0) return 'A clean week. Start it right!'
   // Not "day one of the week": it can be a Saturday, and the dots say so.
   // This is day one of the history the app has, which is also what it says
   // after a reset.
-  if (firstDay && !todayDone) return 'Your first day. Nothing to catch up on!'
-  if (firstDay && todayDone) return 'First day, done!'
+  if (firstDay && !todayDone) return 'Day one. Nothing to catch up on!'
+  if (firstDay && todayDone) return 'Day one, done!'
   if (todayDone && missed === 0 && started === 0) {
-    if (index === 6) return 'Every day this week. All seven!'
-    return streak > 1 ? `${streak} days straight, and the week is clean!` : 'Day one, done!'
+    if (index === 6) return 'All seven days. Perfect week!'
+    return streak > 1 ? `${streak} days straight. Week is clean!` : 'Day one, done!'
   }
   if (todayDone && streak > 1) return `${streak} days in a row!`
   if (todayDone) return missed === 1 ? 'Back on it after one off day!' : 'Today is done!'
 
   if (missed === 0) {
-    if (started > 0) return 'Nothing missed yet — finish today and it stays that way!'
-    return done > 0
-      ? 'Clean week so far. Keep it up!'
-      : 'Nothing missed yet this week — off to a clean start!'
+    if (started > 0) return 'Nothing missed. Finish today!'
+    return done > 0 ? 'Clean week so far. Keep it up!' : 'Nothing missed yet. Clean start!'
   }
-  if (missed === 1) return 'One day missed this week. Today evens it up!'
-  if (done > 0) return `${missed} days missed, ${done} done. Today decides which way it goes!`
-  return `${missed} days missed this week. Plenty of week left!`
+  if (missed === 1) return 'One day missed. Today evens it!'
+  if (done > 0) return `${missed} missed, ${done} done. Today counts!`
+  return `${missed} days missed. Plenty of week left!`
 }
 
 /**
