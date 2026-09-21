@@ -52,6 +52,22 @@ export function headPath(q = 1): string {
 // Big triangles off the top corners. The ear is the silhouette — it is what
 // still says "cat" at 36px, when the whole face has become four grey pixels.
 //
+// Scaled to just under two thirds about the pivot each one turns on, so the
+// base stays exactly where it met the skull and only the ear got smaller. Scaling the
+// group instead would have been one number, and would also have scaled the
+// outline's stroke — a thinner line around the ears than around the head.
+//
+// There is no anchor between the tip and the inner edge. There used to be
+// one, at the point where the tip rounding handed over, and every attempt to
+// make the two curves meet smoothly there was a matter of keeping three
+// points collinear by hand — which held until the next time either curve was
+// touched, and then the border had a corner in it again.
+//
+// One cubic does the tip AND the whole inner edge, so there is no junction
+// left to get wrong: it leaves the tip going up and away, comes over the top,
+// and steepens all the way down into the skull. The same is done to the pink.
+// A curve with nowhere to break cannot break.
+//
 // The base runs a long way down into the skull. None of that lobe is ever
 // seen — the head is drawn over it — and it is there entirely so the ear
 // still has something to sit on once it has been turned by a perk or lifted
@@ -61,19 +77,25 @@ export function headPath(q = 1): string {
 // swung out past the skull and you could see where the ear stopped. It now
 // runs fourteen units deeper, to y 74, which is still well inside a head
 // whose edge at that height is out at 110.
-const EAR_L = 'M12 48C7 33 4 12 8 5C10.5 1 15 3 18.5 7.5C26 17 38 26 48 24C54 44 46 72 28 74C16 75 12 62 12 48Z'
-const EAR_R = 'M108 48C113 33 116 12 112 5C109.5 1 105 3 101.5 7.5C94 17 82 26 72 24C66 44 74 72 92 74C104 75 108 62 108 48Z'
+const EAR_L = 'M17.8 45.1C14.6 35.5 12.6 22.1 15.2 17.6C16.8 14.8 37 22.7 40.8 29.8C44.6 42.6 39.5 60.5 28 61.8C20.3 62.4 17.8 54.1 17.8 45.1Z'
+const EAR_R = 'M102.2 45.1C105.4 35.5 107.4 22.1 104.8 17.6C103.2 14.8 83 22.7 79.2 29.8C75.4 42.6 80.5 60.5 92 61.8C99.7 62.4 102.2 54.1 102.2 45.1Z'
 
-// The pink sits inside the ear, off-centre toward the OUTER edge: roughly
-// four units of fur along the outside against seven or more along the inside.
+// The pink sits inside the ear, hard over toward the OUTER edge: a little
+// over two units of fur along the outside against a dozen along the inside.
 // That offset alone is what makes an ear look like it is facing away from the
 // centre of the head. Centre it and both ears face straight at you.
 //
 // The inner band has to be thick where the ear is VISIBLE, which is only
 // above the skull line — an earlier version put all its clearance down at the
 // base, where the head covers it, so the two ears looked identical.
-const EAR_L_IN = 'M14.5 44C9.5 32 8 13 11 7.5C12.5 5.5 14 6.5 15.5 10C18 15 21 19.5 24.5 22.5C21 28.5 17.5 36.5 14.5 44Z'
-const EAR_R_IN = 'M105.5 44C110.5 32 112 13 109 7.5C107.5 5.5 106 6.5 104.5 10C102 15 99 19.5 95.5 22.5C99 28.5 102.5 36.5 105.5 44Z'
+//
+// Its inner boundary turns the same way the ear's does — steepening as it
+// goes down rather than flattening off — because a pink drawn with the
+// opposite curvature to the ear around it reads as a sticker on the ear
+// rather than as the inside of one. It leaves its own tip along the tangent
+// it arrived on, for the same reason the ear does.
+const EAR_L_IN = 'M19.4 44.5C15.8 35.2 14.2 22.4 16.8 18.4C17.8 16.8 33.1 27.2 35.7 34.9C31.2 40 22.9 43.2 19.4 44.5Z'
+const EAR_R_IN = 'M100.6 44.5C104.2 35.2 105.8 22.4 103.2 18.4C102.2 16.8 86.9 27.2 84.3 34.9C88.8 40 97.1 43.2 100.6 44.5Z'
 
 // A squircle, not a rectangle: the same four arcs an ellipse has, but pulled
 // with a fatter handle (0.72 of the radius instead of 0.552) so the top,
