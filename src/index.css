@@ -329,29 +329,39 @@
    a square that isn't there — this follows the shape. Same colour, same two
    layers, same lack of a direction as shadow-2; no hairline, because a stroke
    has no edge to define. */
-.lift {
-  filter: drop-shadow(0 0 5px rgb(var(--glow) / calc(0.1 * var(--glow-boost))))
+/* The app's usual elevation, as a value rather than a rule, so the one place
+   that needs more than it can build on it instead of restating it. */
+:root {
+  --lift-shadow: drop-shadow(0 0 5px rgb(var(--glow) / calc(0.1 * var(--glow-boost))))
     drop-shadow(0 0 14px rgb(var(--glow) / calc(0.09 * var(--glow-boost))));
 }
 
-/* A halo of the page's own colour, so a thin shape reads against the moving
-   accent behind it.
-   
+.lift {
+  filter: var(--lift-shadow);
+}
+
+/* A wide, faint clearing of the page's own colour under the things that
+   measure you.
+
    The ambient wash drifts across the whole app, and where its bright part
    passes under something as slender as the progress bar the two come close
-   enough in tone that the bar disappears for a few seconds at a time. A
-   shadow cannot fix that — it is the same problem one step darker. What works
-   is clearing a little of the ground away: three stacked drop-shadows in the
-   surface colour, which paint the ground back in around the shape before the
-   shape is drawn, so it always sits on the ramp's own base tone whatever is
-   sweeping past underneath.
-   
+   enough in tone that the bar disappears for a few seconds at a time. A shadow
+   cannot fix that — it is the same problem one step darker. What works is
+   taking a little of the ground away, so the shape sits on the ramp's own base
+   tone whatever is sweeping past underneath.
+
+   Wide and translucent rather than tight and solid: a halo you can see is a
+   second object, and this one is only meant to be the absence of a first. The
+   ordinary elevation goes on top of it — later filters paint further back, so
+   the lift is listed first and ends up in front of the clearing.
+
    The ring on the home screen and the bar on the card share it. They are the
    same object — the thing that says how far through you are — and the fact
    that one is bent into a circle should not mean it is lit differently. */
 .clear-of-ground {
-  filter: drop-shadow(0 0 3px var(--color-surface)) drop-shadow(0 0 7px var(--color-surface))
-    drop-shadow(0 0 13px var(--color-surface));
+  filter: var(--lift-shadow)
+    drop-shadow(0 0 26px color-mix(in oklab, var(--color-surface) 70%, transparent))
+    drop-shadow(0 0 44px color-mix(in oklab, var(--color-surface) 52%, transparent));
 }
 
 @layer base {
