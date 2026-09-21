@@ -271,10 +271,12 @@ export class CatRig {
     // so the class goes the instant anything else happens.
     clearTimeout(this.dozeMark ?? undefined)
     if (name === 'sleepy') {
-      // She has to visibly stop before the first one appears. Arriving with
-      // the pose, the two read as one switch being thrown rather than as a cat
-      // falling asleep and then being asleep.
-      this.dozeMark = setTimeout(() => this.#emit('z'), 950)
+      // She has to visibly stop, and then stay stopped, before the first one
+      // appears. Arriving with the pose they read as one switch being thrown;
+      // arriving straight after it they read as a cat falling asleep. Three
+      // seconds is what it takes to read as a cat that is already asleep,
+      // which is the thing the z is actually reporting.
+      this.dozeMark = setTimeout(() => this.#emit('z'), 2950)
     } else {
       this.dozeMark = null
       this.#emit(name === 'celebrate' ? 'heart' : null)
