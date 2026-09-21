@@ -7,13 +7,14 @@ import type { SessionStats } from '../session/useSession'
 import { Button } from './Button'
 import { promptInstall } from '../core/install'
 import { Cat } from './Cat'
+import type { SceneName } from '../core/cat-rig'
 import { CoatPicker } from './CoatPicker'
 import { Paw } from './Paw'
 import { useCanInstall } from './useCanInstall'
 import { ThemePicker } from './ThemePicker'
 import { afterRing, pressable, ringGrow } from './motion'
 import { WeekStrip } from './WeekStrip'
-import type { WeekDay } from '../core/week'
+import { weekMood, type WeekDay } from '../core/week'
 import { TITLE, WORDMARK } from './type'
 
 interface Props {
@@ -30,6 +31,9 @@ interface Props {
   onChangeLevel: () => void
   onChangeTheme: (theme: Theme) => void
 }
+
+/** One opening of the app. Reset by a reload, which is what a visit is. */
+let greeted = false
 
 export function Home({
   stats,
@@ -54,6 +58,33 @@ export function Home({
    * `initial` here would be ignored precisely when it matters most.
    */
   const [arrived, setArrived] = useState(false)
+
+  /**
+   * How she takes the week, said once when you walk in.
+   *
+   * Once per visit, not once per screen: the home screen is mounted again every
+   * time a round ends, and being greeted for a week you have just spent twenty
+   * minutes on reads as an app with no memory of the last minute. The flag sits
+   * outside the component because that is exactly the scope it needs — one
+   * opening of the app.
+   */
+  const [hello, setHello] = useState<{ scene: SceneName; key: number } | null>(null)
+  useEffect(() => {
+    if (greeted) return
+    // After the entrance, not during it: she fades in along with everything
+    // else, and a face that has already changed by the time it is visible
+    // never changed as far as anyone watching is concerned.
+    // Claimed when it fires rather than when it is scheduled: in development
+    // React mounts every component twice, and a flag set on the way in would
+    // be claimed by the mount whose timer is then cancelled on the way out.
+    const id = setTimeout(() => {
+      greeted = true
+      setHello({ scene: weekMood(week), key: Date.now() })
+    }, 700)
+    return () => clearTimeout(id)
+    // Deliberately once, on the first mount of the session.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     // A timer rather than a frame callback: a frame callback is at the mercy
@@ -186,6 +217,7 @@ export function Home({
                 rim={resolvedMode === 'dark'}
                 size={101}
                 scene={waiting > 0 ? 'waiting' : 'nothingDue'}
+                beat={hello}
                 label="The cat"
               />
             </motion.div>

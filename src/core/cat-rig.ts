@@ -183,6 +183,12 @@ export class CatRig {
   onPose?: (name: string, mood: Mood) => void
   current = ''
   holding: ReturnType<typeof setTimeout> | null = null
+  /**
+   * Whether the hold in flight is something the app is saying, as opposed to
+   * her own yawn. The wind-down waits for the first and is made of the second,
+   * so it has to be able to tell them apart.
+   */
+  holdLoud = false
   drifting: ReturnType<typeof setTimeout> | null = null
   dozing: ReturnType<typeof setTimeout> | null = null
   dozeMark: ReturnType<typeof setTimeout> | null = null
@@ -289,6 +295,10 @@ export class CatRig {
     // The idle loop reads this so a blink closes whatever is still open rather
     // than opening her eyes first to do it.
     this.svg.dataset.lid = String(m.lid ?? 0)
+    // The mood she is actually wearing, where it can be seen from outside —
+    // by CSS, and by anyone checking that what she is doing is what the app
+    // asked for.
+    this.svg.dataset.mood = name
   }
 
   /** The mood she falls back to. Takes effect at the end of any current hold. */
@@ -335,10 +345,17 @@ export class CatRig {
     if (!quiet) this.#stir()
     clearTimeout(this.holding ?? undefined)
     this.pose(name)
+    this.holdLoud = !quiet
     this.holding = setTimeout(() => {
       this.holding = null
+      this.holdLoud = false
       if (then) then()
       else this.pose(this.base)
+      // The wind-down starts from when she stopped reacting, not from when she
+      // started: a long reaction should not be followed instantly by a yawn.
+      // Her own yawn is exempt, or it would keep restarting the clock that
+      // produced it and she would never get to sleep.
+      if (!quiet) this.#scheduleDoze()
     }, ms)
   }
 
@@ -406,6 +423,9 @@ export class CatRig {
       this.dozing = setTimeout(() => {
         this.dozing = null
         if (this.wanted === 'sleepy') return
+        // Mid-reaction. Falling asleep behind it would mean opening her eyes
+        // on a face she never chose — wait, and start the clock over.
+        if (this.holdLoud) return this.#scheduleDoze()
         this.base = 'sleepy'
         if (!this.holding) this.pose('sleepy')
       }, rand(...SLEEP_AFTER))
@@ -561,7 +581,10 @@ export class CatRig {
  */
 export type SceneName =
   | 'waiting' | 'reading' | 'nothingDue' | 'correct' | 'wrong'
-  | 'finished' | 'levelUp' | 'greeting' | 'wereAway'
+  | 'finished' | 'levelUp' | 'greeting'
+  // How she takes the week when you walk in. One of these fires once per
+  // visit, and only ever on arrival.
+  | 'arriveProud' | 'arriveGlad' | 'arriveBehind' | 'arriveAway'
 
 export const SCENE: Record<SceneName, (r: CatRig) => void> = {
   waiting: (r: CatRig) => r.setBase('idle'),
@@ -585,7 +608,17 @@ export const SCENE: Record<SceneName, (r: CatRig) => void> = {
   finished: (r: CatRig) => r.react('celebrate', { ms: 2800, min: 1600 }),
   levelUp: (r: CatRig) => r.react('surprised', { ms: 1900, min: 1100 }),
   greeting: (r: CatRig) => r.react('lookUpL', { ms: 2200, min: 1200 }),
-  wereAway: (r: CatRig) => r.react('sad', { ms: 2600, min: 1600 }),
+  // Arrival is the one moment she is not reacting to something you just did,
+  // so it is also the one moment nothing else is competing for your eye. These
+  // hold about twice as long as an in-round reaction: you are still finding
+  // your bearings on a screen you have just opened, and a face that has
+  // finished making its point before you have finished arriving made no point
+  // at all. The wind-down cannot cut them short — a loud hold defers the doze
+  // clock and restarts it when it ends.
+  arriveProud: (r: CatRig) => r.react('celebrate', { ms: 3600, min: 2600 }),
+  arriveGlad: (r: CatRig) => r.react('happy', { ms: 3400, min: 2400 }),
+  arriveBehind: (r: CatRig) => r.react('curious', { ms: 3400, min: 2400 }),
+  arriveAway: (r: CatRig) => r.react('sad', { ms: 4200, min: 3200 }),
 }
 // ---------------------------------------------------------------------------
 // The idle loop: what she does when nothing is happening.

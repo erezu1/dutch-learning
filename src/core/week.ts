@@ -12,6 +12,8 @@
 // finish is worth showing as exactly that, rather than rounding it to nothing.
 // ---------------------------------------------------------------------------
 
+import type { SceneName } from './cat-rig'
+
 /** Local calendar day. Sortable, and the same key the session uses. */
 export const dayKey = (d: Date): string => d.toLocaleDateString('sv')
 
@@ -112,7 +114,7 @@ export function weekDays(
  * full stop either, which is the punctuation of a status bar rather than of
  * someone glad you turned up.
  */
-export function weekMessage(days: WeekDay[]): string {
+function readWeek(days: WeekDay[]) {
   const index = days.findIndex((d) => d.today)
   const sofar = days.slice(0, index + 1)
   const done = sofar.filter((d) => d.state === 'done').length
@@ -129,6 +131,12 @@ export function weekMessage(days: WeekDay[]): string {
   // of the week or of the app.
   // Vacuously true on a Monday, which is why the index is part of it.
   const firstDay = index > 0 && sofar.slice(0, index).every((d) => d.state === 'ahead')
+
+  return { index, done, missed, started, todayDone, streak, firstDay }
+}
+
+export function weekMessage(days: WeekDay[]): string {
+  const { index, done, missed, started, todayDone, streak, firstDay } = readWeek(days)
   if (index === 0 && !todayDone && started === 0) return 'A new week. Start it straight!'
   // Not "day one of the week": it can be a Saturday, and the dots say so.
   // This is day one of the history the app has, which is also what it says
@@ -151,4 +159,30 @@ export function weekMessage(days: WeekDay[]): string {
   if (missed === 1) return 'One day missed this week. Today evens it up!'
   if (done > 0) return `${missed} days missed, ${done} done. Today decides which way it goes!`
   return `${missed} days missed this week. Plenty of week left!`
+}
+
+/**
+ * The face she arrives with. This is the line under the dots, read off the
+ * same week by the same rules and said with a face instead of words — so the
+ * two can never disagree, which is the whole point of them sharing a reading.
+ * Anything else would mean the cat is sad above a sentence congratulating you.
+ *
+ * Four faces rather than seven: an expression is a blunter instrument than a
+ * sentence, and a mascot with a distinct face for every shade of a week is a
+ * mascot whose faces stop meaning anything. What survives the compression is
+ * the part you would want to hear first — whether you are ahead, here, behind,
+ * or properly gone.
+ */
+export function weekMood(days: WeekDay[]): SceneName {
+  const { index, missed, todayDone, streak, firstDay } = readWeek(days)
+
+  // Today is already in. Nothing that happened earlier in the week outranks
+  // that, and a clean week or a run of them is worth more than a nod.
+  if (todayDone) return streak > 1 || missed === 0 ? 'arriveProud' : 'arriveGlad'
+  // A week with no history behind it yet: there is nothing to be sorry about,
+  // and pretending otherwise on someone's first day is the worst first day.
+  if (index === 0 || firstDay) return 'arriveGlad'
+  if (missed >= 2) return 'arriveAway'
+  if (missed === 1) return 'arriveBehind'
+  return 'arriveGlad'
 }
