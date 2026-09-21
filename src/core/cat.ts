@@ -122,10 +122,26 @@ const WHISKERS = 'M44 67q-17-4-28-6M44 72q-18 1-29 1M44 77q-17 5-27 7M76 67q17-4
 // pure white or pure black, and each carries its own line colour — a darkened
 // version of its own fur, never one generic grey outline for all of them.
 
+/** A circle, as a path, because a patch is a `d` and an ellipse is not. */
+const disc = (cx: number, cy: number, r: number): string =>
+  `M${cx - r} ${cy}A${r} ${r} 0 1 1 ${cx + r} ${cy}A${r} ${r} 0 1 1 ${cx - r} ${cy}Z`
+
+// A two-colour cat is two caps, one over each ear, carried down the side of
+// the head until they pass behind the eye. That is what the marking actually
+// is on a real animal — colour that comes over the top and stops — and it
+// leaves the white where a cat's white belongs: up the middle of the face and
+// all the way round the muzzle.
+//
+// Each one is a plain circle. Nothing drawn by hand out of segments stays
+// round under a clip and a squash, and every earlier attempt read as what it
+// was: two lines meeting at a corner somewhere on her forehead. A circle has
+// no corner to find. Kept small enough to be a marking rather than a hood:
+// it takes the ear and the brow above the eye and stops, which leaves her
+// most of a white face to make expressions with.
 const P = {
-  left:  'M-6-14H58C52 12 44 46 40 86C22 92 2 80-6 64Z',
-  right: 'M57-14H126V64C108 54 88 46 70 44C65 20 61 2 57-14Z',
-  mask:  'M60 44C82 44 99 62 99 86C99 110 82 126 60 126C38 126 21 110 21 86C21 62 38 44 60 44Z',
+  left: disc(22, 23, 30),
+  right: disc(98, 23, 30),
+  mask: 'M60 44C82 44 99 62 99 86C99 110 82 126 60 126C38 126 21 110 21 86C21 62 38 44 60 44Z',
 }
 
 // Tabby markings, as ellipses that run off the edge of the head and are cut
@@ -151,7 +167,16 @@ const STRIPES: Stripe[] = [
 const PUPIL = '#262019'
 
 export interface Coat {
+  /** What the marking is called. */
   name: string
+  /**
+   * What she is called. A coat is a description and a cat is somebody, and
+   * the difference is most of why anyone picks one over another — nobody is
+   * attached to "Gray". Dutch, and earned by the coat rather than assigned to
+   * it: soot, ginger, mist, mocha, a snowflake, a patch of cloth. Teller is
+   * the exception and gets to be a name for its own sake.
+   */
+  who: string
   base: string
   muzzle: string
   ear: string
@@ -193,7 +218,7 @@ export interface Mood {
 export const COATS: Record<string, Coat> = {
   calico: {
     lineDark: '#6E5C4C', // her black side would otherwise have no edge
-    name: 'Calico', base: '#FBF2E3', muzzle: '#FFFCF6', ear: '#F2B3AA',
+    name: 'Calico', who: 'Lapje', base: '#FBF2E3', muzzle: '#FFFCF6', ear: '#F2B3AA',
     iris: '#FFFFFF', pupil: PUPIL, line: '#5A4A3E', paw: '#FFFCF6',
     patches: [{ d: P.left, fill: '#3C3430' }, { d: P.right, fill: '#E39A4C' }],
   },
@@ -201,7 +226,7 @@ export const COATS: Record<string, Coat> = {
   // different animal, it is the same animal with the ginger taken out.
   tuxedo: {
     lineDark: '#6B615B', // light enough to clear the page, dark enough to show on her chin
-    name: 'Tuxedo', base: '#FCF7EF', muzzle: '#FFFFFF', ear: '#EFAEA6',
+    name: 'Tuxedo', who: 'Teller', base: '#FCF7EF', muzzle: '#FFFFFF', ear: '#EFAEA6',
     iris: '#FFFFFF', pupil: PUPIL, line: '#4A423E', paw: '#FFFFFF',
     patches: [{ d: P.left, fill: '#2F2B29' }, { d: P.right, fill: '#2F2B29' }],
     // The goatee. A tuxedo's chin spot is what stops the white muzzle reading
@@ -214,7 +239,7 @@ export const COATS: Record<string, Coat> = {
   },
   black: {
     lineDark: '#7C726B', // the only coat that is dark everywhere
-    name: 'Black', base: '#3A3533', muzzle: '#454038', ear: '#6E5350',
+    name: 'Black', who: 'Roet', base: '#3A3533', muzzle: '#454038', ear: '#6E5350',
     iris: '#F2CB64', pupil: '#1C1815', line: '#211E1D', dark: true, paw: '#443E3B',
   },
   ginger: {
@@ -222,17 +247,17 @@ export const COATS: Record<string, Coat> = {
     // orange, and the two are close enough in both hue and lightness that the
     // usual salmon disappeared into the coat — the one place the inner ear
     // has to fight its own background rather than contrast with it.
-    name: 'Ginger', base: '#EDA45C', muzzle: '#FBE7CE', ear: '#D5747F',
+    name: 'Ginger', who: 'Gember', base: '#EDA45C', muzzle: '#FBE7CE', ear: '#D5747F',
     iris: '#FFF3DE', pupil: PUPIL, line: '#A9622C', paw: '#FBE7CE',
     stripes: { d: STRIPES, fill: '#D5823C' },
   },
   gray: {
-    name: 'Gray', base: '#A9AEB0', muzzle: '#E4E6E6', ear: '#E0A9A2',
+    name: 'Gray', who: 'Mist', base: '#A9AEB0', muzzle: '#E4E6E6', ear: '#E0A9A2',
     iris: '#FFFFFF', pupil: PUPIL, line: '#6B7073', paw: '#E8EAEA',
     stripes: { d: STRIPES, fill: '#868D90' },
   },
   siamese: {
-    name: 'Siamese', base: '#F1E3CE', muzzle: '#F7EEE0', ear: '#8A6A58',
+    name: 'Siamese', who: 'Mokka', base: '#F1E3CE', muzzle: '#F7EEE0', ear: '#8A6A58',
     iris: '#A9D4EE', pupil: PUPIL, line: '#8D765F', paw: '#F9F2E7',
     patches: [{ d: P.mask, fill: '#6E5747', soft: true }],
     earPatch: '#8A6A58',
@@ -245,7 +270,7 @@ export const COATS: Record<string, Coat> = {
     nose: '#C2726C',
   },
   white: {
-    name: 'White', base: '#FCF9F3', muzzle: '#FFFFFF', ear: '#F2B3AA',
+    name: 'White', who: 'Vlok', base: '#FCF9F3', muzzle: '#FFFFFF', ear: '#F2B3AA',
     // A pale cat needs a darker line than a dark one, not a lighter one: she
     // has no edge contrast of her own against an off-white page.
     iris: '#FFFFFF', pupil: PUPIL, line: '#8E8375', paw: '#FFFFFF',

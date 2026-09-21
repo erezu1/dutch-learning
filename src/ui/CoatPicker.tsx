@@ -1,11 +1,14 @@
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { COAT_IDS, COATS, type CoatId } from '../core/cat'
-import { pressable } from './motion'
+import { pressable, quiet } from './motion'
 
 // ---------------------------------------------------------------------------
 // A row of cats, built like the row of colour dots above it: the swatch is the
-// control and the name is only there for screen readers, because which cat you
-// want is a choice made by looking.
+// control, because which cat you want is a choice made by looking.
+//
+// Her name is the exception, and it goes above the row rather than under each
+// face. Seven names at once is a list to read; one name is the cat you have,
+// and it changes as you try them on.
 //
 // Each dot is her actual face, not a colour sample. A calico and a tuxedo are
 // the same three colours in different places, so a plain swatch of either
@@ -20,7 +23,25 @@ export function CoatPicker({
   onPick: (coat: CoatId) => void
 }) {
   return (
-    <div className="flex flex-wrap items-center justify-center gap-2">
+    <div className="flex flex-col items-center">
+      {/* A fixed line to swap inside, so nothing below moves when the name
+          changes — a row of buttons that shifts under your finger as you
+          press it is a row you press twice. */}
+      <div className="flex h-6 items-center">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.p
+            key={current}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={quiet}
+            className="font-display text-sm font-medium text-on-surface-dim"
+          >
+            {COATS[current].who}
+          </motion.p>
+        </AnimatePresence>
+      </div>
+      <div className="flex flex-wrap items-center justify-center gap-2">
       {COAT_IDS.map((id) => {
         const coat = COATS[id]
         const active = id === current
@@ -29,7 +50,7 @@ export function CoatPicker({
             key={id}
             {...pressable}
             onClick={() => onPick(id)}
-            aria-label={coat.name}
+            aria-label={`${coat.who}, the ${coat.name.toLowerCase()} cat`}
             aria-pressed={active}
             animate={{ scale: active ? 1.15 : 1 }}
             className="grid h-8 w-8 place-items-center rounded-full"
@@ -52,6 +73,7 @@ export function CoatPicker({
           </motion.button>
         )
       })}
+      </div>
     </div>
   )
 }
