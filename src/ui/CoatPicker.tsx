@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
+import { Swatch } from './Swatch'
 import { useLayoutEffect, useRef, useState } from 'react'
 import { COAT_IDS, COATS, SNOUT, type CoatId } from '../core/cat'
-import { glide, pressable } from './motion'
+import { glide } from './motion'
 
 // ---------------------------------------------------------------------------
 // A row of cats, built like the row of colour dots above it: the swatch is the
@@ -81,35 +82,23 @@ export function CoatPicker({
         const coat = COATS[id]
         const active = id === current
         return (
-          <motion.button
+          <Swatch
             key={id}
-            ref={(el) => {
+            ref={(el: HTMLButtonElement | null) => {
               if (el) buttons.current.set(id, el)
               else buttons.current.delete(id)
             }}
-            {...pressable}
+            active={active}
+            fill={coat.base}
+            label={`${coat.who}, the ${coat.name.toLowerCase()} cat`}
             onClick={() => onPick(id)}
-            aria-label={`${coat.who}, the ${coat.name.toLowerCase()} cat`}
-            aria-pressed={active}
-            animate={{ scale: active ? 1.15 : 1 }}
-            className="grid h-8 w-8 place-items-center rounded-full"
           >
-            <span
-              className="grid h-5 w-5 place-items-center overflow-hidden rounded-full transition-[box-shadow]"
-              style={{
-                background: coat.base,
-                boxShadow: active
-                  ? `0 0 0 3px var(--color-surface), 0 0 0 4.5px var(--color-primary), var(--shadow-1)`
-                  : 'var(--shadow-1)',
-              }}
-            >
-              {/* Just the head, cropped to the dot: at 28px the ears and paws
-                  are noise, and what tells two coats apart is the face. */}
-              <svg viewBox="21 19 78 78" className="h-[26px] w-[26px]" aria-hidden="true">
-                <g dangerouslySetInnerHTML={{ __html: faceMark(id) }} />
-              </svg>
-            </span>
-          </motion.button>
+            {/* Just the head, cropped to the dot: at 28px the ears and paws
+                are noise, and what tells two coats apart is the face. */}
+            <svg viewBox="21 19 78 78" className="h-[26px] w-[26px]" aria-hidden="true">
+              <g dangerouslySetInnerHTML={{ __html: faceMark(id) }} />
+            </svg>
+          </Swatch>
         )
       })}
       </div>
