@@ -896,18 +896,23 @@ export const SCENE: Record<SceneName, (r: CatRig) => void> = {
     // hearts start, and the react is what poses it.
     r.starring = true
     r.react('celebrate', {
-      ms: 2800, min: 1600,
+      // Longer than any other reaction, because three bursts have to land
+      // inside it — stars still in the air after she has gone back to idle
+      // belong to nothing.
+      ms: 3600, min: 1600,
       then: () => {
         r.starring = false
         r.pose(r.base)
       },
     })
-    // Twice. One burst inside a two-and-a-half second celebration is a thing
-    // you find you have missed; the second is what makes the first one an
-    // event rather than a glitch, and they land in different places because
-    // each star jitters its own destination.
+    // Three times. One burst is a thing you find you have missed; two is an
+    // event; three is a celebration, and the spacing is what makes it read as
+    // one — close enough that the second starts while the first is still in
+    // the air, so there are always stars up there for the whole of it. Each
+    // star jitters its own destination, so no round retraces the last.
     setTimeout(() => r.spark(), 150)
-    setTimeout(() => r.spark(), 1150)
+    setTimeout(() => r.spark(), 900)
+    setTimeout(() => r.spark(), 1650)
   },
   levelUp: (r: CatRig) => {
     r.hop()

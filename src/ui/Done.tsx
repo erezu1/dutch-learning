@@ -40,7 +40,7 @@ export function Done({ stats, points, coat, dark, onHome, onMore }: Props) {
           beat={{ scene: 'finished', key: 1 }}
           label="The cat, pleased with you"
         />
-        <h1 className={`mt-4 text-4xl ${TITLE}`}>{more ? 'Nice work' : "That's today"}</h1>
+        <h1 className={`mt-4 text-4xl ${TITLE}`}>{more ? 'Nice work!' : "That's today!"}</h1>
         <motion.p
           initial={{ scale: 0.7, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
