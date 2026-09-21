@@ -12,9 +12,9 @@ import { onVoicesReady, speak, voiceReport, type VoiceReport } from '../core/spe
 import { MODES, type Mode } from '../core/themes'
 import { DAY_NAMES, type WeekStartDay } from '../core/week'
 import { Button } from './Button'
+import { BackHeader } from './BackHeader'
 import { glide, pressable, swapVariants, tap } from './motion'
 import { Switch } from './Switch'
-import { TITLE } from './type'
 
 interface Props {
   autoContinue: boolean
@@ -320,29 +320,7 @@ export function Settings({
 }: Props) {
   return (
     <div className="flex flex-1 flex-col px-6 py-10">
-      <div className="flex items-center gap-3">
-        <motion.button
-          whileTap={{ scale: 0.85 }}
-          transition={glide}
-          onClick={onBack}
-          aria-label="Back"
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-on-surface-dim"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            className="h-[22px] w-[22px]"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M15 5.5 8 12l7 6.5" />
-          </svg>
-        </motion.button>
-        <h1 className={`text-3xl ${TITLE}`}>Settings</h1>
-      </div>
+      <BackHeader title="Settings" onBack={onBack} />
 
       <div className="mt-8 flex flex-col gap-3">
         <motion.div

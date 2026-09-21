@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { LEVELS, reachedLevel, type LevelOption } from '../core/levels'
+import { BackHeader } from './BackHeader'
 import { glide, pressable, SELECT_DELAY } from './motion'
 import { TITLE } from './type'
 
@@ -37,7 +38,7 @@ export function LevelPicker({ current, known, onPick, onCancel }: Props) {
   }
 
   return (
-    <div className="flex flex-1 flex-col justify-center gap-8 px-6 py-10">
+    <div className="flex flex-1 flex-col gap-8 px-6 py-10">
       <div>
         {/* The same control as Settings, in the same corner. This screen is
             reachable from home once a level has been chosen, and a screen you
@@ -45,34 +46,7 @@ export function LevelPicker({ current, known, onPick, onCancel }: Props) {
             bottom was somewhere else entirely, below three cards you had to
             scroll past. On first run there is no way out, because there is
             nothing to go back to yet. */}
-        <div className="flex items-center gap-3">
-          {onCancel && (
-            <motion.button
-              whileTap={{ scale: 0.85 }}
-              transition={glide}
-              onClick={onCancel}
-              aria-label="Back"
-              className="-ml-2 grid h-10 w-10 shrink-0 place-items-center rounded-full text-on-surface-dim"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                className="h-[22px] w-[22px]"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M15 5.5 8 12l7 6.5" />
-              </svg>
-            </motion.button>
-          )}
-          {/* Smaller beside the arrow than it was alone, so the two sit on one
-              line the way Settings does rather than the title wrapping around
-              a button parked above it. */}
-          <h1 className={`${onCancel ? 'text-3xl' : 'text-4xl'} ${TITLE}`}>Your level</h1>
-        </div>
+        <BackHeader title="Your level" onBack={onCancel} />
         <p className="mt-2 text-on-surface-dim">
           Which words you get first. Nothing is skipped for good.
         </p>
@@ -100,12 +74,17 @@ export function LevelPicker({ current, known, onPick, onCancel }: Props) {
               }}
               transition={{ ...glide, delay: chosen ? 0 : 0.05 * LEVELS.indexOf(option) }}
               onClick={() => pick(option)}
-              className={`rounded-3xl px-5 py-4 text-left shadow-2 transition-shadow active:shadow-press ${
-                active ? 'bg-primary-container text-on-primary-container' : 'bg-surface-1'
+              // Chosen is a ring, not a fill. A tinted card on a tinted page
+              // is two versions of the same colour with the type in a third,
+              // and the one you had picked was the hardest of the four to
+              // read. The ring is the same way the cat and colour pickers say
+              // "this one", and it leaves the words in ordinary ink.
+              className={`rounded-3xl bg-surface-1 px-5 py-4 text-left shadow-2 transition-shadow active:shadow-press ${
+                active ? 'ring-2 ring-primary' : ''
               }`}
             >
               <p className={`text-xl ${TITLE}`}>{option.name}</p>
-              <p className={`mt-0.5 text-sm ${active ? 'opacity-70' : 'text-on-surface-dim'}`}>
+              <p className="mt-0.5 text-sm text-on-surface-dim">
                 {option.description}
               </p>
             </motion.button>
