@@ -360,8 +360,9 @@
    that one is bent into a circle should not mean it is lit differently. */
 .clear-of-ground {
   filter: var(--lift-shadow)
-    drop-shadow(0 0 26px color-mix(in oklab, var(--color-surface) 70%, transparent))
-    drop-shadow(0 0 44px color-mix(in oklab, var(--color-surface) 52%, transparent));
+    drop-shadow(0 0 16px color-mix(in oklab, var(--color-surface) 88%, transparent))
+    drop-shadow(0 0 30px color-mix(in oklab, var(--color-surface) 76%, transparent))
+    drop-shadow(0 0 48px color-mix(in oklab, var(--color-surface) 58%, transparent));
 }
 
 @layer base {
