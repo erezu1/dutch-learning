@@ -359,12 +359,17 @@
 
    Each is its own element behind the thing it clears, so nothing that moves
    ever sits inside it. */
+/* Denser at the core than the first gradient and softer at the edge than the
+   box-shadow it replaced: most of the weight sits in the few pixels either
+   side of the bar, where it does the work, and what is left only has to carry
+   the falloff. */
 .clearing {
   background: radial-gradient(
     ellipse at center,
-    color-mix(in oklab, var(--color-surface) 62%, transparent) 0%,
-    color-mix(in oklab, var(--color-surface) 44%, transparent) 40%,
-    transparent 74%
+    color-mix(in oklab, var(--color-surface) 88%, transparent) 0%,
+    color-mix(in oklab, var(--color-surface) 70%, transparent) 32%,
+    color-mix(in oklab, var(--color-surface) 32%, transparent) 60%,
+    transparent 82%
   );
 }
 
