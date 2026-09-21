@@ -19,10 +19,13 @@ export interface LevelOption {
 }
 
 export const LEVELS: LevelOption[] = [
-  { id: 'beginner', name: 'New', description: 'Little or no Dutch', startRank: 0 },
-  { id: 'a1', name: 'Basic', description: 'A few hundred words', startRank: 250 },
-  { id: 'a2', name: 'Everyday', description: 'Simple conversations', startRank: 750 },
-  { id: 'b1', name: 'Confident', description: 'Comfortable day to day', startRank: 1500 },
+  // Named the way people describe how much of a language they have, rather
+  // than by how much of this app applies to them. Nobody is "Everyday" at a
+  // language; they are a beginner, or they get by, or they are conversational.
+  { id: 'beginner', name: 'Beginner', description: 'Little or no Dutch', startRank: 0 },
+  { id: 'a1', name: 'Elementary', description: 'A few hundred words', startRank: 250 },
+  { id: 'a2', name: 'Conversational', description: 'Simple conversations', startRank: 750 },
+  { id: 'b1', name: 'Fluent', description: 'Comfortable day to day', startRank: 1500 },
 ]
 
 export const DEFAULT_LEVEL = LEVELS[0]

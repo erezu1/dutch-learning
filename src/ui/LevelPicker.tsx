@@ -71,7 +71,7 @@ export function LevelPicker({ current, known, onPick, onCancel }: Props) {
           {/* Smaller beside the arrow than it was alone, so the two sit on one
               line the way Settings does rather than the title wrapping around
               a button parked above it. */}
-          <h1 className={`${onCancel ? 'text-3xl' : 'text-4xl'} ${TITLE}`}>Starting point</h1>
+          <h1 className={`${onCancel ? 'text-3xl' : 'text-4xl'} ${TITLE}`}>Your level</h1>
         </div>
         <p className="mt-2 text-on-surface-dim">
           Which words you get first. Nothing is skipped for good.
