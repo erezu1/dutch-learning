@@ -300,6 +300,11 @@ export class CatRig {
     s.setProperty('--tilt', `${m.tilt ?? 0}deg`)
     s.setProperty('--sq', String(m.squash ?? 0.85))
     s.setProperty('--rise', String(m.rise ?? 0))
+    // The hair lags the head. She turns, and for a moment the whiskers are
+    // still pointing where she was — so the swing runs against the tilt, and
+    // a mood with no tilt lets them fall back to level.
+    const swing = -(m.tilt ?? 0) * 0.55
+    for (let i = 0; i < 3; i++) s.setProperty(`--whisk-${i}`, `${swing}deg`)
     s.setProperty('--ear-l', `${turn}deg`)
     s.setProperty('--ear-r', `${-turn}deg`)
     s.setProperty('--gaze-px', `${gx}px`)

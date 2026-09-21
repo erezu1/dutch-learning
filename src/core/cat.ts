@@ -173,14 +173,24 @@ export const STAR =
 // they are not part of the shape the outline is traced from: a line drawn
 // around them would make them furniture rather than hair.
 //
-// All three droop. Every one leaves her face level and falls away as it goes,
-// because that is what a hair of that length does under its own weight — the
-// top one used to curl upward, which reads as a wire rather than a whisker.
-// They end left of x 11 and right of 109, clear of where a paw can reach, so
-// a paw never swallows one.
-const WHISKERS =
-  'M19 63C13 63.5 7 65 3.5 68M19 69C13 69.5 7 71 3 74M19 75C13 75.5 7 77 3.5 80' +
-  'M101 63C107 63.5 113 65 116.5 68M101 69C107 69.5 113 71 117 74M101 75C107 75.5 113 77 116.5 80'
+// All three droop, and by different amounts: the top one falls three units
+// over its length, the bottom one ten. That is what stops them reading as a
+// comb — three parallel strokes is a grille, three that spread is a set of
+// hairs growing out of the same cheek.
+//
+// Each is its own path with its own root, because each one swings about where
+// it leaves her face. `swing` says which of the three lagging channels it
+// follows and how much of it it takes; `flick` is how hard a jump throws it.
+// The bottom whisker is the longest and takes the most of both — a longer
+// hair has further to travel and more of its own weight to carry.
+const WHISKERS: { d: string; at: string; swing: number; flick: number }[] = [
+  { d: 'M19 62C13 62.5 8 64 4 65.5', at: '19px 62px', swing: 0.7, flick: -3 },
+  { d: 'M19 68C13 68.5 7 70 2 74', at: '19px 68px', swing: 1, flick: -4.5 },
+  { d: 'M19 74C13 74.5 7 77 3.5 84', at: '19px 74px', swing: 1.3, flick: -6 },
+  { d: 'M101 62C107 62.5 112 64 116 65.5', at: '101px 62px', swing: 0.7, flick: -3 },
+  { d: 'M101 68C107 68.5 113 70 118 74', at: '101px 68px', swing: 1, flick: -4.5 },
+  { d: 'M101 74C107 74.5 113 77 116.5 84', at: '101px 74px', swing: 1.3, flick: -6 },
+]
 
 // --- coats -----------------------------------------------------------------
 // Independent of the theme on purpose: this is which cat you have, not which
@@ -934,8 +944,10 @@ export function catSvg({ coat = 'calico', mood = 'idle', rim = false, shade = tr
     ${c.chin ? `<ellipse class="cat-chin" clip-path="url(#${id}s)" cx="${c.chin.cx}"
       cy="${c.chin.cy}" rx="${c.chin.rx}" ry="${c.chin.ry}" fill="${c.chin.fill}"/>` : ''}
     <g class="cat-whiskers" transform="translate(0 ${faceDy})" style="transform-box:view-box;transform-origin:60px 78px;transform:rotate(calc(var(--huff,0) * -2.2deg + var(--whisk,0) * 2.1deg)) scaleX(calc(1 + var(--huff,0) * 0.035 + var(--whisk,0) * 0.022))">
-      <path d="${WHISKERS}" fill="none" stroke="${c.line}" stroke-width="1.8"
-        stroke-linecap="round"/>
+      ${WHISKERS.map((w, i) => `<path d="${w.d}" fill="none" stroke="${c.line}"
+        stroke-width="1.8" stroke-linecap="round" style="transform-box:view-box;
+        transform-origin:${w.at};transform:rotate(calc(var(--whisk-${i % 3}, 0deg) * ${w.swing}
+        + var(--hop, 0) * ${w.flick}deg))"/>`).join('')}
     </g>
     <g class="cat-face" style="${pin('60px 100px', 0, 0, faceDy)}">
       <g class="cat-brows">${browSets}</g>

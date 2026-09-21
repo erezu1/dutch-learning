@@ -654,6 +654,13 @@
 @property --sniff    { syntax: '<number>'; initial-value: 0;    inherits: true; }
 /* A jump. The head reads the first at full; the paws read the second, which
    is the same curve arriving a little later, at a fifth. */
+/* Three lagging copies of the same swing. A whisker's root is welded to her
+   cheek and the hair itself is not, so when her head turns the hair arrives
+   late and overshoots — and the three arrive at different times, which is the
+   whole of why a set of whiskers looks alive and a set of lines does not. */
+@property --whisk-0  { syntax: '<angle>';  initial-value: 0deg; inherits: true; }
+@property --whisk-1  { syntax: '<angle>';  initial-value: 0deg; inherits: true; }
+@property --whisk-2  { syntax: '<angle>';  initial-value: 0deg; inherits: true; }
 @property --rise     { syntax: '<number>'; initial-value: 0;    inherits: true; }
 @property --hop      { syntax: '<number>'; initial-value: 0;    inherits: true; }
 @property --hop-paw  { syntax: '<number>'; initial-value: 0;    inherits: true; }
@@ -763,6 +770,12 @@ svg.cat-rig {
     --tilt 300ms cubic-bezier(0.34, 1.24, 0.64, 1),
     --sq 340ms cubic-bezier(0.34, 1.24, 0.64, 1),
     --rise 340ms cubic-bezier(0.34, 1.24, 0.64, 1),
+    /* Longer than the head's own move and springier, so they are still
+       settling after she has stopped, and staggered so they never travel as
+       one piece. */
+    --whisk-0 380ms cubic-bezier(0.34, 1.5, 0.64, 1),
+    --whisk-1 440ms cubic-bezier(0.34, 1.5, 0.64, 1) 45ms,
+    --whisk-2 500ms cubic-bezier(0.34, 1.5, 0.64, 1) 90ms,
     --ear-l 260ms cubic-bezier(0.34, 1.3, 0.64, 1) 70ms,
     --ear-r 260ms cubic-bezier(0.34, 1.3, 0.64, 1) 70ms,
     --gaze-px 200ms ease-out,
