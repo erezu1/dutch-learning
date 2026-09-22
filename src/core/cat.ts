@@ -722,16 +722,15 @@ export const MOODS: Record<string, Mood> = {
   curious:   { eyes: 'curious', mouth: 'neutral', squash: 0.5, label: 'Curious', tilt: 7 },
   // A head that has come up, not just opened. The squash lifts her a little on
   // its own — three units at this end of the range — so the mood was a face
-  // changing on a head that stayed where it was. Sixteen on top of that puts
-  // her nineteen units clear of resting — an eighth of her own height, and
-  // the point at which the lift is the first thing you see rather than
-  // something you notice afterwards.
-  surprised: { eyes: 'wide',    mouth: 'open', squash: 0.32, rise: 16, label: 'Surprised', ear: 'perk' },
+  // changing on a head that stayed where it was. Eleven on top of that is
+  // half again the lift that read as a movement, and short of the one that
+  // read as a leap: she comes up, she does not take off.
+  surprised: { eyes: 'wide',    mouth: 'open', squash: 0.32, rise: 11, label: 'Surprised', ear: 'perk' },
   celebrate: { eyes: 'happy',   mouth: 'open', squash: 0.4,    label: 'Celebrate', tilt: -3, ear: 'perk' },
   // Woken with a start. Further up than surprised and with no tilt at all —
   // a head that has come straight off the ground rather than turned toward
   // something. It is the only mood that is normally seen in the air.
-  startled:  { eyes: 'wide',    mouth: 'open', squash: 0.12, rise: 17, label: 'Startled', ear: 'perk' },
+  startled:  { eyes: 'wide',    mouth: 'open', squash: 0.12, rise: 12, label: 'Startled', ear: 'perk' },
   sad:       { eyes: 'sad',     mouth: 'frown', squash: 0.9,   label: 'Sad' },
   grumpy:    { eyes: 'angry',   mouth: 'neutral', squash: 0.8, label: 'Grumpy' },
   lookUpL:   { eyes: 'open',    mouth: 'neutral', squash: 0.45, label: 'Look up left',
