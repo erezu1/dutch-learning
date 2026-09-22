@@ -14,12 +14,13 @@ import { useCanInstall } from './useCanInstall'
 import { ThemePicker } from './ThemePicker'
 import { afterRing, pressable, ringGrow } from './motion'
 import { WeekStrip } from './WeekStrip'
+import { rungAt } from '../core/ladder'
 import { weekMood, type WeekDay } from '../core/week'
 import { TITLE, WORDMARK } from './type'
 
 interface Props {
   stats: SessionStats
-  pointsToday: number
+  score: number
   level: LevelOption
   week: WeekDay[]
   onOpenSettings: () => void
@@ -34,7 +35,7 @@ interface Props {
 
 export function Home({
   stats,
-  pointsToday,
+  score,
   level,
   week,
   theme,
@@ -95,7 +96,12 @@ export function Home({
   // are done. It used to show words known out of the whole two thousand, which
   // on any real day is a sliver that never visibly moves — it read as broken
   // because nothing you did changed it.
-  const progress = stats.plannedToday ? stats.doneToday / stats.plannedToday : 0
+  // Two goals, two objects. The ring is the long one — how far through the
+  // level you are — and the day is on the button you press to do it, with the
+  // week's dots saying whether you finished.
+  const rung = rungAt(score)
+  const progress = rung.part
+  const dayPart = stats.plannedToday ? Math.min(1, stats.doneToday / stats.plannedToday) : 1
   // The level you've reached, not the one you claimed on the first run. The
   // claim only decides where the deck starts handing out words; this moves as
   // the words go by, which is what a level is for.
@@ -270,8 +276,10 @@ export function Home({
                   only ever measures one day is two facts pretending to be one,
                   and the line underneath existed to explain that they are not
                   — which is a caption apologising for its own illustration. */}
-              <p className={`text-5xl ${TITLE}`}>{pointsToday.toLocaleString()}</p>
-              <p className="text-sm text-on-surface-dim">points today</p>
+              <p className={`text-5xl ${TITLE}`}>{rung.level}</p>
+              <p className="text-sm text-on-surface-dim">
+                {rung.toGo.toLocaleString()} to go
+              </p>
             </motion.div>
             </div>
           </div>
@@ -291,6 +299,10 @@ export function Home({
           <Button
             onClick={() => onStart(another)}
             disabled={waiting === 0 && !another}
+            // Today, on the thing you press to do today. Only while there is
+            // something left: a finished day is the button at its own colour,
+            // and a day with nothing due never had a share to fill.
+            progress={waiting > 0 ? dayPart : undefined}
             className="px-14"
           >
             {/* Not "Continue": nothing is ever in progress here. The queue is

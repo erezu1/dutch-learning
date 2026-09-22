@@ -188,6 +188,7 @@ export default function App() {
           <Screen key="done">
             <Done
               stats={session.stats}
+              score={session.score}
               points={session.sessionPoints}
               coat={session.coat}
               dark={session.resolvedMode === 'dark'}
@@ -202,7 +203,7 @@ export default function App() {
           <Screen key="home">
             <Home
               stats={session.stats}
-              pointsToday={session.pointsToday}
+              score={session.score}
               level={session.level}
               week={session.week}
               theme={session.theme}

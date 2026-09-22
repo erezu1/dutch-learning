@@ -46,7 +46,7 @@ export function LevelPicker({ current, known, onPick, onCancel }: Props) {
             bottom was somewhere else entirely, below three cards you had to
             scroll past. On first run there is no way out, because there is
             nothing to go back to yet. */}
-        <BackHeader title="Your level" onBack={onCancel} />
+        <BackHeader title="Starting point" onBack={onCancel} />
         <p className="mt-2 text-on-surface-dim">
           Which words you get first. Nothing is skipped for good.
         </p>
