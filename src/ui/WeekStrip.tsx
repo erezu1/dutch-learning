@@ -22,8 +22,12 @@ const DOT: Record<DayState, string> = {
   // Today, still open. Fainter than a started day, so the two don't read alike.
   open: 'h-[18px] w-[18px] border-2 border-primary/35',
   missed: 'h-[18px] w-[18px] bg-surface-3',
-  // Smaller, because nothing has had the chance to happen yet.
-  ahead: 'h-[11px] w-[11px] bg-surface-3/60',
+  // Smaller, because nothing has had the chance to happen yet. Smaller is the
+  // whole difference: it used to be faded as well, and three fifths of a
+  // colour that was already the palest thing on the page put it back under
+  // the drifting ground the colour was just lifted out of — 1.20:1 against
+  // 1.34:1 for everything else it stands next to.
+  ahead: 'h-[11px] w-[11px] bg-surface-3',
 }
 
 interface Props {
