@@ -376,13 +376,22 @@ export function useSession(deck: Deck): Session {
   }, [deck, states, preview, extraPreview, reviewed, correctCount, doneToday])
 
   /**
-   * A day is finished when there is nothing left waiting on it. Written down
-   * as it happens rather than worked out later: the review log knows how many
-   * questions you answered, but not how many the day was asking for, and by
-   * tomorrow that number is gone.
+   * A day is finished when you have finished a round on it, or when there is
+   * nothing left waiting either way.
+   *
+   * A round IS the day's duty — that is what the app asks of you and what the
+   * end-of-round screen congratulates you for — so the dot fills when you
+   * finish one. Waiting for the queue to empty meant a day you had worked
+   * through still read as merely started, because a wrong answer comes back
+   * round and the deck always has more to offer.
+   *
+   * Written down as it happens rather than worked out later: the review log
+   * knows how many questions you answered, but not how many the day was
+   * asking for, and by tomorrow that number is gone.
    */
   useEffect(() => {
-    if (status === 'loading' || doneToday === 0 || preview.cards.length > 0) return
+    if (status === 'loading' || doneToday === 0) return
+    if (status !== 'done' && preview.cards.length > 0) return
     const key = today()
     setFinished((was) => {
       if (was.has(key)) return was
