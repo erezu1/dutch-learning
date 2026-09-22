@@ -95,7 +95,7 @@ export function CoatPicker({
           >
             {/* Just the head, cropped to the dot: at 28px the ears and paws
                 are noise, and what tells two coats apart is the face. */}
-            <svg viewBox="20 6 88 88" className="h-[26px] w-[26px]" aria-hidden="true">
+            <svg viewBox="20 -4 100 100" className="h-[26px] w-[26px]" aria-hidden="true">
               <g dangerouslySetInnerHTML={{ __html: faceMark(id) }} />
             </svg>
           </Swatch>
@@ -131,15 +131,18 @@ function faceMark(id: CoatId): string {
   // Up and to the right of them, though, and wider than the face. Centred
   // exactly on the eyes, the crop took a quarter of the black cap and only a
   // tenth of the ginger one, which put the calico's two markings so far out of
-  // balance that her dot read as the tuxedo's. This crop takes a fifth of each:
-  // the same face, framed where the difference between two coats actually is.
+  // balance that her dot read as the tuxedo's — the same sentence, "dark cap
+  // on cream". This crop leans the other way, onto the side the two coats
+  // disagree about: a quarter ginger against a fifth black, so the calico's
+  // dot leads with the colour the tuxedo hasn't got. It is as far as the lean
+  // can go — any further and the crop cuts her left eye.
   const eye = (cx: number) =>
     `<ellipse cx="${cx}" cy="58" rx="11.5" ry="12" fill="${c.iris}"/>` +
     `<ellipse cx="${cx}" cy="58" rx="8.5" ry="9.8" fill="${c.pupil}"/>` +
     `<circle cx="${cx + 2.9}" cy="53.9" r="2.7" fill="#fff" opacity=".96"/>`
-  return `<clipPath id="disc-${id}"><circle cx="64" cy="50" r="44"/></clipPath>
+  return `<clipPath id="disc-${id}"><circle cx="70" cy="46" r="50"/></clipPath>
     <g clip-path="url(#disc-${id})">
-      <rect x="0" y="0" width="120" height="120" fill="${c.base}"/>
+      <rect x="-40" y="-40" width="200" height="200" fill="${c.base}"/>
       ${patches}${stripes}
       <ellipse cx="60" cy="75" rx="24" ry="13.5" fill="${c.muzzle}" opacity="${c.muzzleAlpha ?? (c.dark ? 0.42 : 0.65)}"/>
       ${eye(40)}${eye(80)}
