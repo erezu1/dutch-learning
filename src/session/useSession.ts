@@ -180,10 +180,29 @@ export function useSession(deck: Deck): Session {
   const [queue, setQueue] = useState<Card[]>([])
   const [index, setIndex] = useState(0)
   const [revealed, setRevealed] = useState(false)
+  /**
+   * Whether this card's answer is in. Not the same as `revealed`: on a card
+   * you grade yourself, revealing is asking to SEE the answer, which happens
+   * before you have said anything about it. The bar used to move on the
+   * reveal, so on every free-recall card it stepped forward a question early.
+   */
+  const [answered, setAnswered] = useState(false)
   const [picked, setPicked] = useState<string | null>(null)
   const [reviewed, setReviewed] = useState(0)
   const [correctCount, setCorrectCount] = useState(0)
   const [doneToday, setDoneToday] = useState(0)
+  /**
+   * How many questions today's duty asked for, fixed when the day's first
+   * round is built.
+   *
+   * It has to be remembered rather than recomputed, because what is waiting
+   * is not what is left: a round is capped, so on a day with a backlog there
+   * is a full round still waiting after you have answered half of one, and a
+   * bar measured against it would crawl and never fill.
+   */
+  const [dayPlan, setDayPlan] = useState(0)
+  /** Which day the plan above belongs to. */
+  const planDay = useRef('')
   const [intake, setIntake] = useState<Intake>(EMPTY_INTAKE)
   /** Days with any answer on them, and days that were seen through to the end. */
   const [studied, setStudied] = useState<Set<string>>(() => new Set())
@@ -243,6 +262,7 @@ export function useSession(deck: Deck): Session {
       getMeta<number>('score', 0),
       getMeta<{ day: string; points: number } | null>('pointsToday', null),
       getMeta<boolean>('autoContinue', false),
+      getMeta<{ day: string; size: number } | null>('dayPlan', null),
     ]).then(
       ([
         rows,
@@ -259,6 +279,7 @@ export function useSession(deck: Deck): Session {
         savedScore,
         savedPointsToday,
         savedAuto,
+        savedPlan,
       ]) => {
         if (cancelled) return
         setStates(new Map(rows.map((r) => [r.cardId, r] as const)))
@@ -274,6 +295,8 @@ export function useSession(deck: Deck): Session {
         pointsDay.current = savedPointsToday?.day ?? ''
         setPointsToday(savedPointsToday?.day === today() ? savedPointsToday.points : 0)
         setAutoContinueState(savedAuto)
+        planDay.current = savedPlan?.day ?? ''
+        setDayPlan(savedPlan?.day === today() ? savedPlan.size : 0)
         const t = themeById(savedTheme)
         // Nacht used to be one of the colours. Anyone who was using it wanted a
         // dark app, so that is what they get — in whichever colour they land on.
@@ -386,11 +409,12 @@ export function useSession(deck: Deck): Session {
       waiting: preview.cards.length,
       extraWaiting: extraPreview.cards.length,
       doneToday,
-      // What's left plus what's already done is the day's whole shape, so the
-      // ring fills as the day is worked through and is full when it's finished.
-      plannedToday: doneToday + preview.cards.length,
+      // The day's duty is the round it asked you for, so that is what the
+      // day's bar is measured against. Until there has been a round today
+      // there is no plan yet, and what is waiting is the best guess there is.
+      plannedToday: dayPlan || doneToday + preview.cards.length,
     }
-  }, [deck, states, preview, extraPreview, reviewed, correctCount, doneToday])
+  }, [deck, states, preview, extraPreview, reviewed, correctCount, doneToday, dayPlan])
 
   /**
    * A day is finished when you have finished a round on it, or when there is
@@ -440,8 +464,17 @@ export function useSession(deck: Deck): Session {
       pending.current = { amount: 0, answers: 0 }
       queueRef.current = q.cards
       recorded.current = false
+      // The first round of the day sets its size. An extra round is asked for
+      // on purpose, past the day's shape, so it never redraws it.
+      if (!extra && planDay.current !== today()) {
+        const size = doneToday + q.cards.length
+        planDay.current = today()
+        setDayPlan(size)
+        void setMeta('dayPlan', { day: today(), size }).catch(() => {})
+      }
       setQueue(q.cards)
       setIndex(0)
+      setAnswered(false)
       setReviewed(0)
       setCorrectCount(0)
       setSessionPoints(0)
@@ -451,7 +484,7 @@ export function useSession(deck: Deck): Session {
       shownAt.current = Date.now()
       setStatus(q.cards.length ? 'reviewing' : 'done')
     },
-    [cards, states, optionsFor, clearRevealTimer],
+    [cards, states, optionsFor, clearRevealTimer, doneToday],
   )
 
   const card = queue[index] ?? null
@@ -485,6 +518,7 @@ export function useSession(deck: Deck): Session {
     async (g: Grade) => {
       if (!card || recorded.current) return
       recorded.current = true
+      setAnswered(true)
       const previous = states.get(card.id)
       const base = previous ?? emptyState(card.id)
       const now = new Date()
@@ -602,6 +636,7 @@ export function useSession(deck: Deck): Session {
   const advance = useCallback(() => {
     clearRevealTimer()
     recorded.current = false
+    setAnswered(false)
     setRevealed(false)
     setPicked(null)
     shownAt.current = Date.now()
@@ -661,6 +696,7 @@ export function useSession(deck: Deck): Session {
       })
       setSessionPoints((p) => Math.max(0, p - last.earned))
     }
+    setAnswered(false)
     setRevealed(false)
     setPicked(null)
     setStatus('reviewing')
@@ -681,8 +717,12 @@ export function useSession(deck: Deck): Session {
      * it is. `index` alone is the count answered, and the reveal is added to
      * it so the bar moves when you answer rather than when you move on: empty
      * on the first question, full the moment the last one is in.
+     *
+     * Counted from the answer, not the reveal. On a multiple-choice card those
+     * are the same moment; on one you grade yourself, revealing is asking to
+     * see the answer before you have given one, and the bar moved then.
      */
-    position: Math.min(index + (revealed ? 1 : 0), queue.length),
+    position: Math.min(index + (answered ? 1 : 0), queue.length),
     length: queue.length,
     stats,
     score,

@@ -116,6 +116,10 @@ export function Home({
     const run = animate(counted, rung.into, ringGrow)
     return () => run.stop()
   }, [arrived, counted, rung.into])
+  // The day's duty is one round, and the week's dot is what says whether it
+  // has been done. The two have to agree: a solid dot over a button still
+  // showing a gap is the app disagreeing with itself about the same day.
+  const dayDone = week.some((d) => d.today && d.state === 'done')
   const dayPart = stats.plannedToday ? Math.min(1, stats.doneToday / stats.plannedToday) : 1
   // The level you've reached, not the one you claimed on the first run. The
   // claim only decides where the deck starts handing out words; this moves as
@@ -330,7 +334,7 @@ export function Home({
             // Today, on the thing you press to do today. Only while there is
             // something left: a finished day is the button at its own colour,
             // and a day with nothing due never had a share to fill.
-            progress={waiting > 0 ? dayPart : undefined}
+            progress={waiting > 0 && !dayDone ? dayPart : undefined}
             className="px-14"
           >
             {/* Not "Continue": nothing is ever in progress here. The queue is
