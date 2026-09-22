@@ -366,7 +366,7 @@ export function Home({
                 day's first, the day's next, or one more than the day asked
                 for. */}
             {inHand
-              ? 'Finish the round'
+              ? 'Finish the round!'
               : waiting > 0
                 ? stats.doneToday > 0
                   ? 'Keep going'
