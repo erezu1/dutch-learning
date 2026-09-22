@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useId } from 'react'
 import { weekMessage, type DayState, type WeekDay } from '../core/week'
 import { afterRing } from './motion'
 
@@ -12,22 +13,71 @@ import { afterRing } from './motion'
 // rather than seven days — bigger, and closer together, so they read as one
 // object you can count. It is still a record and not a demand: a week with
 // holes in it should look like a week with holes in it and nothing more.
+//
+// The two days that are already decided carry a mark, and the mark is a HOLE:
+// the tick and the cross are cut out of the dot rather than drawn on it, so
+// the page shows through and neither one needs an ink of its own. That is also
+// why the dots grew again — a mark needs room the plain dot never did.
 // ---------------------------------------------------------------------------
 
+/** The dot's size, and the mark's own box, which the marks are drawn in. */
+const SIZE = 22
+
+/** Cut out of a day you finished. */
+const TICK = 'M6.1 11.5 L9.4 14.7 L15.9 7.7'
+/** Cut out of a day you missed. */
+const CROSS = 'M7.7 7.7 L14.3 14.3 M14.3 7.7 L7.7 14.3'
+
+/**
+ * A disc with a mark taken out of it.
+ *
+ * A mask rather than a second path in the page's colour: the page is a moving
+ * wash, so a mark painted in "the background colour" is only the background
+ * colour for part of the minute. A hole is a hole whatever drifts under it.
+ */
+function Cut({ mark, fill }: { mark: string; fill: string }) {
+  // Scoped per instance: seven dots on the screen, and an id reused across
+  // them is one mask that seven elements are fighting over.
+  const id = useId()
+  return (
+    <svg width={SIZE} height={SIZE} viewBox="0 0 22 22" aria-hidden="true" className="block">
+      <mask id={id}>
+        <circle cx="11" cy="11" r="11" fill="#fff" />
+        <path
+          d={mark}
+          fill="none"
+          stroke="#000"
+          strokeWidth="2.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </mask>
+      <circle cx="11" cy="11" r="11" fill={fill} mask={`url(#${id})`} />
+    </svg>
+  )
+}
+
 /** Every dot occupies the same box; only what's drawn in it changes. */
-const DOT: Record<DayState, string> = {
-  done: 'h-[18px] w-[18px] bg-primary',
-  // Started but not finished: the outline is there, the fill isn't.
-  some: 'h-[18px] w-[18px] border-2 border-primary',
-  // Today, still open. Fainter than a started day, so the two don't read alike.
-  open: 'h-[18px] w-[18px] border-2 border-primary/35',
-  missed: 'h-[18px] w-[18px] bg-surface-3',
-  // Smaller, because nothing has had the chance to happen yet. Smaller is the
-  // whole difference: it used to be faded as well, and three fifths of a
-  // colour that was already the palest thing on the page put it back under
-  // the drifting ground the colour was just lifted out of — 1.20:1 against
-  // 1.34:1 for everything else it stands next to.
-  ahead: 'h-[11px] w-[11px] bg-surface-3',
+function Dot({ state }: { state: DayState }) {
+  switch (state) {
+    case 'done':
+      return <Cut mark={TICK} fill="var(--color-primary)" />
+    case 'missed':
+      return <Cut mark={CROSS} fill="var(--color-surface-3)" />
+    // Started but not finished: the outline is there, the fill isn't. No mark,
+    // because nothing has been decided about the day yet.
+    case 'some':
+      return <span className="h-[22px] w-[22px] rounded-full border-2 border-primary" />
+    // Today, still open. Fainter than a started day, so the two don't read alike.
+    case 'open':
+      return <span className="h-[22px] w-[22px] rounded-full border-2 border-primary/35" />
+    // Smaller, because nothing has had the chance to happen yet. Smaller is the
+    // whole difference: it used to be faded as well, and three fifths of a
+    // colour that was already the palest thing on the page put it back under
+    // the drifting ground the colour had just been lifted out of.
+    default:
+      return <span className="h-[13px] w-[13px] rounded-full bg-surface-3" />
+  }
 }
 
 interface Props {
@@ -51,7 +101,7 @@ export function WeekStrip({ week, arrived }: Props) {
             // Left to right, a beat apart, so the week reads as a week rather
             // than as seven things appearing at once.
             transition={afterRing(0.14 + i * 0.035)}
-            className="flex w-6 flex-col items-center gap-1.5"
+            className="flex w-7 flex-col items-center gap-1.5"
           >
             <span
               className={`text-[0.78rem] leading-none ${
@@ -62,8 +112,8 @@ export function WeekStrip({ week, arrived }: Props) {
             </span>
             {/* A fixed-height box so the smaller 'ahead' dot sits on the same
                 line as the rest instead of hanging from the letter. */}
-            <span className="grid h-[18px] place-items-center">
-              <span className={`rounded-full ${DOT[day.state]}`} />
+            <span className="grid h-[22px] place-items-center">
+              <Dot state={day.state} />
             </span>
           </motion.div>
         ))}
