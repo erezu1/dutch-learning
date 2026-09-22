@@ -93,6 +93,8 @@ export interface Session {
   stats: SessionStats
   /** Lifetime points. Only ever increases. */
   score: number
+  /** What today has earned, which is what the ring on the home screen holds. */
+  pointsToday: number
   /** Points earned in this session, for the finishing screen. */
   sessionPoints: number
   /** The most recent award, for the animation. Null between sessions. */
@@ -158,6 +160,17 @@ export function useSession(deck: Deck): Session {
   const [mode, setModeState] = useState<Mode>(DEFAULT_MODE)
   const [resolvedMode, setResolvedMode] = useState<Resolved>(() => resolveMode(DEFAULT_MODE))
   const [score, setScore] = useState(0)
+  /**
+   * What today has earned.
+   *
+   * Kept next to the day it belongs to, because a number with no date on it
+   * cannot be told from yesterday's the next morning — the app is opened, put
+   * down and opened again, and the only thing that reliably marks the turn of
+   * a day is finding a different key than the one that was written.
+   */
+  const [pointsToday, setPointsToday] = useState(0)
+  /** Which day the count above belongs to. */
+  const pointsDay = useRef('')
   /** Off by default: moving on by itself is a preference, not an assumption. */
   const [autoContinue, setAutoContinueState] = useState(false)
   /** The most recent award, with a key so the same amount re-animates. */
@@ -228,6 +241,7 @@ export function useSession(deck: Deck): Session {
       getMeta<string | null>('coat', null),
       getMeta<string | null>('mode', null),
       getMeta<number>('score', 0),
+      getMeta<{ day: string; points: number } | null>('pointsToday', null),
       getMeta<boolean>('autoContinue', false),
     ]).then(
       ([
@@ -243,6 +257,7 @@ export function useSession(deck: Deck): Session {
         savedCoat,
         savedMode,
         savedScore,
+        savedPointsToday,
         savedAuto,
       ]) => {
         if (cancelled) return
@@ -256,6 +271,8 @@ export function useSession(deck: Deck): Session {
         setLevelState(levelById(savedLevel))
         setLevelChosen(savedLevel !== null)
         setScore(savedScore)
+        pointsDay.current = savedPointsToday?.day ?? ''
+        setPointsToday(savedPointsToday?.day === today() ? savedPointsToday.points : 0)
         setAutoContinueState(savedAuto)
         const t = themeById(savedTheme)
         // Nacht used to be one of the colours. Anyone who was using it wanted a
@@ -498,6 +515,17 @@ export function useSession(deck: Deck): Session {
         void setMeta('score', total).catch(() => {})
         return total
       })
+      setPointsToday((was) => {
+        const key = today()
+        // Anything earned before midnight belongs to the day it was earned on,
+        // so the first answer after it starts the count again rather than
+        // adding to yesterday's.
+        const base = pointsDay.current === key ? was : 0
+        pointsDay.current = key
+        const next = base + earned.amount
+        void setMeta('pointsToday', { day: key, points: next }).catch(() => {})
+        return next
+      })
       setSessionPoints((p) => p + earned.amount)
       setDoneToday((n) => n + 1)
       setStudied((was) => (was.has(today()) ? was : new Set(was).add(today())))
@@ -658,6 +686,7 @@ export function useSession(deck: Deck): Session {
     length: queue.length,
     stats,
     score,
+    pointsToday,
     sessionPoints,
     award,
     autoGrade,

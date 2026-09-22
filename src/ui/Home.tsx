@@ -19,6 +19,7 @@ import { TITLE, WORDMARK } from './type'
 
 interface Props {
   stats: SessionStats
+  pointsToday: number
   level: LevelOption
   week: WeekDay[]
   onOpenSettings: () => void
@@ -33,6 +34,7 @@ interface Props {
 
 export function Home({
   stats,
+  pointsToday,
   level,
   week,
   theme,
@@ -175,7 +177,10 @@ export function Home({
 
       </div>
 
-      <div className="flex flex-col items-center gap-8 [@media(max-height:780px)]:gap-4">
+      {/* The gap has to clear the ring's glow, which reaches 34px past its
+          edge. It used to be paid for by the line of text under the ring;
+          with that gone the glow was landing on the button. */}
+      <div className="flex flex-col items-center gap-14 [@media(max-height:780px)]:gap-9">
         <div className="flex flex-col items-center gap-3">
           {/* On the ring, exactly as she is on the progress bar while you
               review. The ring is what this screen measures, so it is the thing
@@ -265,14 +270,8 @@ export function Home({
                   only ever measures one day is two facts pretending to be one,
                   and the line underneath existed to explain that they are not
                   — which is a caption apologising for its own illustration. */}
-              <p className={`text-5xl ${TITLE}`}>{stats.doneToday}</p>
-              <p className="text-sm text-on-surface-dim">
-                {waiting > 0
-                  ? `of ${stats.plannedToday} today`
-                  : stats.doneToday > 0
-                    ? 'all done today'
-                    : 'nothing due'}
-              </p>
+              <p className={`text-5xl ${TITLE}`}>{pointsToday.toLocaleString()}</p>
+              <p className="text-sm text-on-surface-dim">points today</p>
             </motion.div>
             </div>
           </div>

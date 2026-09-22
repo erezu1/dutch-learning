@@ -202,6 +202,7 @@ export default function App() {
           <Screen key="home">
             <Home
               stats={session.stats}
+              pointsToday={session.pointsToday}
               level={session.level}
               week={session.week}
               theme={session.theme}
