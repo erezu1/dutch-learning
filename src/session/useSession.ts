@@ -563,6 +563,15 @@ export function useSession(deck: Deck): Session {
   const start = useCallback(
     (extra = false) => {
       clearRevealTimer()
+      // A round already in hand goes on rather than being replaced. The button
+      // says "Keep going" and the bar under it is that round's own progress —
+      // build a new queue here and the bar the button was showing belongs to a
+      // round that no longer exists, which is exactly what it looked like: a
+      // button two-ninths full opening a card screen at nothing.
+      //
+      // An extra round is the exception: it is asked for on purpose, past the
+      // day's shape, and it is a new round by definition.
+      if (!extra && status === 'reviewing' && index < queueRef.current.length) return
       const q = buildQueue(cards, states, optionsFor(extra))
       undoStack.current = []
       pending.current = { amount: 0, answers: 0 }
@@ -588,7 +597,7 @@ export function useSession(deck: Deck): Session {
       shownAt.current = Date.now()
       setStatus(q.cards.length ? 'reviewing' : 'done')
     },
-    [cards, states, optionsFor, clearRevealTimer, doneToday],
+    [cards, states, optionsFor, clearRevealTimer, doneToday, status, index],
   )
 
   const card = queue[index] ?? null
