@@ -17,7 +17,9 @@ import { afterRing } from './motion'
 // The two days that are already decided carry a mark, and the mark is a HOLE:
 // the tick and the cross are cut out of the dot rather than drawn on it, so
 // the page shows through and neither one needs an ink of its own. That is also
-// why the dots grew again — a mark needs room the plain dot never did.
+// why the dots grew again — a mark needs room the plain dot never did. A day
+// that hasn't come yet is the other way round: all page, with a broken outline
+// round where it will be.
 // ---------------------------------------------------------------------------
 
 /** The dot's size, and the mark's own box, which the marks are drawn in. */
@@ -57,6 +59,31 @@ function Cut({ mark, fill }: { mark: string; fill: string }) {
   )
 }
 
+/**
+ * A day that hasn't come yet: an outline, and the page inside it.
+ *
+ * Drawn rather than bordered. A CSS dashed border on a 22px circle is at the
+ * mercy of how the browser divides the dashes, and they come out uneven and
+ * chunky at the ends; a stroke on a circle of known circumference takes a
+ * pattern that closes exactly, ten times round.
+ */
+function Waiting() {
+  return (
+    <svg width={SIZE} height={SIZE} viewBox="0 0 22 22" aria-hidden="true" className="block">
+      <circle
+        cx="11"
+        cy="11"
+        r="10"
+        fill="none"
+        stroke="var(--color-surface-3)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeDasharray="3.4 2.88"
+      />
+    </svg>
+  )
+}
+
 /** Every dot occupies the same box; only what's drawn in it changes. */
 function Dot({ state }: { state: DayState }) {
   switch (state) {
@@ -71,12 +98,13 @@ function Dot({ state }: { state: DayState }) {
     // Today, still open. Fainter than a started day, so the two don't read alike.
     case 'open':
       return <span className="h-[22px] w-[22px] rounded-full border-2 border-primary/35" />
-    // Smaller, because nothing has had the chance to happen yet. Smaller is the
-    // whole difference: it used to be faded as well, and three fifths of a
-    // colour that was already the palest thing on the page put it back under
-    // the drifting ground the colour had just been lifted out of.
+    // Nothing has had the chance to happen yet, so there is nothing in it: the
+    // page itself, with a broken outline round where the day will be. It was a
+    // small filled dot, which is the drawing a missed day makes at a smaller
+    // size — a difference you have to measure rather than see, between two
+    // days that mean opposite things.
     default:
-      return <span className="h-[13px] w-[13px] rounded-full bg-surface-3" />
+      return <Waiting />
   }
 }
 
