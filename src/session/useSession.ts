@@ -636,7 +636,16 @@ export function useSession(deck: Deck): Session {
     revealed,
     picked,
     correct,
-    position: Math.min(index + 1, queue.length),
+    /**
+     * How many are behind you, not which one you are on.
+     *
+     * It was `index + 1`, so the bar was full while the last card was still
+     * on screen unanswered — a round that looks finished one question before
+     * it is. `index` alone is the count answered, and the reveal is added to
+     * it so the bar moves when you answer rather than when you move on: empty
+     * on the first question, full the moment the last one is in.
+     */
+    position: Math.min(index + (revealed ? 1 : 0), queue.length),
     length: queue.length,
     stats,
     score,

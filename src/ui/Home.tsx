@@ -32,9 +32,6 @@ interface Props {
   onChangeTheme: (theme: Theme) => void
 }
 
-/** One opening of the app. Reset by a reload, which is what a visit is. */
-let greeted = false
-
 export function Home({
   stats,
   score,
@@ -60,25 +57,20 @@ export function Home({
   const [arrived, setArrived] = useState(false)
 
   /**
-   * How she takes the week, said once when you walk in.
+   * How she takes the week, said every time you arrive here.
    *
-   * Once per visit, not once per screen: the home screen is mounted again every
-   * time a round ends, and being greeted for a week you have just spent twenty
-   * minutes on reads as an app with no memory of the last minute. The flag sits
-   * outside the component because that is exactly the scope it needs — one
-   * opening of the app.
+   * Every time, not once per visit: coming back from a round is an arrival
+   * too, and it is the arrival where the week has just changed — you came
+   * here to see what it did. This screen is unmounted for the length of a
+   * round, so its own mount is exactly the event, and the reaction is chosen
+   * from the same reading of the week as the line under the dots.
    */
   const [hello, setHello] = useState<{ scene: SceneName; key: number } | null>(null)
   useEffect(() => {
-    if (greeted) return
     // After the entrance, not during it: she fades in along with everything
     // else, and a face that has already changed by the time it is visible
     // never changed as far as anyone watching is concerned.
-    // Claimed when it fires rather than when it is scheduled: in development
-    // React mounts every component twice, and a flag set on the way in would
-    // be claimed by the mount whose timer is then cancelled on the way out.
     const id = setTimeout(() => {
-      greeted = true
       setHello({ scene: weekMood(week), key: Date.now() })
     }, 700)
     return () => clearTimeout(id)
