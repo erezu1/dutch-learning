@@ -116,25 +116,6 @@ export function Home({
     const run = animate(counted, rung.into, ringGrow)
     return () => run.stop()
   }, [arrived, counted, rung.into])
-  // The day's duty is one round, and the week's dot is what says whether it
-  // has been done. The two have to agree: a solid dot over a button still
-  // showing a gap is the app disagreeing with itself about the same day.
-  const dayDone = week.some((d) => d.today && d.state === 'done')
-  const dayPart = stats.plannedToday ? Math.min(1, stats.doneToday / stats.plannedToday) : 1
-  /**
-   * What the bar holds, which is what the button says:
-   *
-   *   Start          nothing answered yet, so nothing filled
-   *   Keep going     how far through the round in hand
-   *   Another round? / Nothing left   full: there is nothing outstanding
-   *
-   * The round in hand is the one thing all three are really about — a round
-   * IS the day's duty — so it is the measure whenever there is a round to
-   * measure. There isn't one only when the app has been opened since the last
-   * one, because a queue is never reloaded; then the day answers instead,
-   * which is the same quantity a day of one round, and the only one that
-   * survives being put down and picked up again.
-   */
   /**
    * Whether there is a round to go back to, as opposed to one to begin.
    *
@@ -143,11 +124,17 @@ export function Home({
    * what the button both says and does, since a round in hand is resumed.
    */
   const inHand = stats.roundSize > 0 && stats.roundDone < stats.roundSize
-  const part = stats.roundSize
-    ? Math.min(1, stats.roundDone / stats.roundSize)
-    : dayDone
-      ? 1
-      : dayPart
+  /**
+   * What the bar holds: the round, and nothing else.
+   *
+   * A round in hand shows how far through it you are. Any other press begins
+   * a round, and a round that has not begun is empty — it was showing the day
+   * for a while, which meant "Keep going" could sit over a full bar the
+   * moment before it started you at nothing. Full is kept for the two states
+   * where there is nothing outstanding at all.
+   */
+  const part = inHand ? Math.min(1, stats.roundDone / stats.roundSize) : waiting > 0 ? 0 : 1
+
   // The level you've reached, not the one you claimed on the first run. The
   // claim only decides where the deck starts handing out words; this moves as
   // the words go by, which is what a level is for.
@@ -355,7 +342,7 @@ export function Home({
             // Today, on the thing you press to do today — the day until the
             // day is done, the current round after that. Nothing to draw on a
             // button there is nothing left to press.
-            progress={inHand || waiting > 0 || another ? part : undefined}
+            progress={part}
             className="px-14 font-plain"
           >
             {/* What the press actually does, in four words or fewer. A round

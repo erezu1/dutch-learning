@@ -73,9 +73,8 @@ export interface SessionStats {
   /** Words whose recognise card has reached the review stage. */
   known: number
   total: number
-  /** Cards answered since midnight, and how many were planned for today. */
+  /** Cards answered since midnight. */
   doneToday: number
-  plannedToday: number
   /**
    * The round still in memory: how far into it, and how long it is.
    *
@@ -218,18 +217,6 @@ export function useSession(deck: Deck): Session {
   const [reviewed, setReviewed] = useState(0)
   const [correctCount, setCorrectCount] = useState(0)
   const [doneToday, setDoneToday] = useState(0)
-  /**
-   * How many questions today's duty asked for, fixed when the day's first
-   * round is built.
-   *
-   * It has to be remembered rather than recomputed, because what is waiting
-   * is not what is left: a round is capped, so on a day with a backlog there
-   * is a full round still waiting after you have answered half of one, and a
-   * bar measured against it would crawl and never fill.
-   */
-  const [dayPlan, setDayPlan] = useState(0)
-  /** Which day the plan above belongs to. */
-  const planDay = useRef('')
   const [intake, setIntake] = useState<Intake>(EMPTY_INTAKE)
   /** Days with any answer on them, and days that were seen through to the end. */
   const [studied, setStudied] = useState<Set<string>>(() => new Set())
@@ -289,7 +276,6 @@ export function useSession(deck: Deck): Session {
       getMeta<number>('score', 0),
       getMeta<{ day: string; points: number } | null>('pointsToday', null),
       getMeta<boolean>('autoContinue', false),
-      getMeta<{ day: string; size: number } | null>('dayPlan', null),
       getMeta<SavedRound | null>('round', null),
     ]).then(
       ([
@@ -307,7 +293,6 @@ export function useSession(deck: Deck): Session {
         savedScore,
         savedPointsToday,
         savedAuto,
-        savedPlan,
         savedRound,
       ]) => {
         if (cancelled) return
@@ -324,8 +309,6 @@ export function useSession(deck: Deck): Session {
         pointsDay.current = savedPointsToday?.day ?? ''
         setPointsToday(savedPointsToday?.day === today() ? savedPointsToday.points : 0)
         setAutoContinueState(savedAuto)
-        planDay.current = savedPlan?.day ?? ''
-        setDayPlan(savedPlan?.day === today() ? savedPlan.size : 0)
         const t = themeById(savedTheme)
         // Nacht used to be one of the colours. Anyone who was using it wanted a
         // dark app, so that is what they get — in whichever colour they land on.
@@ -477,10 +460,6 @@ export function useSession(deck: Deck): Session {
       waiting: preview.cards.length,
       extraWaiting: extraPreview.cards.length,
       doneToday,
-      // The day's duty is the round it asked you for, so that is what the
-      // day's bar is measured against. Until there has been a round today
-      // there is no plan yet, and what is waiting is the best guess there is.
-      plannedToday: dayPlan || doneToday + preview.cards.length,
       roundDone: position,
       roundSize: queue.length,
     }
@@ -492,7 +471,6 @@ export function useSession(deck: Deck): Session {
     reviewed,
     correctCount,
     doneToday,
-    dayPlan,
     position,
     queue,
   ])
@@ -577,14 +555,6 @@ export function useSession(deck: Deck): Session {
       pending.current = { amount: 0, answers: 0 }
       queueRef.current = q.cards
       recorded.current = false
-      // The first round of the day sets its size. An extra round is asked for
-      // on purpose, past the day's shape, so it never redraws it.
-      if (!extra && planDay.current !== today()) {
-        const size = doneToday + q.cards.length
-        planDay.current = today()
-        setDayPlan(size)
-        void setMeta('dayPlan', { day: today(), size }).catch(() => {})
-      }
       setQueue(q.cards)
       setIndex(0)
       setAnswered(false)
@@ -597,7 +567,7 @@ export function useSession(deck: Deck): Session {
       shownAt.current = Date.now()
       setStatus(q.cards.length ? 'reviewing' : 'done')
     },
-    [cards, states, optionsFor, clearRevealTimer, doneToday, status, index],
+    [cards, states, optionsFor, clearRevealTimer, status, index],
   )
 
   const card = queue[index] ?? null
