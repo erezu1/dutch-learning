@@ -151,7 +151,7 @@ export function WeekStrip({ week, arrived }: Props) {
         initial={false}
         animate={{ opacity: arrived ? 1 : 0 }}
         transition={afterRing(0.42)}
-        className="text-center text-base font-semibold text-on-surface"
+        className="text-center font-plain text-base font-semibold text-on-surface"
       >
         {weekMessage(week)}
       </motion.p>

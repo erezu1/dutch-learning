@@ -356,7 +356,7 @@ export function Home({
             // day is done, the current round after that. Nothing to draw on a
             // button there is nothing left to press.
             progress={inHand || waiting > 0 || another ? part : undefined}
-            className="px-14"
+            className="px-14 font-plain"
           >
             {/* What the press actually does, in four words or fewer. A round
                 left part-way through is resumed rather than rebuilt, so that

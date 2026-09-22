@@ -153,6 +153,11 @@
 
   --font-display: 'Fraunces', ui-serif, Georgia, serif;
   --font-sans: 'Bricolage', ui-rounded, system-ui, -apple-system, sans-serif;
+  /* The phone's own sans, for the two lines that are instructions rather than
+     voice: what the button will do, and how the week has gone. Bricolage has a
+     deliberate wobble that suits a name and a number; on a sentence you read
+     to act on, plain is easier and the wobble is someone talking. */
+  --font-plain: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   --radius-card: 1.75rem;
 
