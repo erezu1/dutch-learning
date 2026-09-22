@@ -298,7 +298,12 @@
     color-mix(in oklab, var(--color-primary) var(--ambient-near), transparent) 0%,
     transparent 44%
   );
-  animation: ambient-near 97s linear infinite;
+  /* Faster than it was — 97s and 61s — because the wash is half the strength
+     it used to be, and a tint that pale moving that slowly is a thing you can
+     only notice by looking away and back. Still prime periods, and still
+     co-prime with each other: the two lights never come back to the same
+     arrangement on any cycle short enough to see a pattern in. */
+  animation: ambient-near 59s linear infinite;
 }
 
 #ground i:last-child {
@@ -307,7 +312,7 @@
     color-mix(in oklab, var(--color-primary) var(--ambient-far), transparent) 0%,
     transparent 40%
   );
-  animation: ambient-far 61s linear infinite;
+  animation: ambient-far 37s linear infinite;
 }
 
 @keyframes ambient-near {
