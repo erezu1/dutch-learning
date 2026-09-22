@@ -62,11 +62,13 @@ type ScreenName = 'home' | 'review' | 'level' | 'settings'
 /**
  * Screens that survive a reload.
  *
- * Both are places you can sit and read, so losing them to a refresh is losing
- * your place. A round is not one of them: it is a queue held in memory, and
- * restoring the screen without the queue would be a card page with no card.
+ * All three are places you can be in the middle of something, so losing them
+ * to a refresh is losing your place. The round is here because the queue is
+ * written down now and comes back with it; if it ever doesn't — a round from
+ * yesterday, a card that has left the deck — the session comes back idle and
+ * this falls through to home, which is why the guard below exists.
  */
-const RESTORE = new Set(['settings', 'level'])
+const RESTORE = new Set(['settings', 'level', 'review'])
 
 const fromHash = (): ScreenName => {
   const h = window.location.hash.slice(1)
@@ -126,6 +128,16 @@ export default function App() {
   useEffect(() => {
     setReviewing(session.status === 'reviewing')
   }, [session.status])
+
+  // Reloaded onto #review with no round to show — the saved one was yesterday's,
+  // or its cards are no longer in the deck. Send the URL back to home rather
+  // than leaving a history entry pointing at a screen that isn't there.
+  useEffect(() => {
+    if (screen !== 'review') return
+    if (session.status === 'reviewing' || session.status === 'done') return
+    if (session.status === 'loading') return
+    setScreen('home')
+  }, [screen, session.status, setScreen])
 
   if (session.status === 'loading') {
     return <div className="grid h-full place-items-center text-on-surface-dim">…</div>

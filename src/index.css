@@ -437,6 +437,14 @@
        tell you why. It also takes double-tap zoom with it, which is the same
        accident arrived at by a different route. */
     touch-action: pan-x pan-y;
+    /* No pull-to-refresh. Dragging down from the top of an app is a gesture
+       people make for nothing — to see the top of a card, to get a thumb out
+       of the way — and here it reloads, which throws away the round you are
+       in and lands you back on the home screen having lost your place.
+       Declared on <html> as well as on <body>: the viewport takes this from
+       the root element, and only falls back to the body when the root leaves
+       it at `auto`, which is a rule browsers have not always agreed on. */
+    overscroll-behavior: none;
     background: var(--color-surface);
     /* Without this the browser keeps its own surfaces light: scrollbar
        tracks, form controls and the area it paints behind the page all stay

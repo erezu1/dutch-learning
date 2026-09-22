@@ -90,6 +90,24 @@ export interface SessionStats {
 /** How many finished days are kept. Long enough to survive a holiday. */
 const KEEP_DAYS = 60
 
+/**
+ * A round, written down so it survives the page being reloaded.
+ *
+ * The cards themselves are not stored — they are rebuilt from the deck by id,
+ * which is the only honest way to save a queue: a card is a note and a
+ * question type, and both of those belong to the build, not to the round.
+ * What is actually round-shaped is the order, the place in it, and the tally
+ * the finishing screen reads out.
+ */
+interface SavedRound {
+  day: string
+  ids: string[]
+  index: number
+  reviewed: number
+  correct: number
+  points: number
+}
+
 export interface Session {
   status: SessionStatus
   prompt: Prompt | null
@@ -272,6 +290,7 @@ export function useSession(deck: Deck): Session {
       getMeta<{ day: string; points: number } | null>('pointsToday', null),
       getMeta<boolean>('autoContinue', false),
       getMeta<{ day: string; size: number } | null>('dayPlan', null),
+      getMeta<SavedRound | null>('round', null),
     ]).then(
       ([
         rows,
@@ -289,6 +308,7 @@ export function useSession(deck: Deck): Session {
         savedPointsToday,
         savedAuto,
         savedPlan,
+        savedRound,
       ]) => {
         if (cancelled) return
         setStates(new Map(rows.map((r) => [r.cardId, r] as const)))
@@ -315,6 +335,30 @@ export function useSession(deck: Deck): Session {
         setModeState(m)
         setResolvedMode(resolveMode(m))
         applyAppearance(t, m)
+
+        // Back into the round, if there was one and it is still today's. A
+        // reload in the middle of a round used to lose it: the queue lived
+        // only in memory, so the app came back with nothing in hand and the
+        // work you had done was somewhere behind you rather than in front.
+        // Nothing is re-graded — every answer was written down as it was
+        // given — this only puts the same cards back in the same order at the
+        // same place.
+        const by = new Map(cards.map((c) => [c.id, c] as const))
+        const q =
+          savedRound?.day === today()
+            ? savedRound.ids.map((cid) => by.get(cid)).filter((c): c is Card => !!c)
+            : []
+        if (savedRound && q.length === savedRound.ids.length && savedRound.index < q.length) {
+          queueRef.current = q
+          setQueue(q)
+          setIndex(savedRound.index)
+          setReviewed(savedRound.reviewed)
+          setCorrectCount(savedRound.correct)
+          setSessionPoints(savedRound.points)
+          shownAt.current = Date.now()
+          setStatus('reviewing')
+          return
+        }
         setStatus('idle')
       },
     )
@@ -452,6 +496,29 @@ export function useSession(deck: Deck): Session {
     position,
     queue,
   ])
+
+  /**
+   * The round on disk, kept level with the round in hand.
+   *
+   * Written on every answer, which is the same rhythm the review log is
+   * written at, and cleared the moment there is no round to be in the middle
+   * of — a finished round is not something to come back to.
+   */
+  useEffect(() => {
+    if (status === 'loading') return
+    const round: SavedRound | null =
+      status === 'reviewing' && queue.length
+        ? {
+            day: today(),
+            ids: queue.map((c) => c.id),
+            index,
+            reviewed,
+            correct: correctCount,
+            points: sessionPoints,
+          }
+        : null
+    void setMeta('round', round).catch(() => {})
+  }, [status, queue, index, reviewed, correctCount, sessionPoints])
 
   /**
    * A day is finished when you have finished a round on it, or when there is
