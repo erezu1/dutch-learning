@@ -19,7 +19,6 @@ import { TITLE, WORDMARK } from './type'
 
 interface Props {
   stats: SessionStats
-  score: number
   level: LevelOption
   week: WeekDay[]
   onOpenSettings: () => void
@@ -34,7 +33,6 @@ interface Props {
 
 export function Home({
   stats,
-  score,
   level,
   week,
   theme,
@@ -262,28 +260,24 @@ export function Home({
               transition={afterRing()}
               className="text-center"
             >
-              <p className={`text-5xl ${TITLE}`}>{score.toLocaleString()}</p>
-              <p className="text-sm text-on-surface-dim">points</p>
+              {/* The ring fills with today's questions, so today's questions
+                  are what stands in it. A lifetime total inside a ring that
+                  only ever measures one day is two facts pretending to be one,
+                  and the line underneath existed to explain that they are not
+                  — which is a caption apologising for its own illustration. */}
+              <p className={`text-5xl ${TITLE}`}>{stats.doneToday}</p>
+              <p className="text-sm text-on-surface-dim">
+                {waiting > 0
+                  ? `of ${stats.plannedToday} today`
+                  : stats.doneToday > 0
+                    ? 'all done today'
+                    : 'nothing due'}
+              </p>
             </motion.div>
             </div>
           </div>
 
-          {/* What the ring is measuring, said in words. The number inside it is
-            a lifetime total and the ring is only today, so without this the
-            two look like they ought to agree, and don't. Below rather than
-            inside: it doesn't fit across a circle. */}
-          <motion.p
-            initial={false}
-            animate={{ opacity: arrived ? 1 : 0 }}
-            transition={afterRing(0.09)}
-            className="text-sm text-on-surface-dim"
-          >
-            {waiting > 0
-              ? `${stats.doneToday} of ${stats.plannedToday} questions today`
-              : stats.doneToday > 0
-                ? `${stats.doneToday} questions today — that's the lot`
-                : 'nothing due today'}
-          </motion.p>
+
         </div>
 
         {/* The week sits a little apart from the button: it's a record, not
