@@ -720,12 +720,15 @@ export const MOODS: Record<string, Mood> = {
   // with her mouth open — and her paws quiver through it, the way they do.
   stretch:   { eyes: 'sleepy',  mouth: 'yawn', squash: 0, rise: 7, label: 'Stretch', tilt: -3, ear: 'flat' },
   curious:   { eyes: 'curious', mouth: 'neutral', squash: 0.5, label: 'Curious', tilt: 7 },
-  surprised: { eyes: 'wide',    mouth: 'open', squash: 0.32,    label: 'Surprised', ear: 'perk' },
+  // A head that has come up, not just opened. The squash lifts her a little on
+  // its own, but a surprise is a movement, and at that lift it was reading as
+  // a face change with the head still where it was.
+  surprised: { eyes: 'wide',    mouth: 'open', squash: 0.32, rise: 2, label: 'Surprised', ear: 'perk' },
   celebrate: { eyes: 'happy',   mouth: 'open', squash: 0.4,    label: 'Celebrate', tilt: -3, ear: 'perk' },
   // Woken with a start. Further up than surprised and with no tilt at all —
   // a head that has come straight off the ground rather than turned toward
   // something. It is the only mood that is normally seen in the air.
-  startled:  { eyes: 'wide',    mouth: 'open', squash: 0.12,   label: 'Startled', ear: 'perk' },
+  startled:  { eyes: 'wide',    mouth: 'open', squash: 0.12, rise: 3, label: 'Startled', ear: 'perk' },
   sad:       { eyes: 'sad',     mouth: 'frown', squash: 0.9,   label: 'Sad' },
   grumpy:    { eyes: 'angry',   mouth: 'neutral', squash: 0.8, label: 'Grumpy' },
   lookUpL:   { eyes: 'open',    mouth: 'neutral', squash: 0.45, label: 'Look up left',
