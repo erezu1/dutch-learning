@@ -140,8 +140,8 @@ export function headPath(q = 1): string {
 // swung out past the skull and you could see where the ear stopped. It now
 // runs fourteen units deeper, to y 74, which is still well inside a head
 // whose edge at that height is out at 110.
-export const EAR_L = 'M15.2 46.4C11.2 34.4 8.8 17.6 12 12C14 8.5 39.2 18.4 44 27.2C48.8 43.2 42.4 65.6 28 67.2C18.4 68 15.2 57.6 15.2 46.4Z'
-export const EAR_R = 'M104.8 46.4C108.8 34.4 111.2 17.6 108 12C106 8.5 80.8 18.4 76 27.2C71.2 43.2 77.6 65.6 92 67.2C101.6 68 104.8 57.6 104.8 46.4Z'
+const EAR_L = 'M15.2 46.4C11.2 34.4 8.8 17.6 12 12C14 8.5 39.2 18.4 44 27.2C48.8 43.2 42.4 65.6 28 67.2C18.4 68 15.2 57.6 15.2 46.4Z'
+const EAR_R = 'M104.8 46.4C108.8 34.4 111.2 17.6 108 12C106 8.5 80.8 18.4 76 27.2C71.2 43.2 77.6 65.6 92 67.2C101.6 68 104.8 57.6 104.8 46.4Z'
 
 // The pink sits inside the ear, hard over toward the OUTER edge: a little
 // over two units of fur along the outside against a dozen along the inside.
