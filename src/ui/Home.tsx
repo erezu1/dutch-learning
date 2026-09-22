@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { animate, motion, useMotionValue, useTransform } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import type { CoatId } from '../core/cat'
 import { reachedLevel, type LevelOption } from '../core/levels'
@@ -101,6 +101,21 @@ export function Home({
   // week's dots saying whether you finished.
   const rung = rungAt(score)
   const progress = rung.part
+  /**
+   * The number under the level, counted up rather than printed.
+   *
+   * It is the same quantity the ring is drawing, so it moves on the same curve
+   * over the same time: the arc sweeping round and the figure climbing are one
+   * event seen twice, and a total that was simply already there would say the
+   * ring had nothing to do with it.
+   */
+  const counted = useMotionValue(0)
+  const shown = useTransform(counted, (v) => Math.round(v).toLocaleString())
+  useEffect(() => {
+    if (!arrived) return
+    const run = animate(counted, rung.into, ringGrow)
+    return () => run.stop()
+  }, [arrived, counted, rung.into])
   const dayPart = stats.plannedToday ? Math.min(1, stats.doneToday / stats.plannedToday) : 1
   // The level you've reached, not the one you claimed on the first run. The
   // claim only decides where the deck starts handing out words; this moves as
@@ -268,7 +283,11 @@ export function Home({
             <motion.div
               initial={false}
               animate={{ opacity: arrived ? 1 : 0 }}
-              transition={afterRing()}
+              // With the ring rather than after it. Everything else on this
+              // screen waits for the ring to finish, but this is the ring's
+              // own reading — it has to be legible while the arc is moving or
+              // there is nothing for the count to keep time with.
+              transition={{ duration: 0.3, ease: 'easeOut' }}
               className="text-center"
             >
               {/* The ring fills with today's questions, so today's questions
@@ -276,9 +295,17 @@ export function Home({
                   only ever measures one day is two facts pretending to be one,
                   and the line underneath existed to explain that they are not
                   — which is a caption apologising for its own illustration. */}
-              <p className={`text-5xl ${TITLE}`}>{rung.level}</p>
-              <p className="text-sm text-on-surface-dim">
-                {rung.toGo.toLocaleString()} to go
+              {/* The bare number needs saying what it is. Above rather than
+                  below, because the line underneath is already spoken for and
+                  a label under a number reads as its unit. */}
+              <p className="text-xs tracking-wide text-on-surface-dim">level</p>
+              <p className={`text-5xl leading-tight ${TITLE}`}>{rung.level}</p>
+              {/* What you have, not what you owe. "To go" is the same fact
+                  read backwards, but it counts down to nothing and shrinks as
+                  you do well — the ring fills, so the number under it fills
+                  too, and the denominator says where full is. */}
+              <p className="text-sm tabular-nums text-on-surface-dim">
+                <motion.span>{shown}</motion.span> / {rung.span.toLocaleString()}
               </p>
             </motion.div>
             </div>

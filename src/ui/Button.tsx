@@ -21,21 +21,22 @@ const tones: Record<Tone, string> = {
 }
 
 /**
- * The fill's own gradient, and its direction of travel is the whole point.
+ * The wash that goes over the part NOT done.
  *
- * On the quiet tones the ground is pale, so the wash is the accent and the
- * filled part goes DEEPER. On the saturated ones the ground is already the
- * accent, so the wash is ink and the filled part goes deeper still. Either
- * way "done" is the heavier end — a white wash on a strong ground makes the
- * part you have finished look like the part you have not.
+ * Painting the done part was tried twice and neither way was right: darker
+ * and it reads as a stain across the button, lighter and the part you have
+ * finished looks like the part you have not. Paling what is left works
+ * because it leaves the done part as the button's own colour — the thing you
+ * are working towards is the button simply being itself.
+ *
+ * Faintly stronger at the far end, so the boundary where you have got to is
+ * the crispest edge in it and the distance ahead fades away from you.
  */
 function wash(tone: Tone): string {
   const quiet = tone === 'accent' || tone === 'neutral'
-  const ink = quiet ? 'var(--color-primary)' : '#000'
+  const ink = quiet ? 'var(--color-surface)' : '#fff'
   const at = (pct: number) => `color-mix(in srgb, ${ink} ${pct}%, transparent)`
-  return quiet
-    ? `linear-gradient(to right, ${at(6)}, ${at(22)})`
-    : `linear-gradient(to right, ${at(7)}, ${at(20)})`
+  return `linear-gradient(to right, ${at(quiet ? 40 : 26)}, ${at(quiet ? 52 : 36)})`
 }
 
 interface Props {
@@ -46,16 +47,14 @@ interface Props {
   /**
    * How much of today is behind you, nought to one. The button draws it.
    *
-   * Same idea as the Continue bar's countdown, which is the one place in the
-   * app that already fills a button: the wash grows from the left and is
-   * graded from faint to strong across itself, so — because the gradient spans
-   * the fill rather than the button — its strongest point always sits exactly
-   * where the progress has reached. A crisp leading edge and nothing behind it
-   * competing with the words.
+   * The same trick as the Continue bar's countdown, which is the one place in
+   * the app that already fills a button — a graded wash whose gradient spans
+   * the fill rather than the button, so its edge always sits exactly where the
+   * progress has reached. Turned around: this one covers what is LEFT rather
+   * than what is done.
    *
-   * White here rather than the accent, because this button's ground already IS
-   * the accent. And it sits under the label, so the words are one ink from end
-   * to end rather than half on one colour and half on another.
+   * It sits under the label, so the words are one ink from end to end rather
+   * than half on one colour and half on another.
    */
   progress?: number
   className?: string
@@ -74,10 +73,10 @@ export function Button({
       {progress != null && (
         <motion.span
           aria-hidden="true"
-          className="absolute inset-y-0 left-0"
+          className="absolute inset-y-0 right-0"
           style={{ background: wash(tone) }}
           initial={false}
-          animate={{ width: `${Math.max(0, Math.min(1, progress)) * 100}%` }}
+          animate={{ width: `${Math.max(0, Math.min(1, 1 - progress)) * 100}%` }}
           transition={quiet}
         />
       )}

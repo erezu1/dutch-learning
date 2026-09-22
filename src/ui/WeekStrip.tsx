@@ -16,14 +16,14 @@ import { afterRing } from './motion'
 
 /** Every dot occupies the same box; only what's drawn in it changes. */
 const DOT: Record<DayState, string> = {
-  done: 'h-[14px] w-[14px] bg-primary',
+  done: 'h-[18px] w-[18px] bg-primary',
   // Started but not finished: the outline is there, the fill isn't.
-  some: 'h-[14px] w-[14px] border-2 border-primary',
+  some: 'h-[18px] w-[18px] border-2 border-primary',
   // Today, still open. Fainter than a started day, so the two don't read alike.
-  open: 'h-[14px] w-[14px] border-2 border-primary/35',
-  missed: 'h-[14px] w-[14px] bg-surface-3',
+  open: 'h-[18px] w-[18px] border-2 border-primary/35',
+  missed: 'h-[18px] w-[18px] bg-surface-3',
   // Smaller, because nothing has had the chance to happen yet.
-  ahead: 'h-[9px] w-[9px] bg-surface-3/60',
+  ahead: 'h-[11px] w-[11px] bg-surface-3/60',
 }
 
 interface Props {
@@ -33,9 +33,12 @@ interface Props {
 }
 
 export function WeekStrip({ week, arrived }: Props) {
+  // `w-full` on the column, or it is only as wide as the row of dots and the
+  // longest lines wrap: the dots are 240 across and three of the messages are
+  // wider than that. The dots stay centred inside it either way.
   return (
-    <div className="flex flex-col items-center gap-2.5">
-      <div className="flex items-start gap-2.5">
+    <div className="flex w-full flex-col items-center gap-2.5">
+      <div className="flex items-start gap-3">
         {week.map((day, i) => (
           <motion.div
             key={day.key}
@@ -44,10 +47,10 @@ export function WeekStrip({ week, arrived }: Props) {
             // Left to right, a beat apart, so the week reads as a week rather
             // than as seven things appearing at once.
             transition={afterRing(0.14 + i * 0.035)}
-            className="flex w-5 flex-col items-center gap-1.5"
+            className="flex w-6 flex-col items-center gap-1.5"
           >
             <span
-              className={`text-[0.72rem] leading-none ${
+              className={`text-[0.78rem] leading-none ${
                 day.today ? 'font-semibold text-on-surface' : 'text-on-surface-dim/70'
               }`}
             >
@@ -55,7 +58,7 @@ export function WeekStrip({ week, arrived }: Props) {
             </span>
             {/* A fixed-height box so the smaller 'ahead' dot sits on the same
                 line as the rest instead of hanging from the letter. */}
-            <span className="grid h-[14px] place-items-center">
+            <span className="grid h-[18px] place-items-center">
               <span className={`rounded-full ${DOT[day.state]}`} />
             </span>
           </motion.div>
@@ -66,7 +69,7 @@ export function WeekStrip({ week, arrived }: Props) {
         initial={false}
         animate={{ opacity: arrived ? 1 : 0 }}
         transition={afterRing(0.42)}
-        className="text-center text-base font-medium text-on-surface"
+        className="text-center text-base font-semibold text-on-surface"
       >
         {weekMessage(week)}
       </motion.p>

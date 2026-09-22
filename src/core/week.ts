@@ -162,7 +162,7 @@ export function weekMessage(days: WeekDay[]): string {
   }
   if (missed === 1) return 'One day missed. Today evens it!'
   if (done > 0) return `${missed} missed, ${done} done. Today counts!`
-  return `${missed} days missed. Plenty of week left!`
+  return `${missed} missed. Plenty of week left!`
 }
 
 /**
