@@ -23,7 +23,15 @@ export const turn: Transition = { duration: 0.62, ease: [0.22, 1, 0.36, 1] }
  * its time, because it is the only one you arrive at rather than cause.
  */
 export const RING_GROW = 0.85
-export const ringGrow: Transition = { duration: RING_GROW, ease: [0.22, 1, 0.36, 1] }
+/**
+ * Gentler than the app's usual out-curve, and deliberately so: the ring is the
+ * only thing here that is also read as a NUMBER — the points counting up
+ * inside it run on this exact transition so the arc and the figure are the
+ * same quantity moving. An expo-out spends nine tenths of the distance in the
+ * first third of the time, which an arc can carry and four digits cannot; this
+ * one keeps moving for the whole of it, so the count is countable.
+ */
+export const ringGrow: Transition = { duration: RING_GROW, ease: [0.33, 1, 0.68, 1] }
 export const afterRing = (extra = 0): Transition => ({
   duration: 0.42,
   ease: 'easeOut',

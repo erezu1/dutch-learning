@@ -80,7 +80,32 @@ export function Button({
           transition={quiet}
         />
       )}
+      {/* The word, twice, in the same grid cell: once in the button's own ink
+          and once in the pale part's ink, the second clipped to exactly where
+          the wash begins. A single ink cannot do this — white is the only
+          thing that reads on the accent and the first thing to disappear on a
+          wash of it — so the letters change colour at the boundary rather
+          than half the word going faint. In the dark the two inks are the
+          same colour and nothing appears to happen, which is correct: there
+          the pale part is lighter than the accent, and the ink was already
+          dark. */}
       <span className="relative">{children}</span>
+      {progress != null && (
+        <motion.span
+          aria-hidden="true"
+          // Over the whole button, not just the word: the clip and the wash
+          // have to measure from the same edge, or the letters change colour
+          // somewhere other than where the ground does.
+          className="absolute inset-0 grid place-items-center text-on-primary-pale"
+          initial={false}
+          animate={{
+            clipPath: `inset(0 0 0 ${Math.max(0, Math.min(1, progress)) * 100}%)`,
+          }}
+          transition={quiet}
+        >
+          {children}
+        </motion.span>
+      )}
     </motion.button>
   )
 }

@@ -283,11 +283,12 @@ export function Home({
             <motion.div
               initial={false}
               animate={{ opacity: arrived ? 1 : 0 }}
-              // With the ring rather than after it. Everything else on this
-              // screen waits for the ring to finish, but this is the ring's
-              // own reading — it has to be legible while the arc is moving or
-              // there is nothing for the count to keep time with.
-              transition={{ duration: 0.3, ease: 'easeOut' }}
+              // With the ring rather than after it, and almost instantly:
+              // everything else on this screen waits for the ring to finish,
+              // but this is the ring's own reading. A fade of its own length
+              // would hide the early part of the count behind it, which is
+              // exactly the part that shows it starting from nothing.
+              transition={{ duration: 0.12, ease: 'easeOut' }}
               className="text-center"
             >
               {/* The ring fills with today's questions, so today's questions

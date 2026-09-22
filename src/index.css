@@ -77,6 +77,14 @@
   --color-on-primary: oklch(100% 0 var(--hue));
   --color-primary-container: oklch(92% calc(var(--chroma) * 0.34) var(--hue));
   --color-on-primary-container: oklch(38% calc(var(--chroma) * 0.85) var(--hue));
+  /* Ink for the part of a primary button that has been paled out to show
+     progress. White reads on the accent and washes out on a pale of it — 3.5:1
+     at the boundary — so the half of the word standing over the pale part is
+     written dark instead. As dark as the page's own ink, because the pale
+     ground sits in the middle of the range where neither end has much room:
+     at 38% it was 3.1:1, worse than the white it replaced. This is 4.6:1 at
+     the boundary and better further along. */
+  --color-on-primary-pale: oklch(22% calc(var(--chroma) * 0.45) var(--hue));
 
   /* --- feedback. Right and wrong are the same green and red in every scheme:
          they mean something, so they can't be the decoration. The "ink"
@@ -613,6 +621,9 @@
   --color-on-primary: oklch(22% calc(var(--chroma) * 0.4) var(--hue));
   --color-primary-container: oklch(33% calc(var(--chroma) * 0.5) var(--hue));
   --color-on-primary-container: oklch(90% calc(var(--chroma) * 0.3) var(--hue));
+  /* In the dark the accent is the light colour and its ink is already dark, so
+     paling the ground only pushes the two further apart: no second ink. */
+  --color-on-primary-pale: oklch(22% calc(var(--chroma) * 0.4) var(--hue));
 
   --color-good: oklch(28% 0.04 156);
   --color-good-ink: oklch(80% 0.13 156);
