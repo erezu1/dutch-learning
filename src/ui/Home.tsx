@@ -221,9 +221,9 @@ export function Home({
 
       </div>
 
-      {/* The gap has to clear the ring's glow, which reaches 34px past its
-          edge. It used to be paid for by the line of text under the ring;
-          with that gone the glow was landing on the button. */}
+      {/* Wide, and it has to stay wide. The ring is the biggest thing on the
+          page and the button is the loudest; with less between them the two
+          read as one control, and the eye goes straight past the ring. */}
       <div className="flex flex-col items-center gap-14 [@media(max-height:780px)]:gap-9">
         <div className="flex flex-col items-center gap-3">
           {/* On the ring, exactly as she is on the progress bar while you
@@ -265,12 +265,6 @@ export function Home({
               />
             </motion.div>
             <div className="relative grid h-48 w-48 place-items-center [@media(max-height:780px)]:h-40 [@media(max-height:780px)]:w-40">
-            {/* The clearing is its own element, a plain circle the size of the ring,
-                  so nothing that animates lives inside the thing casting it. */}
-              <div
-                aria-hidden="true"
-                className="clearing-ring pointer-events-none absolute inset-[-34px] rounded-full"
-              />
               <svg viewBox="0 0 100 100" className="absolute inset-0 -rotate-90">
               <circle
                 cx="50"

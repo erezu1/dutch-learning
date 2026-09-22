@@ -103,12 +103,6 @@ export function ReviewScreen({ session, coat, dark, onExit }: Props) {
               className="pointer-events-auto"
             />
           </div>
-          {/* Its own element behind the bar, and wider than it, so the clearing
-              fades out past both ends instead of stopping at them. */}
-          <div
-            aria-hidden="true"
-            className="clearing pointer-events-none absolute inset-x-[-14px] top-1/2 h-9 -translate-y-1/2"
-          />
           <div className="relative h-1.5 overflow-hidden rounded-full bg-surface-3">
             <motion.div
               className="h-full rounded-full bg-primary"
