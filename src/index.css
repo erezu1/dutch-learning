@@ -74,11 +74,6 @@
      range to stay a shape whatever is passing, and still 3.2:1 from the
      filled version, which is the other thing it has to be. */
   --color-surface-3: oklch(80% calc(var(--chroma) * 0.65) var(--hue));
-  /* The outline of a day that went by. Deeper than the track it is drawn
-     beside, because a dashed hairline has a fraction of a filled dot's area
-     to carry itself with: at the track's own colour it is 1.3:1 against the
-     ground at the worst of the drift, and at this it is 2.3:1. */
-  --color-week-gone: color-mix(in srgb, var(--color-primary) 45%, var(--color-surface-3));
   --color-on-surface: oklch(22% calc(var(--chroma) * 0.3) var(--hue));
   --color-on-surface-dim: oklch(50% calc(var(--chroma) * 0.2) var(--hue));
 
