@@ -31,12 +31,20 @@ const tones: Record<Tone, string> = {
  *
  * Faintly stronger at the far end, so the boundary where you have got to is
  * the crispest edge in it and the distance ahead fades away from you.
+ *
+ * How far it goes is a theme's business, not this file's: the word lies
+ * across both halves in one ink, so the wash can only be as strong as that
+ * ink can survive, and which ink that is depends on which way round the
+ * accent and its ink are.
  */
 function wash(tone: Tone): string {
   const quiet = tone === 'accent' || tone === 'neutral'
-  const ink = quiet ? 'var(--color-surface)' : '#fff'
-  const at = (pct: number) => `color-mix(in srgb, ${ink} ${pct}%, transparent)`
-  return `linear-gradient(to right, ${at(quiet ? 40 : 26)}, ${at(quiet ? 52 : 36)})`
+  if (quiet) {
+    const at = (pct: number) => `color-mix(in srgb, var(--color-surface) ${pct}%, transparent)`
+    return `linear-gradient(to right, ${at(40)}, ${at(52)})`
+  }
+  const at = (v: string) => `color-mix(in srgb, #fff ${v}, transparent)`
+  return `linear-gradient(to right, ${at('var(--wash-near)')}, ${at('var(--wash-far)')})`
 }
 
 interface Props {
@@ -80,32 +88,12 @@ export function Button({
           transition={quiet}
         />
       )}
-      {/* The word, twice, in the same grid cell: once in the button's own ink
-          and once in the pale part's ink, the second clipped to exactly where
-          the wash begins. A single ink cannot do this — white is the only
-          thing that reads on the accent and the first thing to disappear on a
-          wash of it — so the letters change colour at the boundary rather
-          than half the word going faint. In the dark the two inks are the
-          same colour and nothing appears to happen, which is correct: there
-          the pale part is lighter than the accent, and the ink was already
-          dark. */}
+      {/* One ink from end to end. The word was written twice for a while, the
+          second copy clipped to the pale part in a darker ink, because white
+          on a wash of the accent is thin — but a word that changes colour
+          halfway through is a word you notice instead of read. The wash is
+          held back to where white survives instead. */}
       <span className="relative">{children}</span>
-      {progress != null && (
-        <motion.span
-          aria-hidden="true"
-          // Over the whole button, not just the word: the clip and the wash
-          // have to measure from the same edge, or the letters change colour
-          // somewhere other than where the ground does.
-          className="absolute inset-0 grid place-items-center text-on-primary-pale"
-          initial={false}
-          animate={{
-            clipPath: `inset(0 0 0 ${Math.max(0, Math.min(1, progress)) * 100}%)`,
-          }}
-          transition={quiet}
-        >
-          {children}
-        </motion.span>
-      )}
     </motion.button>
   )
 }
