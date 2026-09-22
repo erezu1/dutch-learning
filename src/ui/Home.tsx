@@ -121,6 +121,25 @@ export function Home({
   // showing a gap is the app disagreeing with itself about the same day.
   const dayDone = week.some((d) => d.today && d.state === 'done')
   const dayPart = stats.plannedToday ? Math.min(1, stats.doneToday / stats.plannedToday) : 1
+  /**
+   * What the bar holds, which is what the button says:
+   *
+   *   Start          nothing answered yet, so nothing filled
+   *   Keep going     how far through the round in hand
+   *   Another round? / Nothing left   full: there is nothing outstanding
+   *
+   * The round in hand is the one thing all three are really about — a round
+   * IS the day's duty — so it is the measure whenever there is a round to
+   * measure. There isn't one only when the app has been opened since the last
+   * one, because a queue is never reloaded; then the day answers instead,
+   * which is the same quantity a day of one round, and the only one that
+   * survives being put down and picked up again.
+   */
+  const part = stats.roundSize
+    ? Math.min(1, stats.roundDone / stats.roundSize)
+    : dayDone
+      ? 1
+      : dayPart
   // The level you've reached, not the one you claimed on the first run. The
   // claim only decides where the deck starts handing out words; this moves as
   // the words go by, which is what a level is for.
@@ -331,10 +350,10 @@ export function Home({
           <Button
             onClick={() => onStart(another)}
             disabled={waiting === 0 && !another}
-            // Today, on the thing you press to do today. Only while there is
-            // something left: a finished day is the button at its own colour,
-            // and a day with nothing due never had a share to fill.
-            progress={waiting > 0 && !dayDone ? dayPart : undefined}
+            // Today, on the thing you press to do today — the day until the
+            // day is done, the current round after that. Nothing to draw on a
+            // button there is nothing left to press.
+            progress={waiting > 0 || another ? part : undefined}
             className="px-14"
           >
             {/* Not "Continue": nothing is ever in progress here. The queue is

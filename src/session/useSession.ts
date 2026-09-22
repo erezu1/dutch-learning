@@ -76,6 +76,15 @@ export interface SessionStats {
   /** Cards answered since midnight, and how many were planned for today. */
   doneToday: number
   plannedToday: number
+  /**
+   * The round still in memory: how far into it, and how long it is.
+   *
+   * It survives the round it describes — nothing clears it until the next
+   * round is built — so between rounds it is the last one you did. Zero only
+   * when the app has been opened since, because a queue is never reloaded.
+   */
+  roundDone: number
+  roundSize: number
 }
 
 /** How many finished days are kept. Long enough to survive a holiday. */
@@ -392,6 +401,21 @@ export function useSession(deck: Deck): Session {
     [cards, states, optionsFor],
   )
 
+  /**
+   * How many of this round are behind you, not which one you are on.
+   *
+   * It was `index + 1`, so the bar was full while the last card was still on
+   * screen unanswered — a round that looks finished one question before it is.
+   * `index` alone is the count moved past, and the answer in hand is added to
+   * it so the bar moves when you answer rather than when you press on: empty
+   * on the first question, full the moment the last one is in.
+   *
+   * Counted from the answer, not the reveal. On a multiple-choice card those
+   * are the same moment; on one you grade yourself, revealing is asking to see
+   * the answer before you have given one, and the bar used to move then.
+   */
+  const position = Math.min(index + (answered ? 1 : 0), queue.length)
+
   const stats: SessionStats = useMemo(() => {
     let known = 0
     for (const note of deck.notes) {
@@ -413,8 +437,21 @@ export function useSession(deck: Deck): Session {
       // day's bar is measured against. Until there has been a round today
       // there is no plan yet, and what is waiting is the best guess there is.
       plannedToday: dayPlan || doneToday + preview.cards.length,
+      roundDone: position,
+      roundSize: queue.length,
     }
-  }, [deck, states, preview, extraPreview, reviewed, correctCount, doneToday, dayPlan])
+  }, [
+    deck,
+    states,
+    preview,
+    extraPreview,
+    reviewed,
+    correctCount,
+    doneToday,
+    dayPlan,
+    position,
+    queue,
+  ])
 
   /**
    * A day is finished when you have finished a round on it, or when there is
@@ -709,20 +746,7 @@ export function useSession(deck: Deck): Session {
     revealed,
     picked,
     correct,
-    /**
-     * How many are behind you, not which one you are on.
-     *
-     * It was `index + 1`, so the bar was full while the last card was still
-     * on screen unanswered — a round that looks finished one question before
-     * it is. `index` alone is the count answered, and the reveal is added to
-     * it so the bar moves when you answer rather than when you move on: empty
-     * on the first question, full the moment the last one is in.
-     *
-     * Counted from the answer, not the reveal. On a multiple-choice card those
-     * are the same moment; on one you grade yourself, revealing is asking to
-     * see the answer before you have given one, and the bar moved then.
-     */
-    position: Math.min(index + (answered ? 1 : 0), queue.length),
+    position,
     length: queue.length,
     stats,
     score,
