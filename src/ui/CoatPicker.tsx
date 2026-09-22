@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { Swatch } from './Swatch'
 import { useLayoutEffect, useRef, useState } from 'react'
-import { COAT_IDS, COATS, SNOUT, type CoatId } from '../core/cat'
+import { COAT_IDS, COATS, EAR_L, EAR_R, SNOUT, type CoatId } from '../core/cat'
 import { glide } from './motion'
 
 // ---------------------------------------------------------------------------
@@ -140,10 +140,18 @@ function faceMark(id: CoatId): string {
     `<ellipse cx="${cx}" cy="58" rx="11.5" ry="12" fill="${c.iris}"/>` +
     `<ellipse cx="${cx}" cy="58" rx="8.5" ry="9.8" fill="${c.pupil}"/>` +
     `<circle cx="${cx + 2.9}" cy="53.9" r="2.7" fill="#fff" opacity=".96"/>`
+  // The ears, but only for a cat whose ears are a different colour from her.
+  // Everywhere else they are the same fur as the face and the dot is better
+  // without them — at this size an outline nobody asked for is just noise. On
+  // the siamese they are the whole point, literally: she is a pale cat with
+  // dark points, and a dot that crops them out is a dot of a cream cat.
+  const ears = c.earFur
+    ? `<path d="${EAR_L}" fill="${c.earFur}"/><path d="${EAR_R}" fill="${c.earFur}"/>`
+    : ''
   return `<clipPath id="disc-${id}"><circle cx="70" cy="46" r="50"/></clipPath>
     <g clip-path="url(#disc-${id})">
       <rect x="-40" y="-40" width="200" height="200" fill="${c.base}"/>
-      ${patches}${stripes}
+      ${ears}${patches}${stripes}
       <ellipse cx="60" cy="75" rx="24" ry="13.5" fill="${c.muzzle}" opacity="${c.muzzleAlpha ?? (c.dark ? 0.42 : 0.65)}"/>
       ${eye(40)}${eye(80)}
       <path transform="translate(0 ${SNOUT})" d="M60 80.4C56.6 80.4 53.5 78.1 53.5 75.5C53.5 73.5 56.5 72.4 60 72.4C63.5 72.4 66.5 73.5 66.5 75.5C66.5 78.1 63.4 80.4 60 80.4Z" fill="${c.ear}"/>
