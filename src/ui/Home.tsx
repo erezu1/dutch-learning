@@ -135,6 +135,14 @@ export function Home({
    * which is the same quantity a day of one round, and the only one that
    * survives being put down and picked up again.
    */
+  /**
+   * Whether there is a round to go back to, as opposed to one to begin.
+   *
+   * The queue lives until the next round is built, so this is true from the
+   * moment you leave a round part-way through until you finish it — and it is
+   * what the button both says and does, since a round in hand is resumed.
+   */
+  const inHand = stats.roundSize > 0 && stats.roundDone < stats.roundSize
   const part = stats.roundSize
     ? Math.min(1, stats.roundDone / stats.roundSize)
     : dayDone
@@ -342,25 +350,30 @@ export function Home({
               eye straight back down. Width is the part that can vary; a button
               that is also a different size is just a different button. */}
           <Button
-            onClick={() => onStart(another)}
-            disabled={waiting === 0 && !another}
+            onClick={() => onStart(another && !inHand)}
+            disabled={!inHand && waiting === 0 && !another}
             // Today, on the thing you press to do today — the day until the
             // day is done, the current round after that. Nothing to draw on a
             // button there is nothing left to press.
-            progress={waiting > 0 || another ? part : undefined}
+            progress={inHand || waiting > 0 || another ? part : undefined}
             className="px-14"
           >
-            {/* Not "Continue": nothing is ever in progress here. The queue is
-                built when you press this and thrown away when you leave, so
-                every press starts a session — what changes is whether the day
-                has been started, which is what these say instead. */}
-            {waiting > 0
-              ? stats.doneToday > 0
-                ? 'Keep going'
-                : 'Start'
-              : another
-                ? 'Another round?'
-                : 'Nothing left'}
+            {/* What the press actually does, in four words or fewer. A round
+                left part-way through is resumed rather than rebuilt, so that
+                case says so — the bar under the word is that round's, and a
+                button that said "Start" over a bar two-ninths full would be
+                describing something else. The others each begin a round: the
+                day's first, the day's next, or one more than the day asked
+                for. */}
+            {inHand
+              ? 'Finish the round'
+              : waiting > 0
+                ? stats.doneToday > 0
+                  ? 'Keep going'
+                  : 'Start'
+                : another
+                  ? 'Another round?'
+                  : 'Nothing left'}
           </Button>
 
           <WeekStrip week={week} arrived={arrived} />
