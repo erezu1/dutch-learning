@@ -122,6 +122,7 @@ export class Flip {
   skulls: SVGElement[]; shade: Element | null; contact: SVGElement[]
   whiskers: SVGElement[]
   #whiskerTf: string[] = []
+  contactClip: SVGElement | null
   glints: { el: SVGElement; cx: number; cy: number }[]
   lids: { mask: SVGPathElement; lash: SVGPathElement | null; cx: number; cy: number; rx: number; ry: number; t0: number }[]
 
@@ -141,6 +142,11 @@ export class Flip {
     if (coatClip) this.skulls.push(coatClip)
     this.shade = svg.querySelector('radialGradient[id$="v"]')
     this.contact = q('.cat-contact ellipse')
+    // The paws' shadows are cut with an outline of their own, on screen. It
+    // has to be her outline as it is right now — turned, lifted, flattened —
+    // or upside down the shadow is cut to a head that is not there.
+    this.contactClip = svg.querySelector<SVGElement>('clipPath[id$="body"] .cat-skull-clip')
+    if (this.contactClip) this.skulls.push(this.contactClip)
     this.whiskers = q('.cat-whiskers')
     // Only the glints turn back against her, about the pupil's own centre: the
     // pupil sits toward her nose, and turning all of it back about the eye's
@@ -223,7 +229,8 @@ export class Flip {
   // again is the rig's own drawing, not an approximation of it.
   #take() {
     if (this.#saved.length) return
-    const els = [...this.heads, ...this.earsL, ...this.earsR, ...this.pawsL, ...this.pawsR, ...this.glints.map((g) => g.el)]
+    const els = [...this.heads, ...this.earsL, ...this.earsR, ...this.pawsL, ...this.pawsR, ...this.glints.map((g) => g.el),
+      ...(this.contactClip ? [this.contactClip] : [])]
     this.#saved = els.map((el) => ({
       el, transform: el.style.transform, origin: el.style.transformOrigin,
       box: el.style.transformBox, transition: el.style.transition,
@@ -283,6 +290,10 @@ export class Flip {
     // tenth of a second; the wind-up and the glare around it are what read.
     const angry = is('swat')
     const cross = Math.max(angry, this.sulk ? 1 : 0)
+    // Flat ears are a thing she does on her back. The grumpy she lands in
+    // keeps its ears up, so on the way up hers come up with her, and are
+    // already where that mood has them by the time it takes over.
+    const crossEars = Math.max(angry, this.sulk ? smooth(seg(p, 0, 0.45)) : 0)
     const sm = md?.name === 'swat' ? clamp(mt) : 1
     const wind = smooth(seg(sm, 0.12, 0.3))
     const strike = Math.pow(seg(sm, 0.3, 0.4), 2)
@@ -305,7 +316,9 @@ export class Flip {
     const theta = 180 * turn + creep + settle
     const lift = 11 * whip - 2 * gather + happy * 2.5 * Math.abs(Math.sin(time * 7))
     const held = smooth(seg(p, 0.86, 1))
-    const breath = Math.sin(time * 1.9)
+    // The rig's own breath, read from the same channel it breathes on, so the
+    // frame she is handed back on breathes exactly as the frame before it.
+    const BREATH = 'var(--breath, 0)'
     const sway = held * 2.2 * Math.sin(time * 0.9)
       + happy * 5 * Math.sin(time * 11)
       + yawn * 4 * Math.sin(Math.PI * clamp(mt))
@@ -323,13 +336,19 @@ export class Flip {
     // the floor, crouched as she gathers, puffed for the instant of the whip.
     const oy = 100 + (15 - 100) * m
     const puff = 1 + 0.04 * whip
-    const sx = (1 - breath * 0.006) * (1 + 0.03 * gather) * puff
-    const sy = (1 + breath * 0.013) * (1 - 0.06 * gather) * puff * (1 + 0.05 * yawn)
+    const sx = (1 + 0.03 * gather) * puff
+    const sy = (1 - 0.06 * gather) * puff * (1 + 0.05 * yawn)
+    // Upright, a resting head sits three quarters of a unit up off the floor —
+    // the rig's lift at its resting squash — and the loop starts and ends
+    // there, not at nought, so there is no step either side of it.
+    const REST_LIFT = (1 - 0.85) * 5
     const head =
-      `translate(0px, ${(-lift).toFixed(2)}px) ` +
+      `translate(0px, ${(-lift - REST_LIFT * (1 - m)).toFixed(2)}px) ` +
       `translate(${CX}px, ${CY}px) rotate(${spin.toFixed(2)}deg) translate(${-CX}px, ${-CY}px) ` +
-      `translate(${CX}px, ${oy}px) scale(${sx.toFixed(4)}, ${sy.toFixed(4)}) translate(${-CX}px, ${-oy}px)`
+      `translate(${CX}px, ${oy}px) scale(${sx.toFixed(4)}, ${sy.toFixed(4)}) ` +
+      `scale(calc(1 - ${BREATH} * 0.006), calc(1 + ${BREATH} * 0.013)) translate(${-CX}px, ${-oy}px)`
     for (const h of this.heads) { h.style.transformOrigin = '0 0'; h.style.transform = head }
+    if (this.contactClip) { this.contactClip.style.transformOrigin = '0 0'; this.contactClip.style.transform = head }
 
     // --- ears: back and short as she gathers, shortest through the whip —
     // on her side, out is down, and the ear nearest the floor is the one being
@@ -338,8 +357,8 @@ export class Flip {
     const fold = Math.max(0.55 * gather, whip)
     const earLand = land(seg(rollT, 0.58, 0.96), 2.2)
     const flick = held * (Math.max(0, Math.sin(time * 2.7 + 1.3)) ** 24)
-    const earA = -(24 * earLand - 7 * flick + 16 * cross)
-    const earS = (1 - 0.12 * earLand) * (1 - 0.42 * fold) * (1 - 0.22 * yawn) * (1 + 0.08 * up) * (1 - 0.34 * cross)
+    const earA = -(24 * earLand - 7 * flick + 16 * crossEars)
+    const earS = (1 - 0.12 * earLand) * (1 - 0.42 * fold) * (1 - 0.22 * yawn) * (1 + 0.08 * up) * (1 - 0.34 * crossEars)
     const earW = 1 + 0.05 * earLand
     for (const e of this.earsL) { e.style.transformOrigin = '28px 40px'; e.style.transform = `rotate(${earA.toFixed(2)}deg) scale(${earW.toFixed(3)}, ${earS.toFixed(3)})` }
     for (const e of this.earsR) { e.style.transformOrigin = '92px 40px'; e.style.transform = `rotate(${(-earA).toFixed(2)}deg) scale(${earW.toFixed(3)}, ${earS.toFixed(3)})` }
