@@ -257,6 +257,9 @@ export function Home({
                 scene={waiting > 0 ? 'waiting' : 'nothingDue'}
                 beat={hello}
                 label="The cat"
+                // The one place she is at rest and in nobody's way, so the one
+                // place she may roll onto her back.
+                flips
               />
             </motion.div>
             <div className="relative grid h-48 w-48 place-items-center [@media(max-height:780px)]:h-40 [@media(max-height:780px)]:w-40">

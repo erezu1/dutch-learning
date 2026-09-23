@@ -19,6 +19,7 @@
 // ---------------------------------------------------------------------------
 
 import { HEART, headPath, lidPaths, MOODS, EAR_TURN, STAR, ZED, type Mood } from './cat'
+import { Flip, type FlipMood } from './cat-flip'
 
 // --- what each mood is FOR -------------------------------------------------
 // Three jobs, and every mood holds at least one. A mood with no job is a
@@ -248,11 +249,20 @@ export class CatRig {
    */
   settling = false
   lastWrong = ''
+  /**
+   * On her back. Only where she is allowed to lie down — the home screen —
+   * and only when she has been left alone long enough to be comfortable.
+   */
+  flip: Flip
+  flips: boolean
+  flipHold: ReturnType<typeof setTimeout> | null = null
+  /** Touches since she went over. The first is a coin toss; after that she has made up her mind. */
+  flipTaps = 0
 
   constructor(
     svg: SVGSVGElement,
-    { base = 'idle', drift = true, onPose }: {
-      base?: string; drift?: boolean; onPose?: (name: string, mood: Mood) => void
+    { base = 'idle', drift = true, onPose, flips = false }: {
+      base?: string; drift?: boolean; onPose?: (name: string, mood: Mood) => void; flips?: boolean
     } = {},
   ) {
     this.svg = svg
@@ -267,6 +277,14 @@ export class CatRig {
       mouth: [...svg.querySelectorAll<SVGElement>('[data-mouth]')],
       brow: [...svg.querySelectorAll<SVGElement>('[data-brow]')],
     }
+    this.flips = flips && !matchMedia('(prefers-reduced-motion: reduce)').matches
+    // While she is over, her face is chosen by the flip — through the same
+    // switch every mood uses, so the parts it shows are the parts a mood shows.
+    this.flip = new Flip(svg, (eyes, mouth) => {
+      this.#choose('eyes', eyes)
+      this.#choose('mouth', mouth)
+      this.#choose('brow', browOf({ eyes } as Mood))
+    })
     this.pose(base)
     if (drift) this.#scheduleDrift()
     this.#scheduleDoze()
@@ -300,12 +318,21 @@ export class CatRig {
       locked: this.locked, sulkUntil: this.sulkUntil, cross: this.cross,
       starring: this.starring, settling: this.settling, lastWrong: this.lastWrong,
       emitting: this.emitting, emitSeq: this.emitSeq,
+      flipped: this.flip.p === 1,
     }
   }
 
   /** Put her back exactly where the drawing before this one left her. */
   restore(was: ReturnType<CatRig['snapshot']>) {
-    Object.assign(this, was, { emitting: null })
+    const { flipped, ...rest } = was
+    Object.assign(this, rest, { emitting: null })
+    // Redrawn while on her back: she is simply still there, and gets up in her
+    // own time.
+    if (flipped && this.flips) {
+      this.flip.set(1)
+      this.flipHold = setTimeout(() => this.flipBack(), rand(5000, 10000))
+      return
+    }
     // The pose applies to an element that has never had one, so nothing
     // transitions: she is simply already in it when she fades in.
     this.pose(was.current || was.base)
@@ -327,6 +354,9 @@ export class CatRig {
   pose(name: string) {
     const m = MOODS[name]
     if (!m) return
+    // On her back the flip is drawing her, and a mood's numbers would fight
+    // it. It poses her base again when she is up.
+    if (this.flip?.engaged) return
     this.current = name
     const s = this.svg.style
     const turn = m.ear ? (EAR_TURN[m.ear] ?? 0) : 0
@@ -472,6 +502,12 @@ export class CatRig {
    */
   react(name: string, { ms = 1500, then, quiet = false, min = 450 }:
     { ms?: number; then?: () => void; quiet?: boolean; min?: number } = {}) {
+    // On her back, nothing she does on her own interrupts it — and anything the
+    // app has to say gets her up first, quickly, and then gets said.
+    if (this.flip.engaged) {
+      if (!quiet && !this.flip.turning) this.flipBack({ quick: true }, () => this.react(name, { ms, then, quiet, min }))
+      return
+    }
     const now = performance.now()
     // Still coming down. Acknowledge, do not celebrate.
     if (WARM.has(name) && now < this.sulkUntil) name = COOLED
@@ -516,8 +552,32 @@ export class CatRig {
     this.locked = 0
     this.#stir()
     const now = performance.now()
+    // On her back. Mid-turn there is nothing to touch — she is going over.
+    // Settled there, the first touch is a coin toss between a belly she is
+    // happy to show you and a belly that was never an invitation; after that
+    // she has decided, and almost always it is the second. A swat is the end
+    // of it: she is up straight after.
+    if (this.flip.engaged) {
+      if (this.flip.turning || this.flip.mood === 'swat') return
+      this.flipTaps += 1
+      const nice = this.flipTaps === 1 ? chance(0.5) : chance(0.1)
+      if (nice) {
+        this.flip.react('happy')
+        // Being pleased with you buys a little more time down there.
+        clearTimeout(this.flipHold ?? undefined)
+        this.flipHold = setTimeout(() => this.flipBack(), rand(6000, 11000))
+      } else {
+        this.flip.react('swat')
+        clearTimeout(this.flipHold ?? undefined)
+        this.flipHold = setTimeout(() => this.flipBack({ quick: true }), Flip.ms('swat') - 120)
+      }
+      return
+    }
     this.pokes = now - this.lastPoke < 2600 ? this.pokes + 1 : 1
     this.lastPoke = now
+    // Sometimes the first touch, instead of a startle, is what sends her over:
+    // she was comfortable, and being paid attention to made her more so.
+    if (this.pokes === 1 && this.#comfy(0) && chance(0.4)) return this.flipOver()
     // Once she is cross, more poking does not cheer her up — it extends it.
     // Any other reading means she goes from angry to delighted in one frame,
     // which is not a mood change, it is two unrelated drawings in sequence.
@@ -571,6 +631,8 @@ export class CatRig {
     // left her sitting up for good.
     if (this.base === 'sleepy') return
     this.dozing = setTimeout(() => {
+      // On her back she is not going to sleep; the clock starts over when she is up.
+      if (this.flip.engaged) return
       // `quiet`, so a yawn does not count as being paid attention to and reset
       // the very clock that produced it.
       this.settling = true
@@ -589,6 +651,21 @@ export class CatRig {
 
   #scheduleDrift() {
     this.drifting = setTimeout(() => {
+      // On her back she drifts in her own way: a look up the phone or down it,
+      // now and then a wriggle of pleasure at nothing.
+      if (this.flip.engaged) {
+        if (this.flip.down && !this.flip.mood && chance(0.55)) {
+          this.flip.react(pickOne<FlipMood>(['up', 'down', 'up', 'down', 'happy']))
+        }
+        return this.#scheduleDrift()
+      }
+      // Now and then, when she has been left alone long enough to be at ease,
+      // she rolls over. Rare enough to be a thing you catch rather than a
+      // thing she does.
+      if (!this.holding && this.#comfy(25000) && chance(0.08)) {
+        this.flipOver()
+        return this.#scheduleDrift()
+      }
       // Never over a reaction: the app is saying something and she is not.
       if (!this.holding) {
         // Once in a while something she can hear and you cannot. It is the
@@ -646,6 +723,45 @@ export class CatRig {
       // wind-down takes her: the tick has to fit inside the waking window
       // two or three times over.
     }, rand(4500, 9000))
+  }
+
+  /**
+   * At ease enough to lie on her back: awake, resting in her plain idle, not
+   * cross or cooling off from it, not on her way to sleep, and nobody has
+   * touched her for a while.
+   */
+  #comfy(quietFor: number) {
+    const now = performance.now()
+    return this.flips && !this.flip.engaged
+      && this.base === 'idle' && this.current === 'idle'
+      && !this.settling && now > this.sulkUntil && this.cross === 0
+      && now - this.lastPoke >= quietFor
+  }
+
+  /** Over onto her back. Usually she yawns as she lands; she stays a while, then gets up. */
+  flipOver() {
+    if (!this.flips || this.flip.engaged) return
+    clearTimeout(this.holding ?? undefined)
+    this.holding = null
+    clearTimeout(this.dozing ?? undefined)
+    this.dozing = null
+    this.flipTaps = 0
+    this.flip.over(() => {
+      if (chance(0.7)) this.flip.react('yawn')
+      this.flipHold = setTimeout(() => this.flipBack(), rand(12000, 24000))
+    })
+  }
+
+  /** Back onto her front, and back to whatever she was before. */
+  flipBack({ quick = false } = {}, then?: () => void) {
+    clearTimeout(this.flipHold ?? undefined)
+    this.flipHold = null
+    this.flip.back({ quick }, () => {
+      this.flipTaps = 0
+      this.pose(this.base)
+      this.#scheduleDoze()
+      then?.()
+    })
   }
 
   /**
@@ -921,6 +1037,8 @@ export class CatRig {
   }
 
   destroy() {
+    clearTimeout(this.flipHold ?? undefined)
+    this.flip.destroy()
     clearTimeout(this.steady ?? undefined)
     clearTimeout(this.holding ?? undefined)
     clearTimeout(this.drifting ?? undefined)
@@ -1094,6 +1212,8 @@ export function idle(svg: SVGSVGElement, { breath = true } = {}) {
 
   function blink() {
     if (stopped) return
+    // On her back the flip draws her lids, blinks included.
+    if (svg.dataset.flip) return void later(blink, rand(2800, 7400))
     const t0 = performance.now()
     const step = (now: number) => {
       if (stopped) { setLid(0); svg.style.setProperty('--face-dip', '0'); return }
@@ -1131,6 +1251,8 @@ export function idle(svg: SVGSVGElement, { breath = true } = {}) {
   // stops a still face looking like a drawing rather than an animal.
   function glance() {
     if (stopped) return
+    // And her gaze, which it turns into her frame.
+    if (svg.dataset.flip) return void later(glance, rand(4200, 11000))
     const x = rand(-2.6, 2.6).toFixed(2)
     const y = rand(-1.4, 0.9).toFixed(2)
     play([

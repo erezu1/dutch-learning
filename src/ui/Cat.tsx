@@ -29,6 +29,8 @@ interface Props {
   /** Height in px. The width follows from the drawing's own proportions. */
   size?: number
   label?: string
+  /** Whether she may roll onto her back here. Only where she is at rest and in no one's way. */
+  flips?: boolean
 }
 
 /**
@@ -47,7 +49,7 @@ function carryPhase(from: Element, to: Element) {
   for (let i = 0; i < Math.min(ax.length, bx.length); i++) carryPhase(ax[i], bx[i])
 }
 
-export function Cat({ coat, scene, beat, rim = false, className = '', size = 96, label }: Props) {
+export function Cat({ coat, scene, beat, rim = false, className = '', size = 96, label, flips = false }: Props) {
   const host = useRef<HTMLDivElement>(null)
   const rig = useRef<CatRig | null>(null)
   /**
@@ -105,7 +107,7 @@ export function Cat({ coat, scene, beat, rim = false, className = '', size = 96,
       })
     }
 
-    const r = new CatRig(svg)
+    const r = new CatRig(svg, { flips })
     rig.current = r
     if (carried.current) r.restore(carried.current)
     const stopIdle = idle(svg)
@@ -121,6 +123,7 @@ export function Cat({ coat, scene, beat, rim = false, className = '', size = 96,
       r.destroy()
       rig.current = null
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coat, rim, size])
 
   useEffect(() => {
