@@ -367,7 +367,11 @@ export class Flip {
     // A pure logistic sits almost still for its first stretch, which reads as
     // a pause. A lean of her own leads into it and hands over as it takes off.
     const creep = 15 * smooth(seg(rollT, 0.04, 0.44)) * (1 - turn)
-    const theta = 180 * turn + creep + settle
+    // Only the half turn itself is about her middle — it is the one part of
+    // the move made off the floor. The lean into it and the settle out of it
+    // happen with her head on the carpet, so they are rocks, and go with the
+    // sway below.
+    const theta = 180 * turn
     const lift = 11 * whip - 2 * gather + happy * 2.5 * Math.abs(Math.sin(time * 7))
     const held = smooth(seg(p, 0.86, 1))
     // The rig's own breath, read from the same channel it breathes on, so the
@@ -382,7 +386,8 @@ export class Flip {
     // on the side she is rocking toward: the right one clockwise, the left one
     // the other way. Where the pivot swaps sides the angle is nought, so the
     // swap cannot show.
-    const spin = theta + sway
+    const rock = creep + settle + sway
+    const spin = theta + rock
 
     // --- skull: resting, round in the air, resting again the other way up.
     const m = turn
@@ -402,10 +407,10 @@ export class Flip {
     const REST_LIFT = (1 - 0.85) * 5
     const footL = FEET_UP[0] + (FEET_DOWN[0] - FEET_UP[0]) * m
     const footR = FEET_UP[1] + (FEET_DOWN[1] - FEET_UP[1]) * m
-    const px = sway >= 0 ? footR : footL
+    const px = rock >= 0 ? footR : footL
     const py = FEET_UP[2] + (FEET_DOWN[2] - FEET_UP[2]) * m
     const head =
-      `translate(${px.toFixed(2)}px, ${py.toFixed(2)}px) rotate(${sway.toFixed(2)}deg) translate(${(-px).toFixed(2)}px, ${(-py).toFixed(2)}px) ` +
+      `translate(${px.toFixed(2)}px, ${py.toFixed(2)}px) rotate(${rock.toFixed(2)}deg) translate(${(-px).toFixed(2)}px, ${(-py).toFixed(2)}px) ` +
       `translate(0px, ${(-lift - REST_LIFT * (1 - m)).toFixed(2)}px) ` +
       `translate(${CX}px, ${CY}px) rotate(${theta.toFixed(2)}deg) translate(${-CX}px, ${-CY}px) ` +
       `translate(${CX}px, ${oy}px) scale(${sx.toFixed(4)}, ${sy.toFixed(4)}) ` +
