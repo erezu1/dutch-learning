@@ -52,6 +52,38 @@ const ROUND = map(parse(headPath(0)), (x, y) => [x, y + 3])
 // Halfway to the flat, lying-down head rather than the resting one: landing on
 // her crown spreads her more than sitting on her chin does.
 const turned = (a: Path) => map(a, (x, y) => [2 * CX - x, 2 * CY - y])
+// Where a shape meets the floor, left and right: the ends of its flat. A head
+// resting on a flat rocks on those corners, not about its middle — rocked
+// about the middle, one side of the flat went into the carpet and the other
+// came off it.
+const feet = (a: Path): [number, number, number] => {
+  // Sampled along the curves themselves, not read off the control points —
+  // a control point can sit on the floor line well out past where the curve
+  // has already lifted off it.
+  const pts: [number, number][] = []
+  let x0 = a.nums[0][0], y0 = a.nums[0][1]
+  for (let i = 1; i < a.cmds.length; i++) {
+    const r = a.nums[i]
+    if (a.cmds[i] !== 'C') continue
+    for (let k = 0; k <= 24; k++) {
+      const t = k / 24, u = 1 - t
+      const x = u * u * u * x0 + 3 * u * u * t * r[0] + 3 * u * t * t * r[2] + t * t * t * r[4]
+      const y = u * u * u * y0 + 3 * u * u * t * r[1] + 3 * u * t * t * r[3] + t * t * t * r[5]
+      pts.push([x, y])
+    }
+    x0 = r[4]; y0 = r[5]
+  }
+  // What counts as on the floor is everything within a unit and a half of the
+  // lowest point — the base is a very shallow curve, and what it rocks on is
+  // the width that visibly sits on the carpet, not the sliver that touches it.
+  const floor = Math.max(...pts.map((q) => q[1]))
+  const xs = pts.filter((q) => q[1] >= floor - 1.5).map((q) => q[0])
+  return [Math.min(...xs), Math.max(...xs), floor]
+}
+// Upright she stands on her chin; upside down, on her crown — which, turned
+// half round, is the flat of the shape she lands in, back on screen.
+const FEET_UP = feet(REST)
+const FEET_DOWN = feet(parse(headPath(0.99)))
 const ROUND_T = turned(ROUND)
 const REST_T = turned(parse(headPath(0.99)))
 
@@ -346,6 +378,10 @@ export class Flip {
       + yawn * 4 * Math.sin(Math.PI * clamp(clockOf('yawn')))
       + (down - up) * 2.5 * Math.sign(Math.cos(Math.PI * turn))
       + side * (-3 * wind + 9 * jolt)
+    // The sway is a rock, and a rock pivots on whichever corner of her flat is
+    // on the side she is rocking toward: the right one clockwise, the left one
+    // the other way. Where the pivot swaps sides the angle is nought, so the
+    // swap cannot show.
     const spin = theta + sway
 
     // --- skull: resting, round in the air, resting again the other way up.
@@ -364,9 +400,14 @@ export class Flip {
     // the rig's lift at its resting squash — and the loop starts and ends
     // there, not at nought, so there is no step either side of it.
     const REST_LIFT = (1 - 0.85) * 5
+    const footL = FEET_UP[0] + (FEET_DOWN[0] - FEET_UP[0]) * m
+    const footR = FEET_UP[1] + (FEET_DOWN[1] - FEET_UP[1]) * m
+    const px = sway >= 0 ? footR : footL
+    const py = FEET_UP[2] + (FEET_DOWN[2] - FEET_UP[2]) * m
     const head =
+      `translate(${px.toFixed(2)}px, ${py.toFixed(2)}px) rotate(${sway.toFixed(2)}deg) translate(${(-px).toFixed(2)}px, ${(-py).toFixed(2)}px) ` +
       `translate(0px, ${(-lift - REST_LIFT * (1 - m)).toFixed(2)}px) ` +
-      `translate(${CX}px, ${CY}px) rotate(${spin.toFixed(2)}deg) translate(${-CX}px, ${-CY}px) ` +
+      `translate(${CX}px, ${CY}px) rotate(${theta.toFixed(2)}deg) translate(${-CX}px, ${-CY}px) ` +
       `translate(${CX}px, ${oy}px) scale(${sx.toFixed(4)}, ${sy.toFixed(4)}) ` +
       `scale(calc(1 - ${BREATH} * 0.006), calc(1 + ${BREATH} * 0.013)) translate(${-CX}px, ${-oy}px)`
     for (const h of this.heads) { h.style.transformOrigin = '0 0'; h.style.transform = head }
