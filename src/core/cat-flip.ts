@@ -372,7 +372,12 @@ export class Flip {
     const pw = whipAt(pr, K * 0.9)
     const flop = 0.06 * bump(rollT, 0.62, 0.9)
     const out = 24 * Math.sin(Math.PI * pq)
-    const knead = held * Math.sin(time * (3.2 + 4 * happy)) * (1 + 1.4 * happy)
+    // Air biscuits, and quicker ones when she is pleased. Two steady rhythms
+    // blended, not one rhythm whose speed changes: speeding up a sine by
+    // changing its frequency moves its phase by the frequency times the whole
+    // time the page has been open — minutes of it — so as the mood faded in
+    // the paws jumped all over their cycle and buzzed.
+    const knead = held * ((1 - happy) * Math.sin(time * 3.2) + happy * 2.2 * Math.sin(time * 6.4))
     const reach = yawn * Math.sin(Math.PI * clamp(mt))
     const dy = -69 * (pq + flop) - 3 * gather * (1 - pq)
     const turnP = 180 * pq

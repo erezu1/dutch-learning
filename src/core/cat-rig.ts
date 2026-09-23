@@ -557,8 +557,8 @@ export class CatRig {
     // happy to show you and a belly that was never an invitation; after that
     // she has decided, and almost always it is the second. A swat is the end
     // of it: she is up straight after.
-    if (this.flip.engaged) {
-      if (this.flip.turning || this.flip.mood === 'swat') return
+    if (this.flip.engaged || (this.flipHold && !this.flip.engaged)) {
+      if (!this.flip.engaged || this.flip.turning || this.flip.mood === 'swat') return
       this.flipTaps += 1
       const nice = this.flipTaps === 1 ? chance(0.5) : chance(0.1)
       if (nice) {
@@ -584,6 +584,14 @@ export class CatRig {
     // Sometimes the first touch, instead of a startle, is what sends her over:
     // she was comfortable, and being paid attention to made her more so.
     if (this.pokes === 1 && this.#comfy(0) && chance(0.4)) return this.flipOver()
+    // Keep at her and it was always going to end in a temper. Not always now:
+    // by the third touch in a row, about half the time, she decides the
+    // attention is a game and rolls over for more of it instead — which is a
+    // cat, and which gives the fourth touch somewhere better to land.
+    if (
+      this.pokes === 3 && this.flips && this.base === 'idle' && this.current !== 'grumpy'
+      && now > this.sulkUntil && !this.settling && chance(0.55)
+    ) return this.flipOver()
     // Once she is cross, more poking does not cheer her up — it extends it.
     // Any other reading means she goes from angry to delighted in one frame,
     // which is not a mood change, it is two unrelated drawings in sequence.
@@ -752,10 +760,16 @@ export class CatRig {
     clearTimeout(this.dozing ?? undefined)
     this.dozing = null
     this.flipTaps = 0
-    this.flip.over(() => {
+    const go = () => this.flip.over(() => {
       if (chance(0.7)) this.flip.react('yawn')
       this.flipHold = setTimeout(() => this.flipBack(), rand(12000, 24000))
     })
+    // The turn is drawn from her resting pose. Asked mid-reaction — the third
+    // poke lands on a surprised or pleased face — she settles into it first,
+    // or the turn starts from a head shape and a tilt that are not hers.
+    if (this.current === 'idle') return go()
+    this.pose('idle')
+    this.flipHold = setTimeout(go, 320)
   }
 
   /** Back onto her front, and back to whatever she was before. */
