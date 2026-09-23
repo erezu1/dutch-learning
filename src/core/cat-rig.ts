@@ -569,7 +569,13 @@ export class CatRig {
       } else {
         this.flip.react('swat')
         clearTimeout(this.flipHold ?? undefined)
-        this.flipHold = setTimeout(() => this.flipBack({ quick: true }), Flip.ms('swat') - 120)
+        // Up still cross, and still cross once she is up: a sulk on her feet,
+        // through the same grumpy the rig always uses — so it counts as a
+        // temper, cools off the same way, and poking her again only extends it.
+        this.flipHold = setTimeout(() => {
+          this.flip.sulk = true
+          this.flipBack({ quick: true }, () => this.react('grumpy', { ms: 2600, min: 1800 }))
+        }, Flip.ms('swat') - 120)
       }
       return
     }

@@ -96,6 +96,12 @@ export class Flip {
   svg: SVGSVGElement
   /** 0 upright, 1 on her back. */
   p = 0
+  /**
+   * Still cross. Set for the jump back up after a swat, so the glare and the
+   * flat ears go all the way up with her instead of being dropped the instant
+   * the swipe is over — the swat was the point she decided you were done.
+   */
+  sulk = false
   #from = 0
   #to = 0
   #t0 = 0
@@ -252,6 +258,7 @@ export class Flip {
     }
     this.whiskers.forEach((w, i) => { w.style.transform = this.#whiskerTf[i] })
     this.#saved = []; this.#skullD = []
+    this.sulk = false
     delete this.svg.dataset.flip
   }
 
@@ -275,6 +282,7 @@ export class Flip {
     // down at you, faster, past where it started, then back. The strike is a
     // tenth of a second; the wind-up and the glare around it are what read.
     const angry = is('swat')
+    const cross = Math.max(angry, this.sulk ? 1 : 0)
     const sm = md?.name === 'swat' ? clamp(mt) : 1
     const wind = smooth(seg(sm, 0.12, 0.3))
     const strike = Math.pow(seg(sm, 0.3, 0.4), 2)
@@ -330,8 +338,8 @@ export class Flip {
     const fold = Math.max(0.55 * gather, whip)
     const earLand = land(seg(rollT, 0.58, 0.96), 2.2)
     const flick = held * (Math.max(0, Math.sin(time * 2.7 + 1.3)) ** 24)
-    const earA = -(24 * earLand - 7 * flick + 16 * angry)
-    const earS = (1 - 0.12 * earLand) * (1 - 0.42 * fold) * (1 - 0.22 * yawn) * (1 + 0.08 * up) * (1 - 0.34 * angry)
+    const earA = -(24 * earLand - 7 * flick + 16 * cross)
+    const earS = (1 - 0.12 * earLand) * (1 - 0.42 * fold) * (1 - 0.22 * yawn) * (1 + 0.08 * up) * (1 - 0.34 * cross)
     const earW = 1 + 0.05 * earLand
     for (const e of this.earsL) { e.style.transformOrigin = '28px 40px'; e.style.transform = `rotate(${earA.toFixed(2)}deg) scale(${earW.toFixed(3)}, ${earS.toFixed(3)})` }
     for (const e of this.earsR) { e.style.transformOrigin = '92px 40px'; e.style.transform = `rotate(${(-earA).toFixed(2)}deg) scale(${earW.toFixed(3)}, ${earS.toFixed(3)})` }
@@ -394,14 +402,14 @@ export class Flip {
     this.svg.style.setProperty('--gaze-y', (gy * Math.cos(a)).toFixed(2) + 'px')
 
     // --- faces, swapped at the top of each envelope.
-    this.#show(angry > 0.2 ? 'angry' : happy > 0.35 ? 'happy' : yawn > 0.3 ? 'sleepy' : 'open',
-      angry > 0.2 ? 'open' : happy > 0.35 ? 'smile' : yawn > 0.25 ? 'yawn' : 'neutral')
+    this.#show(cross > 0.2 ? 'angry' : happy > 0.35 ? 'happy' : yawn > 0.3 ? 'sleepy' : 'open',
+      angry > 0.2 ? 'open' : this.sulk ? 'neutral' : happy > 0.35 ? 'smile' : yawn > 0.25 ? 'yawn' : 'neutral')
 
     // --- eyes: squeezed shut for the whip, then slow blinks, content.
-    const squeeze = Math.max(bump(rollT, 0.36, 0.7), 0.6 * gather)
+    const squeeze = Math.max(bump(rollT, 0.36, 0.7), 0.6 * gather) * (this.sulk ? 0.35 : 1)
     const phase = (time % 4.6) / 4.6
     const lazy = held * (phase > 0.9 ? Math.sin(Math.PI * (phase - 0.9) / 0.1) : 0)
-    const shut = Math.max(squeeze, lazy * 0.95 * (1 - up - down), held * 0.28 * (1 - Math.max(up, down, angry)))
+    const shut = Math.max(squeeze, lazy * 0.95 * (1 - up - down), held * 0.28 * (1 - Math.max(up, down, cross)))
     for (const l of this.lids) {
       const lp = lidPaths(l.cx, l.cy, l.rx, l.ry, l.t0 + (1 - l.t0) * shut)
       l.mask.setAttribute('d', lp.mask)
