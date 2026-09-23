@@ -371,14 +371,18 @@ export class Flip {
       ;(cl.parentNode as SVGElement).setAttribute('opacity', (0.26 * (1 - Math.sin(Math.PI * pq))).toFixed(3))
     }
 
-    // --- whiskers: they sweep back and down from her muzzle, and turned half
-    // round with her they sweep up — the one part that says "upside down"
+    // --- whiskers: they fan out and down from her cheeks, and turned half
+    // round with her they fan up — the one part that says "upside down"
     // wrong, because whiskers hang the way they hang whichever way up the head
-    // is. Mirrored top for bottom about their root as she turns, they keep
-    // their set on screen. The instant they pass through flat is the instant
-    // of the whip, which is the one instant they would be swept flat anyway.
+    // is. Mirrored top for bottom as she turns, they keep their set on screen.
+    // About the middle of their own roots (y 68, the three strands start at
+    // 62, 68 and 74), not the group's pivot at 78: mirrored about that, the
+    // roots slid ten units down her face and the whiskers came out of her
+    // forehead. About 68 the three roots land on each other's places.
     const wf = 1 - 2 * smooth(turn)
-    this.whiskers.forEach((w, i) => { w.style.transform = `${this.#whiskerTf[i]} scale(1, ${wf.toFixed(3)})` })
+    this.whiskers.forEach((w, i) => {
+      w.style.transform = `${this.#whiskerTf[i]} translate(0px, -10px) scale(1, ${wf.toFixed(3)}) translate(0px, 10px)`
+    })
 
     // --- light: the room does not turn over with her.
     this.shade?.setAttribute('gradientTransform', `rotate(${(-spin).toFixed(2)} .5 .5)`)
