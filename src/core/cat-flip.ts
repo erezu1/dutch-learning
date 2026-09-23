@@ -86,10 +86,13 @@ const MOOD_MS: Record<FlipMood, number> = { happy: 1900, yawn: 2800, up: 2200, d
 const envelope = (t: number, a = 0.18, r = 0.28) =>
   (t <= 0 || t >= 1 ? 0 : Math.min(smooth(clamp(t / a)), smooth(clamp((1 - t) / r))))
 
+// How long a replaced reaction takes to let go.
+const LET_GO = 260
 const OVER_MS = 1600
 const BACK_MS = 1500
 const JUMP_MS = 1050
 
+interface MoodRun { name: FlipMood; at: number; side: number; endAt: number }
 interface Saved { el: SVGElement; transform: string; origin: string; box: string; transition: string }
 
 export class Flip {
@@ -108,7 +111,14 @@ export class Flip {
   #dur = 1
   #raf = 0
   #then: (() => void) | null = null
-  #mood: { name: FlipMood; at: number; side: number } | null = null
+  /**
+   * What she is doing on her back, newest last. A reaction that is replaced
+   * is not dropped: it lets go over a quarter of a second while the new one
+   * comes in, so nothing she was doing — a yawn's stretch, a lean, a reach —
+   * vanishes in a frame. One slot, replaced outright, was what made a touch
+   * mid-yawn snap her into the next thing.
+   */
+  #moods: MoodRun[] = []
   #side = 1
   #face: (eyes: string, mouth: string) => void
   #shown = ''
@@ -177,10 +187,15 @@ export class Flip {
 
   react(name: FlipMood) {
     if (name === 'swat') this.#side = -this.#side
-    this.#mood = { name, at: performance.now(), side: this.#side }
+    const now = performance.now()
+    for (const m of this.#moods) if (!Number.isFinite(m.endAt)) m.endAt = now
+    this.#moods.push({ name, at: now, side: this.#side, endAt: Infinity })
     this.#run()
   }
-  get mood() { return this.#mood?.name ?? null }
+  get mood() {
+    const m = this.#moods.at(-1)
+    return m && !Number.isFinite(m.endAt) ? m.name : null
+  }
   static ms(name: FlipMood) { return MOOD_MS[name] }
 
   destroy() {
@@ -208,13 +223,13 @@ export class Flip {
         const k = clamp((now - this.#t0) / this.#dur)
         this.p = k >= 1 ? this.#to : this.#from + (this.#to - this.#from) * k
       }
-      if (this.#mood && now - this.#mood.at > MOOD_MS[this.#mood.name]) this.#mood = null
+      this.#moods = this.#moods.filter((m) => now - m.at < MOOD_MS[m.name] && now - m.endAt < LET_GO)
       this.#pose(now)
       const then = this.p === this.#to ? this.#then : null
       if (then) this.#then = null
       // Back up with nothing left to do: hand every part back and stop, and
       // only then say so — whatever happens next poses the rig's own drawing.
-      if (this.p === 0 && this.#to === 0 && !this.#mood) { this.#give(); then?.(); return }
+      if (this.p === 0 && this.#to === 0 && !this.#moods.length) { this.#give(); then?.(); return }
       then?.()
       // `then` may have started the loop itself — a reaction on landing — and
       // one loop is the most there can be. Two drew over each other, and the
@@ -278,10 +293,17 @@ export class Flip {
 
   #pose(now: number) {
     const p = this.p, time = now / 1000
-    const md = this.#mood
-    const mt = md ? (now - md.at) / MOOD_MS[md.name] : 1
-    const w = md ? envelope(mt) : 0
-    const is = (n: FlipMood) => (md?.name === n ? w : 0)
+    // Each reaction's weight is its own envelope, times how far it has let go
+    // if something has replaced it. Each keeps its own clock, so the parts of
+    // it that move through time — a reach, a lean — carry on while it fades.
+    const weight = (m: MoodRun) =>
+      envelope((now - m.at) / MOOD_MS[m.name]) * (Number.isFinite(m.endAt) ? 1 - smooth(clamp((now - m.endAt) / LET_GO)) : 1)
+    const is = (n: FlipMood) => Math.min(1, this.#moods.reduce((a, m) => a + (m.name === n ? weight(m) : 0), 0))
+    const clockOf = (n: FlipMood) => {
+      const m = this.#moods.filter((x) => x.name === n).at(-1)
+      return m ? (now - m.at) / MOOD_MS[n] : 1
+    }
+    const md = this.#moods.at(-1)
     const happy = is('happy'), yawn = is('yawn'), up = is('up'), down = is('down')
     const side = md?.side ?? this.#side
 
@@ -294,7 +316,7 @@ export class Flip {
     // keeps its ears up, so on the way up hers come up with her, and are
     // already where that mood has them by the time it takes over.
     const crossEars = Math.max(angry, this.sulk ? smooth(seg(p, 0, 0.45)) : 0)
-    const sm = md?.name === 'swat' ? clamp(mt) : 1
+    const sm = clamp(clockOf('swat'))
     const wind = smooth(seg(sm, 0.12, 0.3))
     const strike = Math.pow(seg(sm, 0.3, 0.4), 2)
     const recover = smooth(seg(sm, 0.46, 0.8))
@@ -321,7 +343,7 @@ export class Flip {
     const BREATH = 'var(--breath, 0)'
     const sway = held * 2.2 * Math.sin(time * 0.9)
       + happy * 5 * Math.sin(time * 11)
-      + yawn * 4 * Math.sin(Math.PI * clamp(mt))
+      + yawn * 4 * Math.sin(Math.PI * clamp(clockOf('yawn')))
       + (down - up) * 2.5 * Math.sign(Math.cos(Math.PI * turn))
       + side * (-3 * wind + 9 * jolt)
     const spin = theta + sway
@@ -378,7 +400,7 @@ export class Flip {
     // time the page has been open — minutes of it — so as the mood faded in
     // the paws jumped all over their cycle and buzzed.
     const knead = held * ((1 - happy) * Math.sin(time * 3.2) + happy * 2.2 * Math.sin(time * 6.4))
-    const reach = yawn * Math.sin(Math.PI * clamp(mt))
+    const reach = yawn * Math.sin(Math.PI * clamp(clockOf('yawn')))
     const dy = -69 * (pq + flop) - 3 * gather * (1 - pq)
     const turnP = 180 * pq
     const reachY = 8 * reach * Math.cos(Math.PI * pq)
