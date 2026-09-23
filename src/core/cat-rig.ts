@@ -256,8 +256,9 @@ export class CatRig {
   flip: Flip
   flips: boolean
   flipHold: ReturnType<typeof setTimeout> | null = null
-  /** Touches since she went over. The first is a coin toss; after that she has made up her mind. */
+  /** Touches since she went over, and when the last one was. */
   flipTaps = 0
+  lastFlipTap = 0
 
   constructor(
     svg: SVGSVGElement,
@@ -553,14 +554,19 @@ export class CatRig {
     this.#stir()
     const now = performance.now()
     // On her back. Mid-turn there is nothing to touch — she is going over.
-    // Settled there, the first touch is a coin toss between a belly she is
-    // happy to show you and a belly that was never an invitation; after that
-    // she has decided, and almost always it is the second. A swat is the end
-    // of it: she is up straight after.
+    // Settled there, a touch is a coin toss between a belly she is happy to
+    // show you and a belly that was never an invitation — unless it follows
+    // the last one too closely, which is prodding, and always the second. A
+    // swat is the end of it: she is up straight after.
     if (this.flip.engaged || (this.flipHold && !this.flip.engaged)) {
       if (!this.flip.engaged || this.flip.turning || this.flip.mood === 'swat') return
       this.flipTaps += 1
-      const nice = this.flipTaps === 1 ? chance(0.5) : chance(0.1)
+      // Each touch on its own is a coin toss. Touches that come hard on each
+      // other's heels are not: two inside ~0.7s is being prodded, and that is
+      // always the swat.
+      const rushed = this.flipTaps > 1 && now - this.lastFlipTap < 700
+      this.lastFlipTap = now
+      const nice = !rushed && chance(0.5)
       if (nice) {
         this.flip.react('happy')
         // Being pleased with you buys a little more time down there.
