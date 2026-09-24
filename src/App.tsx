@@ -124,6 +124,12 @@ export default function App() {
   // Only ever seen before a level is chosen, which is stored, so it shows once.
   const [greeted, setGreeted] = useState(false)
 
+  // Every arrival at home asks whether the day has turned over under it.
+  const { checkDay } = session
+  useEffect(() => {
+    if (screen === 'home') checkDay()
+  }, [screen, checkDay])
+
   // A new build waits for the end of a session before it takes the screen.
   useEffect(() => {
     setReviewing(session.status === 'reviewing')

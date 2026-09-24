@@ -151,6 +151,8 @@ export interface Session {
 
   /** `extra` asks for one more round past the day's allowance. */
   start: (extra?: boolean) => void
+  /** Reloads the app if the calendar day has changed since it opened. */
+  checkDay: () => void
   reveal: () => void
   choose: (value: string) => void
   grade: (grade: Grade) => void
@@ -365,10 +367,14 @@ export function useSession(deck: Deck): Session {
    * boundary needs.
    */
   const openedOn = useRef(today())
+  // Also asked by the app on every arrival at the home screen, which is where
+  // the day is on show: arriving there is the moment a stale one would be
+  // seen, and the minute-by-minute check can be up to a minute late for it.
+  const checkDay = useCallback(() => {
+    if (!document.hidden && today() !== openedOn.current) window.location.reload()
+  }, [])
   useEffect(() => {
-    const check = () => {
-      if (!document.hidden && today() !== openedOn.current) window.location.reload()
-    }
+    const check = checkDay
     document.addEventListener('visibilitychange', check)
     window.addEventListener('focus', check)
     const id = setInterval(check, 60_000)
@@ -377,7 +383,7 @@ export function useSession(deck: Deck): Session {
       window.removeEventListener('focus', check)
       clearInterval(id)
     }
-  }, [])
+  }, [checkDay])
 
   const setAutoContinue = useCallback((next: boolean) => {
     setAutoContinueState(next)
@@ -845,6 +851,7 @@ export function useSession(deck: Deck): Session {
     autoContinue,
     setAutoContinue,
     start,
+    checkDay,
     reveal,
     choose,
     grade,
