@@ -350,6 +350,35 @@ export function useSession(deck: Deck): Session {
     }
   }, [])
 
+  /**
+   * A new day, noticed. Everything that is "today" — the round in hand, the
+   * count of answers since midnight, the day's allowance of new words, the
+   * week — was worked out on the day the app opened, and a phone keeps an app
+   * alive in the background for days. Resumed the next morning it carried on
+   * from yesterday: yesterday's half round offered as the one to finish, and
+   * yesterday still reading as a day in progress.
+   *
+   * The app already starts every day correctly from cold — a saved round from
+   * another day is dropped, the counts are made from the log — so the honest
+   * fix is to start from cold. Checked whenever she comes back into view and
+   * once a minute while she is on screen, which is all the precision a day
+   * boundary needs.
+   */
+  const openedOn = useRef(today())
+  useEffect(() => {
+    const check = () => {
+      if (!document.hidden && today() !== openedOn.current) window.location.reload()
+    }
+    document.addEventListener('visibilitychange', check)
+    window.addEventListener('focus', check)
+    const id = setInterval(check, 60_000)
+    return () => {
+      document.removeEventListener('visibilitychange', check)
+      window.removeEventListener('focus', check)
+      clearInterval(id)
+    }
+  }, [])
+
   const setAutoContinue = useCallback((next: boolean) => {
     setAutoContinueState(next)
     void setMeta('autoContinue', next).catch(() => {})

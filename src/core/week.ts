@@ -8,8 +8,9 @@
 //
 // Two sources, because they answer different questions. The review log knows
 // which days you *studied*; only the app knows which days you got to the end
-// of, so those are written down as they happen. A day you started and didn't
-// finish is worth showing as exactly that, rather than rounding it to nothing.
+// of, so those are written down as they happen. A start is worth showing on
+// the day itself, while it can still be finished; once the day is over, an
+// unfinished round is a missed day like any other.
 // ---------------------------------------------------------------------------
 
 import type { SceneName } from './cat-rig'
@@ -20,9 +21,9 @@ export const dayKey = (d: Date): string => d.toLocaleDateString('sv')
 export type DayState =
   /** Got to the end of the day's questions. */
   | 'done'
-  /** Answered something, but stopped short. */
+  /** Today: answered something, but not finished yet. */
   | 'some'
-  /** A day gone by with nothing on it. */
+  /** A day gone by without its round finished. */
   | 'missed'
   /** Today, not started yet. */
   | 'open'
@@ -93,9 +94,14 @@ export function weekDays(
     date.setDate(start.getDate() + i)
     const key = dayKey(date)
     const today = key === todayKey
+    // A day that is over and whose round was never finished is a missed day,
+    // whether or not anything was answered on it: the duty is the round, and
+    // "started" is only news while there is still time to finish. Shown as a
+    // start, yesterday's half round sat in the week looking like a day in
+    // progress.
     const state: DayState = finished.has(key)
       ? 'done'
-      : studied.has(key)
+      : studied.has(key) && today
         ? 'some'
         : today
           ? 'open'
