@@ -461,13 +461,21 @@ export class Flip {
       + happy * 5 * Math.sin(time * 11)
       + yawn * 4 * Math.sin(Math.PI * clamp(clockOf('yawn')))
       + (down - up) * 2.5 * Math.sign(Math.cos(Math.PI * turn))
-      + side * (-3 * wind + 9 * jolt)
+      // The wind-up has to let go too: held at the end of a swat, it left
+      // her leaning three degrees one way or the other until the next one.
+      + side * (-3 * wind * (1 - recover) + 9 * jolt)
       + held * (REST_ROCK.downL * rw.downL + REST_ROCK.downR * rw.downR)
     // The sway is a rock, and a rock pivots on whichever corner of her flat is
     // on the side she is rocking toward: the right one clockwise, the left one
     // the other way. Where the pivot swaps sides the angle is nought, so the
     // swap cannot show.
-    const rock = (creep + settle + sway) * (1 - u)
+    // Both belong to a direction of travel. Going over, the lean comes before
+    // the whip and the settle after it, both clockwise; coming back the same
+    // curve runs backwards in time, which puts the settle first and the lean
+    // last — so both have to turn anticlockwise with her, or getting up began
+    // with her swinging nine degrees further the way she had gone over.
+    const dir = this.#to === 1 || this.p === 1 ? 1 : -1
+    const rock = (dir * (creep + settle) + sway) * (1 - u)
     const spin = theta + rock
 
     // --- skull: resting, round in the air, resting again the other way up.
