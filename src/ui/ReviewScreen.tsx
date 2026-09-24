@@ -101,6 +101,10 @@ export function ReviewScreen({ session, coat, dark, onExit }: Props) {
               beat={beat}
               label="The cat. She is watching you work."
               className="pointer-events-auto"
+              // Here too, on the card screen's own terms: as a reward for a run
+              // of right answers, or out of boredom at a card left too long —
+              // never on her own clock, and never for long.
+              flips
             />
           </div>
           <div className="relative h-1.5 overflow-hidden rounded-full bg-surface-3">

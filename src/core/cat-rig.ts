@@ -19,7 +19,7 @@
 // ---------------------------------------------------------------------------
 
 import { HEART, headPath, lidPaths, MOODS, EAR_TURN, STAR, ZED, type Mood } from './cat'
-import { Flip, type FlipMood } from './cat-flip'
+import { Flip, landingOf, type FlipMood, type FlipRest } from './cat-flip'
 
 // --- what each mood is FOR -------------------------------------------------
 // Three jobs, and every mood holds at least one. A mood with no job is a
@@ -259,6 +259,10 @@ export class CatRig {
   /** Touches since she went over, and when the last one was. */
   flipTaps = 0
   lastFlipTap = 0
+  /** Right answers in a row, for the roll she sometimes does as a reward. */
+  correctRun = 0
+  /** She has already rolled over out of boredom at this card. */
+  stuckRolled = false
 
   constructor(
     svg: SVGSVGElement,
@@ -352,12 +356,14 @@ export class CatRig {
    * which walks them there over the transition — so calling this mid-move
    * redirects from wherever she currently is rather than snapping to the start.
    */
-  pose(name: string) {
+  pose(name: string, { during = false } = {}) {
     const m = MOODS[name]
     if (!m) return
     // On her back the flip is drawing her, and a mood's numbers would fight
-    // it. It poses her base again when she is up.
-    if (this.flip?.engaged) return
+    // it. The one exception is the landing: the flip asks for the mood she is
+    // getting up into just before she is up, so its face and its channels are
+    // already on when the flip hands her back.
+    if (this.flip?.engaged && !during) return
     this.current = name
     const s = this.svg.style
     const turn = m.ear ? (EAR_TURN[m.ear] ?? 0) : 0
@@ -485,6 +491,7 @@ export class CatRig {
   /** Anything that means she is being paid attention to. Wakes her up. */
   #stir() {
     this.lastActive = performance.now()
+    this.stuckRolled = false
     this.#scheduleDoze()
     // Settling on a different direction within the same family is not
     // something to correct — the screen asked her to read, and she is still
@@ -506,7 +513,12 @@ export class CatRig {
     // On her back, nothing she does on her own interrupts it — and anything the
     // app has to say gets her up first, quickly, and then gets said.
     if (this.flip.engaged) {
-      if (!quiet && !this.flip.turning) this.flipBack({ quick: true }, () => this.react(name, { ms, then, quiet, min }))
+      // Mid-roll it waits for the roll to finish rather than being lost: an
+      // answer given while she is going over still gets its reaction.
+      if (!quiet) {
+        if (this.flip.turning) setTimeout(() => this.react(name, { ms, then, quiet, min }), 150)
+        else this.flipBack({ quick: true, into: name }, () => this.react(name, { ms, then, quiet, min }))
+      }
       return
     }
     const now = performance.now()
@@ -580,7 +592,7 @@ export class CatRig {
         // temper, cools off the same way, and poking her again only extends it.
         this.flipHold = setTimeout(() => {
           this.flip.sulk = true
-          this.flipBack({ quick: true }, () => this.react('grumpy', { ms: 2600, min: 1800 }))
+          this.flipBack({ quick: true, into: 'grumpy' }, () => this.react('grumpy', { ms: 2600, min: 1800 }))
         }, Flip.ms('swat') - 120)
       }
       return
@@ -674,15 +686,30 @@ export class CatRig {
       // On her back she drifts in her own way: a look up the phone or down it,
       // now and then a wriggle of pleasure at nothing.
       if (this.flip.engaged) {
-        if (this.flip.down && !this.flip.mood && chance(0.55)) {
-          this.flip.react(pickOne<FlipMood>(['up', 'down', 'up', 'down', 'happy']))
+        if (this.flip.down && !this.flip.mood) {
+          if (this.#onCard()) {
+            // Reading upside down: her eyes resettle across the card like
+            // they do the right way up, and now and then she looks up at you.
+            if (chance(0.5)) this.flip.setRest(pickOne<FlipRest>(['downL', 'downC', 'downR'].filter((r) => r !== this.flip.rest) as FlipRest[]))
+            else if (chance(0.25)) this.flip.react('up')
+          } else if (chance(0.55)) {
+            this.flip.react(pickOne<FlipMood>(['up', 'down', 'up', 'down', 'happy']))
+          }
         }
+        return this.#scheduleDrift()
+      }
+      // Stuck on a card: twenty seconds and nothing, and she gets bored enough
+      // to roll over. Once per card — any answer, touch or new card resets it.
+      if (!this.holding && this.#onCard() && !this.stuckRolled
+        && performance.now() - this.lastActive > 20000 && this.#comfy(0)) {
+        this.stuckRolled = true
+        this.flipOver()
         return this.#scheduleDrift()
       }
       // Now and then, when she has been left alone long enough to be at ease,
       // she rolls over. Rare enough to be a thing you catch rather than a
       // thing she does.
-      if (!this.holding && this.#comfy(25000) && chance(0.08)) {
+      if (!this.holding && !this.#onCard() && this.#comfy(25000) && chance(0.08)) {
         this.flipOver()
         return this.#scheduleDrift()
       }
@@ -752,11 +779,16 @@ export class CatRig {
    */
   #comfy(quietFor: number) {
     const now = performance.now()
+    // At rest is idle at home, and reading on the card screen.
+    const resting = (m: string) => (this.#onCard() ? familyOf(m) === familyOf('lookDownC') : m === 'idle')
     return this.flips && !this.flip.engaged
-      && this.base === 'idle' && this.current === 'idle'
+      && resting(this.base) && resting(this.current)
       && !this.settling && now > this.sulkUntil && this.cross === 0
       && now - this.lastPoke >= quietFor
   }
+
+  /** Whether she is on the card screen — the screen asked her to read. */
+  #onCard() { return familyOf(this.wanted) === familyOf('lookDownC') }
 
   /** Over onto her back. Usually she yawns as she lands; she stays a while, then gets up. */
   flipOver() {
@@ -766,9 +798,14 @@ export class CatRig {
     clearTimeout(this.dozing ?? undefined)
     this.dozing = null
     this.flipTaps = 0
+    const card = this.#onCard()
+    // On the card screen she is still reading with you, upside down, and does
+    // not stay long — the card is the point. At home she is content, and in
+    // no hurry.
+    this.flip.setRest(card ? pickOne<FlipRest>(['downL', 'downC', 'downR']) : 'content')
     const go = () => this.flip.over(() => {
       if (chance(0.7)) this.flip.react('yawn')
-      this.flipHold = setTimeout(() => this.flipBack(), rand(12000, 24000))
+      this.flipHold = setTimeout(() => this.flipBack(), card ? rand(4000, 7000) : rand(12000, 24000))
     })
     // The turn is drawn from her resting pose. Asked mid-reaction — the third
     // poke lands on a surprised or pleased face — she settles into it first,
@@ -778,16 +815,81 @@ export class CatRig {
     this.flipHold = setTimeout(go, 320)
   }
 
-  /** Back onto her front, and back to whatever she was before. */
-  flipBack({ quick = false } = {}, then?: () => void) {
+  /**
+   * The upright mood that continues what she was doing on her back: the same
+   * reaction the right way up, or her rest's upright twin — so getting up
+   * never drops her into a face she was not wearing.
+   */
+  #landing(): { name: string; oneShot: boolean; ms: number } {
+    const d = this.flip.dominant()
+    const left = (n: FlipMood) => Math.max(900, this.flip.remaining(n) + 500)
+    switch (d) {
+      case 'happy': return { name: 'happy', oneShot: true, ms: left('happy') }
+      case 'yawn': return { name: 'yawn', oneShot: true, ms: left('yawn') }
+      case 'up': return { name: chance(0.5) ? 'lookUpL' : 'lookUpR', oneShot: true, ms: left('up') + 600 }
+      case 'down': return this.#onCard()
+        ? { name: 'lookDownC', oneShot: false, ms: 0 }
+        : { name: 'lookDownC', oneShot: true, ms: left('down') }
+      case 'swat': return { name: 'grumpy', oneShot: true, ms: 2600 }
+      case 'downL': return { name: 'lookDownL', oneShot: false, ms: 0 }
+      case 'downC': return { name: 'lookDownC', oneShot: false, ms: 0 }
+      case 'downR': return { name: 'lookDownR', oneShot: false, ms: 0 }
+      default: return { name: this.base, oneShot: false, ms: 0 }
+    }
+  }
+
+  /**
+   * Back onto her front, in the state she was in just before: whatever she
+   * was doing on her back continues the right way up, and the roll itself
+   * finishes on that mood's own pose, so there is no second move after it.
+   * `into` overrides the choice — a swat always lands cross.
+   */
+  flipBack({ quick = false, into }: { quick?: boolean; into?: string } = {}, then?: () => void) {
     clearTimeout(this.flipHold ?? undefined)
     this.flipHold = null
-    this.flip.back({ quick }, () => {
+    const l = into ? { name: into, oneShot: true, ms: 2600 } : this.#landing()
+    const mood = MOODS[l.name] ?? MOODS[this.base]
+    // A rest lands as her base, when it is a direction of what the screen
+    // asked for — reading left instead of reading middle is still reading.
+    if (!l.oneShot && familyOf(l.name) && familyOf(l.name) === familyOf(this.wanted)) this.base = l.name
+    this.flip.back({
+      quick,
+      land: landingOf(mood),
+      shadow: () => this.pose(l.name, { during: true }),
+    }, () => {
       this.flipTaps = 0
-      this.pose(this.base)
+      if (then) then()
+      else if (l.oneShot) this.react(l.name, { ms: l.ms, min: Math.min(900, l.ms), quiet: true })
+      else this.pose(this.base)
       this.#scheduleDoze()
-      then?.()
     })
+  }
+
+  /**
+   * An answer on the card screen. Right is pleased — and on her back, pleased
+   * without getting up; three right in a row, now and then, she rolls over for
+   * it. Wrong is one of the misses, and gets her up for it first: puzzled
+   * reads better the right way up.
+   */
+  answered(right: boolean) {
+    this.correctRun = right ? this.correctRun + 1 : 0
+    if (right && this.flip.engaged) {
+      if (this.flip.turning) { this.correctRun -= 1; setTimeout(() => this.answered(true), 150); return }
+      {
+        this.#stir()
+        this.flip.react('happy')
+        clearTimeout(this.flipHold ?? undefined)
+        this.flipHold = setTimeout(() => this.flipBack(), rand(3000, 5000))
+      }
+      return
+    }
+    if (right && this.correctRun >= 3 && this.#comfy(0) && chance(0.3)) {
+      this.#stir()
+      this.correctRun = 0
+      return this.flipOver()
+    }
+    if (right) this.react('happy', { ms: 1600, min: 900 })
+    else this.react(this.pickWrong(), { ms: 1500, min: 900 })
   }
 
   /**
@@ -1094,7 +1196,7 @@ export const SCENE: Record<SceneName, (r: CatRig) => void> = {
   // Every hold is long enough to be read at a glance and then some. Under
   // about a second a reaction registers as a flicker: you see that something
   // happened without seeing what, which is worse than not reacting at all.
-  correct: (r: CatRig) => r.react('happy', { ms: 1600, min: 900 }),
+  correct: (r: CatRig) => r.answered(true),
   // A miss is not one fixed face. Mostly she is puzzled — that is the honest
   // reading of a wrong answer, and it keeps the weight on the word rather
   // than on you. Sometimes she is caught out by it, sometimes she looks up at
@@ -1105,7 +1207,7 @@ export const SCENE: Record<SceneName, (r: CatRig) => void> = {
   //
   // Never the same one twice running, which matters more than the weights: a
   // repeat reads as a fixed response even when the set is varied.
-  wrong: (r: CatRig) => r.react(r.pickWrong(), { ms: 1500, min: 900 }),
+  wrong: (r: CatRig) => r.answered(false),
   // The two beats big enough to come off the ledge for. Everything else she
   // does sitting down — a mascot who jumps at every right answer has nothing
   // left for the end of the round.
