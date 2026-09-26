@@ -57,36 +57,54 @@ interface Props {
   from: Rung
   to: Rung
   coat: CoatId
+  /**
+   * Everything counted into the old level, this round included — more than
+   * its span when the round went past it. The count runs all the way there;
+   * the ring can only be full.
+   */
+  total: number
   /** Called the moment the ring bursts, for whatever else celebrates it. */
   onBurst: () => void
 }
 
-export function LevelRing({ from, to, coat, onBurst }: Props) {
+export function LevelRing({ from, to, coat, total, onBurst }: Props) {
   const reduced = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
   const [phase, setPhase] = useState<Phase>(reduced ? 'done' : 'fill')
   const [fire, setFire] = useState(0)
   const ring = useRef<HTMLDivElement>(null)
 
-  const counted = useMotionValue(reduced ? from.span : 0)
+  const counted = useMotionValue(reduced ? total : 0)
   const shown = useTransform(counted, (v) => Math.round(v).toLocaleString())
+  // The arc follows the count, and stops at full: past the end of the level the
+  // number keeps going while the ring holds, closed, until the count lands.
+  const offset = useTransform(counted, (v) => C * (1 - Math.min(1, v / from.span)))
+  // The same pace all the way, so the part past full takes as long as it
+  // would have taken to fill — within reason.
+  const run = Math.min(FILL * Math.max(1, total / from.span), FILL * 1.6)
 
   useEffect(() => {
     if (reduced) {
       onBurst()
       return
     }
-    // Up from nothing to full, the count with it.
-    const up = animate(counted, from.span, { duration: FILL, delay: FILL_DELAY, ease: EASE })
-    const t1 = setTimeout(() => {
+    // Up from nothing, the ring with it, to everything this round brought.
+    const up = animate(counted, total, { duration: run, delay: FILL_DELAY, ease: EASE })
+    // It bursts when the count lands, not on a clock of its own: a phone
+    // that drops frames would otherwise burst the ring with the number still
+    // on its way.
+    let settle: ReturnType<typeof setTimeout> | undefined
+    let live = true
+    up.then(() => {
+      if (!live) return
       setPhase('burst')
       setFire(1)
       onBurst()
-    }, (FILL_DELAY + FILL) * 1000)
-    const t2 = setTimeout(() => setPhase('done'), (FILL_DELAY + FILL + 0.6) * 1000)
+      settle = setTimeout(() => setPhase('done'), 600)
+    })
     return () => {
+      live = false
       up.stop()
-      clearTimeout(t1)
-      clearTimeout(t2)
+      clearTimeout(settle)
     }
     // Once, on arrival.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -122,12 +140,9 @@ export function LevelRing({ from, to, coat, onBurst }: Props) {
             stroke="var(--color-primary)"
             strokeWidth="8"
             strokeLinecap="round"
-            // A number to animate rather than a dash string: the offset slides
-            // the one full-length dash into view.
+            // One full-length dash, slid into view by the count.
             strokeDasharray={C}
-            initial={{ strokeDashoffset: reduced ? 0 : C }}
-            animate={{ strokeDashoffset: 0 }}
-            transition={{ duration: reduced ? 0 : FILL, delay: FILL_DELAY, ease: EASE }}
+            style={{ strokeDashoffset: offset }}
           />
           {/* A ring of light that leaves the ring as it closes. */}
           {phase === 'burst' && (

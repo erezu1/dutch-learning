@@ -148,7 +148,7 @@ function LevelUp({
           beat={burst ? { scene: 'levelUp', key: 1 } : null}
           label="The cat, pleased with you"
         />
-        <LevelRing from={from} to={to} coat={coat} onBurst={() => setBurst(true)} />
+        <LevelRing from={from} to={to} coat={coat} total={from.into + points} onBurst={() => setBurst(true)} />
       </div>
 
       <motion.div
