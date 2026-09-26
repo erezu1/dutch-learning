@@ -1917,7 +1917,8 @@
    "en": [
     "luck",
     "happiness"
-   ]
+   ],
+   "plural": "-"
   },
   "nl-wapen-n": {
    "en": [
@@ -2831,7 +2832,8 @@
      "nl": "Heb je trek?",
      "en": "Are you hungry?"
     }
-   ]
+   ],
+   "plural": "-"
   },
   "nl-val-n": {
    "pos": "verb",
@@ -3685,6 +3687,11 @@
     }
    ]
   },
+  "nl-show-n": {
+   "en": [
+    "show"
+   ]
+  },
   "nl-leggen-v": {
    "en": [
     "to lay / to put (down flat)"
@@ -3971,6 +3978,11 @@
     }
    ]
   },
+  "nl-getuige-n": {
+   "en": [
+    "witness"
+   ]
+  },
   "nl-kwalijk-a": {
    "en": [
     "excuse me (neem me niet kwalijk)",
@@ -3987,6 +3999,11 @@
     }
    ],
    "reset": 1
+  },
+  "nl-bar-n": {
+   "en": [
+    "bar"
+   ]
   },
   "nl-lijn-n": {
    "en": [
@@ -4057,7 +4074,8 @@
      "nl": "Mijn buurvrouw is een Amerikaanse.",
      "en": "My neighbour is an American."
     }
-   ]
+   ],
+   "plural": "-"
   },
   "nl-zee-n": {
    "examples": [
@@ -4149,6 +4167,11 @@
   "nl-zelfmoord-n": {
    "en": [
     "suicide"
+   ]
+  },
+  "nl-planeet-n": {
+   "en": [
+    "planet"
    ]
   },
   "nl-verdachte-n": {
@@ -4495,6 +4518,11 @@
     }
    ]
   },
+  "nl-monster-n": {
+   "en": [
+    "monster"
+   ]
+  },
   "nl-opa-n": {
    "en": [
     "grandpa"
@@ -4617,6 +4645,12 @@
      "nl": "Dit huis is te koop.",
      "en": "This house is for sale."
     }
+   ],
+   "plural": "-"
+  },
+  "nl-appartement-n": {
+   "en": [
+    "apartment / flat"
    ]
   },
   "nl-cel-n": {
@@ -4634,6 +4668,12 @@
      "en": "He made a good impression."
     }
    ]
+  },
+  "nl-vlees-n": {
+   "plural": "-"
+  },
+  "nl-energie-n": {
+   "plural": "-"
   },
   "nl-vernietigen-v": {
    "verb": {
@@ -4710,7 +4750,8 @@
    "en": [
     "for God's sake / on earth (in godsnaam)"
    ],
-   "reset": 1
+   "reset": 1,
+   "plural": "-"
   },
   "nl-werkelijk-a": {
    "en": [
@@ -4728,6 +4769,9 @@
      "en": "The baby starts to cry."
     }
    ]
+  },
+  "nl-veiligheid-n": {
+   "plural": "-"
   },
   "nl-afstand-n": {
    "en": [
@@ -5414,6 +5458,9 @@
      "en": "I'll take this path."
     }
    ]
+  },
+  "nl-vrijheid-n": {
+   "plural": "-"
   },
   "nl-verdwijnen-v": {
    "en": [
@@ -6702,12 +6749,14 @@
     "coincidence",
     "chance"
    ],
-   "reset": 1
+   "reset": 1,
+   "plural": "-"
   },
   "nl-war-n": {
    "en": [
     "confusion (in de war = confused)"
-   ]
+   ],
+   "plural": "-"
   },
   "nl-genieten-v": {
    "en": [
@@ -7293,6 +7342,11 @@
     }
    ]
   },
+  "nl-leugen-n": {
+   "en": [
+    "lie (untruth)"
+   ]
+  },
   "nl-pizza-n": {
    "examples": [
     {
@@ -7376,7 +7430,8 @@
      "nl": "Hij zei niets uit vrees voor straf.",
      "en": "He said nothing for fear of punishment."
     }
-   ]
+   ],
+   "plural": "-"
   },
   "nl-big-n": {
    "drop": true
@@ -7582,6 +7637,11 @@
     "charge / accusation (legal)"
    ]
   },
+  "nl-overheid-n": {
+   "en": [
+    "government / authorities"
+   ]
+  },
   "nl-wed-n": {
    "pos": "verb",
    "en": [
@@ -7610,6 +7670,11 @@
      "nl": "Je bent uiteraard welkom.",
      "en": "You are of course welcome."
     }
+   ]
+  },
+  "nl-manager-n": {
+   "en": [
+    "manager"
    ]
   },
   "nl-verdedigen-v": {
@@ -7776,6 +7841,9 @@
     "auxiliary": "hebben"
    }
   },
+  "nl-natuur-n": {
+   "plural": "-"
+  },
   "nl-wijs-n": {
    "pos": "adj",
    "en": [
@@ -7903,6 +7971,12 @@
     }
    ]
   },
+  "nl-koffer-n": {
+   "en": [
+    "suitcase",
+    "trunk"
+   ]
+  },
   "nl-zonde-n": {
    "en": [
     "a shame / a waste (wat zonde!)",
@@ -7985,6 +8059,11 @@
      "nl": "De kinderen zijn opgewonden over het feest.",
      "en": "The children are excited about the party."
     }
+   ]
+  },
+  "nl-boerderij-n": {
+   "en": [
+    "farm"
    ]
   },
   "nl-rijke-n": {
@@ -8084,7 +8163,8 @@
      "nl": "De koning toonde genade.",
      "en": "The king showed mercy."
     }
-   ]
+   ],
+   "plural": "-"
   },
   "nl-wegens-p": {
    "en": [
@@ -8112,6 +8192,11 @@
      "nl": "Honden zijn niet toegestaan op het terrein.",
      "en": "Dogs are not allowed on the grounds."
     }
+   ]
+  },
+  "nl-ontmoeting-n": {
+   "en": [
+    "meeting / encounter"
    ]
   },
   "nl-handel-n": {
@@ -8170,6 +8255,11 @@
      "nl": "Er staat een pot pindakaas op tafel.",
      "en": "There is a jar of peanut butter on the table."
     }
+   ]
+  },
+  "nl-afspraakje-n": {
+   "en": [
+    "romantic date"
    ]
   },
   "nl-pensioen-n": {
@@ -8246,6 +8336,11 @@
    ],
    "reset": 1
   },
+  "nl-dief-n": {
+   "en": [
+    "thief"
+   ]
+  },
   "nl-geur-n": {
    "en": [
     "smell / scent"
@@ -8268,6 +8363,9 @@
      "nl": "Tom woont in het centrum.",
      "en": "Tom lives in the city centre."
     }
+   ],
+   "en": [
+    "centre (of a town) / city centre"
    ]
   },
   "nl-ontzettend-a": {
@@ -8466,7 +8564,8 @@
      "nl": "Mijn verjaardag is in april.",
      "en": "My birthday is in April."
     }
-   ]
+   ],
+   "plural": "-"
   },
   "nl-beroep-n": {
    "en": [
@@ -8478,6 +8577,12 @@
      "nl": "Wat is je beroep?",
      "en": "What is your profession?"
     }
+   ]
+  },
+  "nl-motief-n": {
+   "en": [
+    "motive",
+    "motif"
    ]
   },
   "nl-verderop-adv": {
@@ -9143,7 +9248,8 @@
      "nl": "Hij heeft geen besef van tijd.",
      "en": "He has no sense of time."
     }
-   ]
+   ],
+   "plural": "-"
   },
   "nl-spiegel-n": {
    "en": [
@@ -9179,12 +9285,22 @@
     }
    ]
   },
+  "nl-seizoen-n": {
+   "en": [
+    "season"
+   ]
+  },
   "nl-frans-a": {
    "examples": [
     {
      "nl": "Mijn moeder spreekt Frans.",
      "en": "My mother speaks French."
     }
+   ]
+  },
+  "nl-vlieg-n": {
+   "en": [
+    "fly (insect)"
    ]
   },
   "nl-bril-n": {
@@ -9370,6 +9486,11 @@
     "auxiliary": "hebben"
    }
   },
+  "nl-jongeman-n": {
+   "en": [
+    "young man"
+   ]
+  },
   "nl-huiswerk-n": {
    "examples": [
     {
@@ -9445,7 +9566,8 @@
      "nl": "Ze vragen om gerechtigheid.",
      "en": "They are asking for justice."
     }
-   ]
+   ],
+   "plural": "-"
   },
   "nl-onderdeel-n": {
    "en": [
@@ -9495,7 +9617,8 @@
      "nl": "Het was een week vol ellende.",
      "en": "It was a week full of misery."
     }
-   ]
+   ],
+   "plural": "-"
   },
   "nl-nep-n": {
    "en": [
@@ -9817,7 +9940,8 @@
      "nl": "We liepen in de duisternis naar huis.",
      "en": "We walked home in the darkness."
     }
-   ]
+   ],
+   "plural": "-"
   },
   "nl-briljant-n": {
    "pos": "adj",
@@ -9938,6 +10062,9 @@
    ],
    "noCloze": true
   },
+  "nl-schande-n": {
+   "plural": "-"
+  },
   "nl-overeen-adv": {
    "en": [
     "in agreement (overeenkomen = to agree / to match)"
@@ -10015,6 +10142,9 @@
      "nl": "Voetbal is mijn favoriete sport.",
      "en": "Football is my favourite sport."
     }
+   ],
+   "en": [
+    "sport"
    ]
   },
   "nl-bo-n": {
@@ -10115,7 +10245,8 @@
      "nl": "De aanwezigheid van alle leden is verplicht.",
      "en": "The presence of all members is compulsory."
     }
-   ]
+   ],
+   "plural": "-"
   },
   "nl-gedurende-p": {
    "examples": [
@@ -10307,6 +10438,14 @@
     }
    ]
   },
+  "nl-nicht-n": {
+   "examples": [
+    {
+     "nl": "Maria is mijn nicht.",
+     "en": "Maria is my niece."
+    }
+   ]
+  },
   "nl-effect-n": {
    "en": [
     "effect"
@@ -10420,6 +10559,11 @@
     "auxiliary": "hebben"
    }
   },
+  "nl-miljard-n": {
+   "en": [
+    "billion"
+   ]
+  },
   "nl-vies-a": {
    "en": [
     "dirty",
@@ -10462,7 +10606,8 @@
      "nl": "Pas op, dit is gif!",
      "en": "Careful, this is poison!"
     }
-   ]
+   ],
+   "plural": "-"
   },
   "nl-schitterend-a": {
    "en": [
@@ -10479,6 +10624,11 @@
    "en": [
     "certainty",
     "security"
+   ]
+  },
+  "nl-kliniek-n": {
+   "en": [
+    "clinic"
    ]
   },
   "nl-bevrijden-v": {
@@ -10735,7 +10885,8 @@
      "nl": "Zijn vrouw is een Chinese.",
      "en": "His wife is a Chinese woman."
     }
-   ]
+   ],
+   "plural": "-"
   },
   "nl-fantasie-n": {
    "en": [
@@ -10997,6 +11148,9 @@
    "en": [
     "judgement / opinion"
    ]
+  },
+  "nl-bloeddruk-n": {
+   "plural": "-"
   },
   "nl-hoofdpijn-n": {
    "examples": [
@@ -11400,7 +11554,8 @@
    "en": [
     "need / distress",
     "emergency (in geval van nood)"
-   ]
+   ],
+   "plural": "-"
   },
   "nl-wiet-n": {
    "en": [
@@ -11534,7 +11689,8 @@
      "nl": "Mijn buurvrouw is een Engelse.",
      "en": "My neighbour is an Englishwoman."
     }
-   ]
+   ],
+   "plural": "-"
   },
   "nl-communicatie-n": {
    "examples": [
@@ -11702,6 +11858,12 @@
     "auxiliary": "hebben"
    }
   },
+  "nl-toren-n": {
+   "en": [
+    "tower",
+    "rook (in chess)"
+   ]
+  },
   "nl-eigendom-n": {
    "examples": [
     {
@@ -11719,6 +11881,11 @@
      "nl": "De dokter bezoekt de zieke.",
      "en": "The doctor visits the sick person."
     }
+   ]
+  },
+  "nl-strafblad-n": {
+   "en": [
+    "criminal record"
    ]
   },
   "nl-voorbereiden-v": {
@@ -11849,6 +12016,11 @@
     }
    ]
   },
+  "nl-incident-n": {
+   "en": [
+    "incident"
+   ]
+  },
   "nl-commentaar-n": {
    "en": [
     "comment(s)",
@@ -11925,7 +12097,8 @@
   "nl-heelal-n": {
    "en": [
     "universe (space)"
-   ]
+   ],
+   "plural": "-"
   },
   "nl-verspillen-v": {
    "verb": {
@@ -12072,6 +12245,11 @@
     }
    ]
   },
+  "nl-roman-n": {
+   "en": [
+    "novel"
+   ]
+  },
   "nl-glimlach-n": {
    "examples": [
     {
@@ -12090,6 +12268,11 @@
      "nl": "Welk ras is jouw hond?",
      "en": "What breed is your dog?"
     }
+   ]
+  },
+  "nl-amerikaan-n": {
+   "en": [
+    "American (man)"
    ]
   },
   "nl-plat-n": {
@@ -12132,7 +12315,8 @@
    "en": [
     "intent (met opzet = on purpose)",
     "set-up / design"
-   ]
+   ],
+   "plural": "-"
   },
   "nl-college-n": {
    "en": [
@@ -12414,6 +12598,9 @@
     }
    ]
   },
+  "nl-gemak-n": {
+   "plural": "-"
+  },
   "nl-motel-n": {
    "en": [
     "motel"
@@ -12516,6 +12703,9 @@
     }
    ]
   },
+  "nl-augustus-n": {
+   "plural": "-"
+  },
   "nl-centimeter-n": {
    "en": [
     "centimetre"
@@ -12556,7 +12746,8 @@
      "nl": "Dit is pure waanzin!",
      "en": "This is pure madness!"
     }
-   ]
+   ],
+   "plural": "-"
   },
   "nl-zender-n": {
    "en": [

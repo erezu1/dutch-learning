@@ -47,8 +47,24 @@ export function levelFor(rank) {
   return 'B2'
 }
 
-const regularPlural = (word, plural) =>
-  plural === `${word}en` || plural === `${word}s` || plural === `${word}'s`
+/**
+ * A plural anyone could have guessed from the singular, which is not worth a
+ * card: -en, -s, -'s, an -e that takes -n (ziekte, ziekten), and a stressed
+ * -ie or -ee that takes -ën (idee, ideeën). Spelling changes — a vowel that
+ * halves or a consonant that doubles, kraan kranen, bus bussen — do count as
+ * surprising: they are the plurals people actually get wrong.
+ */
+function regularPlural(word, plural) {
+  const w = word.toLowerCase()
+  const p = plural.toLowerCase()
+  return (
+    p === `${w}en` ||
+    p === `${w}s` ||
+    p === `${w}'s` ||
+    (w.endsWith('e') && p === `${w}n`) ||
+    ((w.endsWith('ie') || w.endsWith('ee')) && p === `${w}ën`)
+  )
+}
 
 /**
  * Hand-written notes for words the import doesn't have. One with an id the

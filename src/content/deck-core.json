@@ -2136,7 +2136,7 @@
    "id": "nl-appartement-n",
    "nl": "appartement",
    "en": [
-    "an apartment"
+    "apartment / flat"
    ],
    "pos": "noun",
    "level": "A1",
@@ -3334,7 +3334,6 @@
    "freq": 2493,
    "gender": "de",
    "plural": "seconden",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Wacht een seconde.",
@@ -3958,8 +3957,7 @@
    "id": "nl-centrum-n",
    "nl": "centrum",
    "en": [
-    "the centre",
-    "city centre"
+    "centre (of a town) / city centre"
    ],
    "pos": "noun",
    "level": "A1",
@@ -5249,7 +5247,6 @@
    "rank": 258,
    "freq": 1280,
    "gender": "het",
-   "plural": "vlezen",
    "irregularPlural": true,
    "examples": [
     {
@@ -6235,7 +6232,7 @@
    "id": "nl-sport-n",
    "nl": "sport",
    "en": [
-    "a sport"
+    "sport"
    ],
    "pos": "noun",
    "level": "A2",
@@ -6342,7 +6339,6 @@
    "freq": 1204,
    "gender": "de",
    "plural": "theeën",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Ik maakte thee.",
@@ -6401,7 +6397,6 @@
    ],
    "gender": "de",
    "plural": "groenten",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Je moet meer groente eten.",
@@ -7836,7 +7831,6 @@
    "freq": 232,
    "gender": "het",
    "plural": "ideeën",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Ik had een idee.",
@@ -10527,7 +10521,6 @@
    "rank": 519,
    "freq": 2149,
    "gender": "de",
-   "plural": "naturen",
    "irregularPlural": true,
    "examples": [
     {
@@ -10587,7 +10580,6 @@
    "rank": 522,
    "freq": 2384,
    "gender": "de",
-   "plural": "aprillen",
    "irregularPlural": true,
    "examples": [
     {
@@ -11755,7 +11747,7 @@
    "examples": [
     {
      "nl": "Maria is mijn nicht.",
-     "en": "Mary's my niece."
+     "en": "Maria is my niece."
     }
    ]
   },
@@ -11985,7 +11977,6 @@
    "rank": 590,
    "freq": 3641,
    "gender": "de",
-   "plural": "augustussen",
    "irregularPlural": true,
    "examples": [
     {
@@ -13692,7 +13683,6 @@
    "freq": 3675,
    "gender": "de",
    "plural": "knieën",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Ik heb pijn aan mijn knie.",
@@ -15538,7 +15528,6 @@
    "freq": 1083,
    "gender": "de",
    "plural": "zeeën",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "We gaan morgen naar de zee.",
@@ -16460,7 +16449,6 @@
    "rank": 806,
    "freq": 564,
    "gender": "het",
-   "plural": "gelukken",
    "irregularPlural": true,
    "examples": [
     {
@@ -16664,7 +16652,6 @@
    ],
    "gender": "de",
    "plural": "gemeenten",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Ik moet morgen naar de gemeente.",
@@ -18591,7 +18578,6 @@
    "rank": 910,
    "freq": 772,
    "gender": "de",
-   "plural": "trekken",
    "irregularPlural": true,
    "examples": [
     {
@@ -20017,7 +20003,6 @@
    "freq": 928,
    "gender": "de",
    "plural": "keuzen",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Maak een keuze.",
@@ -20568,7 +20553,6 @@
    "freq": 983,
    "gender": "de",
    "plural": "moeiten",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Het kost veel moeite.",
@@ -20992,7 +20976,6 @@
    "freq": 1021,
    "gender": "de",
    "plural": "doden",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Bij het ongeluk viel één dode.",
@@ -21555,7 +21538,7 @@
    "id": "nl-bar-n",
    "nl": "bar",
    "en": [
-    "a bar"
+    "bar"
    ],
    "pos": "noun",
    "level": "B1",
@@ -21754,7 +21737,6 @@
    "rank": 1066,
    "freq": 1081,
    "gender": "de",
-   "plural": "Amerikaansen",
    "irregularPlural": true,
    "examples": [
     {
@@ -21883,7 +21865,7 @@
    "id": "nl-planeet-n",
    "nl": "planeet",
    "en": [
-    "a planet"
+    "planet"
    ],
    "pos": "noun",
    "level": "B1",
@@ -21979,8 +21961,8 @@
    "id": "nl-koffer-n",
    "nl": "koffer",
    "en": [
-    "a suitcase",
-    "a trunk"
+    "suitcase",
+    "trunk"
    ],
    "pos": "noun",
    "level": "B1",
@@ -22518,7 +22500,6 @@
    "freq": 1169,
    "gender": "de",
    "plural": "vreemden",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Hij is een vreemde voor mij.",
@@ -23414,7 +23395,6 @@
    "rank": 1146,
    "freq": 1274,
    "gender": "de",
-   "plural": "kopen",
    "irregularPlural": true,
    "examples": [
     {
@@ -23474,7 +23454,6 @@
    "rank": 1149,
    "freq": 1284,
    "gender": "de",
-   "plural": "energieën",
    "irregularPlural": true,
    "examples": [
     {
@@ -23892,7 +23871,6 @@
    "rank": 1169,
    "freq": 1313,
    "gender": "de",
-   "plural": "godsnamen",
    "irregularPlural": true,
    "examples": [
     {
@@ -23930,7 +23908,6 @@
    "rank": 1171,
    "freq": 1325,
    "gender": "de",
-   "plural": "veiligheden",
    "irregularPlural": true,
    "examples": [
     {
@@ -25023,7 +25000,6 @@
    "freq": 1428,
    "gender": "de",
    "plural": "heiligen",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Tom is geen heilige.",
@@ -25710,7 +25686,6 @@
    "rank": 1258,
    "freq": 1495,
    "gender": "de",
-   "plural": "vrijheden",
    "irregularPlural": true,
    "examples": [
     {
@@ -27726,7 +27701,6 @@
    "freq": 1715,
    "gender": "de",
    "plural": "ziekten",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Hij heeft een ernstige ziekte.",
@@ -27902,7 +27876,6 @@
    "freq": 1750,
    "gender": "de",
    "plural": "theorieën",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Dat is mijn theorie.",
@@ -28603,7 +28576,6 @@
    "rank": 1399,
    "freq": 1851,
    "gender": "het",
-   "plural": "toevallen",
    "irregularPlural": true,
    "examples": [
     {
@@ -28803,7 +28775,6 @@
    "freq": 1884,
    "gender": "de",
    "plural": "gedachten",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Wat een mooie gedachte!",
@@ -29621,7 +29592,6 @@
    "freq": 2001,
    "gender": "de",
    "plural": "stilten",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Tom wilde alleen maar wat rust en stilte.",
@@ -29710,7 +29680,7 @@
    "id": "nl-leugen-n",
    "nl": "leugen",
    "en": [
-    "a lie"
+    "lie (untruth)"
    ],
    "pos": "noun",
    "level": "B1",
@@ -29864,7 +29834,6 @@
    "rank": 1463,
    "freq": 2036,
    "gender": "de",
-   "plural": "vrezen",
    "irregularPlural": true,
    "examples": [
     {
@@ -30287,7 +30256,7 @@
    "id": "nl-overheid-n",
    "nl": "overheid",
    "en": [
-    "the government"
+    "government / authorities"
    ],
    "pos": "noun",
    "level": "B1",
@@ -30346,7 +30315,7 @@
    "id": "nl-manager-n",
    "nl": "manager",
    "en": [
-    "a manager"
+    "manager"
    ],
    "pos": "noun",
    "level": "B1",
@@ -31199,7 +31168,6 @@
    "freq": 2229,
    "gender": "de",
    "plural": "zonden",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Zou dat niet zonde zijn?",
@@ -31358,7 +31326,7 @@
    "id": "nl-boerderij-n",
    "nl": "boerderij",
    "en": [
-    "a farm"
+    "farm"
    ],
    "pos": "noun",
    "level": "B1",
@@ -31539,7 +31507,6 @@
    "rank": 1547,
    "freq": 2275,
    "gender": "de",
-   "plural": "genaden",
    "irregularPlural": true,
    "examples": [
     {
@@ -31628,7 +31595,7 @@
    "id": "nl-ontmoeting-n",
    "nl": "ontmoeting",
    "en": [
-    "a meeting"
+    "meeting / encounter"
    ],
    "pos": "noun",
    "level": "B1",
@@ -31721,7 +31688,6 @@
    "freq": 2296,
    "gender": "de",
    "plural": "ronden",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Dit is de laatste ronde.",
@@ -31741,7 +31707,6 @@
    "freq": 2298,
    "gender": "de",
    "plural": "verloofden",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Tom is mijn verloofde.",
@@ -31774,7 +31739,7 @@
    "id": "nl-afspraakje-n",
    "nl": "afspraakje",
    "en": [
-    "a romantic date"
+    "romantic date"
    ],
    "pos": "noun",
    "level": "B1",
@@ -32012,7 +31977,7 @@
    "id": "nl-dief-n",
    "nl": "dief",
    "en": [
-    "a thief"
+    "thief"
    ],
    "pos": "noun",
    "level": "B1",
@@ -32207,7 +32172,6 @@
    "freq": 2345,
    "gender": "de",
    "plural": "wijzen",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Op deze wijze werkt het beter.",
@@ -32656,7 +32620,6 @@
    "freq": 2402,
    "gender": "de",
    "plural": "technologieën",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Technologie kan helpen.",
@@ -32736,7 +32699,6 @@
    "freq": 2409,
    "gender": "de",
    "plural": "beloften",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Tom brak zijn belofte.",
@@ -33491,7 +33453,6 @@
    "freq": 2516,
    "gender": "de",
    "plural": "geliefden",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Hij schreef een brief aan zijn geliefde.",
@@ -33511,7 +33472,6 @@
    "freq": 2518,
    "gender": "het",
    "plural": "gedeelten",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Welk gedeelte van \"nee\" snap je niet?",
@@ -33597,7 +33557,6 @@
    "freq": 2530,
    "gender": "de",
    "plural": "gaven",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Ze heeft een gave voor talen.",
@@ -33911,7 +33870,6 @@
    "rank": 1666,
    "freq": 2576,
    "gender": "het",
-   "plural": "beseffen",
    "irregularPlural": true,
    "examples": [
     {
@@ -33980,7 +33938,7 @@
    "id": "nl-seizoen-n",
    "nl": "seizoen",
    "en": [
-    "a season"
+    "season"
    ],
    "pos": "noun",
    "level": "B1",
@@ -34018,7 +33976,7 @@
    "id": "nl-vlieg-n",
    "nl": "vlieg",
    "en": [
-    "a fly"
+    "fly (insect)"
    ],
    "pos": "noun",
    "level": "B1",
@@ -34324,7 +34282,6 @@
    "freq": 2627,
    "gender": "het",
    "plural": "genieën",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Men zegt dat hij een genie is.",
@@ -34471,7 +34428,7 @@
    "id": "nl-jongeman-n",
    "nl": "jongeman",
    "en": [
-    "a young man"
+    "young man"
    ],
    "pos": "noun",
    "level": "B1",
@@ -34601,7 +34558,6 @@
    "rank": 1701,
    "freq": 2654,
    "gender": "de",
-   "plural": "gerechtigheden",
    "irregularPlural": true,
    "examples": [
     {
@@ -34706,7 +34662,6 @@
    "freq": 2670,
    "gender": "de",
    "plural": "zijden",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Hij stond altijd aan mijn zijde.",
@@ -34729,7 +34684,6 @@
    "rank": 1707,
    "freq": 2671,
    "gender": "de",
-   "plural": "ellenden",
    "irregularPlural": true,
    "examples": [
     {
@@ -35345,7 +35299,6 @@
    "freq": 2744,
    "gender": "de",
    "plural": "onbekenden",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "De hond blafte naar de onbekende.",
@@ -35588,7 +35541,6 @@
    "rank": 1750,
    "freq": 2768,
    "gender": "de",
-   "plural": "duisternissen",
    "irregularPlural": true,
    "examples": [
     {
@@ -35882,7 +35834,6 @@
    "rank": 1765,
    "freq": 2800,
    "gender": "de",
-   "plural": "schanden",
    "irregularPlural": true,
    "examples": [
     {
@@ -36243,7 +36194,6 @@
    "rank": 1784,
    "freq": 2852,
    "gender": "de",
-   "plural": "aanwezigheden",
    "irregularPlural": true,
    "examples": [
     {
@@ -36301,7 +36251,6 @@
    "freq": 2859,
    "gender": "de",
    "plural": "therapieën",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Ik ben in therapie.",
@@ -36838,7 +36787,6 @@
    "freq": 2922,
    "gender": "de",
    "plural": "geboorten",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Hij woont daar al sinds zijn geboorte.",
@@ -37187,7 +37135,7 @@
    "id": "nl-miljard-n",
    "nl": "miljard",
    "en": [
-    "a billion"
+    "billion"
    ],
    "pos": "noun",
    "level": "B1",
@@ -37311,7 +37259,6 @@
    "rank": 1838,
    "freq": 2979,
    "gender": "het",
-   "plural": "giffen",
    "irregularPlural": true,
    "examples": [
     {
@@ -37384,7 +37331,7 @@
    "id": "nl-kliniek-n",
    "nl": "kliniek",
    "en": [
-    "a clinic"
+    "clinic"
    ],
    "pos": "noun",
    "level": "B1",
@@ -37453,7 +37400,6 @@
    "freq": 3000,
    "gender": "de",
    "plural": "kopieën",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Dat is een kopie.",
@@ -37697,7 +37643,6 @@
    "freq": 3038,
    "gender": "de",
    "plural": "opnamen",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Luister naar deze opname.",
@@ -38175,7 +38120,6 @@
    "rank": 1882,
    "freq": 3095,
    "gender": "de",
-   "plural": "Chinesen",
    "irregularPlural": true,
    "examples": [
     {
@@ -38197,7 +38141,6 @@
    "freq": 3099,
    "gender": "de",
    "plural": "fantasieën",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Ik heb weinig fantasie.",
@@ -38637,7 +38580,6 @@
    "rank": 1905,
    "freq": 3151,
    "gender": "de",
-   "plural": "bloeddrukken",
    "irregularPlural": true,
    "examples": [
     {
@@ -38713,7 +38655,6 @@
    "freq": 3161,
    "gender": "de",
    "plural": "fasen",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Het is waarschijnlijk maar een fase.",
@@ -39419,7 +39360,6 @@
    "freq": 3249,
    "gender": "de",
    "plural": "klassen",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Hij reist altijd eerste klasse.",
@@ -39630,7 +39570,6 @@
    "rank": 1955,
    "freq": 3271,
    "gender": "de",
-   "plural": "noden",
    "irregularPlural": true,
    "examples": [
     {
@@ -39918,7 +39857,6 @@
    "rank": 1970,
    "freq": 3307,
    "gender": "de",
-   "plural": "Engelsen",
    "irregularPlural": true,
    "examples": [
     {
@@ -39999,7 +39937,6 @@
    "freq": 3313,
    "gender": "de",
    "plural": "vermisten",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "De politie zoekt nog naar de vermiste.",
@@ -40278,7 +40215,6 @@
    "freq": 3338,
    "gender": "de",
    "plural": "legenden",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Volgens de legende woonde hier een reus.",
@@ -40400,8 +40336,8 @@
    "id": "nl-toren-n",
    "nl": "toren",
    "en": [
-    "a tower",
-    "a rook"
+    "tower",
+    "rook (in chess)"
    ],
    "pos": "noun",
    "level": "B1",
@@ -40465,7 +40401,6 @@
    "freq": 3356,
    "gender": "de",
    "plural": "zieken",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "De dokter bezoekt de zieke.",
@@ -40477,7 +40412,7 @@
    "id": "nl-strafblad-n",
    "nl": "strafblad",
    "en": [
-    "a criminal record"
+    "criminal record"
    ],
    "pos": "noun",
    "level": "B1",
@@ -40920,7 +40855,7 @@
    "id": "nl-incident-n",
    "nl": "incident",
    "en": [
-    "an incident"
+    "incident"
    ],
    "pos": "noun",
    "level": "B2",
@@ -41101,7 +41036,6 @@
    "rank": 2029,
    "freq": 3445,
    "gender": "het",
-   "plural": "heelallen",
    "irregularPlural": true,
    "examples": [
     {
@@ -41488,7 +41422,7 @@
    "id": "nl-roman-n",
    "nl": "roman",
    "en": [
-    "a novel"
+    "novel"
    ],
    "pos": "noun",
    "level": "B2",
@@ -41547,7 +41481,7 @@
    "id": "nl-amerikaan-n",
    "nl": "amerikaan",
    "en": [
-    "an American"
+    "American (man)"
    ],
    "pos": "noun",
    "level": "B2",
@@ -41672,7 +41606,6 @@
    "rank": 2058,
    "freq": 3491,
    "gender": "de",
-   "plural": "opzetten",
    "irregularPlural": true,
    "examples": [
     {
@@ -41777,7 +41710,6 @@
    "freq": 3509,
    "gender": "de",
    "plural": "oudsten",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Tom is onze oudste.",
@@ -42038,8 +41970,7 @@
    "rank": 2076,
    "freq": 3550,
    "gender": "de",
-   "plural": "oversten",
-   "irregularPlural": true
+   "plural": "oversten"
   },
   {
    "id": "nl-snappen-v",
@@ -42387,7 +42318,6 @@
    "rank": 2094,
    "freq": 3602,
    "gender": "het",
-   "plural": "gemakken",
    "irregularPlural": true,
    "examples": [
     {
@@ -42730,7 +42660,6 @@
    "rank": 2111,
    "freq": 3648,
    "gender": "de",
-   "plural": "waanzinnen",
    "irregularPlural": true,
    "examples": [
     {
@@ -43435,7 +43364,7 @@
    "id": "nl-show-n",
    "nl": "show",
    "en": [
-    "a show"
+    "show"
    ],
    "pos": "noun",
    "level": "B2",
@@ -43492,7 +43421,7 @@
    "id": "nl-getuige-n",
    "nl": "getuige",
    "en": [
-    "a witness"
+    "witness"
    ],
    "pos": "noun",
    "level": "B2",
@@ -43500,7 +43429,6 @@
    "freq": 1060,
    "gender": "de",
    "plural": "getuigen",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Er was een getuige.",
@@ -43552,7 +43480,6 @@
    "freq": 1103,
    "gender": "de",
    "plural": "verdachten",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "De verdachte heeft bekend.",
@@ -43661,7 +43588,7 @@
    "id": "nl-monster-n",
    "nl": "monster",
    "en": [
-    "a monster"
+    "monster"
    ],
    "pos": "noun",
    "level": "B2",
@@ -43861,7 +43788,6 @@
    "freq": 1425,
    "gender": "de",
    "plural": "edelachtbaren",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "Dank u, edelachtbare.",
@@ -44155,7 +44081,6 @@
    "rank": 2185,
    "freq": 1857,
    "gender": "de",
-   "plural": "warren",
    "irregularPlural": true,
    "examples": [
     {
@@ -44221,7 +44146,6 @@
    "freq": 2131,
    "gender": "de",
    "plural": "gevangenen",
-   "irregularPlural": true,
    "examples": [
     {
      "nl": "De gevangene zit in de cel.",
@@ -44362,8 +44286,8 @@
    "id": "nl-motief-n",
    "nl": "motief",
    "en": [
-    "a motive",
-    "a motif"
+    "motive",
+    "motif"
    ],
    "pos": "noun",
    "level": "B2",

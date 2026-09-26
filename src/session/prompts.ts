@@ -168,6 +168,9 @@ function overlaps(a: Note, b: Note): boolean {
   return false
 }
 
+/** How far along the course a wrong option may come from, either way. */
+const NEARBY = 400
+
 function distractors(
   note: Note,
   ctx: PromptContext,
@@ -186,9 +189,16 @@ function distractors(
   const maxLength = Math.max(18, correct.length * 2)
   const sized = candidates.filter((n) => render(n).length <= maxLength)
 
+  // And words from about the same stretch of the course, so the options are
+  // words at your level rather than anything in the deck: a card about "vlag"
+  // in your first month shouldn't offer you the film vocabulary from the end.
+  const near = (n: Note) => Math.abs((n.rank ?? 0) - (note.rank ?? 0)) <= NEARBY
+
   const tiers = [
     sized.filter((n) => n.pos === note.pos && tag && n.tags?.includes(tag)),
+    sized.filter((n) => n.pos === note.pos && near(n)),
     sized.filter((n) => n.pos === note.pos),
+    sized.filter(near),
     sized,
     candidates,
   ]
