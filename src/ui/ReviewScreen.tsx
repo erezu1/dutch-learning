@@ -36,6 +36,9 @@ function Icon({ children }: { children: ReactNode }) {
 const headerButton =
   'grid h-10 w-10 shrink-0 place-items-center rounded-full text-on-surface-dim transition-[color,background-color,opacity]'
 
+/** How long a right answer stays on screen before the next card, in ms. */
+const RIGHT_PAUSE = 1400
+
 interface Props {
   session: Session
   coat: CoatId
@@ -57,6 +60,17 @@ export function ReviewScreen({ session, coat, dark, onExit }: Props) {
     beats.current += 1
     setBeat({ scene: correct ? 'correct' : 'wrong', key: beats.current })
   }, [correct, prompt?.cardId])
+
+  // A right answer moves on by itself, once there has been time to see it was
+  // right — the completed sentence, the cat, the points. A wrong one waits for
+  // Continue: that is the answer worth reading.
+  const { autoContinue, advance } = session
+  const moveOn = autoContinue && revealed && correct === true
+  useEffect(() => {
+    if (!moveOn) return
+    const id = setTimeout(advance, RIGHT_PAUSE)
+    return () => clearTimeout(id)
+  }, [moveOn, advance, prompt?.cardId])
 
   if (!prompt) return null
 
@@ -192,7 +206,7 @@ export function ReviewScreen({ session, coat, dark, onExit }: Props) {
           than appearing fully formed the instant the card is answered. */}
       <div className="flex min-h-[7.5rem] items-end [@media(max-height:780px)]:min-h-[5.5rem]">
         <AnimatePresence initial={false}>
-          {revealed && (
+          {revealed && !moveOn && (
             <motion.div
               key="bar"
               variants={swapVariants}
@@ -205,7 +219,7 @@ export function ReviewScreen({ session, coat, dark, onExit }: Props) {
               {session.autoGrade !== null ? (
                 // Multiple choice: already graded, just move on.
                 // Already recorded when the option was chosen; this only moves on.
-                <ContinueBar onContinue={session.advance} countdown={session.autoContinue} />
+                <ContinueBar onContinue={session.advance} />
               ) : (
                 <GradeBar onGrade={session.grade} />
               )}

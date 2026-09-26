@@ -55,11 +55,9 @@ interface Props {
   /**
    * How much of today is behind you, nought to one. The button draws it.
    *
-   * The same trick as the Continue bar's countdown, which is the one place in
-   * the app that already fills a button — a graded wash whose gradient spans
-   * the fill rather than the button, so its edge always sits exactly where the
-   * progress has reached. Turned around: this one covers what is LEFT rather
-   * than what is done.
+   * A graded wash whose gradient spans the fill rather than the button, so its
+   * edge always sits exactly where the progress has reached. It covers what is
+   * LEFT rather than what is done.
    *
    * It sits under the label, so the words are one ink from end to end rather
    * than half on one colour and half on another.
