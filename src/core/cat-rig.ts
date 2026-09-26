@@ -54,10 +54,10 @@ export const ROLE = {
   lookUpL:   { jobs: ['drift', 'reaction'], when: 'an idle glance up; the first run' },
   lookUpR:   { jobs: ['drift'],             when: 'an idle glance up' },
   curious:   { jobs: ['drift', 'reaction'], when: 'an idle glance; a wrong answer' },
-  happy:     { jobs: ['reaction', 'poke'],  when: 'a right answer; being touched kindly' },
-  surprised: { jobs: ['reaction', 'poke'],  when: 'a level reached; the first poke startles her' },
+  happy:     { jobs: ['base', 'reaction', 'poke'], when: 'a right answer; being touched kindly; after a new level' },
+  surprised: { jobs: ['reaction', 'poke'],  when: 'the first poke startles her' },
   startled:  { jobs: ['poke'],              when: 'something wakes her — the one time she leaves the ground' },
-  celebrate: { jobs: ['reaction'],          when: 'the day is finished' },
+  celebrate: { jobs: ['reaction'],          when: 'the day is finished; a new level' },
   sad:       { jobs: ['reaction'],          when: 'you have been away and the pile has grown' },
   grumpy:    { jobs: ['poke'],              when: 'poked once too often' },
 }
@@ -662,6 +662,9 @@ export class CatRig {
     // wants her asleep has to be able to wind back down, and testing `wanted`
     // left her sitting up for good.
     if (this.base === 'sleepy') return
+    // Nor while she is resting pleased, which she only does under a new level:
+    // nodding off beneath "Level 6!" would say the opposite of the screen.
+    if (this.base === 'happy') return
     this.dozing = setTimeout(() => {
       // On her back she is not going to sleep; the clock starts over when she is up.
       if (this.flip.engaged) return
@@ -1236,9 +1239,14 @@ export const SCENE: Record<SceneName, (r: CatRig) => void> = {
     setTimeout(() => r.spark(), 1150)
     setTimeout(() => r.spark(), 2150)
   },
+  // A new level: the confetti is the ring's, and she is delighted with it —
+  // celebrating, hearts and all, for as long as it is coming down, and then
+  // pleased for as long as you stay on the screen. Pleased rather than back to
+  // idle: the news is still up there on the screen, and a cat who has gone
+  // blank again under "Level 6!" has already forgotten it.
   levelUp: (r: CatRig) => {
     r.hop()
-    r.react('surprised', { ms: 1900, min: 1100 })
+    r.react('celebrate', { ms: 3600, min: 1600, then: () => r.setBase('happy') })
   },
   greeting: (r: CatRig) => r.react('lookUpL', { ms: 2200, min: 1200 }),
   // Arrival is the one moment she is not reacting to something you just did,
