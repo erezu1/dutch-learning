@@ -17,7 +17,7 @@ import { createReadStream } from 'node:fs'
 import { readFile, writeFile } from 'node:fs/promises'
 import { createInterface } from 'node:readline'
 import path from 'node:path'
-import { applyCuration, levelFor } from './apply-curation.mjs'
+import { applyCuration, levelFor, loadLayers } from './apply-curation.mjs'
 
 const DATA = process.argv[2]
 if (!DATA) {
@@ -555,10 +555,11 @@ async function main() {
     notes,
   }
 
-  // The hand-checked corrections go on last, over the top of whatever the
-  // datasets said. See apply-curation.mjs.
-  const curation = JSON.parse(await readFile('src/content/curation.json', 'utf8'))
-  const deck = applyCuration(built, curation)
+  // The hand-made layers go on last, over the top of whatever the datasets
+  // said: added words, corrections, and the teaching order. See
+  // apply-curation.mjs.
+  const { curation, everyday, course } = await loadLayers()
+  const deck = applyCuration(built, curation, { everyday, course })
 
   await writeFile('src/content/deck-core.json', JSON.stringify(deck, null, 1), 'utf8')
 

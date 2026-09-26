@@ -4642,7 +4642,7 @@
   },
   "nl-ophouden-v": {
    "en": [
-    "to stop / to quit"
+    "to stop (doing something) / to cease"
    ],
    "examples": [
     {
@@ -4695,8 +4695,9 @@
   },
   "nl-boodschap-n": {
    "en": [
-    "message",
-    "errand (boodschappen = groceries)"
+    "errand",
+    "message (to pass on)",
+    "boodschappen = groceries"
    ]
   },
   "nl-bos-n": {
@@ -8033,7 +8034,7 @@
   },
   "nl-verklaren-v": {
    "en": [
-    "to explain",
+    "to explain (account for)",
     "to declare"
    ],
    "examples": [
@@ -8524,6 +8525,9 @@
      "nl": "Na een lange mars rusten de soldaten.",
      "en": "After a long march, the soldiers rest."
     }
+   ],
+   "en": [
+    "march (a long walk)"
    ]
   },
   "nl-bovendien-adv": {
