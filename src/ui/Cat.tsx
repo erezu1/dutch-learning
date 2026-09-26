@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { catSvg, type CoatId } from '../core/cat'
 import { CatRig, idle, SCENE, type SceneName } from '../core/cat-rig'
+import { playTrick, stopTrick, type Trick } from '../core/cat-tricks'
 
 // ---------------------------------------------------------------------------
 // The mascot, as one element the rest of the app talks to in situations.
@@ -23,6 +24,8 @@ interface Props {
   scene: SceneName
   /** A one-off, keyed so the same event twice still plays twice. */
   beat?: { scene: SceneName; key: number } | null
+  /** A trick to play, keyed the same way. Nothing interrupts it but her going. */
+  trick?: { name: Trick; key: number } | null
   /** Light or dark, for the rim of light she needs on a dark page. */
   rim?: boolean
   className?: string
@@ -49,7 +52,7 @@ function carryPhase(from: Element, to: Element) {
   for (let i = 0; i < Math.min(ax.length, bx.length); i++) carryPhase(ax[i], bx[i])
 }
 
-export function Cat({ coat, scene, beat, rim = false, className = '', size = 96, label, flips = false }: Props) {
+export function Cat({ coat, scene, beat, trick, rim = false, className = '', size = 96, label, flips = false }: Props) {
   const host = useRef<HTMLDivElement>(null)
   const rig = useRef<CatRig | null>(null)
   /**
@@ -118,6 +121,8 @@ export function Cat({ coat, scene, beat, rim = false, className = '', size = 96,
     // and the only moment it could show.
     if (outgoing) carryPhase(outgoing, svg)
     return () => {
+      // Mid-trick, the trick goes with her: its props are drawn in her.
+      stopTrick(r)
       carried.current = r.snapshot()
       stopIdle()
       r.destroy()
@@ -133,6 +138,10 @@ export function Cat({ coat, scene, beat, rim = false, className = '', size = 96,
   useEffect(() => {
     if (beat && rig.current) SCENE[beat.scene](rig.current)
   }, [beat])
+
+  useEffect(() => {
+    if (trick && rig.current) void playTrick(rig.current, trick.name)
+  }, [trick])
 
   return (
     <div

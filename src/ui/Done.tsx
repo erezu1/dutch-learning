@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { CoatId } from '../core/cat'
+import { nextTrick, type Trick } from '../core/cat-tricks'
 import { rungAt, type Rung } from '../core/ladder'
 import type { SessionStats } from '../session/useSession'
 import { Cat } from './Cat'
@@ -18,9 +19,11 @@ interface Props {
   dark: boolean
   onHome: () => void
   onMore: (extra: boolean) => void
+  /** The trick a new level gets. One at random when not given — given to preview one in particular. */
+  trick?: Trick
 }
 
-export function Done({ stats, score, points, coat, dark, onHome, onMore }: Props) {
+export function Done({ stats, score, points, coat, dark, onHome, onMore, trick }: Props) {
   // Worked out rather than remembered: the level before this round is the
   // level of the score minus what the round earned, so nothing has to be
   // written down when a round starts and nothing can be lost if it is left.
@@ -45,6 +48,7 @@ export function Done({ stats, score, points, coat, dark, onHome, onMore }: Props
         another={another}
         onHome={onHome}
         onMore={onMore}
+        trick={trick}
       />
     )
   }
@@ -106,11 +110,16 @@ function WayOn({
   )
 }
 
+/** How long after the ring bursts the cat's trick begins: her first delight has had its moment, and the confetti is still coming down. */
+const TRICK_AFTER = 1900
+
 /**
  * A round that crossed a level. The ring you watch fill on the home screen
  * closes here, bursts into confetti in the cat's colours, and rolls over to
  * the new level — and only then does the screen say so, because the ring
- * closing is the news and the headline is its caption.
+ * closing is the news and the headline is its caption. Then the cat does
+ * something she does for nothing else: one of her tricks, a different one
+ * from the last level's.
  */
 function LevelUp({
   from,
@@ -123,6 +132,7 @@ function LevelUp({
   another,
   onHome,
   onMore,
+  trick,
 }: {
   from: Rung
   to: Rung
@@ -134,8 +144,21 @@ function LevelUp({
   another: boolean
   onHome: () => void
   onMore: (extra: boolean) => void
+  trick?: Trick
 }) {
   const [burst, setBurst] = useState(false)
+  // One object for the one beat. A fresh one on every render reads as a new
+  // beat to the cat, and the render that starts the trick would have her
+  // leap up and celebrate the ring all over again in the middle of it.
+  const beat = useMemo(() => (burst ? { scene: 'levelUp' as const, key: 1 } : null), [burst])
+  // Chosen on arrival, once.
+  const [chosen] = useState(() => trick ?? nextTrick())
+  const [playing, setPlaying] = useState<{ name: Trick; key: number } | null>(null)
+  useEffect(() => {
+    if (!burst) return
+    const t = setTimeout(() => setPlaying({ name: chosen, key: 1 }), TRICK_AFTER)
+    return () => clearTimeout(t)
+  }, [burst, chosen])
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-7 overflow-y-auto px-6 py-6 text-center">
       <div className="flex flex-col items-center">
@@ -145,7 +168,8 @@ function LevelUp({
           size={104}
           scene="waiting"
           // Her beat waits for the ring: she reacts to it closing, with you.
-          beat={burst ? { scene: 'levelUp', key: 1 } : null}
+          beat={beat}
+          trick={playing}
           label="The cat, pleased with you"
         />
         <LevelRing from={from} to={to} coat={coat} total={from.into + points} onBurst={() => setBurst(true)} />

@@ -670,6 +670,13 @@ const MOUTHS: Record<string, (c: Coat) => string> = {
       fill="#EE8E96"/>`,
   frown: (c) => `<path d="M60 80.4v2.9M53.8 87.8q6.2-4.8 12.4 0" fill="none" stroke="${c.line}"
       stroke-width="2.4" stroke-linecap="round"/>`,
+  // Chewing, in two positions she alternates between: the lips closed on
+  // something, the jaw down and then up. Not a mood's mouth — nothing she
+  // feels looks like this — so only a trick shows them.
+  munch: (c) => `<path d="M60 80.4v3.6M53 85.6q3.5 2.7 7 0q3.5 2.7 7 0" fill="none"
+      stroke="${c.line}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`,
+  munch2: (c) => `<path d="M60 80.4v2.4M54.4 83.4q2.8 1.7 5.6 0q2.8 1.7 5.6 0" fill="none"
+      stroke="${c.line}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`,
 }
 
 // `squash` is how hard her chin is pressed into the carpet: 1 flat out, 0
@@ -828,9 +835,16 @@ const SY = `(1 + var(--breath, 0) * 0.013)`
 //
 // Outermost in the list, so it moves the already-deformed head rather than
 // being scaled along with everything else.
+//
+// The trick channels, --t-rise and --t-tilt, are a second rise and tilt added
+// on top of the mood's. A trick moves her head by an offset that starts and
+// ends at nothing, so whatever the mood is doing underneath — arriving,
+// transitioning, being replaced — carries on untouched, and the head can
+// never jump when the trick lets go of it. Unregistered on purpose: the trick
+// writes them every frame, and a transition on them would only lag it.
 const POSE_HEAD =
-  `translateY(calc(${LIFT} * -5px + var(--rise, 0) * -1px + var(--hop, 0) * -15px)) ` +
-  `rotate(var(--tilt, 0deg)) scaleX(calc(${SX})) scaleY(calc(${SY}))`
+  `translateY(calc(${LIFT} * -5px + var(--rise, 0) * -1px + var(--hop, 0) * -15px + var(--t-rise, 0) * -1px)) ` +
+  `rotate(calc(var(--tilt, 0deg) + var(--t-tilt, 0deg))) scaleX(calc(${SX})) scaleY(calc(${SY}))`
 
 // The skull deforms; the things sitting in it do not. An eye is a circle and
 // a squashed circle is a different eye — she goes from alert to sleepy just
@@ -866,7 +880,16 @@ const POSE_PAW = (side: 'l' | 'r') =>
   // arrives late: the body goes and the legs are dragged after it. Parts that
   // leave together are one rigid object, which is the difference between a
   // cat jumping and a picture of a cat being moved.
-  ` + var(--hop-paw, 0) * -3.5px))`
+  ` + var(--hop-paw, 0) * -3.5px))` +
+  // A trick's hold on the paw — shifted, lifted and turned about the ledge —
+  // added after everything above rather than put in its place, the way the
+  // head's trick channels are: the knead, a pleased cat's lift, a tremble all
+  // carry on underneath, and the paw leaves from exactly where it was and
+  // comes back to exactly where it would have been. An animation of the
+  // transform itself cannot do this: what it adds to is the paw's style
+  // before its own loops run, so the lift of a pleased cat vanished under it
+  // and came back in one frame when it ended.
+  ` translate(var(--t-paw-${side}-x, 0px), var(--t-paw-${side}-y, 0px)) rotate(var(--t-paw-${side}-r, 0deg))`
 const POSE_GAZE =
   'translate(calc(var(--gaze-x, 0px) + var(--gaze-px, 0px)), calc(var(--gaze-y, 0px) + var(--gaze-py, 0px)))'
 const TWITCH = (deg: number, v: string) => `calc(${deg}deg + var(${v}, 0deg))`

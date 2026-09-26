@@ -558,6 +558,10 @@ export class CatRig {
    * than forever means she forgives you as soon as you stop.
    */
   tap() {
+    // Except in the middle of a trick: her face is being worked by the scene,
+    // and a poke would pull it out from under it. Not queued — a tap is for
+    // now, and she will be free again in a few seconds.
+    if (this.svg.dataset.trick !== undefined) return
     // A poke always lands. The floor exists to stop reactions flickering past
     // each other, not to make her ignore you — and the thing it was most
     // likely to swallow was a tap arriving during a drift, which is a beat
@@ -1246,7 +1250,11 @@ export const SCENE: Record<SceneName, (r: CatRig) => void> = {
   // blank again under "Level 6!" has already forgotten it.
   levelUp: (r: CatRig) => {
     r.hop()
-    r.react('celebrate', { ms: 3600, min: 1600, then: () => r.setBase('happy') })
+    // Pleased is set first, not after: whatever takes over from the
+    // celebration — the trick a new level gets — hands her back to pleased
+    // rather than to wherever she was before the ring closed.
+    r.setBase('happy')
+    r.react('celebrate', { ms: 3600, min: 1600 })
   },
   greeting: (r: CatRig) => r.react('lookUpL', { ms: 2200, min: 1200 }),
   // Arrival is the one moment she is not reacting to something you just did,
@@ -1388,7 +1396,8 @@ export function idle(svg: SVGSVGElement, { breath = true } = {}) {
   function glance() {
     if (stopped) return
     // And her gaze, which it turns into her frame.
-    if (svg.dataset.flip) return void later(glance, rand(4200, 11000))
+    // And while she is in the middle of a trick, whose eyes are on the thing.
+    if (svg.dataset.flip || svg.dataset.trick !== undefined) return void later(glance, rand(4200, 11000))
     const x = rand(-2.6, 2.6).toFixed(2)
     const y = rand(-1.4, 0.9).toFixed(2)
     play([
