@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { allCards, type Card } from '../core/cards'
 import { coatById, DEFAULT_COAT, type CoatId } from '../core/cat'
 import { db, forgetRetaught, getMeta, setMeta, type CardStateRow } from '../core/db'
+import { DEFAULT_VOICE, setVoice as speechVoice, voiceById } from '../core/speech'
 import { buildQueue, DEFAULTS, isUnlocked, type QueueOptions } from '../core/queue'
 import { applyGrade, emptyState, isNew, Rating, State, type Grade } from '../core/scheduler'
 import { awardFor, type Award } from '../core/score'
@@ -141,6 +142,9 @@ export interface Session {
   /** Which cat you have. Independent of the colour scheme on purpose. */
   coat: CoatId
   setCoat: (coat: CoatId) => void
+  /** Which recorded voice speaks the Dutch, or the phone's own. */
+  voice: string
+  setVoice: (voice: string) => void
   /** What was asked for: light, dark, or whatever the phone is doing. */
   mode: Mode
   /** What that comes out as right now. */
@@ -185,6 +189,7 @@ export function useSession(deck: Deck): Session {
   const [levelChosen, setLevelChosen] = useState(false)
   const [theme, setThemeState] = useState<Theme>(DEFAULT_THEME)
   const [coat, setCoatState] = useState<CoatId>(DEFAULT_COAT)
+  const [voice, setVoiceState] = useState<string>(DEFAULT_VOICE)
   const [mode, setModeState] = useState<Mode>(DEFAULT_MODE)
   const [resolvedMode, setResolvedMode] = useState<Resolved>(() => resolveMode(DEFAULT_MODE))
   const [score, setScore] = useState(0)
@@ -283,6 +288,7 @@ export function useSession(deck: Deck): Session {
       getMeta<{ day: string; points: number } | null>('pointsToday', null),
       getMeta<boolean>('autoContinue', false),
       getMeta<SavedRound | null>('round', null),
+      getMeta<string | null>('voice', null),
     ])).then(
       ([
         rows,
@@ -300,6 +306,7 @@ export function useSession(deck: Deck): Session {
         savedPointsToday,
         savedAuto,
         savedRound,
+        savedVoice,
       ]) => {
         if (cancelled) return
         setStates(new Map(rows.map((r) => [r.cardId, r] as const)))
@@ -321,6 +328,8 @@ export function useSession(deck: Deck): Session {
         const m = savedMode === null && wasNightScheme(savedTheme) ? 'dark' : modeById(savedMode)
         setThemeState(t)
         setCoatState(coatById(savedCoat))
+        setVoiceState(voiceById(savedVoice).id)
+        speechVoice(voiceById(savedVoice).id)
         setModeState(m)
         setResolvedMode(resolveMode(m))
         applyAppearance(t, m)
@@ -397,6 +406,12 @@ export function useSession(deck: Deck): Session {
   const setCoat = useCallback((next: CoatId) => {
     setCoatState(next)
     void setMeta('coat', next).catch(() => {})
+  }, [])
+
+  const setVoice = useCallback((next: string) => {
+    setVoiceState(next)
+    speechVoice(next)
+    void setMeta('voice', next).catch(() => {})
   }, [])
 
   const setTheme = useCallback(
@@ -849,6 +864,8 @@ export function useSession(deck: Deck): Session {
     setTheme,
     coat,
     setCoat,
+    voice,
+    setVoice,
     mode,
     resolvedMode,
     setMode,

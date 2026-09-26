@@ -4,3 +4,7 @@ dev-dist
 .DS_Store
 *.local
 .vite
+
+# Recording tools for scripts/make-audio.py (the recordings themselves are committed)
+.venv-audio/
+.piper/

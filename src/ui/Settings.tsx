@@ -8,7 +8,7 @@ import {
   type NudgeState,
   type NudgeTrouble,
 } from '../core/nudge'
-import { onVoicesReady, speak, voiceReport, type VoiceReport } from '../core/speech'
+import { onVoicesReady, speak, VOICES, voiceReport, type VoiceReport } from '../core/speech'
 import { MODES, type Mode } from '../core/themes'
 import { DAY_NAMES, type WeekStartDay } from '../core/week'
 import { Button } from './Button'
@@ -17,6 +17,8 @@ import { glide, pressable, swapVariants, tap } from './motion'
 import { Switch } from './Switch'
 
 interface Props {
+  voice: string
+  onVoice: (id: string) => void
   autoContinue: boolean
   onAutoContinue: (next: boolean) => void
   mode: Mode
@@ -59,63 +61,91 @@ function ModePicker({ mode, onMode }: { mode: Mode; onMode: (next: Mode) => void
   )
 }
 
+/** What the sample says: the same sentence in every voice, so they can be compared. */
+const SAMPLE = 'Goedemorgen, hoe gaat het met je?'
+
 /**
- * Whether this phone can say anything, and what to do if it can't.
+ * Who speaks the Dutch. Four recorded voices and the phone's own; tapping one
+ * chooses it and says the sample in it, so you choose by ear rather than by
+ * name.
  *
- * The app has no audio files — it borrows whichever Dutch voice the phone
- * already has, which is free and works offline but is the one thing that
- * varies by device.
- *
- * This used to say "no Dutch voice installed" whenever the voice list came
- * back without one, which was wrong on the phone it was written for: Android
- * often reports no voices at all and then speaks perfectly well, because the
- * app asks for Dutch by language and the system engine answers. An empty list
- * is not evidence of silence. So the button is offered in every case and your
- * ear decides, which is the only test that was ever going to be right.
+ * The phone's voice keeps its note about what to do if it's silent, from when
+ * it was the only voice. That note is careful: Android often reports no voices
+ * at all and then speaks perfectly well, because the app asks for Dutch by
+ * language and the system engine answers. An empty list is not evidence of
+ * silence, so it only says where to look, never that nothing is there.
  */
-function DutchVoice() {
-  const [voice, setVoice] = useState<VoiceReport>(voiceReport)
-  useEffect(() => onVoicesReady(() => setVoice(voiceReport())), [])
+function VoicePicker({ voice, onVoice }: { voice: string; onVoice: (id: string) => void }) {
+  const [phone, setPhone] = useState<VoiceReport>(voiceReport)
+  useEffect(() => onVoicesReady(() => setPhone(voiceReport())), [])
+
+  const choose = (id: string) => {
+    onVoice(id)
+    void speak(SAMPLE, 0.9, id)
+  }
 
   return (
     <div className="rounded-3xl bg-surface-1 px-5 py-4 shadow-2">
-      <p className="font-semibold">Dutch voice</p>
+      <p className="font-semibold">Voice</p>
+      <p className="mt-0.5 text-sm text-on-surface-dim">Tap one to hear it.</p>
 
-      {voice.supported ? (
-        <>
-          <p className="mt-0.5 text-sm text-on-surface-dim">
-            {voice.found ? (
+      <div role="radiogroup" aria-label="Voice" className="mt-3 -mx-2 flex flex-col">
+        {VOICES.map((option) => {
+          const active = option.id === voice
+          return (
+            <motion.button
+              key={option.id}
+              {...pressable}
+              role="radio"
+              aria-checked={active}
+              aria-label={`${option.name}: ${option.note}`}
+              onClick={() => choose(option.id)}
+              className="relative flex items-center justify-between gap-4 rounded-2xl px-3 py-2.5 text-left"
+            >
+              {active && (
+                <motion.span
+                  layoutId="voice-pill"
+                  transition={tap}
+                  className="absolute inset-0 rounded-2xl bg-surface-2"
+                />
+              )}
+              <span className="relative">
+                <span className="block font-medium">{option.name}</span>
+                <span className="block text-sm text-on-surface-dim">{option.note}</span>
+              </span>
+              <span
+                aria-hidden
+                className={`relative grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 ${
+                  active ? 'border-primary' : 'border-on-surface-dim/40'
+                }`}
+              >
+                {active && <span className="h-2.5 w-2.5 rounded-full bg-primary" />}
+              </span>
+            </motion.button>
+          )
+        })}
+      </div>
+
+      {voice === 'phone' &&
+        (phone.supported ? (
+          <p className="mt-3 text-sm text-on-surface-dim">
+            {phone.found ? (
               <>
-                {voice.name}
-                {voice.local ? '' : ' — needs a connection'}
+                Using {phone.name}
+                {phone.local ? '.' : ', which needs a connection.'}
               </>
             ) : (
-              <>No voice listed. Press it and listen anyway.</>
+              <>
+                Silent? Install it once and it works offline:{' '}
+                <span className="text-on-surface">
+                  Settings → System → Languages &amp; input → Text-to-speech → Nederlands
+                </span>
+              </>
             )}
           </p>
-
-          <div className="mt-4">
-            <Button
-              tone="neutral"
-              onClick={() => speak('Goedemorgen, hoe gaat het met je?')}
-              className="px-5 py-3 text-base"
-            >
-              Hear it
-            </Button>
-          </div>
-
-          {!voice.found && (
-            <p className="mt-3 text-sm text-on-surface-dim">
-              Silent? Install it once and it works offline:{' '}
-              <span className="text-on-surface">
-                Settings → System → Languages &amp; input → Text-to-speech → Nederlands
-              </span>
-            </p>
-          )}
-        </>
-      ) : (
-        <p className="mt-0.5 text-sm text-on-surface-dim">This browser can&rsquo;t speak.</p>
-      )}
+        ) : (
+          <p className="mt-3 text-sm text-on-surface-dim">This browser can&rsquo;t speak.</p>
+        ))}
     </div>
   )
 }
@@ -310,6 +340,8 @@ function StartOver() {
 }
 
 export function Settings({
+  voice,
+  onVoice,
   autoContinue,
   onAutoContinue,
   mode,
@@ -370,7 +402,7 @@ export function Settings({
           animate={{ opacity: 1, y: 0 }}
           transition={{ ...glide, delay: 0.14 }}
         >
-          <DutchVoice />
+          <VoicePicker voice={voice} onVoice={onVoice} />
         </motion.div>
 
         {/* Apart from the rest, and last: the one thing on this screen that

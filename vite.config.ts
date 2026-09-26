@@ -39,6 +39,21 @@ export default defineConfig({
         // Resolved against the worker's own URL, which is what makes it work
         // under the /dutch-learning/ base on Pages as well as at the root.
         importScripts: ['nudge.js'],
+        // The recordings are thousands of small files — far too many to fetch
+        // on install. Each is kept the first time it is played, so a word
+        // heard once can be heard again offline. A clip's name is a hash of
+        // its text, so a kept one never goes stale.
+        runtimeCaching: [
+          {
+            urlPattern: ({ url }) => url.pathname.includes('/audio/') && url.pathname.endsWith('.ogg'),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'recordings',
+              expiration: { maxEntries: 20000 },
+              cacheableResponse: { statuses: [200] },
+            },
+          },
+        ],
       },
     }),
   ],

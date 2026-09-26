@@ -193,6 +193,8 @@ export default function App() {
         ) : screen === 'settings' ? (
           <Screen key="settings">
             <Settings
+              voice={session.voice}
+              onVoice={session.setVoice}
               weekStartsOn={session.weekStartsOn}
               onWeekStartsOn={session.setWeekStartsOn}
               autoContinue={session.autoContinue}
