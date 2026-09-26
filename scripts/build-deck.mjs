@@ -17,6 +17,7 @@ import { createReadStream } from 'node:fs'
 import { readFile, writeFile } from 'node:fs/promises'
 import { createInterface } from 'node:readline'
 import path from 'node:path'
+import { applyCuration, levelFor } from './apply-curation.mjs'
 
 const DATA = process.argv[2]
 if (!DATA) {
@@ -441,13 +442,6 @@ async function loadAuxiliaries(corpusAuxiliary) {
 
 const POS_SUFFIX = { noun: 'n', verb: 'v', adj: 'a', adv: 'adv', prep: 'p', num: 'num', phrase: 'x' }
 
-function levelFor(rank) {
-  if (rank <= 300) return 'A1'
-  if (rank <= 900) return 'A2'
-  if (rank <= 2000) return 'B1'
-  return 'B2'
-}
-
 async function main() {
   console.log('reading frequency list…')
   const rank = await loadFrequency()
@@ -549,7 +543,7 @@ async function main() {
 
   notes.sort((a, b) => (a.rank ?? 9e9) - (b.rank ?? 9e9))
 
-  const deck = {
+  const built = {
     id: 'core',
     name: 'Dutch core vocabulary',
     level: 'A1',
@@ -561,11 +555,16 @@ async function main() {
     notes,
   }
 
+  // The hand-checked corrections go on last, over the top of whatever the
+  // datasets said. See apply-curation.mjs.
+  const curation = JSON.parse(await readFile('src/content/curation.json', 'utf8'))
+  const deck = applyCuration(built, curation)
+
   await writeFile('src/content/deck-core.json', JSON.stringify(deck, null, 1), 'utf8')
 
-  const counts = notes.reduce((acc, n) => ((acc[n.pos] = (acc[n.pos] ?? 0) + 1), acc), {})
-  const withExample = notes.filter((n) => n.examples?.length).length
-  console.log(`\nwrote ${notes.length} notes ->`, counts)
+  const counts = deck.notes.reduce((acc, n) => ((acc[n.pos] = (acc[n.pos] ?? 0) + 1), acc), {})
+  const withExample = deck.notes.filter((n) => n.examples?.length).length
+  console.log(`\nwrote ${deck.notes.length} notes ->`, counts)
   console.log(`${withExample} have an example sentence`)
 }
 

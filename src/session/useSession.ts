@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { allCards, type Card } from '../core/cards'
 import { coatById, DEFAULT_COAT, type CoatId } from '../core/cat'
-import { db, getMeta, setMeta, type CardStateRow } from '../core/db'
+import { db, forgetRetaught, getMeta, setMeta, type CardStateRow } from '../core/db'
 import { buildQueue, DEFAULTS, isUnlocked, type QueueOptions } from '../core/queue'
 import { applyGrade, emptyState, isNew, Rating, State, type Grade } from '../core/scheduler'
 import { awardFor, type Award } from '../core/score'
@@ -257,7 +257,11 @@ export function useSession(deck: Deck): Session {
   // Load saved progress and the chosen level once.
   useEffect(() => {
     let cancelled = false
-    Promise.all([
+    // Words whose meaning was corrected lose their progress first, so what is
+    // loaded below is already the state after the correction.
+    forgetRetaught(deck.resets ?? [])
+      .catch(() => {})
+      .then(() => Promise.all([
       db.states.toArray(),
       db.reviews.where('at').aboveOrEqual(startOfToday()).count(),
       getMeta<Intake>('intake', EMPTY_INTAKE),
@@ -279,7 +283,7 @@ export function useSession(deck: Deck): Session {
       getMeta<{ day: string; points: number } | null>('pointsToday', null),
       getMeta<boolean>('autoContinue', false),
       getMeta<SavedRound | null>('round', null),
-    ]).then(
+    ])).then(
       ([
         rows,
         done,

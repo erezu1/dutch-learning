@@ -441,7 +441,9 @@ export function PromptCard({ prompt, revealed, picked, correct, onReveal, onChoo
           )}
         </WithSpeaker>
 
-        {prompt.subtitle && <p className="text-base text-on-surface-dim">{prompt.subtitle}</p>}
+        {prompt.subtitle && (
+          <p className="max-w-xs text-base text-balance text-on-surface-dim">{prompt.subtitle}</p>
+        )}
       </div>
 
       {/* Lower zone: the options, or the answer once it is given. */}

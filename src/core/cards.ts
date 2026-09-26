@@ -91,8 +91,9 @@ export function cardsForNote(note: Note): Card[] {
     if (!note.verb.auxiliaryUnknown && note.verb.auxiliary === 'zijn') types.push('auxiliary')
   }
 
-  // A gap-fill needs a sentence containing the word itself.
-  if (clozeSource(note)) types.push('cloze')
+  // A gap-fill needs a sentence containing the word itself, and a word whose
+  // gap the sentence can actually decide.
+  if (!note.noCloze && clozeSource(note)) types.push('cloze')
 
   return types.map((type) => ({ id: cardId(note.id, type), noteId: note.id, type }))
 }

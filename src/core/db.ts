@@ -82,3 +82,27 @@ export async function eraseEverything(): Promise<void> {
     await db.meta.clear()
   })
 }
+
+/**
+ * Forget what was learned about words whose meaning has since been corrected.
+ *
+ * Each correction round carries a version; this runs once per version, on the
+ * first launch of a build that has it. Only the scheduling state goes — the
+ * review log stays, as it always does. The words then come back as new, and
+ * are introduced again with the meaning they should have had.
+ */
+export async function forgetRetaught(resets: { version: number; ids: string[] }[]): Promise<void> {
+  const seen = await getMeta<number>('resetVersion', 0)
+  const pending = resets.filter((r) => r.version > seen)
+  if (!pending.length) return
+  const notes = new Set(pending.flatMap((r) => r.ids))
+  const latest = Math.max(...pending.map((r) => r.version))
+  await db.transaction('rw', db.states, db.meta, async () => {
+    // Card ids are "<note>::<type>", so every card of a note shares its prefix.
+    const doomed = (await db.states.toCollection().primaryKeys()).filter((id) =>
+      notes.has(String(id).split('::')[0]),
+    )
+    await db.states.bulkDelete(doomed)
+    await db.meta.put({ key: 'resetVersion', value: latest })
+  })
+}

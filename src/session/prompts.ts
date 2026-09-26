@@ -137,6 +137,37 @@ function shuffle<T>(items: T[]): T[] {
  */
 const bare = (text: string) => text.replace(/\s*\([^)]*\)\s*$/, '').toLowerCase()
 
+/**
+ * Every sense a note can be read as, stripped down for comparing: "angry /
+ * mad" and "very" become {angry, mad} and {very}.
+ */
+function senses(note: Note): Set<string> {
+  const out = new Set<string>()
+  for (const gloss of note.en) {
+    // Clarifiers first, whole: "well (as in: well, …)" has a comma inside.
+    for (const part of gloss.replace(/\([^)]*\)/g, '').split(/\s*[/;,]\s*/)) {
+      const s = part
+        .replace(/^(a|an|the)\s+/i, '')
+        .trim()
+        .toLowerCase()
+      if (s) out.add(s)
+    }
+  }
+  return out
+}
+
+/**
+ * Two words that share a sense can't both be wrong answers to each other.
+ * "zeer", "heel" and "erg" all mean "very": offered "Dat is ___ goed" with
+ * "That is very good" underneath, all three are right, and whichever one the
+ * card happens to be about, the other two are marked wrong.
+ */
+function overlaps(a: Note, b: Note): boolean {
+  const mine = senses(a)
+  for (const s of senses(b)) if (mine.has(s)) return true
+  return false
+}
+
 function distractors(
   note: Note,
   ctx: PromptContext,
@@ -144,7 +175,9 @@ function distractors(
   count = 3,
 ): string[] {
   const correct = render(note)
-  const candidates = ctx.notes.filter((n) => n.id !== note.id && bare(render(n)) !== bare(correct))
+  const candidates = ctx.notes.filter(
+    (n) => n.id !== note.id && bare(render(n)) !== bare(correct) && !overlaps(note, n),
+  )
   const tag = note.tags?.[0]
 
   // Options of wildly different lengths give the answer away — a distractor
@@ -295,12 +328,17 @@ export function buildPrompt(card: Card, note: Note, ctx: PromptContext): Prompt 
         answer: note.nl,
         completion: ex.nl,
         answerLang: 'nl',
+        // What the sentence means, from the start. Without it the gap is a
+        // riddle with several answers: "___ huis is te duur" takes "dat",
+        // "dit", "het", "mijn", "ons" and the card wants one of them. With
+        // "That house is too expensive" under it, it takes one — and the
+        // exercise becomes the useful one, finding the Dutch word for a
+        // meaning you are given, in a sentence that shows how it is used.
+        subtitle: ex.en,
         choices: choice ? shuffle([dutch(note), ...distractors(note, ctx, dutch)]) : undefined,
-        // The full sentence gives the answer away, so it is only spoken and
-        // shown once the card has been answered.
+        // The full sentence gives the answer away, so it is only spoken once
+        // the card has been answered.
         speak: ex.nl,
-        detail: ex.nl,
-        detailTranslation: ex.en,
       }
     }
 

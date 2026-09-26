@@ -64,6 +64,23 @@ export interface Note {
   superlative?: string
 
   examples?: Example[]
+  /**
+   * Never make a gap-fill of this word. Set on words whose place in a sentence
+   * can't be worked out from its translation — "toch", "wel", "even" — where
+   * the gap would have several right answers and the English none of them.
+   */
+  noCloze?: boolean
+}
+
+/**
+ * Notes whose meaning was corrected after people had already learned it.
+ * Their progress is wiped once, the first time a build carrying a new
+ * `version` is opened, so the word comes back as new rather than being
+ * scheduled on the strength of having learned the wrong thing.
+ */
+export interface Reset {
+  version: number
+  ids: string[]
 }
 
 export interface Deck {
@@ -71,4 +88,5 @@ export interface Deck {
   name: string
   level: Level
   notes: Note[]
+  resets?: Reset[]
 }
